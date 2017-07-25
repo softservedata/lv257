@@ -8,9 +8,6 @@ public class TestReverse {
     public static void main(String[] args) {
 
         Reverse reverse = new Reverse();
-        int revers = reverse.revers(123456);
-        System.out.println(revers);
-        reverse.printRevers(123456);
-
+        reverse.revers(123456789);
     }
 }

@@ -18,12 +18,5 @@ public class Solution {
         for (Integer integer : numbers){
             System.out.print(integer + " - ");
         }
-
-        System.out.println();
-
-       List<Integer> dividers = perfectNumber.getDividers(8128);
-        for (Integer integer : dividers){
-            System.out.print(integer + " - ");
-        }
     }
 }
