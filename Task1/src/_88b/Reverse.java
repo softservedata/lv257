@@ -3,9 +3,6 @@ package _88b;
 
 public class Reverse {
 
-    private StringBuilder builder = new StringBuilder();
-
-
     public void revers(int n){
 
         int result;
