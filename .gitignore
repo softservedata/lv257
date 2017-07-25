@@ -1,3 +1,5 @@
+# Github Origin
+
 # Compiled class file
 *.class
 
@@ -20,3 +22,76 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Custom
+
+# Binary Files
+*.dat
+
+# Addition
+# Ignore all temporary files in the root directory
+*.[oa]
+
+# Single Module Project
+/.externalToolBuilders/
+/.settings/
+/.metadata/
+/.recommenders/
+/target/
+/bin/
+/build/
+/doc/
+/test-output/
+/.classpath
+/.project
+/.checkstyle
+/reports/
+/.idea/
+*.iml
+
+# Multi Modules Project
+/**/.externalToolBuilders/
+/**/.settings/
+/**/target/
+/**/doc/
+/**/bin/
+/**/build/
+/**/test-output/
+/**/report/
+/**/.classpath
+/**/.project
+/**/.checkstyle
+/**/reports
+/**/af.reporting
+/**/.idea/
+/**/*.iml
+
+# Ignore binary
+*.bin
+
+# Ignore log
+*.log
+*.log.[1234567890]
+
+# Ignore IntelliJ IDEA Config Files
+*.stackdump
+
+# Ignore Picture
+*.bmp
+
+# Ignore doc/notes.txt, but not doc/info/arch.txt
+# doc/*.txt
+
+# Ignore all .txt files in the directory doc/
+# doc/**/*.txt
+
+# Ignore .doc .pfd .docx
+*.doc
+*.docx
+*.pdf
+
+# bower
+/bower_components/
+
+# npm
+/node_modules/
