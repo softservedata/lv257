@@ -34,7 +34,7 @@ public class MaxSumOfDivisions {
 			/* how many divisors to check, what length from 1 to N>? instead of endPoint, because, for me it`s not effective */
 			 for (int j = 1; j < endPoint; j++) {
 				if (ar1[i] % j == 0) {
-					for (Integer integer : tempSet) {
+					for (int integer : tempSet) {
 						if (ar1[i] / j == integer || j == integer) {
 							newDivisionsExists = false;
 						}
