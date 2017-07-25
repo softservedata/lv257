@@ -1,5 +1,5 @@
 In the winter time we go
-Walking in the fields of snow;
+Walking in the fields of snow; Trying some merge
 Where there is no grass at all;
 
 Every fence, and every tree
