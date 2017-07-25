@@ -4,17 +4,17 @@ public class EuclideanAlgorithm {
 
 	public static void main(String[] args) {
 
-// знаходження НСД
+// finding GCD
 		System.out.println(gcd(1000, 100));
 		System.out.println(recursionGCD(6, 15));
 		
-// знаходження НСК за допомогою алгоритму Евкліда на знаходження НСД
+// finding LCM using Euclidean algorithm for finding GCD
 		System.out.println(LCM(15, 6));
 		System.out.println(recursionLCM(6, 15));
 	
 
 	}
-// найбільший спільний дільник 
+// finding GCD using Euclidean algorithm
 	static int gcd(int m, int n) {
 		int r = 0;
 
@@ -48,7 +48,7 @@ public class EuclideanAlgorithm {
 		
 	}
 	
-	// найбільший спільний дільник з рекурсією
+	// GCD with recursion
 	static int recursionGCD(int m, int n){
 		
 		if (m >= n) {
@@ -67,12 +67,12 @@ public class EuclideanAlgorithm {
 		
 	}
 	
-	// найменше спільне кратне 
+	// LCM
 	static int LCM(int m, int n){
 		return m*n/gcd(m, n);
 	}
 	
-	// НСК рекурсія
+	// LCM recursion
 	
 	static int recursionLCM(int m, int n){
 		return m*n/recursionGCD(m, n);

@@ -5,8 +5,8 @@ import java.util.TreeSet;
 
 public class MaxSumOfDivisions {
 
-	// метод для пошуку числа
-	static int findNumberWithMaxSumOfDivisionsFromLength(int startPoint, int endPoint) {
+	// method for finding number with maximum sum of divisors from special length of int numbers
+	static int findNumberWithMaxSumOfDivisorsFromLength(int startPoint, int endPoint) {
 
 		int[] ar1 = new int[((endPoint - startPoint) + 1) / 2];
 		int startNumber = startPoint;
@@ -21,8 +21,8 @@ public class MaxSumOfDivisions {
 			}
 		}
 
-		// запитати щодо можливої перевірки проміжку максимальної кількості дільників в числі (поки
-		// кількість endPoint перевіряється )
+		// ASK about divisors length of numbers  
+		// now using endPoint number from 1 to endPoint)
 
 		System.out.println();
 		int maxSumOfDivisions = 0;
@@ -31,7 +31,7 @@ public class MaxSumOfDivisions {
 		Set<Integer> tempSet = new TreeSet<>();
 		boolean newDivisionsExists = true;
 		for (int i = 0; i < ar1.length; i++) {
-			/* яку кількість і проміжок дільників провіряти? замість endPoint */
+			/* how many divisors to check, what length from 1 to N>? instead of endPoint, because, for me it`s not effective */
 			 for (int j = 1; j < endPoint; j++) {
 				if (ar1[i] % j == 0) {
 					for (Integer integer : tempSet) {
@@ -66,21 +66,20 @@ public class MaxSumOfDivisions {
 
 	public static void main(String[] args) {
 
-		// використання статичного методу описаного вище
-		System.out.println("Число з максимальною сумою дільників: " + findNumberWithMaxSumOfDivisionsFromLength(1, 10000));
+		// using static method above
+		System.out.println("Number with a maximum sum of divisors: " + findNumberWithMaxSumOfDivisorsFromLength(1, 10000));
 
-		// конкретний приклад
+		// some example to test
 		int[] ar1 = new int[5000];
 		int number1 = 0;
 		for (int i = 0; i < ar1.length; i++) {
 			ar1[i] = number1 += 2;
 		}
 		System.out.println(ar1[4999]);
-		// TODO: ПОТРІБНО ДІЗНАТИСЬ, НА ЯКУ КІЛЬКІСТЬ N ДІЛЬНИКІВ в проміжку від 1 до N-го,
-		// (в даному прикладі обрано 200 дільників, від 1 до 200)
-		// потрібно ділити ДІЛЕНЕ проміжку задоного при аналізі (в даному випадку 1 - 10000)
-		// Тобто при досягненні, наприклад числа 10000 (Ділене),
-		// потрібно пробігтись по певному проміжку дільників від 1 до N (в даному випадку N=200) 
+		// TODO: what quantity of N divisors in length from 1 to N-i,
+		// (in this example I`m using 200 divisors, from 1 to 200)
+		// should we check for Integers of special length, in this case from 1 - 10000)
+		
 		int[] ar2 = new int[200];
 		int number2 = 1;
 
@@ -113,8 +112,8 @@ public class MaxSumOfDivisions {
 			tempSet.clear();
 		}
 
-		System.out.println("Число з максимальною сумою дільників: " + numberWithMaxSumOfDivisions);
-		System.out.println("Сума дільників числа " + numberWithMaxSumOfDivisions + ": " + maxSumOfDivisions);
+		System.out.println("Number with a maximum sum of divisors: " + numberWithMaxSumOfDivisions);
+		System.out.println("Sum of divisors of an Integer" + numberWithMaxSumOfDivisions + ": " + maxSumOfDivisions);
 		Set<Integer> setOfDivisions = new TreeSet<>();
 
 		for (int i = 0; i < ar2.length; i++) {
@@ -125,8 +124,8 @@ public class MaxSumOfDivisions {
 				// ar2[i] + ", ");
 			}
 		}
-		System.out.println("Усі Дільники числа " + numberWithMaxSumOfDivisions + ":" + setOfDivisions);
-		System.out.println("Кількість дільників " + setOfDivisions.size());
+		System.out.println("All divisors of integer " + numberWithMaxSumOfDivisions + ":" + setOfDivisions);
+		System.out.println("Quantity of divisors " + setOfDivisions.size());
 
 		int sum = 0;
 		for (Integer integer : setOfDivisions) {

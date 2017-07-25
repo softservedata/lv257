@@ -2,6 +2,7 @@ package algorithmTasks;
 
 public class PascalsTriangle {
 
+	// method for getting N rows of Pascal`s Triangle
 	static void getNRowsOfPascalsTriangle(int n){
 		int [][] arr = new int [n] [];
 		for (int i = 0; i < arr.length; i++) {
