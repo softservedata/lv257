@@ -8,6 +8,6 @@ Pointing out the way we came,
 -Every one of them the same-
 All across the fields there be
 Prints in silver filigree;
-And our mothers always know,
+And our mothers always know,Trying Auto Merge
 By the footprints in the snow,
-Where it is the children go.
+Where it is the children go. 
