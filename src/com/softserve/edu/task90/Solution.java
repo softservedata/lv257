@@ -1,4 +1,4 @@
-package _90;
+package com.softserve.edu.task90;
 
 /**
  * Даны натуральные числа m и n. Найти такие натуральные p и

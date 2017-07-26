@@ -1,4 +1,4 @@
-package _330;
+package com.softserve.edu.task330;
 
 import java.util.List;
 

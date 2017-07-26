@@ -1,4 +1,4 @@
-package _88b;
+package com.softserve.edu.task88b;
 
 /**
  * Поменять порядок цифр числа n на обратный.

@@ -1,4 +1,4 @@
-package _88b;
+package com.softserve.edu.task88b;
 
 
 public class Reverse {
