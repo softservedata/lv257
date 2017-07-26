@@ -21,7 +21,7 @@ public class MaxSumOfDivisions {
 			}
 		}
 
-		// ASK about divisors length of numbers  
+		// ASK about divisors length of numbers
 		// now using endPoint number from 1 to endPoint)
 
 		System.out.println();
@@ -31,8 +31,11 @@ public class MaxSumOfDivisions {
 		Set<Integer> tempSet = new TreeSet<>();
 		boolean newDivisionsExists = true;
 		for (int i = 0; i < ar1.length; i++) {
-			/* how many divisors to check, what length from 1 to N>? instead of endPoint, because, for me it`s not effective */
-			 for (int j = 1; j < endPoint; j++) {
+			/*
+			 * how many divisors to check, what length from 1 to N>? instead of
+			 * endPoint, because, for me it`s not effective
+			 */
+			for (int j = 1; j < endPoint; j++) {
 				if (ar1[i] % j == 0) {
 					for (int integer : tempSet) {
 						if (ar1[i] / j == integer || j == integer) {
@@ -67,7 +70,8 @@ public class MaxSumOfDivisions {
 	public static void main(String[] args) {
 
 		// using static method above
-		System.out.println("Number with a maximum sum of divisors: " + findNumberWithMaxSumOfDivisorsFromLength(1, 10000));
+		System.out.println(
+				"Number with a maximum sum of divisors: " + findNumberWithMaxSumOfDivisorsFromLength(1, 10000));
 
 		// some example to test
 		int[] ar1 = new int[5000];
@@ -76,10 +80,12 @@ public class MaxSumOfDivisions {
 			ar1[i] = number1 += 2;
 		}
 		System.out.println(ar1[4999]);
-		// TODO: what quantity of N divisors in length from 1 to N-i,
-		// (in this example I`m using 200 divisors, from 1 to 200)
-		// should we check for Integers of special length, in this case from 1 - 10000)
-		
+		/*
+		 * TODO: what quantity of N divisors in length from 1 to N-i, (in this
+		 * example I`m using 200 divisors, from 1 to 200) should we check for
+		 * Integers of special length, in this case from 1 - 10000)
+		 */
+
 		int[] ar2 = new int[200];
 		int number2 = 1;
 
@@ -120,8 +126,7 @@ public class MaxSumOfDivisions {
 			if (numberWithMaxSumOfDivisions % ar2[i] == 0) {
 				setOfDivisions.add(numberWithMaxSumOfDivisions / ar2[i]);
 				setOfDivisions.add(ar2[i]);
-				// System.out.print(numberWithMaxSumOfDivisions/ar2[i] + ", " +
-				// ar2[i] + ", ");
+				
 			}
 		}
 		System.out.println("All divisors of integer " + numberWithMaxSumOfDivisions + ":" + setOfDivisions);
