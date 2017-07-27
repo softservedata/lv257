@@ -8,6 +8,9 @@ public class Solution {
 
     public static void main(String[] args) {
 
-
+        FindNumbers numbers = new FindNumbers();
+        numbers.findNumbers(6, 4);
+        numbers.findNumbers(10, 4);
+        numbers.findNumbers(100, 30);
     }
 }
