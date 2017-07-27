@@ -6,9 +6,9 @@ import java.util.List;
 
 public class PerfectNumber {
 
-    private List<Integer> result = new ArrayList<>();
-
     public List<Integer> getPerfectNumbers(int n){
+
+        List<Integer> result = new ArrayList<>();
 
         for (int i = 1; i < n; i++){
 
