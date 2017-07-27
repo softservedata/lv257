@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class InputValidator {
 
     /* Checking whether entered number is natural */
-    static int validateInput() {
-	Scanner in = new Scanner(System.in);
+    public static int validateInput(Scanner in) {
 	int input;
 	do {
 	    while (!in.hasNextInt()) {
