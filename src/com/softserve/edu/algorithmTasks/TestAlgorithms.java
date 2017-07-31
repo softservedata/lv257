@@ -36,8 +36,7 @@ public final class TestAlgorithms {
      * Variable to use in testing Pascal's Triangle class .
      */
     static final int ROW_TO_SHOW = 5;
-    
-    
+
     /**
      * Constructor for class.
      */

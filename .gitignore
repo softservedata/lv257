@@ -40,7 +40,7 @@ hs_err_pid*
 /target/
 /bin/
 /build/
-/doc/
+#/doc/
 /test-output/
 /.classpath
 /.project
