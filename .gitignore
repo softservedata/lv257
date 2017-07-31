@@ -40,7 +40,7 @@ hs_err_pid*
 /target/
 /bin/
 /build/
-#/doc/
+# /doc/
 /test-output/
 /.classpath
 /.project
@@ -53,7 +53,7 @@ hs_err_pid*
 /**/.externalToolBuilders/
 /**/.settings/
 /**/target/
-/**/doc/
+# /**/doc/
 /**/bin/
 /**/build/
 /**/test-output/
