@@ -26,8 +26,15 @@ public final class CalcUtil {
      * @param number
      *            A natural number
      * @return Quantity of digits in the {@code number}
+     * @throws IllegalArgumentException
+     *             if argument isn't positive integer number
      */
-    public static int calculateDigitsInNumber(int number) {
+    public static int calculateDigitsInNumber(int number)
+            throws IllegalArgumentException {
+        if (number <= 0) {
+            throw new IllegalArgumentException(
+                    "Argument must be a non-negative number");
+        }
         int count = 0;
         while (number >= 1) {
             number /= 10;
@@ -51,9 +58,20 @@ public final class CalcUtil {
      * @param uplim
      *            A natural number which is the end of number sequence
      * @return Quantity of numbers which meet the conditions
+     * @throws IllegalArgumentException
+     *             if arguments aren't positive integer numbers or number
+     *             sequence isn't in ascending order
      */
     public static int calculateMultiplicity(int multiple, int nonMultiple,
-            int lowlim, int uplim) {
+            int lowlim, int uplim) throws IllegalArgumentException {
+        if (multiple <= 0 || nonMultiple <= 0 || lowlim <= 0 || uplim <= 0) {
+            throw new IllegalArgumentException(
+                    "Arguments must be a non-negative numbers");
+        }
+        if (lowlim > uplim) {
+            throw new IllegalArgumentException(
+                    "Sequence of numbers must be in ascending order");
+        }
         int count = 0;
         for (int n = lowlim; n <= uplim; n++) {
             if ((n % multiple == 0) && (n % nonMultiple != 0)) {
@@ -71,8 +89,15 @@ public final class CalcUtil {
      * @param number
      *            A natural number
      * @return List of strings with all available combinations of squares
+     * @throws IllegalArgumentException
+     *             if argument isn't positive integer number
      */
-    public static List<String> calculateSumOfSquares(int number) {
+    public static List<String> calculateSumOfSquares(int number)
+            throws IllegalArgumentException {
+        if (number <= 0) {
+            throw new IllegalArgumentException(
+                    "Argument must be a non-negative number");
+        }
         List<String> listOfSquares = new ArrayList<>();
         for (int x = 0; x * x <= number; x++) {
             for (int y = 0; y * y <= number; y++) {
