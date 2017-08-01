@@ -24,8 +24,9 @@ public class PascalsTriangle {
      * This method is used to print out the 'n' rows of Pascal's Triangle.
      *
      * @param n the number of rows to print
+     * @return two-dimensional array with 'n' rows of Pascal's Triangle.
      */
-    public void getNsRowsOfPascalsTriangle(int n) {
+    public int[][] getNsRowsOfPascalsTriangle(int n) {
 
         int[][] arr = new int[n][];
         for (int i = 0; i < arr.length; i++) {
@@ -55,6 +56,7 @@ public class PascalsTriangle {
                 System.out.print(arr[i][j] + " ");
             }
         }
+        return arr;
 
     }
 
