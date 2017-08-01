@@ -20,10 +20,14 @@ public class EuclideanAlgorithm {
      * @param m first parameter to analyze
      * @param n second parameter to analyze
      * @return int The greatest common divisor.
+     * @throws ArithmeticException when both parameters are equal '0'.
      */
-    public int gcd(int m, int n) {
+    public int gcd(int m, int n) throws ArithmeticException {
         int r = 0;
 
+        if (m == 0 && n == 0) {
+            throw new ArithmeticException();
+        }
         if (m >= n) {
 
             if (n == 0) {
@@ -62,8 +66,13 @@ public class EuclideanAlgorithm {
      * @param m first parameter to analyze
      * @param n second parameter to analyze
      * @return int The greatest common divisor for the parameters of the method.
+     * @throws ArithmeticException when both parameters are equal to '0'.
      */
-    public int recursionGCD(int m, int n) {
+    public int recursionGCD(int m, int n) throws ArithmeticException {
+
+        if (m == 0 && n == 0) {
+            throw new ArithmeticException();
+        }
 
         if (m >= n) {
             if (n == 0) {
@@ -88,8 +97,9 @@ public class EuclideanAlgorithm {
      * @param m first parameter to analyze (non-negative integer)
      * @param n second parameter to analyze (non-negative integer)
      * @return int The least common multiple
+     * @throws ArithmeticException when both parameters are equal to '0'.
      */
-    public int lcm(int m, int n) {
+    public int lcm(int m, int n) throws ArithmeticException {
         return m * n / gcd(m, n);
     }
 
@@ -101,8 +111,9 @@ public class EuclideanAlgorithm {
      * @param m first parameter to analyze (non-negative integer)
      * @param n second parameter to analyze (non-negative integer)
      * @return int The least common multiple
+     * @throws ArithmeticException when both parameters are equal to '0'.
      */
-    public int recursionLCM(int m, int n) {
+    public int recursionLCM(int m, int n) throws ArithmeticException {
         return m * n / recursionGCD(m, n);
     }
 

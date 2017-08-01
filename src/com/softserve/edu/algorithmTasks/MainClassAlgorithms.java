@@ -6,7 +6,7 @@ package com.softserve.edu.algorithmTasks;
  * @author Yura
  *
  */
-public final class TestAlgorithms {
+public final class MainClassAlgorithms {
 
     /**
      * First variable to use in testing Euclidean Algorithm.
@@ -40,7 +40,7 @@ public final class TestAlgorithms {
     /**
      * Constructor for class.
      */
-    private TestAlgorithms() {
+    private MainClassAlgorithms() {
 
     }
     /**
@@ -48,8 +48,16 @@ public final class TestAlgorithms {
      * @param args Parameters from command line
      */
     public static void main(String[] args) {
+
         EuclideanAlgorithm ea = new EuclideanAlgorithm();
-        System.out.println(ea.gcd(FIRST_PARAM, SECOND_PARAM));
+        try {
+            System.out.println(ea.gcd(FIRST_PARAM, SECOND_PARAM));
+            System.out.println(ea.lcm(FIRST_PARAM, SECOND_PARAM));
+        } catch (RuntimeException e) {
+            System.out.println("Both parameteres couldn't be equal to '0'");
+            e.printStackTrace();
+        }
+
 
         MaxSumOfDivisions msod = new MaxSumOfDivisions();
         System.out.println(msod.findNumberWithMaxSumOfDivisors(
