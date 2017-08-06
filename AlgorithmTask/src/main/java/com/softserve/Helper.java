@@ -1,4 +1,4 @@
-package task1;
+package com.softserve;
 
 class Helper {
     private Helper() {

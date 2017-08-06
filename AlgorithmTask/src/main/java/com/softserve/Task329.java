@@ -1,9 +1,9 @@
-package task1;
+package com.softserve;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static task1.Helper.sumOfDigitInPow;
+import static com.softserve.Helper.sumOfDigitInPow;
 
 public class Task329 {
     private Task329(){}
@@ -15,7 +15,7 @@ public class Task329 {
      * @return list of all found numbers
      */
     public static List<Integer> getSpecialNumbers(int number, int requiredSum) {
-        List<Integer> resultNumbers = new ArrayList<>();
+        List<Integer> resultNumbers = new ArrayList<Integer>();
         try {
             if (number <= 0) {
                 throw new IllegalArgumentException("number " + number + " isn*t Natural");

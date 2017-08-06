@@ -1,4 +1,4 @@
-package task1;
+package com.softserve;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class Task225 {
      * @return list of all found special dividers
      */
     public static List<Integer> getSpecialDivider(int number) {
-        List<Integer> resultNumbers = new ArrayList<>();
+        List<Integer> resultNumbers = new ArrayList<Integer>();
         try {
             if (number <= 0) throw new IllegalArgumentException("number " + number + " isn*t Natural");
         } catch (IllegalArgumentException e) {

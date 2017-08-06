@@ -1,5 +1,4 @@
-package task1;
-
+package com.softserve;
 import java.util.Scanner;
 
 public class Main {
