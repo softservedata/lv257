@@ -15,6 +15,9 @@ class Helper {
 
     static int numberOfDigit(int number) {
         int count = 0;
+        if(number==0){
+            return 1;
+        }
         while (number != 0) {
             number = number / 10;
             count++;

@@ -28,7 +28,7 @@ public class Task329 {
             return resultNumbers;
         }
         int checkedNumber = 1;
-        while (checkedNumber < number) {
+        while (checkedNumber <= number) {
             if (Math.pow(sumOfDigitInPow(checkedNumber, 1), 2) == requiredSum) {
                 resultNumbers.add(checkedNumber);
             }
