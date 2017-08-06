@@ -1,21 +1,27 @@
+/*
+ * My Class.
+ * @version 1.0
+ * @date 28.07.2017
+ */
 package com.softserve.edu.task330;
 
 import java.util.List;
 
 /**
- * Натуральное число называется совершенным, если оно
- равно сумме всех своих делителей, за исключением себя самого. Число
- 6 – совершенное, так как 6 = 1+2+3. Число 8 – не совершенное, так как
- 8 ≠ 1+2+4.Дано натуральное число n. Получить все совершенные числа,
- меньшие n.
+ * Test class for class PerfectNumber.
+ * @author Lv-257
  */
-public class Solution {
-
-    public static void main(String[] args) {
+public final class Solution {
+    
+    /**
+     * Method main
+     * @param args from command line arguments.
+     */
+    public static void main(final String[] args) {
 
         PerfectNumber perfectNumber = new PerfectNumber();
         List<Integer> numbers = perfectNumber.getPerfectNumbers(20000);
-        for (Integer integer : numbers){
+        for (Integer integer : numbers) {
             System.out.print(integer + " - ");
         }
     }
