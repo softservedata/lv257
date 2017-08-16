@@ -1,15 +1,26 @@
 package com.softserve.edu.entities;
 
+import java.util.List;
+
 public class Role {
     private int id;
     private String name;
     private String community_restrided;
+    private List<User> users;
 
     public Role() {
     }
 
     public int getId() {
         return id;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     public void setId(int id) {

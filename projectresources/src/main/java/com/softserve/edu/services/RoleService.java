@@ -9,7 +9,7 @@ public class RoleService {
 
     }
 
-    public void updateRole(){
+    public void cloneRole(){
 
     }
 

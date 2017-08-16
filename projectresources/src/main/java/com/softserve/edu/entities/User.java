@@ -1,5 +1,7 @@
 package com.softserve.edu.entities;
 
+import java.util.List;
+
 public class User {
 
     private int id;
@@ -9,8 +11,17 @@ public class User {
     private int id_address;
     private String phone;
     private int dank_id;
+    private List<Role> roles;
 
     public User() {
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public int getId() {
