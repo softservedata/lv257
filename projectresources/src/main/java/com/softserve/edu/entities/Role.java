@@ -43,3 +43,9 @@ public class Role {
         this.community_restrided = community_restrided;
     }
 }
+/*
+Proposals:
+1) change: class name from Role to Roles (line 5)
+2) change: restrided to restricted
+
+*/
