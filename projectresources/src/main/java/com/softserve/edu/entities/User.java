@@ -80,3 +80,8 @@ public class User {
         this.dank_id = dank_id;
     }
 }
+/*
+Proposals:
+1) change: User to Users (line 5);
+2) change: Dank to Bank, dank to bank;
+*/
