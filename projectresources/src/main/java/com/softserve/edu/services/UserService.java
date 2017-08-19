@@ -1,6 +1,7 @@
 package com.softserve.edu.services;
 
 import com.softserve.edu.dto.UserDTO;
+import com.softserve.edu.dto.UserUpdateDTO;
 
 public class UserService {
 
@@ -9,11 +10,11 @@ public class UserService {
 
     }
 
-    public void updateUser(){
+    public void updateUser(UserUpdateDTO userUpdateDTO){
 
     }
 
-    public void deleteUser(){
+    public void deleteUserById(int id){
 
     }
 

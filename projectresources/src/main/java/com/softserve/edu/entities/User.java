@@ -1,26 +1,25 @@
 package com.softserve.edu.entities;
 
-import java.util.List;
+import java.util.Collection;
 
 public class User {
 
     private int id;
     private String email;
     private String password_hash;
-    private int id_community;
     private int id_address;
     private String phone;
-    private int dank_id;
-    private List<Role> roles;
+    private int bank_id;
+    private Collection<Role> roles;
 
     public User() {
     }
 
-    public List<Role> getRoles() {
+    public Collection<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
 
@@ -48,14 +47,6 @@ public class User {
         this.password_hash = password_hash;
     }
 
-    public int getId_community() {
-        return id_community;
-    }
-
-    public void setId_community(int id_community) {
-        this.id_community = id_community;
-    }
-
     public int getId_address() {
         return id_address;
     }
@@ -72,16 +63,11 @@ public class User {
         this.phone = phone;
     }
 
-    public int getDank_id() {
-        return dank_id;
+    public int getBank_id() {
+        return bank_id;
     }
 
-    public void setDank_id(int dank_id) {
-        this.dank_id = dank_id;
+    public void setBank_id(int bank_id) {
+        this.bank_id = bank_id;
     }
 }
-/*
-Proposals:
-1) change: User to Users (line 5);
-2) change: Dank to Bank, dank to bank;
-*/
