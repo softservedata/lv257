@@ -1,4 +1,4 @@
-package com.softserve.edu.entities;
+package com.softserve.edu.resources.entities;
 
 public class Permissions {
 

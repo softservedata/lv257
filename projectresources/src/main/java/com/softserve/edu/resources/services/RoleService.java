@@ -1,8 +1,8 @@
-package com.softserve.edu.services;
+package com.softserve.edu.resources.services;
 
 
-import com.softserve.edu.dto.RoleDTO;
-import com.softserve.edu.entities.User;
+import com.softserve.edu.resources.dto.RoleDTO;
+import com.softserve.edu.resources.entities.User;
 
 public class RoleService {
 

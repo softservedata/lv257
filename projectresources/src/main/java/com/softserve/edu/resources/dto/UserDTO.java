@@ -1,4 +1,4 @@
-package com.softserve.edu.dto;
+package com.softserve.edu.resources.dto;
 
 public class UserDTO {
 

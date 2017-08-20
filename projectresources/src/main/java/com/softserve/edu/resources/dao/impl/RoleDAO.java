@@ -1,7 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.dao.impl;
 
-import com.softserve.edu.entities.Role;
 import org.hibernate.Session;
+
+import com.softserve.edu.resources.entities.Role;
 
 public class RoleDAO extends crudDAOImpl<Role> {
     public RoleDAO(Session session) {

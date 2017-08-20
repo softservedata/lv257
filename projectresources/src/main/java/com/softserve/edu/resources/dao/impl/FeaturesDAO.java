@@ -1,7 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.dao.impl;
 
-import com.softserve.edu.entities.Features;
 import org.hibernate.Session;
+
+import com.softserve.edu.resources.entities.Features;
 
 public class FeaturesDAO extends crudDAOImpl<Features> {
     public FeaturesDAO(Session session) {

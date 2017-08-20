@@ -1,7 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.dao.impl;
 
-import com.softserve.edu.entities.Permissions;
 import org.hibernate.Session;
+
+import com.softserve.edu.resources.entities.Permissions;
 
 public class PermissionDAO extends crudDAOImpl<Permissions> {
     public PermissionDAO(Session session) {

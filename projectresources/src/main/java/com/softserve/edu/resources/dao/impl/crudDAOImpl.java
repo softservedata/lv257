@@ -1,7 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.dao.impl;
 
-import com.softserve.edu.dao.interfaces.crudDAO;
 import org.hibernate.Session;
+
+import com.softserve.edu.resources.dao.interfaces.crudDAO;
 
 import java.util.List;
 

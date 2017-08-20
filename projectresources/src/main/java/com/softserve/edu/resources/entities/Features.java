@@ -1,15 +1,12 @@
-package com.softserve.edu.dto;
+package com.softserve.edu.resources.entities;
 
-public class FeaturesDTO {
+public class Features {
 
     private int id;
     private int id_method_ect;
     private String action_name;
 
-    public FeaturesDTO(int id, int id_method_ect, String action_name) {
-        this.id = id;
-        this.id_method_ect = id_method_ect;
-        this.action_name = action_name;
+    public Features() {
     }
 
     public int getId() {

@@ -1,4 +1,4 @@
-package com.softserve.edu.services;
+package com.softserve.edu.resources.services;
 
 
 public class PermissionService {

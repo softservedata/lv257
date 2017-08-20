@@ -1,4 +1,4 @@
-package com.softserve.edu.dao.interfaces;
+package com.softserve.edu.resources.dao.interfaces;
 
 public interface crudDAO<E> extends ReadDAO {
 

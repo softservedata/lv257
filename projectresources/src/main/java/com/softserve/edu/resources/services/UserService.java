@@ -1,7 +1,7 @@
-package com.softserve.edu.services;
+package com.softserve.edu.resources.services;
 
-import com.softserve.edu.dto.UserDTO;
-import com.softserve.edu.dto.UserUpdateDTO;
+import com.softserve.edu.resources.dto.UserDTO;
+import com.softserve.edu.resources.dto.UserUpdateDTO;
 
 public class UserService {
 
