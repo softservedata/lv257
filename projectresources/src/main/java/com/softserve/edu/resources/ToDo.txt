@@ -4,4 +4,7 @@
 +5) file User.java is changed: dank -> bank
 
 +5) change package (add folder "resources"): .../edu/resources/dao
-+6) file Permission.java is changed: alowed -> allowed 
++6) file Permission.java is changed: alowed -> allowed
++7) ToDo renamed to ToDo.txt
+8) add RequestsRole
+9) ?add RequestsResourceType 
