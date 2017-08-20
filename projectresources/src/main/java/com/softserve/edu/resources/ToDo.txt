@@ -2,3 +2,4 @@
 +2) create Permissions
 +3) create Features
 +4) change package (add folder "resources"): .../edu/resources/dao
++5) file Permission.java is changed: alowed -> allowed 
