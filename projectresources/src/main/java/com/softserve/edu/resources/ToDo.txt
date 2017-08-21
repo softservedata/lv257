@@ -1,3 +1,4 @@
+ToDo:
 +1) create UsersRoles
 +2) create Permissions
 +3) create Features
@@ -7,4 +8,13 @@
 +6) file Permission.java is changed: alowed -> allowed
 +7) ToDo renamed to ToDo.txt
 8) add RequestsRole
-9) ?add RequestsResourceType 
+9) ?add RequestsResourceType
+10) check up entities, add eaquals, hachCode, toString
+11) at Services add "implements crudDAOImpl"
+
+Виявлені відмінності з БД. Потрібно обговорити, що перенести в ToDo:
+1) Features: id_method_ect -> id_url_method_etc
+2) чому в User є Collection<Role> roles?
+3) чому в Role Collection<User> users?
+4) Role User but UsersRoles and another -s. Is all right?
+5) Permissions private ??String?? allowed;
