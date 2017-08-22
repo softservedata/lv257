@@ -17,10 +17,11 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' -->
 		<property name="order" value="1" />
-		<property name="prefix" value="/WEB-INF/view" />
+		<property name="prefix" value="/WEB-INF/view/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-	<mvc:view-controller path="/about.html" view-name="/about/about" />
-	<mvc:view-controller path="/index.html" view-name="/index" />
+<!-- 	<mvc:view-controller path="/about.html" view-name="/about/about" /> -->
+<!-- 	<mvc:view-controller path="/final2.html" view-name="/final2" /> -->
+<!-- 	<mvc:view-controller path="/index.html" view-name="/index" /> -->
 	<mvc:annotation-driven />
 </beans>

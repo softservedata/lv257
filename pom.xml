@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.softserve.edu.resources</groupId>
-  <artifactId>lv257</artifactId>
-  <version>1.0</version>
+	<groupId>com.softserve.edu.resources</groupId>
+	<artifactId>lv257</artifactId>
+	<version>1.0</version>
 
-  <packaging>war</packaging>
+	<packaging>war</packaging>
 
-  <name>${project.artifactId}</name>
-  <url>http://maven.apache.org</url>
+	<name>${project.artifactId}</name>
+	<url>http://maven.apache.org</url>
 
 	<properties>
 		<!-- - - - - - Encoding - - - - - -->
@@ -250,6 +250,11 @@
 		<!-- <artifactId>javassist</artifactId> -->
 		<!-- <version>${bytecode.javassist.version}</version> -->
 		<!-- </dependency> -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+		</dependency>
 		<!-- - - - - - Apache Tiles- - - - - -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
@@ -394,7 +399,7 @@
 					<!-- WEB-INF/lib/velocity-dep-1.4.jar -->
 					<!-- </packagingExcludes> -->
 					<!-- <warSourceDirectory>WebContent</warSourceDirectory> -->
-<!-- 					<failOnMissingWebXml>false</failOnMissingWebXml> -->
+					<!-- <failOnMissingWebXml>false</failOnMissingWebXml> -->
 					<warName>${project.artifactId}</warName>
 				</configuration>
 			</plugin>
@@ -412,7 +417,7 @@
 							<goal>redeploy</goal>
 						</goals>
 						<phase>deploy</phase>
-<!-- 						<phase>install</phase> -->
+						<!-- <phase>install</phase> -->
 						<configuration>
 							<!-- <server>localhost</server> -->
 							<url>http://localhost:8080</url>
