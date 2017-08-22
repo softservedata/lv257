@@ -7,7 +7,13 @@ ToDo:
 +5) change package (add folder "resources"): .../edu/resources/dao
 +6) file Permission.java is changed: alowed -> allowed
 +7) ToDo renamed to ToDo.txt
-8) add RequestsRole
+8) add RequestsRole 
++entities
+DAO.impl
+DAO.interfaces
+DTO
+services
+
 9) ?add RequestsResourceType
 10) check up entities, add eaquals, hachCode, toString
 11) at Services add "implements crudDAOImpl"
@@ -18,3 +24,7 @@ ToDo:
 3) чому в Role Collection<User> users?
 4) Role User but UsersRoles and another -s. Is all right?
 5) Permissions private ??String?? allowed;
+6) rename DAO methods as verb
+7) чи варто писати в множині approveUsersAll (в UserDAO) чи достатньо approveUserAll
+findUserByID чи findUsersByID
+8) як(звідки) вийти на редагування ролі (який саме лінк в ManageUsersAndRoles)? 
