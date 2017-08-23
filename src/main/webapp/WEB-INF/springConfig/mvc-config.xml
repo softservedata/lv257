@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -12,6 +13,10 @@
 		@Service, @Controller and also resolves @Autowired and @Qualifier -->
 	<context:component-scan base-package="com.softserve.edu.resources.web" />
 
+	<!-- Static Resources Configuration -->
+	<!-- (get access to static sources such as CSS and JavaScript files) -->
+	<mvc:resources mapping="/static/**" location="/static/" />
+
 	<!-- ViewResolver bean config for mapping strings to jsp views -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -20,8 +25,8 @@
 		<property name="prefix" value="/WEB-INF/view/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-<!-- 	<mvc:view-controller path="/about.html" view-name="/about/about" /> -->
-<!-- 	<mvc:view-controller path="/final2.html" view-name="/final2" /> -->
-<!-- 	<mvc:view-controller path="/index.html" view-name="/index" /> -->
+	<!-- <mvc:view-controller path="/about.html" view-name="/about/about" /> -->
+	<!-- <mvc:view-controller path="/final2.html" view-name="/final2" /> -->
+	<!-- <mvc:view-controller path="/index.html" view-name="/index" /> -->
 	<mvc:annotation-driven />
 </beans>

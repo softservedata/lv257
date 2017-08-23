@@ -40,6 +40,11 @@
 		<location>/WEB-INF/view/error/errorPage.jsp</location>
 	</error-page>
 
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/WEB-INF/view/error/errorPage.jsp</location>
+	</error-page>
+
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
