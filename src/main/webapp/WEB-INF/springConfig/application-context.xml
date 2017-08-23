@@ -31,15 +31,54 @@
 
 	<context:annotation-config />
 
+		<!-- filePath: src/main/resources/jdbc.properties -->
+		<!-- jdbc.username = **** -->
+		<!-- jdbc.password = **** -->
+		<!-- jdbc.driver = com.mysql.jdbc.Driver -->
+		<!-- jdbc.url = jdbc:mysql://localhost:3306/myeshop -->
+<!--     <context:property-placeholder location="classpath:jdbc.properties"/> -->
+
+<!-- 	<bean id="configProperties" -->
+<!-- 		class="org.springframework.beans.factory.config.PropertiesFactoryBean"> -->
+<!-- 		<property name="location"> -->
+<!-- 			<value>/WEB-INF/your.properties</value> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+<!-- 	<context:property-placeholder properties-ref="configProperties" /> -->
+
+<!-- 	<bean id="propertyConfigurer" -->
+<!-- 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" -->
+<!-- 		p:location="/WEB-INF/jdbc.properties" /> -->
+	
+<!--     <bean id="dataSource" -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"> -->
+<!-- 		<property name="driverClassName" value="${jdbc.driver}"></property> -->
+<!-- 		<property name="url" value="${jdbc.url}"></property> -->
+<!-- 		<property name="password" value="${jdbc.password}"></property> -->
+<!-- 		<property name="username" value="${jdbc.username}"></property> -->
+<!-- 	</bean> -->
+
+<!-- 	<bean id="dataSource" -->
+<!-- 		class="org.springframework.jdbc.datasource.DriverManagerDataSource" -->
+<!-- 		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.databaseurl}" -->
+<!-- 		p:username="${jdbc.username}" p:password="${jdbc.password}" /> -->
+
 	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
+<!--        <property name="dataSource" ref="dataSource" /> -->
 <!-- 		<property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" /> -->
 <!-- 		<property name="persistenceUnitName" value="Java" /> -->
+		<property name="packagesToScan">
+			<list>
+				<value>com.softserve.edu.resources.entity</value>
+			</list>
+		</property>
 		<property name="jpaProperties">
 			<props>
+<!-- 			    <prop key="hibernate.archive.autodetection">class,hbm</prop> -->
 				<prop key="hibernate.connection.url">jdbc:jtds:sqlserver://CLASS02/lv257work;instance=SQLEXPRESS;</prop>
 				<prop key="hibernate.connection.username">db257</prop>
 				<prop key="hibernate.connection.password">db257</prop>
@@ -57,10 +96,10 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<context:component-scan base-package="com.softserve.edu.resources.service" />
-		<context:component-scan base-package="com.softserve.edu.resources.entity" />
+<!-- 	<context:component-scan base-package="com.softserve.edu.resources.entity" /> -->
 	<context:component-scan base-package="com.softserve.edu.resources.dao" />
-	
+	<context:component-scan base-package="com.softserve.edu.resources.service" />
+		
 	<!-- Static Resources Configuration -->
 	<!-- (get access to static sources such as CSS and JavaScript files) -->
 	<!-- <mvc:resources mapping="/static/**" location="/static/" /> -->
