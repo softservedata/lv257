@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.softserve.edu.resources.service.UserService;
+
 
 @Controller
 public class WebController {
     
-    @Autowired
-    UserService userService;
+
     
     @RequestMapping("/")
     public String home() {
@@ -21,7 +20,7 @@ public class WebController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
-        userService.save();
+
         return "index";
     }
 
