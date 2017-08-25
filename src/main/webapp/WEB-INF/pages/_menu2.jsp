@@ -43,7 +43,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="LookUpResources.html">Look up</a></li>
-                <li><a href="ManageUsersAndRoles.html">Users</a></li>
+                <li><a href="${pageContext.request.contextPath}/users">Users</a></li>
                 <li><a href="ResourcesView.html">Resources</a></li>
                 <li><a href="CommunityView.html">Community</a></li>
                 <li><a href="#about">About</a></li>

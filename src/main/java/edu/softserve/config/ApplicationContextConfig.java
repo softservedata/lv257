@@ -4,7 +4,12 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import edu.softserve.dao.UserInfoDAO;
+import edu.softserve.dao.PrivilegeDAO;
+import edu.softserve.dao.RoleDAO;
+import edu.softserve.dao.UserDAO;
+import edu.softserve.dao.impl.PrivilegeDAOImpl;
+import edu.softserve.dao.impl.RoleDAOImpl;
+import edu.softserve.dao.impl.UserDAOImpl;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +37,13 @@ public class ApplicationContextConfig {
     private Environment env;
 
     @Autowired
-    private UserInfoDAO userInfoDAO;
+    private UserDAO userDAO;
+
+    @Autowired
+    private RoleDAO roleDAO;
+
+    @Autowired
+    private PrivilegeDAO privilegeDAO;
 
     @Bean
     public ResourceBundleMessageSource messageSource() {
@@ -76,6 +87,7 @@ public class ApplicationContextConfig {
             properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
             properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
             properties.put("current_session_context_class", env.getProperty("current_session_context_class"));
+            properties.put("hibernate.enable_lazy_load_no_trans", env.getProperty("hibernate.enable_lazy_load_no_trans"));
 
             LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
 

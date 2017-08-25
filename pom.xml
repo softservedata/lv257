@@ -169,6 +169,14 @@
       <version>1.7.21</version>
     </dependency>
 
+    <!-- 2fa -->
+
+    <dependency>
+      <groupId>org.jboss.aerogear</groupId>
+      <artifactId>aerogear-otp-java</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>
 
   </dependencies>
 

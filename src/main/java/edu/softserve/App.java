@@ -21,7 +21,7 @@ public class App
                 .buildSessionFactory();
 
         try {
-            load(sessionFactory);
+           // load(sessionFactory);
         } finally {
             sessionFactory.close();
         }
@@ -29,7 +29,7 @@ public class App
     }
 
 
-    private static void load(SessionFactory sessionFactory) {
+    /*private static void load(SessionFactory sessionFactory) {
         System.out.println("-- loading persons --");
         Session session = sessionFactory.openSession();
         @SuppressWarnings("unchecked")
@@ -40,5 +40,5 @@ public class App
             System.out.println();
         }
         session.close();
-    }
+    }*/
 }

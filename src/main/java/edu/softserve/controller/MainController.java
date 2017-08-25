@@ -47,6 +47,21 @@ public class MainController {
         return "signupPage";
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String users (Model model) {
+        return "usersPage";
+    }
+
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public String roles (Model model) {
+        return "rolesPage";
+    }
+
+    @RequestMapping(value = "/roleInfo", method = RequestMethod.GET)
+    public String roleInfo (Model model) {
+
+        return "roleInfo";
+    }
     /*@RequestMapping(value = "/registration", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
