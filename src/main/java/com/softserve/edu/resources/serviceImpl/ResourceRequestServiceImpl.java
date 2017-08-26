@@ -6,6 +6,7 @@ import com.softserve.edu.resources.daoImpl.ResourceRequestREAD_DAOimpl;
 import com.softserve.edu.resources.dto.MessageDTO;
 import com.softserve.edu.resources.dto.ResourceRequestDTO;
 import com.softserve.edu.resources.dto.Status;
+import com.softserve.edu.resources.dto.UserDTO;
 import com.softserve.edu.resources.entity.ResourceRequest;
 import com.softserve.edu.resources.entity.User;
 import com.softserve.edu.resources.service.ResourceRequestService;
@@ -40,7 +41,17 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
         request.setNotifyExecutor(false);
         sendMessage(message);
         requestCRUD_DAO.update(new ResourceRequest(request));
-    };
+    }
+
+    @Override
+    public List<ResourceRequestDTO> showNewRequestsByAdmin(UserDTO resourceAdmin) {
+        List<ResourceRequestDTO> requestDTOS =getNewResourcesRequest();
+        requestDTOS.stream().filter(request->request.getResourcesAdmin().equals(resourceAdmin))
+                .collect(Collectors.toList());
+        return requestDTOS;
+    }
+
+
 
     @Override
     public void declined(ResourceRequestDTO request, MessageDTO message){

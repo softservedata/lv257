@@ -3,6 +3,7 @@ package com.softserve.edu.resources.service;
 
 import com.softserve.edu.resources.dto.MessageDTO;
 import com.softserve.edu.resources.dto.ResourceRequestDTO;
+import com.softserve.edu.resources.dto.UserDTO;
 import com.softserve.edu.resources.entity.User;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public interface ResourceRequestService {
     public void declined(ResourceRequestDTO resourceRequest,MessageDTO message);
 
     public void toRefinement(ResourceRequestDTO resourceRequest,MessageDTO message);
+
+    public  List<ResourceRequestDTO> showNewRequestsByAdmin(UserDTO resourceAdmin);
 
     public List<ResourceRequestDTO> getResourcesRequest();
 
