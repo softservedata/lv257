@@ -13,9 +13,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by User on 16.08.2017.
- */
+
 public class ResourceRequestREAD_DAOImpl implements ResourceRequestREAD_DAO {
 
     private static SessionFactory factory;
