@@ -1,7 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.daoImpl;
 
-import com.softserve.edu.dao.interfaces.UserDAO;
-import com.softserve.edu.entities.User;
+
+import com.softserve.edu.resources.dao.UserDAO;
+import com.softserve.edu.resources.entity.User;
 import org.hibernate.SessionFactory;
 
 import java.util.List;

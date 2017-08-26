@@ -1,11 +1,11 @@
-package com.softserve.edu.entities;
+package com.softserve.edu.resources.entity;
 
 
 public class User {
 
     private int id;
     private String email;
-    private String password_hash;
+    private String passwordHash;
     private UserDetails userDetails;
 
     public User() {
@@ -31,12 +31,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword_hash() {
-        return password_hash;
+    public String getPasswordHash() {
+        return passwordHash;
     }
 
-    public void setPassword_hash(String password_hash) {
-        this.password_hash = password_hash;
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
     }
 
     public UserDetails getUserDetails() {

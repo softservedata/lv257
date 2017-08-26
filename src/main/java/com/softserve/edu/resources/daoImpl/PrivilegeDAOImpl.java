@@ -1,7 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.daoImpl;
 
-import com.softserve.edu.dao.interfaces.PrivilegeDAO;
-import com.softserve.edu.entities.Privilege;
+
+import com.softserve.edu.resources.dao.PrivilegeDAO;
+import com.softserve.edu.resources.entity.Privilege;
 import org.hibernate.SessionFactory;
 
 public class PrivilegeDAOImpl implements PrivilegeDAO {

@@ -1,8 +1,9 @@
-package com.softserve.edu.services.impl;
+package com.softserve.edu.resources.serviceImpl;
 
-import com.softserve.edu.dao.interfaces.PrivilegeDAO;
-import com.softserve.edu.entities.Privilege;
-import com.softserve.edu.services.interfaces.PrivilegeService;
+
+import com.softserve.edu.resources.dao.PrivilegeDAO;
+import com.softserve.edu.resources.entity.Privilege;
+import com.softserve.edu.resources.service.PrivilegeService;
 
 public class PrivilegeServiceImpl implements PrivilegeService {
 

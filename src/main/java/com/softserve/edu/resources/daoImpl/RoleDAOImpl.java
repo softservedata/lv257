@@ -1,8 +1,8 @@
-package com.softserve.edu.dao.impl;
+package com.softserve.edu.resources.daoImpl;
 
 
-import com.softserve.edu.dao.interfaces.RoleDAO;
-import com.softserve.edu.entities.Role;
+import com.softserve.edu.resources.dao.RoleDAO;
+import com.softserve.edu.resources.entity.Role;
 import org.hibernate.SessionFactory;
 
 import java.util.List;

@@ -1,6 +1,8 @@
-package com.softserve.edu.dao.interfaces;
+package com.softserve.edu.resources.dao;
 
-import com.softserve.edu.entities.Role;
+
+
+import com.softserve.edu.resources.entity.Role;
 
 import java.util.List;
 

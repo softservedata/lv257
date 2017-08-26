@@ -1,9 +1,10 @@
-package com.softserve.edu.services.impl;
+package com.softserve.edu.resources.serviceImpl;
 
 
-import com.softserve.edu.dao.interfaces.RoleDAO;
-import com.softserve.edu.entities.Role;
-import com.softserve.edu.services.interfaces.RoleService;
+
+import com.softserve.edu.resources.dao.RoleDAO;
+import com.softserve.edu.resources.entity.Role;
+import com.softserve.edu.resources.service.RoleService;
 
 import java.util.List;
 

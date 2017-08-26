@@ -1,6 +1,7 @@
-package com.softserve.edu.dao.interfaces;
+package com.softserve.edu.resources.dao;
 
-import com.softserve.edu.entities.Privilege;
+
+import com.softserve.edu.resources.entity.Privilege;
 
 public interface PrivilegeDAO {
 

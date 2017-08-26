@@ -1,8 +1,9 @@
-package com.softserve.edu.services.impl;
+package com.softserve.edu.resources.serviceImpl;
 
-import com.softserve.edu.dao.interfaces.UserDetailsDAO;
-import com.softserve.edu.entities.User;
-import com.softserve.edu.services.interfaces.UserDetailsService;
+
+import com.softserve.edu.resources.dao.UserDetailsDAO;
+import com.softserve.edu.resources.entity.User;
+import com.softserve.edu.resources.service.UserDetailsService;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 

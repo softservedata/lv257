@@ -1,6 +1,7 @@
-package com.softserve.edu.services.interfaces;
+package com.softserve.edu.resources.service;
 
-import com.softserve.edu.entities.Role;
+
+import com.softserve.edu.resources.entity.Role;
 
 import java.util.List;
 
