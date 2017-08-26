@@ -1,9 +1,10 @@
-package com.softserve.edu.dto;
+package com.softserve.edu.entities;
 
-public class UserUpdateDTO {
+public class UserDetails {
 
-    private int id_community;
-    private int id_address;
+
+    private int id;
+    private int user_id;
     private String first_name;
     private String second_name;
     private String middle_name;
@@ -11,21 +12,27 @@ public class UserUpdateDTO {
     private String passport_number;
     private String issued_by;
     private String date_of_issue;
+    private int id_address;
     private String phone;
     private int bank_id;
 
-    public UserUpdateDTO(int id_community, int id_address, String first_name, String second_name, String middle_name, String passport_series, String passport_number, String issued_by, String date_of_issue, String phone, int bank_id) {
-        this.id_community = id_community;
-        this.id_address = id_address;
-        this.first_name = first_name;
-        this.second_name = second_name;
-        this.middle_name = middle_name;
-        this.passport_series = passport_series;
-        this.passport_number = passport_number;
-        this.issued_by = issued_by;
-        this.date_of_issue = date_of_issue;
-        this.phone = phone;
-        this.bank_id = bank_id;
+    public UserDetails() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
     public String getFirst_name() {
@@ -82,14 +89,6 @@ public class UserUpdateDTO {
 
     public void setDate_of_issue(String date_of_issue) {
         this.date_of_issue = date_of_issue;
-    }
-
-    public int getId_community() {
-        return id_community;
-    }
-
-    public void setId_community(int id_community) {
-        this.id_community = id_community;
     }
 
     public int getId_address() {

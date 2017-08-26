@@ -1,18 +1,22 @@
 package com.softserve.edu.entities;
 
+public class Privilege {
 
-public class Role {
-    private int id;
+    private Long id;
     private String name;
 
-    public Role() {
+    public Privilege() {
     }
 
-    public int getId() {
+    public Privilege(String name) {
+        this.name = name;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
