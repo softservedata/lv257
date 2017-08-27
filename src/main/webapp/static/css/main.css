@@ -60,6 +60,10 @@ font-weight: normal;
 }
 
 /* Oleg */
-.button_padding{
+.padding_bottom_15{
   padding-bottom: 15px;
+}
+
+.display_none{
+  display: none;
 }
