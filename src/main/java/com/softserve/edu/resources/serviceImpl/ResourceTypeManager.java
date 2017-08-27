@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import com.softserve.edu.resources.dao.ResourceTypeDAO;
+import com.softserve.edu.resources.dto.ResourceTypeDTO;
 import com.softserve.edu.resources.entity.ResourceType;
 
 public class ResourceTypeManager {
@@ -60,18 +63,25 @@ public class ResourceTypeManager {
     }
 
     // Build tree of types for view
-    public List<String> buildTypeHierarchy(List<ResourceType> allTypes,
-            String indentSymbol) {
-        List<ResourceType> branches = new ArrayList<>(allTypes);
-        allTypes.removeAll(this.getAllResourceTypes());
-        List<String> tree = new ArrayList<>();
-        for (ResourceType element : branches) {
-            String indent = "";
-            for (int i = 0; i < element.getHierarchyLevel(); i++) {
-                indent = indent + indentSymbol;
-            }
-            tree.add(indent + element.getName());
+    public List<ResourceTypeDTO> buildTypeHierarchy() {
+        List<ResourceType> allTypes = this.getAllResourceTypesAndParents();
+        List<ResourceType> onlyLeaves = this.getAllResourceTypes();
+        List<ResourceTypeDTO> typeDTOList = new ArrayList<>();
+        String typeName = "";
+        Set<String> propertiesNames = new HashSet<>();
+        String pathToRoot = "";
+        int hierarchyLevel = 0;
+        boolean isLeafType = false;
+        for (ResourceType type : allTypes) {
+            typeName = type.getName();
+            type.getProperties()
+                    .forEach(value -> propertiesNames.add(value.getName()));
+            pathToRoot = type.getPathToRoot();
+            hierarchyLevel = type.getHierarchyLevel();
+            isLeafType = onlyLeaves.contains(type) ? true : false;
+            typeDTOList.add(new ResourceTypeDTO(typeName, propertiesNames,
+                    pathToRoot, hierarchyLevel, isLeafType));
         }
-        return tree;
+        return typeDTOList;
     }
 }
