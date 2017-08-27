@@ -1,3 +1,4 @@
+
 package com.softserve.edu.resources.service;
 
 import java.util.List;
@@ -10,3 +11,4 @@ public interface PropertyServiceRead {
 
 
 }
+

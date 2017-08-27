@@ -1,3 +1,4 @@
+
 package com.softserve.edu.resources.service;
 
 import java.util.Date;
@@ -5,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.softserve.edu.resources.entity.GenericResource;
+
 
 public interface ResourceServiceRead {
 
@@ -37,3 +39,4 @@ public interface ResourceServiceRead {
 
 
 }
+

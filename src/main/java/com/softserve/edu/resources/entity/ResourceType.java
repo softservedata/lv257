@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /*
-*  ResourceType implements entity containing a set of
+*  ResourceType represents entity containing a set of
 *  ResourceProperty that describe particular GenericResource
 *
 * */
@@ -115,9 +115,48 @@ public class ResourceType {
         properties = new HashSet<>();
     }
 
-    public String getName() {
-        return typeName;
-    }
+  public int getId() {
+    return id;
+  }
+
+  public ResourceType setId(int id) {
+    this.id = id;
+    return this;
+  }
+
+  public String getTypeName() {
+    return typeName;
+  }
+
+  public ResourceType setTypeName(String typeName) {
+    this.typeName = typeName;
+    return this;
+  }
+
+  public String getTableName() {
+    return tableName;
+  }
+
+  public ResourceType setTableName(String tableName) {
+    this.tableName = tableName;
+    return this;
+  }
+
+  public ResourceType getParentType() {
+    return parentType;
+  }
+
+  public ResourceType setParentType(ResourceType parentType) {
+    this.parentType = parentType;
+    return this;
+  }
+
+  public ResourceType setProperties(Set<ResourceProperty> properties) {
+    this.properties = properties;
+    return this;
+  }public String getName() {
+    return typeName;
+  }
 
     public Set<ResourceProperty> getProperties() {
         return Collections.unmodifiableSet(properties);

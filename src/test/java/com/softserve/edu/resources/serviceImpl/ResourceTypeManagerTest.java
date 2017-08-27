@@ -12,13 +12,13 @@ import static org.testng.Assert.assertEquals;
 
 public class ResourceTypeManagerTest {
 	
-	private ResourceTypeManager typeManager;
+	private ResourceTypeManager resourceTypeManager;
 	private PropertyManager propertyManager;
 	
 	@BeforeMethod
 	public void setUp() throws Exception {
-		typeManager = new ResourceTypeManager();
-		typeManager.add(new ResourceType("Motorcycle"));
+		resourceTypeManager = new ResourceTypeManager();
+		resourceTypeManager.add(new ResourceType("Motorcycle"));
 		propertyManager = new PropertyManager();
 		propertyManager.addProperty(new ResourceProperty("color"));
 		propertyManager.addProperty(new ResourceProperty("color"));
@@ -35,49 +35,53 @@ public class ResourceTypeManagerTest {
 	
 	@Test
 	public void listModels() throws Exception {
-		Collection<ResourceType> metaModels = typeManager.getTypes();
+		Collection<ResourceType> metaModels = resourceTypeManager.getTypes();
 		Assert.assertNotNull(metaModels);
 		metaModels.forEach(resourceType -> System.out.println(resourceType.getName()));
 	}
 	
 	@Test
 	public void addResourceType() throws Exception {
-		assertEquals(1, typeManager.getTypes().size());
+		assertEquals(resourceTypeManager.getTypes().size(), 1);
 		ResourceType resourceType = new ResourceType("Vehicle");
-		typeManager.add(resourceType);
-		assertEquals(2, typeManager.getTypes().size());
+		resourceTypeManager.add(resourceType);
+		assertEquals(resourceTypeManager.getTypes().size(), 2);
 	}
 	
 	@Test
 	public void addExistingType() throws Exception {
-		int rmCount = typeManager.getTypes().size();
+		int rmCount = resourceTypeManager.getTypes().size();
 		ResourceType mmResource = new ResourceType("Aircraft");
-		typeManager.add(mmResource);
-		assertEquals(rmCount + 1, typeManager.getTypes().size());
-		typeManager.add(mmResource);
-		assertEquals(rmCount + 1, typeManager.getTypes().size());
+		resourceTypeManager.add(mmResource);
+		assertEquals(rmCount + 1, resourceTypeManager.getTypes().size());
+		resourceTypeManager.add(mmResource);
+		assertEquals(rmCount + 1, resourceTypeManager.getTypes().size());
 	}
 	
 	@Test
 	public void removeExistingType() throws Exception {
-		int rmCount = typeManager.getTypes().size();
-		ResourceType rmExisting = typeManager.getTypes().iterator().next();
-		typeManager.remove(rmExisting);
-		assertEquals(rmCount - 1, typeManager.getTypes().size());
+		int rmCount = resourceTypeManager.getTypes().size();
+		ResourceType rmExisting = resourceTypeManager.getTypes().iterator().next();
+		resourceTypeManager.remove(rmExisting);
+		assertEquals(rmCount - 1, resourceTypeManager.getTypes().size());
 	}
 	
 	@Test
 	public void removeMissingType() throws Exception {
 		ResourceType rmPlane = new ResourceType("Plane");
-		int rmCount = typeManager.getTypes().size();
-		typeManager.remove(rmPlane);
-		assertEquals(rmCount, typeManager.getTypes().size());
+		int rmCount = resourceTypeManager.getTypes().size();
+		resourceTypeManager.remove(rmPlane);
+		assertEquals(rmCount, resourceTypeManager.getTypes().size());
 	}
 	
 	@Test
-	public void defineResourceType() throws Exception {
-		ResourceType resourceType = new ResourceType("Truck");
-		typeManager.add(resourceType);
+	public void instantiateResourceType() throws Exception {
+
+	  final int resTypesCount = resourceTypeManager.getTypeCount();
+    ResourceType resourceType = new ResourceType("Truck");
+		resourceTypeManager.add(resourceType);
+		assertEquals(resourceTypeManager.getTypeCount(), resTypesCount + 1);
+
 		propertyManager.getProperty("color").ifPresent(resourceType::addProperty);
 		propertyManager.getProperty("power").ifPresent(resourceType::addProperty);
 		propertyManager.getProperty("length").ifPresent(resourceType::addProperty);
@@ -87,7 +91,10 @@ public class ResourceTypeManagerTest {
 		propertyManager.getProperty("max load").ifPresent(resourceType::addProperty);
 		propertyManager.getProperty("engine capacity").ifPresent(resourceType::addProperty);
 		propertyManager.getProperty("registration #").ifPresent(resourceType::addProperty);
-		typeManager.create("Truck");
+
+    final int typeInstancesCount = resourceTypeManager.getInstancesCount();
+    resourceTypeManager.create("Truck");
+    assertEquals(resourceTypeManager.getInstancesCount(), typeInstancesCount + 1);
 	}
 	
 }
