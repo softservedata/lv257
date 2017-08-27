@@ -1,8 +1,8 @@
 package com.softserve.edu.resources.service;
 
 
-import com.softserve.edu.resources.dto.MessageDTO;
-import com.softserve.edu.resources.dto.ResourceRequestDTO;
+import com.softserve.edu.resources.dto.Message;
+import com.softserve.edu.resources.entity.ResourceRequest;
 import com.softserve.edu.resources.entity.User;
 
 import java.util.List;
@@ -10,21 +10,21 @@ import java.util.List;
 
 public interface ResourceRequestService {
 
-    public void assignResourceAdmin(ResourceRequestDTO resourceRequest, User resourceAdmin);
+    public void assignResourceAdmin(ResourceRequest resourceRequest, User resourceAdmin);
 
-    public void accepted(ResourceRequestDTO resourceRequest, MessageDTO message);
+    public void accepted(ResourceRequest resourceRequest, Message message);
 
-    public void declined(ResourceRequestDTO resourceRequest, MessageDTO message);
+    public void declined(ResourceRequest resourceRequest, Message message);
 
-    public void toRefinement(ResourceRequestDTO resourceRequest, MessageDTO message);
+    public void toRefinement(ResourceRequest resourceRequest, Message message);
 
-    public List<ResourceRequestDTO> showNewRequestsByAdmin(User resourceAdmin);
+    public List<ResourceRequest> showNewRequestsByAdmin(User resourceAdmin);
 
-    public List<ResourceRequestDTO> getResourcesRequest();
+    public List<ResourceRequest> getResourcesRequest();
 
-    public List<ResourceRequestDTO> getNewResourcesRequest();
+    public List<ResourceRequest> getNewResourcesRequest();
 
-    public List<ResourceRequestDTO> getProcessedResourcesRequest();
+    public List<ResourceRequest> getProcessedResourcesRequest();
 
 
 }
