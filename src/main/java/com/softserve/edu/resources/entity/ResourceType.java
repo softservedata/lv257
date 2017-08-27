@@ -12,58 +12,76 @@ import java.util.Set;
 * */
 public class ResourceType {
 
-  private int id;
-  private String typeName;
-  private String tableName;
-  private ResourceType parentType;
-  private Set<ResourceProperty> properties;
+    private int id;
+    private String typeName;
+    private String tableName;
+    private ResourceType parentType;
+    private Set<ResourceProperty> properties;
+    private String pathToRoot;
+    private int hierarchyLevel;
 
+    public String getPathToRoot() {
+        return pathToRoot;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    public void setPathToRoot(String pathToRoot) {
+        this.pathToRoot = pathToRoot;
+    }
 
-    ResourceType that = (ResourceType) o;
+    public int getHierarchyLevel() {
+        return hierarchyLevel;
+    }
 
-    return typeName.equals(that.typeName);
-  }
+    public void setHierarchyLevel(int hierarchyLevel) {
+        this.hierarchyLevel = hierarchyLevel;
+    }
 
-  @Override
-  public int hashCode() {
-    return typeName.hashCode();
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-  public ResourceType(String typeName) {
-    this.typeName = typeName;
-    properties = new HashSet<>();
-  }
+        ResourceType that = (ResourceType) o;
 
-  public String getName() {
-    return typeName;
-  }
+        return typeName.equals(that.typeName);
+    }
 
-  public Set<ResourceProperty> getProperties() {
-    return Collections.unmodifiableSet(properties);
-  }
+    @Override
+    public int hashCode() {
+        return typeName.hashCode();
+    }
 
-  public boolean addProperty(ResourceProperty resourceProperty) {
-    return properties.add(resourceProperty);
-  }
+    public ResourceType(String typeName) {
+        this.typeName = typeName;
+        properties = new HashSet<>();
+    }
 
-  public boolean removeProperty(ResourceProperty resourceProperty) {
-    return properties.remove(resourceProperty);
-  }
+    public String getName() {
+        return typeName;
+    }
 
-  public Optional<ResourceProperty> getProperty(String propertyName) {
-    return properties.stream()
-               .filter(rp -> rp.getName().equalsIgnoreCase(propertyName))
-               .findFirst();
-  }
+    public Set<ResourceProperty> getProperties() {
+        return Collections.unmodifiableSet(properties);
+    }
 
-  public boolean isInstanceType() {
-    return !properties.isEmpty();
-  }
+    public boolean addProperty(ResourceProperty resourceProperty) {
+        return properties.add(resourceProperty);
+    }
 
+    public boolean removeProperty(ResourceProperty resourceProperty) {
+        return properties.remove(resourceProperty);
+    }
+
+    public Optional<ResourceProperty> getProperty(String propertyName) {
+        return properties.stream()
+                .filter(rp -> rp.getName().equalsIgnoreCase(propertyName))
+                .findFirst();
+    }
+
+    public boolean isInstanceType() {
+        return !properties.isEmpty();
+    }
 
 }
