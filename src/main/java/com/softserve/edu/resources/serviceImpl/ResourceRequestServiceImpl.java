@@ -29,6 +29,11 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
         request.setResourcesAdmin(resourceAdmin);
         requestCRUD_DAO.updateRequest(request);
     }
+    @Override
+    public void assignRegister(ResourceRequest request, User register){
+        request.setResourcesAdmin(register);
+        requestCRUD_DAO.updateRequest(request);
+    }
 
     @Override
     public void toRefinement(ResourceRequest request, Message message) {
