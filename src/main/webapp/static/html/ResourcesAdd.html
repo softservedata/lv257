@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Add / Edit Resource</title>
-    <link rel="icon" href="../image/resources-logo.png">
+    <link rel="icon" href="resources-logo.png">
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
             rel="stylesheet" />
-    <link href="../css/main.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+    <link href="main.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery.min.js"></script>
     <script
             src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
 </head>
+
 <body>
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -31,10 +39,10 @@
             <a class="navbar-brand" rel="home" href="Main.html"
                title="Project Resources"> <img
                     style="max-width: 100px; margin-top: -10px;"
-                    src="../image/resources-logo.png">
+                    src="resources-logo.png">
             </a> <a class="navbar-brand" rel="home" href="Main.html"
                     title="Project Resources"> <img style="max-width: 100px"
-                                                    src="../image/text.png"></a>
+                                                    src="text.png"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -81,6 +89,7 @@
 </nav>
 <br />
 
+
 <div class="wrapper">
     <div class="container-fluid">
         <div class="col-sm-12 col-md-12">
@@ -95,27 +104,32 @@
                 <br>
                 <br>
 
+                <!-- MAIN FORM FOR REGISTRATING RESOURCE -->
+
                 <form role="form-horizontal" enctype="multipart/form-data" >
+
                     <div class="form-group">
                         <label for="resource type">Resource type</label>
-                        <select type="resource type" id="resource type" class="form-control">
-                            <option>Real Estate</option>
-                            <option>Transport</option>
-                            <option>Company</option>
-                            <option>Land</option>
-                            <option>Slave</option>
+                        <select type="resource type" id="resource type" class="form-control selectpicker" data-live-search="true" title="Choose one of the following">
+                            <option disabled style="background-color: lightgray; text-indent: 0px;">Capital</option>
+                            <option disabled style="background-color: lightgray; text-indent: 10px;">Real Estate</option>
+                            <option style="text-indent: 20px;">Cottages</option>
+                            <option style="text-indent: 20px;">Apartment Buildings</option>
+                            <option disabled style="background-color: lightgray; text-indent: 10px;">Transport</option>
+                            <option style="text-indent: 20px;">Vehicles</option>
+                            <option style="text-indent: 20px;">Trucks</option>
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="resource name">Resource name</label>
-                        <select type="resource name" id="resource name" class="form-control">
+                        <select id="resource name" type="resource name" class="form-control">
                             <option>Appartment</option>
                             <option>House</option>
                             <option>Warehouse</option>
                             <option>Office buildings</option>
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="owners">Resource Owners</label>
@@ -126,16 +140,14 @@
                             <option>Owner 4</option>
                         </select>
                     </div>
-                    <div class="button_padding">
+                    <div class="padding_bottom_15">
                         <button class="btn btn-primary"
                                 type="button" data-toggle="modal"
                                 data-target="#myModal">Add from existing owners</button>
-
                         <button class="btn btn-primary"
                                 type="button" data-toggle="modal"
                                 data-target="#myModal3">Add new Owner</button>
                     </div>
-
 
                     <div id="myModal" class="modal fade">
                         <div class="modal-dialog">
@@ -145,61 +157,51 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     <h4>Find owner</h4>
                                 </div>
+
                                 <div class="modal-body">
-                                    <form class="form">
 
-                                        <div class="row">
-                                            <div class="container-fluid col-md-4">
-                                                <div class="form-group">
-                                                    <label for="sel1">Select type of Owner:</label>
-                                                    <select class="form-control" id="sel1">
-                                                        <option>choose type</option>
-                                                        <option selected>&nbsp;&nbsp;Companies</option>
-                                                        <option>&nbsp;&nbsp;Individuals</option>
+                                    <label for="owner_search">Select type of Owner:</label>
+                                    <select id="owner_search" class="form-control">
+                                        <option value="1">Choose type here</option>
+                                        <option value="2">Company</option>
+                                        <option value="3">Person</option>
+                                    </select>
 
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="container-fluid col-md-4">
-                                                <div class="form-group">
-                                                    <label for="sel2">Search by:</label>
-                                                    <select class="form-control" id="sel2">
-                                                        <option>choose</option>
-                                                        <option selected>&nbsp;&nbsp;Name of the owner</option>
-                                                        <option>&nbsp;&nbsp;IPN number</option>
+                                    <div class="find_company display_none">
 
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="sel3" class="col-sm-2 col-from-label">Form of authority</label>
-                                            <div class="col-sm-10">
-                                                <select class="form-control" id="sel3">
-
-                                                    <option selected>TzOV</option>
-                                                    <option>PP</option>
-                                                    <option>PAT</option>
-                                                    <option>CG</option>
+                                        <form class="form">
+                                            <div class="form-group">
+                                                <label for="search_company_by">Search by:</label>
+                                                <select id="search_company_by" class="form-control">
+                                                    <option value="1">Choose</option>
+                                                    <option value="2">Name of the company</option>
+                                                    <option value="3">IPN number</option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <form>
 
-                                            <div class="form-group row">
-                                                <label for="Email" class="col-sm-2 col-form-label">Name of the company</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="Email" placeholder="Put name of the company: e.g. 'Sunshine'">
+                                            <div class="search_company_name display_none">
+                                                <div class="form-group">
+                                                    <label for="searchcompanyname">Name of the company</label>
+                                                    <input type="text" class="form-control" id="searchcompanyname" placeholder="Put name of the company: e.g. 'Sunshine'">
+                                                </div>
+                                                <div class="padding_bottom_15">
+                                                    <button  type="button" class="btn btn-primary">Find Owner<a href="LookUpResources4.html">/</a></button>
+                                                </div>
+                                            </div>
+                                            <div class="search_ipn_number display_none">
+                                                <div class="form-group">
+                                                    <label for="ipn_number">IPN number</label>
+                                                    <input type="text" class="form-control" id="ipn_number" placeholder="IPn number">
+                                                </div>
+                                                <div class="padding_bottom_15">
+                                                    <button  type="button" class="btn btn-primary">Find Owner<a href="LookUpResources4.html">/</a></button>
                                                 </div>
                                             </div>
 
-                                            <button  type="button" class="btn btn-primary">find Owner<a href="LookUpResources4.html">/</a></button>
-
-                                            <div class="form-group">
-                                                <label for="exampleFormControlSelect1">Result of Owner research. Please, choose special ownery to make Search Resource</label>
+                                            <div id="owners_search_result" class="form-group">
+                                                <label for="exampleFormControlSelect1">Result of Owner research. Please,
+                                                    choose special ownery to make Search Resource
+                                                </label>
                                                 <select multiple class="form-control" id="exampleFormControlSelect1">
                                                     <option>Company 1</option>
                                                     <option>Company 2</option>
@@ -208,14 +210,70 @@
                                                     <option>Company 5</option>
                                                 </select>
                                             </div>
-
-                                            <button type="button" class="btn btn-primary">Choose</button>
-
+                                            <div >
+                                                <button type="button" class="btn btn-success pull-right">Choose</button>
+                                            </div>
                                             <div class="clearfix"></div>
                                         </form>
-                                    </form>
-                                </div>
 
+                                    </div>
+
+                                    <div class="find_person display_none">
+
+                                        <form class="form">
+                                            <div class="form-group">
+                                                <label for="search_person_by">Search by:</label>
+                                                <select id="search_person_by" class="form-control">
+                                                    <option value="1">Choose</option>
+                                                    <option value="2">Person's name</option>
+                                                    <option value="3">Pasport series</option>
+                                                </select>
+                                            </div>
+                                            <div class="persons_name_search display_none">
+                                                <div class="form-group">
+                                                    <label for="owner_first_name">Person's first name</label>
+                                                    <input type="text" class="form-control" id="owner_first_name" placeholder="Put name of the person here: e.g. 'Ivan'">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="owner_last_name">Person's last name</label>
+                                                    <input type="text" class="form-control" id="owner_last_name" placeholder="Put name of the person here: e.g. 'Ivanov'">
+                                                </div>
+                                                <div class="padding_bottom_15">
+                                                    <button  type="button" class="btn btn-primary">Find Owner<a href="LookUpResources4.html">/</a></button>
+                                                </div>
+                                            </div>
+                                            <div class="persons_passport_search display_none">
+                                                <div class="form-group">
+                                                    <label for="passport_series">Person's passport series</label>
+                                                    <input type="text" class="form-control" id="passport_series" placeholder="KC">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="passport_number">Person's passport number</label>
+                                                    <input type="text" class="form-control" id="passport_number" placeholder="789315">
+                                                </div>
+                                                <div class="padding_bottom_15">
+                                                    <button  type="button" class="btn btn-primary">Find Owner<a href="LookUpResources4.html">/</a></button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Result of Owner research. Please, choose special ownery to make Search Resource</label>
+                                                <select multiple class="form-control" id="exampleFormControlSelect1">
+                                                    <option>Person 1</option>
+                                                    <option>Person 2</option>
+                                                    <option>Person 3</option>
+                                                    <option>Person 4</option>
+                                                    <option>Person 5</option>
+                                                </select>
+                                            </div>
+                                            <div class="padding_bottom_15">
+                                                <button type="button" class="btn btn-success pull-right">Choose</button>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </form>
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -229,28 +287,194 @@
                                     <h4>Add new Owner</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="form">
+                                    <div class="changable_form">
 
-                                        <div class="form-group">
-                                            <label for="fullname">Full Name</label>
-                                            <input type="text" class="form-control" id="fullname" placeholder="Full Name">
+                                        <div class="select_ownertype padding_bottom_15">
+                                            <label for="owner_type">Please specify what type of owner you want to add:</label>
+                                            <select id="owner_type" class="form-control">
+                                                <option value="1">Choose type here</option>
+                                                <option value="2">Company</option>
+                                                <option value="3">Person</option>
+                                            </select>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="shortname">Short Name</label>
-                                            <input type="text" class="form-control" id="shortname" placeholder="Short Name">
+                                        <div class="add_company display_none">
+                                            <form class="form">
+                                                <div class="form-group">
+                                                    <label for="fullname">Full Name</label>
+                                                    <input type="text" class="form-control" id="fullname" placeholder="Full Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shortname">Short Name</label>
+                                                    <input type="text" class="form-control" id="shortname" placeholder="Short Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="organizationform">Organization Form</label>
+                                                    <input type="text" class="form-control" id="organizationform" placeholder="TzOV">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="ceo">CEO</label>
+                                                    <input type="text" class="form-control" id="ceo" placeholder="Last Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="phone">Phone</label>
+                                                    <input type="text" class="form-control" id="phone" placeholder="+380679365998">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="companyaddress">Company Address</label>
+                                                    <select type="address" id="companyaddress" class="form-control">
+                                                        <option>Address 1</option>
+                                                        <option>Address 2</option>
+                                                        <option>Address 3</option>
+                                                        <option>Address 4</option>
+                                                    </select>
+                                                </div>
+                                                <div class="padding_bottom_15">
+                                                    <button type="submit" class="btn btn-primary pull-left" id="show_owner_company_address_form">Add new Address
+                                                    </button>
+                                                </div>
+                                                <div class="clearfix padding_bottom_15"></div>
+
+                                                <div class="owner_company_address_form display_none">
+                                                    <form class="form">
+                                                        <div class="form-group">
+                                                            <label for="country">Country</label>
+                                                            <input type="text" class="form-control" id="country" placeholder="Ukraine">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="region">Region</label>
+                                                            <input type="text" class="form-control" id="region" placeholder="Region">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="district">District</label>
+                                                            <input type="text" class="form-control" id="district" placeholder="District">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="postal">Postal Index</label>
+                                                            <input type="text" class="form-control" id="postal" placeholder="79060">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="locality">Locality</label>
+                                                            <input type="text" class="form-control" id="locality" placeholder="Locality">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="street">Street</label>
+                                                            <input type="text" class="form-control" id="street" placeholder="Shevchenka street">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="building">Building</label>
+                                                            <input type="text" class="form-control" id="building" placeholder="35">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="block">Block</label>
+                                                            <input type="text" class="form-control" id="block" placeholder="A">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="appartment">Appartment</label>
+                                                            <input type="text" class="form-control" id="appartment" placeholder="14">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success pull-left">Add Address</button>
+                                                        <div class="clearfix"></div>
+                                                    </form>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-success pull-right">Register new Juridical Owner</button>
+                                                <div class="clearfix"></div>
+                                            </form>
                                         </div>
 
-                                        <div class="form-group">
-                                            <label for="ceo">CEO</label>
-                                            <input type="text" class="form-control" id="ceo" placeholder="Last Name">
+                                        <div class="add_person display_none">
+                                            <form class="form">
+                                                <div class="form-group">
+                                                    <label for="firstname">First Name</label>
+                                                    <input type="text" class="form-control" id="firstname" placeholder="First Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="lastname">Last Name</label>
+                                                    <input type="text" class="form-control" id="lastname" placeholder="Last Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="middlename">Middle Name</label>
+                                                    <input type="text" class="form-control" id="middlename" placeholder="Middle Name">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="passportseries">Passport Series</label>
+                                                    <input type="text" class="form-control" id="passportseries" placeholder="KC">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="passportnumber">Passport Number</label>
+                                                    <input type="text" class="form-control" id="passportnumber" placeholder="149875">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="personalphone">Personal Phone</label>
+                                                    <input type="text" class="form-control" id="personalphone" placeholder="+380679365998">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="personaddress">Person Address</label>
+                                                    <select type="address" id="personaddress" class="form-control">
+                                                        <option>Address 1</option>
+                                                        <option>Address 2</option>
+                                                        <option>Address 3</option>
+                                                        <option>Address 4</option>
+                                                    </select>
+                                                </div>
+                                                <div class="padding_bottom_15">
+                                                    <button type="submit" class="btn btn-primary pull-left" id="show_owner_person_address_form">Add new Address</button>
+                                                </div>
+                                                <div class="clearfix padding_bottom_15"></div>
+
+                                                <div class="owner_person_address_form display_none">
+                                                    <form class="form">
+                                                        <div class="form-group">
+                                                            <label for="country">Country</label>
+                                                            <input type="text" class="form-control" id="country" placeholder="Ukraine">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="region">Region</label>
+                                                            <input type="text" class="form-control" id="region" placeholder="Region">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="district">District</label>
+                                                            <input type="text" class="form-control" id="district" placeholder="District">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="postal">Postal Index</label>
+                                                            <input type="text" class="form-control" id="postal" placeholder="79060">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="locality">Locality</label>
+                                                            <input type="text" class="form-control" id="locality" placeholder="Locality">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="street">Street</label>
+                                                            <input type="text" class="form-control" id="street" placeholder="Shevchenka street">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="building">Building</label>
+                                                            <input type="text" class="form-control" id="building" placeholder="35">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="block">Block</label>
+                                                            <input type="text" class="form-control" id="block" placeholder="A">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="appartment">Appartment</label>
+                                                            <input type="text" class="form-control" id="appartment" placeholder="14">
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success pull-left">Add Address</button>
+                                                        <div class="clearfix"></div>
+                                                    </form>
+                                                </div>
+
+                                                <button type="submit" class="btn btn-success pull-right">Register new Physical Owner</button>
+                                                <div class="clearfix"></div>
+                                            </form>
+
                                         </div>
 
-                                        <button type="submit" class="btn btn-success pull-right">Register new Juridical Owner</button>
-                                        <div class="clearfix"></div>
-                                    </form>
+
+                                    </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -264,7 +488,7 @@
                             <option>Address 4</option>
                         </select>
                     </div>
-                    <div class="button_padding">
+                    <div class="padding_bottom_15">
                         <button class="btn btn-primary"
                                 type="button" data-toggle="modal"
                                 data-target="#myModal2">Add Address</button>
@@ -280,52 +504,42 @@
                                 </div>
                                 <div class="modal-body">
                                     <form class="form">
-
                                         <div class="form-group">
                                             <label for="country">Country</label>
                                             <input type="text" class="form-control" id="country" placeholder="Ukraine">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="region">Region</label>
                                             <input type="text" class="form-control" id="region" placeholder="Region">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="district">District</label>
                                             <input type="text" class="form-control" id="district" placeholder="District">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="postal">Postal Index</label>
                                             <input type="text" class="form-control" id="postal" placeholder="79060">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="locality">Locality</label>
                                             <input type="text" class="form-control" id="locality" placeholder="Locality">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="street">Street</label>
                                             <input type="text" class="form-control" id="street" placeholder="Shevchenka street">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="building">Building</label>
                                             <input type="text" class="form-control" id="building" placeholder="35">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="block">Block</label>
                                             <input type="text" class="form-control" id="block" placeholder="A">
                                         </div>
-
                                         <div class="form-group">
                                             <label for="appartment">Appartment</label>
                                             <input type="text" class="form-control" id="appartment" placeholder="14">
                                         </div>
-
                                         <button type="submit" class="btn btn-success pull-right">Add Address</button>
                                         <div class="clearfix"></div>
                                     </form>
@@ -334,21 +548,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- 	<div class="form-group">
-                            <label for="registrator">Registrator</label>
-                            <select type="address" id="registrator" class="form-control" required>
-                                <option>Registrator 1</option>
-                                <option>Registrator 2</option>
-                                <option>Registrator 3</option>
-                                <option>Registrator 4</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="timestamp">Date when registered</label>
-                            <input type="text" class="form-control" id="timestamp" placeholder="25-10-2017">
-                        </div> -->
 
                     <div class="form-group">
                         <label for="char1">Characteristic 1</label>
@@ -364,7 +563,7 @@
                         <label for="files">Registration basis</label>
                         <input type="file" id="files" multiple="true">
                     </div>
-                    <div class="button_padding">
+                    <div class="padding_bottom_15">
                         <button type="submit" class="btn btn-success">Register new resource</button>
                     </div>
 
@@ -381,6 +580,92 @@
         <p class="text-muted">&copy; Lv257_Java</p>
     </div>
 </footer>
+
+<script type="text/javascript">
+
+    $('#show_owner_person_address_form').click(function(){
+        $('.owner_person_address_form').slideToggle(450);
+        return false;
+    });
+
+    $('#show_owner_company_address_form').click(function(){
+        $('.owner_company_address_form').slideToggle(450);
+        return false;
+    });
+
+    $(document).ready(function(){
+
+        $("#owner_search").change(function(){
+            var valOpt2 = $(this).find('option:selected').val();
+            if(valOpt2==1){
+                $('.find_person').slideUp(400);
+                $('.find_company').slideUp(400);
+            }
+            if(valOpt2==2){
+                $('.find_company').delay(450).slideToggle(450);
+                $('.find_person').slideUp(450);
+            }
+            if(valOpt2==3){
+                $('.find_person').delay(450).slideToggle(450);
+                $('.find_company').slideUp(450);
+            }
+
+        });
+
+        $("#owner_type").change(function(){
+            var valOpt = $(this).find('option:selected').val();
+            if(valOpt==1){
+                $('.add_person').slideUp(400);
+                $('.add_company').slideUp(400);
+            }
+            if(valOpt==2){
+                $('.add_company').delay(450).slideToggle(450);
+                $('.add_person').slideUp(450);
+            }
+            if(valOpt==3){
+                $('.add_person').delay(450).slideToggle(450);
+                $('.add_company').slideUp(450);
+            }
+
+        });
+
+        $("#search_company_by").change(function(){
+            var valOpt = $(this).find('option:selected').val();
+            if(valOpt==1){
+                $('.search_company_name').slideUp(400);
+                $('.search_ipn_number').slideUp(400);
+            }
+            if(valOpt==2){
+                $('.search_company_name').delay(450).slideToggle(450);
+                $('.search_ipn_number').slideUp(450);
+            }
+            if(valOpt==3){
+                $('.search_ipn_number').delay(450).slideToggle(450);
+                $('.search_company_name').slideUp(450);
+            }
+
+        });
+
+        $("#search_person_by").change(function(){
+            var valOpt = $(this).find('option:selected').val();
+            if(valOpt==1){
+                $('.persons_name_search').slideUp(400);
+                $('.persons_passport_search').slideUp(400);
+            }
+            if(valOpt==2){
+                $('.persons_name_search').delay(450).slideToggle(450);
+                $('.persons_passport_search').slideUp(450);
+            }
+            if(valOpt==3){
+                $('.persons_passport_search').delay(450).slideToggle(450);
+                $('.persons_name_search').slideUp(450);
+            }
+
+        });
+
+    });
+
+</script>
 
 </body>
 </html>
