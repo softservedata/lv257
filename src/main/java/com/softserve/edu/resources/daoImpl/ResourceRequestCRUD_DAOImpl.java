@@ -13,6 +13,11 @@ public class ResourceRequestCRUD_DAOImpl implements ResourceRequestCRUD_DAO {
     private EntityManager entityManager;
 
     @Override
+    public void persistRequest(ResourceRequest request) {
+        entityManager.persist(request);
+    }
+
+    @Override
     public void updateRequest(ResourceRequest request) {
         entityManager.refresh(request);
     }

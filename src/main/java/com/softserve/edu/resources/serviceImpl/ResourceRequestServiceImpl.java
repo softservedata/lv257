@@ -11,7 +11,6 @@ import com.softserve.edu.resources.service.ResourceRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -92,6 +91,9 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
         return requestREAD_DAO.getProcessedRequest();
     }
 
+    @Override
+    public List<ResourceRequest> getForOneRegisterAllRequests(){return requestREAD_DAO.getAllRequestsForOneRegister();}
+
     //on client
     public List<ResourceRequest> getNewResourcesRequest1() {
         List<ResourceRequest> requests = getResourcesRequest();
@@ -106,6 +108,7 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
                 | request.getStatus().equals(Status.DECLINED)).collect(Collectors.toList());
         return requests;
     }
+
 
 
 }

@@ -6,4 +6,7 @@ package com.softserve.edu.resources.entity;
 public enum Status {
     NEW, ACCEPTED, DECLINED;
 
+    Status(){
+
+    }
 }

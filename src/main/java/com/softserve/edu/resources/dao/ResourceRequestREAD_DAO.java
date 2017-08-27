@@ -12,4 +12,6 @@ public interface ResourceRequestREAD_DAO {
      List<ResourceRequest> getNewResourcesRequest();
 
      List<ResourceRequest> getProcessedRequest() ;
+
+     List<ResourceRequest> getAllRequestsForOneRegister();
 }

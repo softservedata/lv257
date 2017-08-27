@@ -4,6 +4,7 @@ import com.softserve.edu.resources.dao.ResourceRequestREAD_DAO;
 import com.softserve.edu.resources.entity.ResourceRequest;
 
 
+
 import javax.persistence.Column;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -82,6 +83,33 @@ public class ResourceRequestREAD_DAOImpl implements ResourceRequestREAD_DAO {
             criteriaQuery.select(request);
             criteriaQuery.where(builder.and(builder.equal(request.get(columnName), "ACCEPTED")
                     , builder.equal(request.get(columnName), "DELETED")));
+            Query query = entityManager.createQuery(criteriaQuery);
+            requests = query.getResultList();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return requests;
+    }
+
+    public List<ResourceRequest> getAllRequestsForOneRegister(){
+
+        List<ResourceRequest> requests = new ArrayList<>();
+        ResourceRequest requestForRegister = new ResourceRequest();
+
+        try {
+            Field entityRegisterField = ResourceRequest.class.getDeclaredField("id_from");
+
+            Column columnRegister = entityRegisterField.getDeclaredAnnotation(Column.class);
+            String columnRegisterName = columnRegister.name();
+
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+            CriteriaQuery criteriaQuery = builder.createQuery();
+            Root request = criteriaQuery.from(ResourceRequest.class);
+
+            criteriaQuery.select(request);
+            criteriaQuery.where(builder.and(builder.equal(request.get(columnRegisterName),
+                    requestForRegister.getRegister().getId())));
             Query query = entityManager.createQuery(criteriaQuery);
             requests = query.getResultList();
         } catch (NoSuchFieldException e) {

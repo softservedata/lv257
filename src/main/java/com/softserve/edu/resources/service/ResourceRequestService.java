@@ -28,6 +28,6 @@ public interface ResourceRequestService {
 
      List<ResourceRequest> getProcessedResourcesRequest();
 
-
+     List<ResourceRequest> getForOneRegisterAllRequests();
 
 }
