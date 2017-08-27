@@ -32,6 +32,12 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
     }
 
     @Override
+    public void assignRegister(ResourceRequestDTO request, User register) {
+        request.setRegister(register);
+        requestCRUD_DAO.updateRequest(new ResourceRequest(request));
+    }
+
+    @Override
     public void toRefinement(ResourceRequestDTO request, MessageDTO message) {
         request.setUpdate(new Date(new java.util.Date().getTime()));
         request.setNotifyExecutor(false);
@@ -91,9 +97,45 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
     }
 
     @Override
+    public List<ResourceRequestDTO> getNewResourcesRequestsForRegister() {
+        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
+        for (ResourceRequest request : requestREAD_DAO.getNewResourcesRequestForRegister()) {
+            requestDTOS.add(new ResourceRequestDTO(request));
+        }
+        return requestDTOS;
+    }
+
+    @Override
     public List<ResourceRequestDTO> getProcessedResourcesRequest() {
         List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
         for (ResourceRequest request : requestREAD_DAO.getProcessedRequest()) {
+            requestDTOS.add(new ResourceRequestDTO(request));
+        }
+        return requestDTOS;
+    }
+
+    @Override
+    public List<ResourceRequestDTO> getToRefinementResourcesRequest() {
+        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
+        for (ResourceRequest request : requestREAD_DAO.getToRefinementResourcesRequest()) {
+            requestDTOS.add(new ResourceRequestDTO(request));
+        }
+        return requestDTOS;
+    }
+
+    @Override
+    public List<ResourceRequestDTO> getAcceptedResourcesRequest() {
+        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
+        for (ResourceRequest request : requestREAD_DAO.getAcceptedRequest()) {
+            requestDTOS.add(new ResourceRequestDTO(request));
+        }
+        return requestDTOS;
+    }
+
+    @Override
+    public List<ResourceRequestDTO> getDeclinedResourcesRequest() {
+        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
+        for (ResourceRequest request : requestREAD_DAO.getDeclinedRequest()) {
             requestDTOS.add(new ResourceRequestDTO(request));
         }
         return requestDTOS;
