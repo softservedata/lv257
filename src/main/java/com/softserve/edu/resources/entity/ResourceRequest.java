@@ -45,6 +45,11 @@ public class ResourceRequest {
     @Column(name = "notify_executor")
     private boolean notifyExecutor;
 
+
+    public ResourceRequest(){
+
+    }
+
     public long getId() {
         return id;
     }
