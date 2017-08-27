@@ -2,9 +2,6 @@ package com.softserve.edu.resources.entity;
 
 
 
-import com.softserve.edu.resources.daoImpl.DocumentDAOImpl;
-import com.softserve.edu.resources.dto.ResourceRequestDTO;
-
 import javax.persistence.*;
 
 import java.sql.Date;
@@ -35,8 +32,9 @@ public class ResourceRequest {
     @JoinColumn(name = "id")
     private Document document;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status;
+    private Status status;
 
     @Column(name = "updated", nullable = false)
     private Date update;
@@ -87,11 +85,11 @@ public class ResourceRequest {
         this.document = document;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -128,21 +126,8 @@ public class ResourceRequest {
         return notifyExecutor;
     }
 
-    public ResourceRequest(ResourceRequestDTO requestDTO) {
-        this.id = requestDTO.getId();
-        this.register = requestDTO.getRegister();
-        this.resourcesAdmin = requestDTO.getResourcesAdmin();
-        this.message = requestDTO.getMessage();
-        this.theme = requestDTO.getRequestedCategory();
-        this.status = requestDTO.getStatus().toString();
-        this.update = requestDTO.getUpdate();
-        this.notifyExecutor = requestDTO.getNotifyExecutor();
-        this.document = new DocumentDAOImpl().getDocumentByLinks(requestDTO.getDocumentLinks());
-    }
-
-    public ResourceRequest(long id, String theme, User register, User resourcesAdmin, Document document,
-                           String status, Date update, String message, boolean notifyExecutor) {
-        this.id = id;
+    public ResourceRequest(String theme, User register, User resourcesAdmin, Document document,
+                           Status status, Date update, String message, boolean notifyExecutor) {
         this.theme = theme;
         this.register = register;
         this.resourcesAdmin = resourcesAdmin;

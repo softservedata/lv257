@@ -1,10 +1,11 @@
-package com.softserve.edu.resources.service;
+
+package com.softserve.edu.resources.serviceImpl;
 
 import com.softserve.edu.resources.entity.ResourceType;
 
 import java.util.*;
 
-
+@Deprecated
 public class ResourceTypeManager {
 
   private Map<String, ResourceType> types = new HashMap<>();

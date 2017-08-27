@@ -2,34 +2,49 @@ package com.softserve.edu.resources.daoImpl;
 
 import com.softserve.edu.resources.dao.ResourceRequestREAD_DAO;
 import com.softserve.edu.resources.entity.ResourceRequest;
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Criterion;
-import org.hibernate.criterion.LogicalExpression;
-import org.hibernate.criterion.Restrictions;
+
 
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.lang.reflect.Field;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ResourceRequestREAD_DAOImpl implements ResourceRequestREAD_DAO {
 
-    private static SessionFactory factory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     //search on client
     public List<ResourceRequest> getAllRequests() {
 
-        return factory.getCurrentSession().createCriteria(ResourceRequest.class).list();
+        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<ResourceRequest> criteriaQuery = builder.createQuery(ResourceRequest.class);
+        Root<ResourceRequest> request = criteriaQuery.from(ResourceRequest.class);
+
+        criteriaQuery.select(request);
+        Query query = entityManager.createQuery(criteriaQuery);
+        List<ResourceRequest> result = query.getResultList();
+        return result;
     }
 
 
     //search in db
     public List<ResourceRequest> getNewResourcesRequest() {
         List<ResourceRequest> requests = new ArrayList<>();
+
+        Field entityStatusField = null;
         try {
-            Field entityStatusField = ResourceRequest.class.getDeclaredField("status");
+            entityStatusField = ResourceRequest.class.getDeclaredField("status");
+
             Column columnStatus = entityStatusField.getDeclaredAnnotation(Column.class);
             String columnStatusName = columnStatus.name();
 
@@ -37,14 +52,16 @@ public class ResourceRequestREAD_DAOImpl implements ResourceRequestREAD_DAO {
             Column columnNotifying = entityNotifyField.getDeclaredAnnotation(Column.class);
             String columnNotifyingName = columnNotifying.name();
 
-            Criteria cr = factory.getCurrentSession().createCriteria(ResourceRequest.class);
-            Criterion isNew = Restrictions.eq(columnStatusName, "NEW");
-            Criterion isAccessibleToAdmin = Restrictions.gt(columnNotifyingName, true);
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-            LogicalExpression andExp = Restrictions.and(isAccessibleToAdmin, isNew);
-            cr.add(andExp);
+            CriteriaQuery criteriaQuery = builder.createQuery();
+            Root request = criteriaQuery.from(ResourceRequest.class);
 
-            requests = criteriaSearch(cr);
+            criteriaQuery.select(request);
+            criteriaQuery.where(builder.and(builder.equal(request.get(columnStatusName), "NEW")
+                    , builder.equal(request.get(columnNotifyingName), true)));
+            Query query = entityManager.createQuery(criteriaQuery);
+            requests = query.getResultList();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -57,23 +74,19 @@ public class ResourceRequestREAD_DAOImpl implements ResourceRequestREAD_DAO {
             Field entityStatusField = ResourceRequest.class.getDeclaredField("status");
             Column column = entityStatusField.getDeclaredAnnotation(Column.class);
             String columnName = column.name();
-            Criteria cr = factory.getCurrentSession().createCriteria(ResourceRequest.class).add(Restrictions.disjunction());
+            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 
-            Criterion isDeclined = Restrictions.eq(columnName, "DECLINED");
-            Criterion isAccepted= Restrictions.eq(columnName,"ACCEPTED");
+            CriteriaQuery criteriaQuery = builder.createQuery();
+            Root request = criteriaQuery.from(ResourceRequest.class);
 
-            LogicalExpression orExp = Restrictions.or(isDeclined, isAccepted);
-            cr.add(orExp);
-
-            requests = criteriaSearch(cr);
+            criteriaQuery.select(request);
+            criteriaQuery.where(builder.and(builder.equal(request.get(columnName), "ACCEPTED")
+                    , builder.equal(request.get(columnName), "DELETED")));
+            Query query = entityManager.createQuery(criteriaQuery);
+            requests = query.getResultList();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
-        return requests;
-    }
-
-    private List<ResourceRequest> criteriaSearch(Criteria criteria) {
-        List<ResourceRequest> requests = criteria.list();
         return requests;
     }
 

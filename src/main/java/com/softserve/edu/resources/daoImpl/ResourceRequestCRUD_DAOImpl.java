@@ -2,14 +2,18 @@ package com.softserve.edu.resources.daoImpl;
 
 import com.softserve.edu.resources.dao.ResourceRequestCRUD_DAO;
 import com.softserve.edu.resources.entity.ResourceRequest;
-import org.hibernate.SessionFactory;
+
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 
 public class ResourceRequestCRUD_DAOImpl implements ResourceRequestCRUD_DAO {
-    private static SessionFactory factory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public void updateRequest(ResourceRequest request) {
-        factory.getCurrentSession().update(request);
+        entityManager.refresh(request);
     }
 }

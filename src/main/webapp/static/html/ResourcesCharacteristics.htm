@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Add / Edit Resource</title>
+	<link rel="icon" href="../image/resources-logo.png">
+	<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
+	rel="stylesheet" />
+	<link href="../css/main.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery.min.js"></script>
+	<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+				aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+				class="icon-bar"></span> <span class="icon-bar"></span> <span
+				class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" rel="home" href="#"
+			title="Project Resources"> <img
+			style="max-width: 100px; margin-top: -10px;"
+			src="../image/resources-logo.png">
+		</a> <a class="navbar-brand" rel="home" href="#"
+		title="Project Resources"> <img style="max-width: 100px"
+		src="../image/text.png"></a>
+	</div>
+	<div id="navbar" class="navbar-collapse collapse">
+		<ul class="nav navbar-nav">
+			<li ><a href="LookUpResources.html">Look up</a></li>
+			<li><a href="ManageUsersAndRoles.html">Users</a></li>
+			<li  class="active"><a href="ResourcesRequest.html">Resources</a></li>
+			<li><a href="#">Community</a></li>
+			<li><a href="#about">About</a></li>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li class="language-panel"><a href="" class="dropdown-toggle"
+				data-toggle="dropdown" role="button" aria-haspopup="true"
+				aria-expanded="false"><span class="glyphicon glyphicon-globe"></span>
+				Language<span class="caret"></span></a>
+				<ul class="dropdown-menu">
+					<li><a href="">English</a></li>
+					<li><a href="">Ukrainian</a></li>
+					<li><a href="">Russian</a></li>
+				</ul></li>
+				<li class="Account"><a href="" class="dropdown-toggle"
+					data-toggle="dropdown" role="button" aria-haspopup="true"
+					aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+					Profile (Resource Admin) <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="">Signed in as Resource Admin</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="Account.html">Your profile</a></li>
+						<li><a href="Profile.html">Settings</a></li>
+						<li><a href="">Help</a></li>
+						<li><a href="">Sign out</a></li>
+						<li role="separator" class="divider"></li>
+						<li class="dropdown-header">Debug information</li>
+						<li><a href="">A.10</a></li>
+					</ul></li>
+</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br />
+	
+
+	<div class="wrapper">
+		<div class="container-fluid">
+			<div class="col-sm-12 col-md-12">
+
+				<div class="container">
+				
+					<h2>Add new characteristic</h2>
+				<form role="form-horizontal">
+
+			 <div class="form-group">
+			  <label for="name">Name</label>
+			  <input type="password" class="form-control" id="pass" placeholder="name">
+			 </div>
+			 
+			  <div class="form-group">
+			  <label for="resource type">Type</label>
+			  <select type="resource type" id="resource type" class="form-control">
+			 <option>Type 1</option>
+			 <option>Type 2</option>
+			 <option>Type 3</option>
+			 <option>Type 4</option>
+			 <option>?5</option>
+			 </select>
+			 </div>
+
+			 
+			  <div class="form-group">
+			  <label for="measures">Measures</label>
+			  <input type="password" class="form-control" id="pass" placeholder="measures">
+			 </div>
+
+			  <div class="form-group">
+			  <label for="representation">Representation</label>
+			  <input type="password" class="form-control" id="pass" placeholder="representation">
+			 </div>
+			 
+			 <button type="submit" class="btn btn-success">Add</button>
+			</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br/>
+	<br/>
+
+
+
+	<footer class="footer">
+		<div class="container">
+			<p class="text-muted">&copy; Lv257_Java</p>
+		</div>
+	</footer>
+
+</body>
+</html>

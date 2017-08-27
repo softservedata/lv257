@@ -63,14 +63,14 @@
 <!-- 		p:driverClassName="${jdbc.driverClassName}" p:url="${jdbc.databaseurl}" -->
 <!-- 		p:username="${jdbc.username}" p:password="${jdbc.password}" /> -->
 
-	<bean id="entityManagerFactory"
+	<!--<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="jpaVendorAdapter">
 			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
 		</property>
-<!--        <property name="dataSource" ref="dataSource" /> -->
-<!-- 		<property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" /> -->
-<!-- 		<property name="persistenceUnitName" value="Java" /> -->
+&lt;!&ndash;        <property name="dataSource" ref="dataSource" /> &ndash;&gt;
+&lt;!&ndash; 		<property name="persistenceXmlLocation" value="classpath:/META-INF/persistence.xml" /> &ndash;&gt;
+&lt;!&ndash; 		<property name="persistenceUnitName" value="Java" /> &ndash;&gt;
 		<property name="packagesToScan">
 			<list>
 				<value>com.softserve.edu.resources.entity</value>
@@ -78,7 +78,7 @@
 		</property>
 		<property name="jpaProperties">
 			<props>
-<!-- 			    <prop key="hibernate.archive.autodetection">class,hbm</prop> -->
+&lt;!&ndash; 			    <prop key="hibernate.archive.autodetection">class,hbm</prop> &ndash;&gt;
 				<prop key="hibernate.connection.url">jdbc:jtds:sqlserver://CLASS02/lv257work;instance=SQLEXPRESS;</prop>
 				<prop key="hibernate.connection.username">db257</prop>
 				<prop key="hibernate.connection.password">db257</prop>
@@ -92,9 +92,9 @@
 
 	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
+	</bean>-->
 
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<!--<tx:annotation-driven transaction-manager="transactionManager" />-->
 
 <!-- 	<context:component-scan base-package="com.softserve.edu.resources.entity" /> -->
 	<context:component-scan base-package="com.softserve.edu.resources.dao" />

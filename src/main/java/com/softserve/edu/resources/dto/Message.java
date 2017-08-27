@@ -6,7 +6,7 @@ import com.softserve.edu.resources.entity.User;
 /**
  * Represent message that will be sent on e-mail from resource administrator to register
  */
-public class MessageDTO {
+public class Message {
 
     private String content;
     private String theme;

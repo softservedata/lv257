@@ -3,9 +3,8 @@ package com.softserve.edu.resources.serviceImpl;
 
 import com.softserve.edu.resources.daoImpl.ResourceRequestCRUD_DAOImpl;
 import com.softserve.edu.resources.daoImpl.ResourceRequestREAD_DAOImpl;
-import com.softserve.edu.resources.dto.MessageDTO;
-import com.softserve.edu.resources.dto.ResourceRequestDTO;
-import com.softserve.edu.resources.dto.Status;
+import com.softserve.edu.resources.dto.Message;
+import com.softserve.edu.resources.entity.Status;
 import com.softserve.edu.resources.entity.ResourceRequest;
 import com.softserve.edu.resources.entity.User;
 import com.softserve.edu.resources.service.ResourceRequestService;
@@ -26,28 +25,22 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
     private ResourceRequestREAD_DAOImpl requestREAD_DAO;
 
     @Override
-    public void assignResourceAdmin(ResourceRequestDTO request, User resourceAdmin) {
+    public void assignResourceAdmin(ResourceRequest request, User resourceAdmin) {
         request.setResourcesAdmin(resourceAdmin);
-        requestCRUD_DAO.updateRequest(new ResourceRequest(request));
+        requestCRUD_DAO.updateRequest(request);
     }
 
     @Override
-    public void assignRegister(ResourceRequestDTO request, User register) {
-        request.setRegister(register);
-        requestCRUD_DAO.updateRequest(new ResourceRequest(request));
-    }
-
-    @Override
-    public void toRefinement(ResourceRequestDTO request, MessageDTO message) {
+    public void toRefinement(ResourceRequest request, Message message) {
         request.setUpdate(new Date(new java.util.Date().getTime()));
         request.setNotifyExecutor(false);
         sendMessage(message);
-        requestCRUD_DAO.updateRequest(new ResourceRequest(request));
+        requestCRUD_DAO.updateRequest(request);
     }
 
     @Override
-    public List<ResourceRequestDTO> showNewRequestsByAdmin(User resourceAdmin) {
-        List<ResourceRequestDTO> requestDTOS = getNewResourcesRequest();
+    public List<ResourceRequest> showNewRequestsByAdmin(User resourceAdmin) {
+        List<ResourceRequest> requestDTOS = getNewResourcesRequest();
         requestDTOS.stream().filter(request -> request.getResourcesAdmin().equals(resourceAdmin))
                 .collect(Collectors.toList());
         return requestDTOS;
@@ -55,105 +48,58 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
 
 
     @Override
-    public void declined(ResourceRequestDTO request, MessageDTO message) {
+    public void declined(ResourceRequest request, Message message) {
         request.setStatus(Status.DECLINED);
         request.setUpdate(new Date(new java.util.Date().getTime()));
         sendMessage(message);
-        requestCRUD_DAO.updateRequest(new ResourceRequest(request));
+        requestCRUD_DAO.updateRequest(request);
     }
 
     @Override
-    public void accepted(ResourceRequestDTO request, MessageDTO message) {
+    public void accepted(ResourceRequest request, Message message) {
         request.setStatus(Status.ACCEPTED);
         request.setUpdate(new Date(new java.util.Date().getTime()));
         sendMessage(message);
-        requestCRUD_DAO.updateRequest(new ResourceRequest(request));
+        requestCRUD_DAO.updateRequest(request);
     }
 
 
-    private void sendMessage(MessageDTO messageDTO) {
+    private void sendMessage(Message message) {
 
     }
 
 
     @Override
-    public List<ResourceRequestDTO> getResourcesRequest() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getAllRequests()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
+    public List<ResourceRequest> getResourcesRequest() {
+
+        return requestREAD_DAO.getAllRequests();
     }
 
 
     //in db
     @Override
-    public List<ResourceRequestDTO> getNewResourcesRequest() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getNewResourcesRequest()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
+    public List<ResourceRequest> getNewResourcesRequest() {
+        return requestREAD_DAO.getNewResourcesRequest();
     }
 
     @Override
-    public List<ResourceRequestDTO> getNewResourcesRequestsForRegister() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getNewResourcesRequestForRegister()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
-    }
-
-    @Override
-    public List<ResourceRequestDTO> getProcessedResourcesRequest() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getProcessedRequest()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
-    }
-
-    @Override
-    public List<ResourceRequestDTO> getToRefinementResourcesRequest() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getToRefinementResourcesRequest()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
-    }
-
-    @Override
-    public List<ResourceRequestDTO> getAcceptedResourcesRequest() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getAcceptedRequest()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
-    }
-
-    @Override
-    public List<ResourceRequestDTO> getDeclinedResourcesRequest() {
-        List<ResourceRequestDTO> requestDTOS = new ArrayList<>();
-        for (ResourceRequest request : requestREAD_DAO.getDeclinedRequest()) {
-            requestDTOS.add(new ResourceRequestDTO(request));
-        }
-        return requestDTOS;
+    public List<ResourceRequest> getProcessedResourcesRequest() {
+        return requestREAD_DAO.getProcessedRequest();
     }
 
     //on client
-    public List<ResourceRequestDTO> getNewResourcesRequest1() {
-        List<ResourceRequestDTO> requestDTOS = getResourcesRequest();
-        requestDTOS.stream().filter(request -> request.getStatus().equals(Status.NEW) & request.isNotifyExecutorTrue())
+    public List<ResourceRequest> getNewResourcesRequest1() {
+        List<ResourceRequest> requests = getResourcesRequest();
+        requests.stream().filter(request -> request.getStatus().equals(Status.NEW) & request.isNotifyExecutorTrue())
                 .collect(Collectors.toList());
-        return requestDTOS;
+        return requests;
     }
 
-    public List<ResourceRequestDTO> getHistoryResourcesRequest1() {
-        List<ResourceRequestDTO> requestDTOS = getResourcesRequest();
-        requestDTOS.stream().filter(request -> request.getStatus().equals(Status.ACCEPTED)
+    public List<ResourceRequest> getHistoryResourcesRequest1() {
+        List<ResourceRequest> requests = getResourcesRequest();
+        requests.stream().filter(request -> request.getStatus().equals(Status.ACCEPTED)
                 | request.getStatus().equals(Status.DECLINED)).collect(Collectors.toList());
-        return requestDTOS;
+        return requests;
     }
 
 
