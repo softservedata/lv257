@@ -2,11 +2,11 @@ package com.softserve.edu.resources.service;
 
 import java.util.List;
 
-import com.softserve.edu.entity.Property;
+import com.softserve.edu.resources.entity.ResourceProperty;
 
 public interface PropertyServiceRead {
 
-	List <Property> getImportantPropertiesFromSpecialResourceToSearch(String resourceTableName);
-	
-	
+	List <ResourceProperty> getImportantPropertiesFromSpecialResourceToSearch(String resourceTableName);
+
+
 }
