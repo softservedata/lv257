@@ -1,32 +1,35 @@
 package com.softserve.edu.resources.serviceImpl;
 
-import com.softserve.edu.resources.entity.GenericResource;
-import com.softserve.edu.resources.entity.PropertyValue;
-import com.softserve.edu.resources.entity.ResourceProperty;
-import com.softserve.edu.resources.entity.ResourceType;
-import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
-public class ResourceManagerTest {
-	
-	private ResourceManager resourceManager;
-	private ResourceTypeManager typeManager = new ResourceTypeManager();
+import com.softserve.edu.resources.entity.GenericResource;
+import com.softserve.edu.resources.entity.PropertyValue;
+import com.softserve.edu.resources.entity.ResourceProperty;
+import com.softserve.edu.resources.entity.ResourceType;
+import com.softserve.edu.resources.service.PropertyService;
+import com.softserve.edu.resources.service.ResourceTypeService;
+
+public class ResourceServiceTest {
+
+	private ResourceServiceImpl resourceManager;
+	private ResourceTypeService typeManager = new ResourceTypeServiceImpl();
 	private final Set<PropertyValue> carPropertyValues = new HashSet<>();
-	
+
 	@BeforeMethod
 	public void setUp() throws Exception {
-		resourceManager = new ResourceManager();
-		PropertyManager propertyManager = new PropertyManager();
-		ResourceTypeManager resourceTypeManager = new ResourceTypeManager();
+		resourceManager = new ResourceServiceImpl();
+		PropertyService propertyManager = new PropertyServiceImpl();
+		ResourceTypeService resourceTypeManager = new ResourceTypeServiceImpl();
 		ResourceType carType = new ResourceType("car");
 		ResourceProperty colorProperty = new ResourceProperty("color");
 		carType.addProperty(colorProperty);
@@ -40,19 +43,19 @@ public class ResourceManagerTest {
 		resourceTypeManager.add(carType);
 		resourceManager.addResource(carType, carPropertyValues);
 	}
-	
+
 	@Test
 	public void getResources() throws Exception {
     Collection<GenericResource> resources = resourceManager.getResources();
 		Assert.assertNotNull(resources);
 	}
-	
+
 	@Test
 	public void getResourceTypes() throws Exception {
 		Collection<ResourceType> resourceTypes = resourceManager.getResourceTypes();
 		Assert.assertNotNull(resourceTypes);
 	}
-	
+
 	@Test
 	public void addExistingResource() throws Exception {
 		Collection<ResourceType> resourceTypes = resourceManager.getResourceTypes();
@@ -62,7 +65,7 @@ public class ResourceManagerTest {
 		GenericResource resource = resourceManager.addResource(resourceType, carPropertyValues);
 		assertEquals(typesCount, resourceManager.getResourceTypes().size());
 	}
-	
+
 	@Test
 	public void addResource() throws Exception {
 		int typesCount = resourceManager.getResourceTypes().size();
@@ -77,9 +80,9 @@ public class ResourceManagerTest {
 		  - else add resource
 		*/
 	}
-	
+
 	@Test
 	public void createResource() throws Exception {
-	
+
 	}
 }

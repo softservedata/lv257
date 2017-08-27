@@ -1,25 +1,27 @@
 package com.softserve.edu.resources.serviceImpl;
 
-import com.softserve.edu.resources.entity.ResourceProperty;
-import com.softserve.edu.resources.entity.ResourceType;
+import static org.testng.Assert.assertEquals;
+
+import java.util.Collection;
+
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.Collection;
+import com.softserve.edu.resources.entity.ResourceProperty;
+import com.softserve.edu.resources.entity.ResourceType;
+import com.softserve.edu.resources.service.ResourceTypeService;
 
-import static org.testng.Assert.assertEquals;
+public class ResourceTypeServiceTest {
 
-public class ResourceTypeManagerTest {
-	
-	private ResourceTypeManager resourceTypeManager;
-	private PropertyManager propertyManager;
-	
+	private ResourceTypeService resourceTypeManager;
+	private PropertyServiceImpl propertyManager;
+
 	@BeforeMethod
 	public void setUp() throws Exception {
-		resourceTypeManager = new ResourceTypeManager();
+		resourceTypeManager = new ResourceTypeServiceImpl();
 		resourceTypeManager.add(new ResourceType("Motorcycle"));
-		propertyManager = new PropertyManager();
+		propertyManager = new PropertyServiceImpl();
 		propertyManager.addProperty(new ResourceProperty("color"));
 		propertyManager.addProperty(new ResourceProperty("color"));
 		propertyManager.addProperty(new ResourceProperty("power"));
@@ -32,14 +34,14 @@ public class ResourceTypeManagerTest {
 		propertyManager.addProperty(new ResourceProperty("engine capacity"));
 		propertyManager.addProperty(new ResourceProperty("registration #"));
 	}
-	
+
 	@Test
 	public void listModels() throws Exception {
 		Collection<ResourceType> metaModels = resourceTypeManager.getTypes();
 		Assert.assertNotNull(metaModels);
 		metaModels.forEach(resourceType -> System.out.println(resourceType.getName()));
 	}
-	
+
 	@Test
 	public void addResourceType() throws Exception {
 		assertEquals(resourceTypeManager.getTypes().size(), 1);
@@ -47,7 +49,7 @@ public class ResourceTypeManagerTest {
 		resourceTypeManager.add(resourceType);
 		assertEquals(resourceTypeManager.getTypes().size(), 2);
 	}
-	
+
 	@Test
 	public void addExistingType() throws Exception {
 		int rmCount = resourceTypeManager.getTypes().size();
@@ -57,7 +59,7 @@ public class ResourceTypeManagerTest {
 		resourceTypeManager.add(mmResource);
 		assertEquals(rmCount + 1, resourceTypeManager.getTypes().size());
 	}
-	
+
 	@Test
 	public void removeExistingType() throws Exception {
 		int rmCount = resourceTypeManager.getTypes().size();
@@ -65,7 +67,7 @@ public class ResourceTypeManagerTest {
 		resourceTypeManager.remove(rmExisting);
 		assertEquals(rmCount - 1, resourceTypeManager.getTypes().size());
 	}
-	
+
 	@Test
 	public void removeMissingType() throws Exception {
 		ResourceType rmPlane = new ResourceType("Plane");
@@ -73,7 +75,7 @@ public class ResourceTypeManagerTest {
 		resourceTypeManager.remove(rmPlane);
 		assertEquals(rmCount, resourceTypeManager.getTypes().size());
 	}
-	
+
 	@Test
 	public void instantiateResourceType() throws Exception {
 
@@ -96,5 +98,5 @@ public class ResourceTypeManagerTest {
     resourceTypeManager.create("Truck");
     assertEquals(resourceTypeManager.getInstancesCount(), typeInstancesCount + 1);
 	}
-	
+
 }

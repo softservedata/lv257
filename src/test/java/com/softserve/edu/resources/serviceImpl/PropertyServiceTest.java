@@ -11,9 +11,9 @@ import java.util.Optional;
 import static org.testng.Assert.*;
 
 
-public class PropertyManagerTest {
+public class PropertyServiceTest {
 
-	private PropertyManager propertyManager;
+	private PropertyServiceImpl propertyManager;
   private String[] propNames = {"color", "flavour", "power", "length",
                                 "weight", "width", "height", "max load",
                                 "engine capacity", "registration #", "volume"};
@@ -21,7 +21,7 @@ public class PropertyManagerTest {
 	@BeforeMethod
 	public void setUp() throws Exception {
     Arrays.sort(propNames);
-    propertyManager = new PropertyManager();
+    propertyManager = new PropertyServiceImpl();
     for(String propName: propNames) {
       propertyManager.addProperty(new ResourceProperty(propName));
     }

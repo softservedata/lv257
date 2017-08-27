@@ -14,32 +14,39 @@ import java.util.Set;
 import com.softserve.edu.resources.dao.ResourceTypeDAO;
 import com.softserve.edu.resources.dto.ResourceTypeDTO;
 import com.softserve.edu.resources.entity.ResourceType;
+import com.softserve.edu.resources.service.ResourceTypeService;
 
-public class ResourceTypeManager {
+public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     private ResourceTypeDAO resourceTypeDAO;
     private Map<String, ResourceType> types = new HashMap<>();
   private Map<ResourceType, String> instances = new HashMap<>();
 
+    @Override
     public Collection<ResourceType> getTypes() {
         return Collections.unmodifiableCollection(types.values());
     }
 
-  public int getTypeCount() {
+  @Override
+public int getTypeCount() {
     return types.values().size();
-  }public void add(ResourceType resourceType) {
+  }@Override
+public void add(ResourceType resourceType) {
     types.putIfAbsent(resourceType.getName(), resourceType);
   }
 
+    @Override
     public void remove(ResourceType resourceType) {
         types.remove(resourceType.getName());
     }
 
+    @Override
     public Optional<ResourceType> get(String typeName) {
         return Optional.ofNullable(types.get(typeName));
     }
 
-  public void create(String typeName) {
+  @Override
+public void create(String typeName) {
     ResourceType type = types.get(typeName);
     if (type != null&& !instances.containsKey(typeName)) {
       System.out.printf("Creating ResourceTable '%s':%n", type.getName());
@@ -49,40 +56,48 @@ public class ResourceTypeManager {
 
   }
 
-  public ResourceTypeManager setTypes(Map<String, ResourceType> types) {
+  @Override
+public ResourceTypeService setTypes(Map<String, ResourceType> types) {
     this.types = types;
     return this;
   }
 
-  public Map<ResourceType, String> getInstances() {
+  @Override
+public Map<ResourceType, String> getInstances() {
     return Collections.unmodifiableMap(instances);
   }
 
-  public ResourceTypeManager setInstances(Map<ResourceType, String> instances) {
+  @Override
+public ResourceTypeService setInstances(Map<ResourceType, String> instances) {
     this.instances = instances;
     return this;
   }
 
-  public int getInstancesCount() {
+  @Override
+public int getInstancesCount() {
     return getInstances().size();
   }
     // Get all hierarchy
+    @Override
     public List<ResourceType> getAllResourceTypesAndParents() {
         return resourceTypeDAO.getAllResourceTypesAndParents();
     }
 
     // Get all leaves of hierarchy
+    @Override
     public List<ResourceType> getAllResourceTypes() {
         return resourceTypeDAO.getAllResourceTypes();
     }
 
     // Get all leaves of branch
+    @Override
     public List<ResourceType> getChildrensOfResourceType(
             ResourceType resourceType) {
         return resourceTypeDAO.getChildrensOfResourceType(resourceType);
     }
 
     // Build tree of types for view
+    @Override
     public List<ResourceTypeDTO> buildTypeHierarchy() {
         List<ResourceType> allTypes = this.getAllResourceTypesAndParents();
         List<ResourceType> onlyLeaves = this.getAllResourceTypes();
