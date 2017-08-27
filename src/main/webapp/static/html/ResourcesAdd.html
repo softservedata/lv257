@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add / Edit Resource</title>
+    <link rel="icon" href="../image/resources-logo.png">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
+            rel="stylesheet" />
+    <link href="../css/main.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" rel="home" href="Main.html"
+               title="Project Resources"> <img
+                    style="max-width: 100px; margin-top: -10px;"
+                    src="../image/resources-logo.png">
+            </a> <a class="navbar-brand" rel="home" href="Main.html"
+                    title="Project Resources"> <img style="max-width: 100px"
+                                                    src="../image/text.png"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li ><a href="LookUpResources.html">Look up</a></li>
+                <li><a href="ManageUsersAndRoles.html">Users</a></li>
+                <li class="active"><a href="#">Resources</a></li>
+                <li ><a href="CommunityView.html">Community</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="language-panel"><a href="" class="dropdown-toggle"
+                                              data-toggle="dropdown" role="button" aria-haspopup="true"
+                                              aria-expanded="false"><span class="glyphicon glyphicon-globe"></span>
+                    Language<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="">English</a></li>
+                        <li><a href="">Ukrainian</a></li>
+                        <li><a href="">Russian</a></li>
+                    </ul></li>
+                <li class="Account"><a href="" class="dropdown-toggle"
+                                       data-toggle="dropdown" role="button" aria-haspopup="true"
+                                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                    Profile/(as Register) <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="Profile.html">Sign in as Register</a></li>
+
+                        <li role="separator" class="divider"></li>
+
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">User Profile</li>
+                        <li><a href="Profile.html">Your profile</a></li>
+                        <li><a href="Account.html">Settings</a></li>
+                        <li><a href="">Help</a></li>
+                        <li><a href="Signin.html">Sign out</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Debug information</li>
+                        <li><a href="">A.15 <br>
+                        </a></li>
+                    </ul></li>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br />
+
+<div class="wrapper">
+    <div class="container-fluid">
+        <div class="col-sm-12 col-md-12">
+
+            <div class="container">
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#">Register resource</a></li>
+                    <li ><a href="ResourcesSendRequest.html">Send request</a></li>
+                    <li><a href="ResourcesHistory.html">History</a></li>
+                </ul>
+                <br>
+                <br>
+
+                <form role="form-horizontal" enctype="multipart/form-data" >
+                    <div class="form-group">
+                        <label for="resource type">Resource type</label>
+                        <select type="resource type" id="resource type" class="form-control">
+                            <option>Real Estate</option>
+                            <option>Transport</option>
+                            <option>Company</option>
+                            <option>Land</option>
+                            <option>Slave</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resource name">Resource name</label>
+                        <select type="resource name" id="resource name" class="form-control">
+                            <option>Appartment</option>
+                            <option>House</option>
+                            <option>Warehouse</option>
+                            <option>Office buildings</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="owners">Resource Owners</label>
+                        <select type="owners" id="owners" class="form-control" multiple>
+                            <option>Owner 1</option>
+                            <option>Owner 2</option>
+                            <option>Owner 3</option>
+                            <option>Owner 4</option>
+                        </select>
+                    </div>
+                    <div class="button_padding">
+                        <button class="btn btn-primary"
+                                type="button" data-toggle="modal"
+                                data-target="#myModal">Add from existing owners</button>
+
+                        <button class="btn btn-primary"
+                                type="button" data-toggle="modal"
+                                data-target="#myModal3">Add new Owner</button>
+                    </div>
+
+
+                    <div id="myModal" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Find owner</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form">
+
+                                        <div class="row">
+                                            <div class="container-fluid col-md-4">
+                                                <div class="form-group">
+                                                    <label for="sel1">Select type of Owner:</label>
+                                                    <select class="form-control" id="sel1">
+                                                        <option>choose type</option>
+                                                        <option selected>&nbsp;&nbsp;Companies</option>
+                                                        <option>&nbsp;&nbsp;Individuals</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="container-fluid col-md-4">
+                                                <div class="form-group">
+                                                    <label for="sel2">Search by:</label>
+                                                    <select class="form-control" id="sel2">
+                                                        <option>choose</option>
+                                                        <option selected>&nbsp;&nbsp;Name of the owner</option>
+                                                        <option>&nbsp;&nbsp;IPN number</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="sel3" class="col-sm-2 col-from-label">Form of authority</label>
+                                            <div class="col-sm-10">
+                                                <select class="form-control" id="sel3">
+
+                                                    <option selected>TzOV</option>
+                                                    <option>PP</option>
+                                                    <option>PAT</option>
+                                                    <option>CG</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <form>
+
+                                            <div class="form-group row">
+                                                <label for="Email" class="col-sm-2 col-form-label">Name of the company</label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" class="form-control" id="Email" placeholder="Put name of the company: e.g. 'Sunshine'">
+                                                </div>
+                                            </div>
+
+                                            <button  type="button" class="btn btn-primary">find Owner<a href="LookUpResources4.html">/</a></button>
+
+                                            <div class="form-group">
+                                                <label for="exampleFormControlSelect1">Result of Owner research. Please, choose special ownery to make Search Resource</label>
+                                                <select multiple class="form-control" id="exampleFormControlSelect1">
+                                                    <option>Company 1</option>
+                                                    <option>Company 2</option>
+                                                    <option>Company 3</option>
+                                                    <option>Company 4</option>
+                                                    <option>Company 5</option>
+                                                </select>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary">Choose</button>
+
+                                            <div class="clearfix"></div>
+                                        </form>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="myModal3" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Add new Owner</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form">
+
+                                        <div class="form-group">
+                                            <label for="fullname">Full Name</label>
+                                            <input type="text" class="form-control" id="fullname" placeholder="Full Name">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="shortname">Short Name</label>
+                                            <input type="text" class="form-control" id="shortname" placeholder="Short Name">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="ceo">CEO</label>
+                                            <input type="text" class="form-control" id="ceo" placeholder="Last Name">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success pull-right">Register new Juridical Owner</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Resource Address</label>
+                        <select type="address" id="address" class="form-control">
+                            <option>Address 1</option>
+                            <option>Address 2</option>
+                            <option>Address 3</option>
+                            <option>Address 4</option>
+                        </select>
+                    </div>
+                    <div class="button_padding">
+                        <button class="btn btn-primary"
+                                type="button" data-toggle="modal"
+                                data-target="#myModal2">Add Address</button>
+                    </div>
+
+                    <div id="myModal2" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4>Add Address</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form">
+
+                                        <div class="form-group">
+                                            <label for="country">Country</label>
+                                            <input type="text" class="form-control" id="country" placeholder="Ukraine">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="region">Region</label>
+                                            <input type="text" class="form-control" id="region" placeholder="Region">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="district">District</label>
+                                            <input type="text" class="form-control" id="district" placeholder="District">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="postal">Postal Index</label>
+                                            <input type="text" class="form-control" id="postal" placeholder="79060">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="locality">Locality</label>
+                                            <input type="text" class="form-control" id="locality" placeholder="Locality">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="street">Street</label>
+                                            <input type="text" class="form-control" id="street" placeholder="Shevchenka street">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="building">Building</label>
+                                            <input type="text" class="form-control" id="building" placeholder="35">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="block">Block</label>
+                                            <input type="text" class="form-control" id="block" placeholder="A">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="appartment">Appartment</label>
+                                            <input type="text" class="form-control" id="appartment" placeholder="14">
+                                        </div>
+
+                                        <button type="submit" class="btn btn-success pull-right">Add Address</button>
+                                        <div class="clearfix"></div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 	<div class="form-group">
+                            <label for="registrator">Registrator</label>
+                            <select type="address" id="registrator" class="form-control" required>
+                                <option>Registrator 1</option>
+                                <option>Registrator 2</option>
+                                <option>Registrator 3</option>
+                                <option>Registrator 4</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="timestamp">Date when registered</label>
+                            <input type="text" class="form-control" id="timestamp" placeholder="25-10-2017">
+                        </div> -->
+
+                    <div class="form-group">
+                        <label for="char1">Characteristic 1</label>
+                        <input type="text" class="form-control" id="char1" placeholder="characteristic 1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="char2">Characteristic 2</label>
+                        <input type="text" class="form-control" id="char2" placeholder="characteristic 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="files">Registration basis</label>
+                        <input type="file" id="files" multiple="true">
+                    </div>
+                    <div class="button_padding">
+                        <button type="submit" class="btn btn-success">Register new resource</button>
+                    </div>
+
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; Lv257_Java</p>
+    </div>
+</footer>
+
+</body>
+</html>

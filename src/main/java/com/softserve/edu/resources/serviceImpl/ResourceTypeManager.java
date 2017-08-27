@@ -1,4 +1,5 @@
-package com.softserve.edu.resources.service;
+
+package com.softserve.edu.resources.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,10 +16,6 @@ public class ResourceTypeManager {
 
     private ResourceTypeDAO resourceTypeDAO;
     private Map<String, ResourceType> types = new HashMap<>();
-
-    public ResourceTypeManager(ResourceTypeDAO resourceTypeDAO) {
-        this.resourceTypeDAO = resourceTypeDAO;
-    }
 
     public Collection<ResourceType> getTypes() {
         return Collections.unmodifiableCollection(types.values());
@@ -69,7 +66,7 @@ public class ResourceTypeManager {
         allTypes.removeAll(this.getAllResourceTypes());
         List<String> tree = new ArrayList<>();
         for (ResourceType element : branches) {
-            String indent;
+            String indent = "";
             for (int i = 0; i < element.getHierarchyLevel(); i++) {
                 indent = indent + indentSymbol;
             }

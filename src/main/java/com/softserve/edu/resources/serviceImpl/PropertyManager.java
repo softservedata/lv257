@@ -2,7 +2,7 @@
  *
  */
 
-package com.softserve.edu.resources.service;
+package com.softserve.edu.resources.serviceImpl;
 
 import com.softserve.edu.resources.entity.ResourceProperty;
 
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /*
  * @PropertyManager's is a dictionary of any kind of ResourceProperties.
  */
-
+@Deprecated
 public class PropertyManager {
 
   private Map<String, ResourceProperty> properties = new HashMap<>();

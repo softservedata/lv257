@@ -1,4 +1,4 @@
-package com.softserve.edu.resources.service;
+package com.softserve.edu.resources.serviceImpl;
 
 import com.softserve.edu.resources.entity.GenericResource;
 import com.softserve.edu.resources.entity.PropertyValue;
@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class ResourceManager {
 
   private Collection<GenericResource> resources = new HashSet<>();

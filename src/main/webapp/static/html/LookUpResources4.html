@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LookUpResources</title>
+<link rel="icon" href="../image/resources-logo.png">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
+	rel="stylesheet" />
+<link href="../css/main.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" rel="home" href="Main.html"
+					title="Project Resources"> <img
+					style="max-width: 100px; margin-top: -10px;"
+					src="../image/resources-logo.png">
+				</a> <a class="navbar-brand" href="#"></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="LookUpResources.html">Look up</a></li>
+					<li><a href="ManageUsersAndRoles.html">Users</a></li>
+					<li><a href="ResourcesView.html">Resources</a></li>
+					<li><a href="CommunityView.html">Community</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+					<li class="language-panel"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false"><span class="glyphicon glyphicon-globe"></span>
+							Language<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="">English</a></li>
+							<li><a href="">Ukrainian</a></li>
+							<li><a href="">Russian</a></li>
+						</ul></li>
+					<li class="Account"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+							Profile/Sign in (if guest) <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="Profile.html">ANY USER for SEARCH, including guest</a></li>
+
+							<li role="separator" class="divider"></li>
+
+							<li role="separator" class="divider"></li>
+							<li class="dropdown-header">User Profile (or "Sign in" if guest)</li>
+							<li><a href="Profile.html">Your profile (if signed in)</a></li>
+							<li><a href="Account.html">Settings (if signed in)</a></li>
+							<li><a href="">Help</a></li>
+							<li><a href="Signin.html">Sign in/Sign out</a></li>
+							<li role="separator" class="divider"></li>
+							<li class="dropdown-header">Debug information</li>
+							<li><a href="">A.4 <br>
+							Fields DEPENDS ON ROLE and Chosen category. <br>
+							If no category chosen, than shows only few similar fields <br>
+							to all categories to find with like: name and owner.(to DISCUSS)</a></li>
+						</ul></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<br />
+	
+	<div class="container-fluid">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+						<div class="dropdown">
+							  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+								Choose type of ReSearch
+								<span class="caret"></span>
+							  </button>
+							  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+								<li><a href="LookUpResources2.html">Looking up by type or Resource</a></li>
+								<li class="active"><a href="LookUpResources3.html">Looking up by Owner</a></li>
+							
+							  </ul>
+						</div>
+						<br />
+						<div class="row">
+							<div class="container-fluid col-md-4">
+								<div class="form-group">
+									<label for="sel1">Select type of Owner:</label>
+									<select class="form-control" id="sel1">
+										<option>choose type</option>
+										<option selected>&nbsp;&nbsp;Companies</option>
+										<option>&nbsp;&nbsp;Individuals</option>
+										
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="container-fluid col-md-4">
+								<div class="form-group">
+									<label for="sel1">Search by:</label>
+									<select class="form-control" id="sel1">
+										<option>choose</option>
+										<option selected>&nbsp;&nbsp;Name of the owner</option>
+										<option>&nbsp;&nbsp;IPN number</option>
+										
+									</select>
+								</div>
+							</div>
+						</div>
+						
+						<div class="form-group row">
+							<label for="sel1" class="col-sm-2 col-from-label">Форма власності</label>
+								<div class="col-sm-10">
+									<select class="form-control" id="sel1">
+										
+										<option selected>ТзОВ</option>
+										<option>ПП</option>
+										<option>ПАТ</option>
+										<option>СГ</option>
+									</select>
+								</div>
+						</div>
+						<form>
+							
+						   <div class="form-group row">
+							<label for="Email" class="col-sm-2 col-form-label">Назва компанії</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="Email" placeholder="Введіть назву компанії: напр. 'Сонечко'">
+							</div>
+						  </div>
+						 
+						  <button data-target= " " type="button" class="btn btn-primary">find Owner</button> 
+						 </form>
+						  <br />
+						  <br />
+						   <div class="form-group">
+								<label for="exampleFormControlSelect1">Result of Owner research. Please, choose special ownery to make Search Resource</label>
+									<select multiple class="form-control" id="exampleFormControlSelect1">
+									  <option>Company 1</option>
+									  <option>Company 2</option>
+									  <option>Company 3</option>
+									  <option>Company 4</option>
+									  <option>Company 5</option>
+									</select>
+							</div>
+						
+					
+					
+					
+					
+			
+						<br />
+						<button type="button" class="btn btn-primary">SEARCH Resource (this button will be active only if owner is chosen) </button> <a href="ResultsOfSearch2.html">Go to Result of Search</a>
+						
+				</div>
+					
+			</div>
+			
+		</div>
+		
+		
+		<hr>
+		<br/>
+		<a href="Main.html">Main</a>
+		<a href="Signin.html">SignIn</a>
+		<a href="Signup.html">SignUp</a>
+		<a href="LookUpResources.html">SearchResource</a> 
+		<a href="ManageUsersAndRoles.html">ManageUsersAndRoles</a> 
+		<a href="UsersRequests.html">UsersRequests</a> 
+		<a href="ResourcesView.html">ResourcesView</a> 
+		<a href="ResourcesRequest.html">ResourcesRequest</a> 
+		<a href="CommunityView.html">CommunityView</a> 
+		<a href="AddEditResourse.html">AddEditResourse</a> 
+		<a href="AddOrEditCommunity.html">AddOrEditCommunity</a> 
+		<a href="ResourcesCharacteristics.html">AddEditResourcesCharacteristics</a> 
+		
+		<a href="ResourcesAdd.html">RegisterResourceAsRegister</a> 
+		<a href="Profile.html">Profile</a> 
+		<a href="Account.html">Account</a>
+		
+		<a href="UsersRoles.html">EditUsersRoles</a>
+		<a href="ResultsOfSearch.html">ResultsOfSearch</a> 		
+		
+		<a href="ResourceInfoBeta.html">DetailsAboutResource</a> 
+		
+		
+		
+	</div>
+	</div>
+	<footer class="footer">
+			<div class="container">
+				<p class="text-muted">&copy; Lv257_Java</p>
+			</div>
+		</footer>
+</body>
+</html>

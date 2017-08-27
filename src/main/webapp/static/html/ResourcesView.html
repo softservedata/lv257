@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resources View</title>
+<link rel="icon" href="resources-logo.png">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
+	rel="stylesheet" />
+<link href="../css/main.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" rel="home" href="#"
+					title="Project Resources"> <img
+					style="max-width: 100px; margin-top: -10px;"
+					src="../image/resources-logo.png">
+				</a> <a class="navbar-brand" rel="home" href="#"
+					title="Project Resources"> <img style="max-width: 100px"
+					src="../image/text.png"></a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="LookUpResources.html">Look up</a></li>
+					<li><a href="ManageUsersAndRoles.html">Users</a></li>
+					<li class="active"><a href="ResourcesView.html">Resources</a></li>
+					<li><a href="CommunityView.html">Community</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+					<li class="language-panel"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false"><span class="glyphicon glyphicon-globe"></span>
+							Language<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="">English</a></li>
+							<li><a href="">Ukrainian</a></li>
+							<li><a href="">Russian</a></li>
+						</ul></li>
+					<li class="Account"><a href="" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+							Profile (Resource Administrator)<span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="">Signed in as Resource Administrator</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="Profile.html">Your profile</a></li>
+							<li><a href="Account.html">Settings</a></li>
+							<li><a href="">Help</a></li>
+							<li><a href="Signin.html">Sign out</a></li>
+							<li role="separator" class="divider"></li>
+							<li class="dropdown-header">Debug information</li>
+							<li><a href="">A.7</a></li>
+						</ul></li>
+						</ul>
+			</div>
+		</div>
+	</nav>
+	<br />
+
+	<div class="container">
+		<div class="container-fluid">
+			<div class="row">
+				<div
+					class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+					<div class="row">
+						<ul class="nav nav-tabs">
+
+							<li class="active"><a href="#">View</a></li>
+							<li><a href="AddEditResourse.html">Add</a></li>
+							<li><a href="ResourcesRequest.html">Requests <span class="badge">4</span></a></li>
+						</ul>
+
+					</div>
+
+					<div class="table-responsive">
+						<table class="table table-striped">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Resource</th>
+									<th>Category</th>
+									<th>Register</th>
+									<th style="text-align:center">Edit</th>
+									<th style="text-align:center">Clone</th>
+									<th style="text-align:center">Remove</th>
+								</tr>
+							</thead>
+							<thead>
+								<tr>
+									<th></th>
+									<th>
+										<div class="form-group">
+											<select class="form-control input-sm" id="sel1" type="text">
+													<option>Hatchbacks</option>
+													<option>Saloons / sedans</option>
+													<option>Luxury vehicle</option>
+													<option>Sports cars</option>
+													<option>Off-roaders</option>
+													<option>Commercial vehicle</option>
+											</select>		
+										</div>
+									</th>
+									<th>
+										<div class="form-group">
+											<select class="form-control input-sm" id="sel3" type="text">
+												<option>Economic</option>
+												<option>_Technical</option>
+												<option>__Transport</option>
+												<option>___Cars</option>
+												<option>_____Economy car</option>
+												<option>_____Microcar</option>
+												<option>_____Hatchbacks</option>
+												<option>_______Ultracompact car</option>
+												<option>_______City car</option>
+												<option>_______Supermini/subcompact car</option>
+												<option>_____Family car</option>
+												<option>______Small family car/compact car</option>
+												<option>______Large family / mid-size</option>
+												<option>_____Saloons / sedans</option>
+												<option>______Large family / mid-size</option>
+												<option>______Full size / large</option>
+												<option>______Crossover SUV</option>
+												<option>______Minivans / MPVs</option>
+												<option>_____Luxury vehicle</option>
+												<option>______Compact executive</option>
+												<option>______Executive/mid-luxury</option>
+												<option>______Full-size luxury / Grand saloon</option>
+												<option>______Estate cars / station wagons</option>
+												<option>_____Sports cars</option>
+												<option>_______Hot hatch</option>
+												<option>_______Sports saloon / sports sedan</option>
+												<option>_______Sports car</option>
+												<option>_______Grand tourer</option>
+												<option>_______Supercar</option>
+												<option>_______Muscle car</option>
+												<option>_______Pony car</option>
+												<option>_______Convertible</option>
+												<option>_____Off-roaders</option>
+												<option>_______Sport utility vehicle</option>
+												<option>_____Commercial vehicle</option>
+												<option>________Van</option>
+											</select>
+										</div>
+									</th>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th>
+										<div class="form-group" style="text-align:center">
+											<!--
+											<a href="#"><span class="glyphicon glyphicon-remove-sign"</span></a>
+											-->
+										</span></td>
+										</div>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td><a href="#">Hatchbacks</a></td>
+									<td>Cars</td>
+									<td>Reg-Uk-001</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-pencil"/></a>
+										</span></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-plus-sign"/></span></a></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-remove"/></a> </td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td><a href="#">Saloons / sedans</a></td>
+									<td>Cars</td>
+									<td>Reg-Uk-001</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-pencil"/></a>
+										</span></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-plus-sign"/></span></a></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-remove"/></a> </td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td><a href="#">Luxury vehicle</a></td>
+									<td>Cars</td>
+									<td>Reg-Uk-001</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-pencil"/></a>
+										</span></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-plus-sign"/></span></a></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-remove"/></a> </td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td><a href="#">Sports cars</a></td>
+									<td>Cars</td>
+									<td>Reg-Uk-001</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-pencil"/></a>
+										</span></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-plus-sign"/></span></a>	</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-remove"/></a> </td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td><a href="#">Off-roaders</a></td>
+									<td>Cars</td>
+									<td>Reg-Uk-001</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-pencil"/></a>
+										</span></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-plus-sign"/></span></a></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-remove"/></a> </td>
+								</tr>
+								<tr>
+									<td>6</td>
+									<td><a href="#">Commercial vehicle</a></td>
+									<td>Cars</td>
+									<td>Reg-Uk-001</td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-pencil"/></a>
+										</span></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-plus-sign"/></span></a></td>
+									<td style="text-align:center"><a href="#"><span class="glyphicon glyphicon-remove"/></span></a></td>
+								</tr>								
+							</tbody>
+						</table>
+
+						<div class="container-fluid">
+							<div class="pull-left">
+								<h5>Page 1 of 10</h5>
+							</div>
+							<div class="pull-right">
+								<div class="form-group form-inline">
+									<label class="font-normal" for="sel2">Show results per
+										page:</label> <select class="form-control" id="sel2">
+										<option>10</option>
+										<option>20</option>
+										<option>50</option>
+										<option>100</option>
+									</select>
+								</div>
+							</div>
+							<div class="container-fluid" align="center">
+								<nav aria-label="Page navigation">
+									<ul class="pagination">
+										<li class="disabled"><a href="#" aria-label="Previous">
+												<span aria-hidden="true">&laquo;</span>
+										</a></li>
+										<li class="active"><a href="#">1</a></li>
+										<li><a href="#">2</a></li>
+										<li><a href="#">3</a></li>
+										<li><a href="#">4</a></li>
+										<li><a href="#">5</a></li>
+										<li><a href="#" aria-label="Next"> <span
+												aria-hidden="true">&raquo;</span>
+										</a></li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<footer class="footer">
+		<div class="container">
+			<p class="text-muted">&copy; Lv257_Java</p>
+		</div>
+	</footer>
+</body>
+</html>
