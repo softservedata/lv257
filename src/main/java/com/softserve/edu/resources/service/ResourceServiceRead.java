@@ -1,11 +1,11 @@
 package com.softserve.edu.resources.service;
 
+import com.softserve.edu.resources.entity.GenericResource;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.softserve.edu.entity.GenericResource;
-import com.softserve.edu.entity.Property;
 
 public interface ResourceServiceRead {
 

@@ -19,14 +19,17 @@ public class ResourceTypeManager {
 
     private ResourceTypeDAO resourceTypeDAO;
     private Map<String, ResourceType> types = new HashMap<>();
+  private Map<ResourceType, String> instances = new HashMap<>();
 
     public Collection<ResourceType> getTypes() {
         return Collections.unmodifiableCollection(types.values());
     }
 
-    public void add(ResourceType resourceType) {
-        types.putIfAbsent(resourceType.getName(), resourceType);
-    }
+  public int getTypeCount() {
+    return types.values().size();
+  }public void add(ResourceType resourceType) {
+    types.putIfAbsent(resourceType.getName(), resourceType);
+  }
 
     public void remove(ResourceType resourceType) {
         types.remove(resourceType.getName());
@@ -36,16 +39,33 @@ public class ResourceTypeManager {
         return Optional.ofNullable(types.get(typeName));
     }
 
-    public void create(String typeName) {
-        ResourceType type = types.get(typeName);
-        if (type != null) {
-            System.out.printf("Creating ResourceTable '%s':%n", type.getName());
-            type.getProperties().forEach(rp -> System.out
-                    .printf("adding field '%s'%n", rp.getName()));
-            System.out.println("done.");
-        }
+  public void create(String typeName) {
+    ResourceType type = types.get(typeName);
+    if (type != null&& !instances.containsKey(typeName)) {
+      System.out.printf("Creating ResourceTable '%s':%n", type.getName());
+      type.getProperties().forEach(rp -> System.out.printf("adding field '%s'%n", rp.getName()));
+      System.out.println("done.");instances.put(type, type.getTableName());
     }
 
+  }
+
+  public ResourceTypeManager setTypes(Map<String, ResourceType> types) {
+    this.types = types;
+    return this;
+  }
+
+  public Map<ResourceType, String> getInstances() {
+    return Collections.unmodifiableMap(instances);
+  }
+
+  public ResourceTypeManager setInstances(Map<ResourceType, String> instances) {
+    this.instances = instances;
+    return this;
+  }
+
+  public int getInstancesCount() {
+    return getInstances().size();
+  }
     // Get all hierarchy
     public List<ResourceType> getAllResourceTypesAndParents() {
         return resourceTypeDAO.getAllResourceTypesAndParents();
