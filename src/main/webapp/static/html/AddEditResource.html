@@ -19,7 +19,7 @@
 	<script>
       function defineNewType(){
           definitionForm.style = 'display: initial;';
-//          additionSelector.style = 'display: none;';
+          additionBtn.style = 'display: none;';
       }
 	</script>
 </head>
@@ -93,62 +93,212 @@
 		</div>
 		<div class="container">
 
-			<div id="additionSelector" class="container-fluid col-sd-12">
+			<div class="container-fluid col-sd-12">
 				<div class="container-fluid">
 					<br>
-					<h3>Choose a way to create definition:</h3>
+					<h3>Choose a way to create definition</h3>
 					<br>
 					<div class="row">
-						<div class="col-sm-2"><a href="ResourcesView.html" class="btn btn-primary" type="button">Clone existing</a><!--<button class="btn btn-primary" type="button">Clone existing</button>--></div>
-						<div class="col-sm-2"><button class="btn btn-primary" type="button"
-												 onclick="defineNewType();">Define new</button></div>
+						<div>
+							<a href="ResourcesView.html" class="btn btn-primary" type="button">Clone existing</a>
+							<!--</div>-->
+							<!--<div class="col-sm-2">-->
+							<button id="additionBtn" class="btn btn-primary" type="button"
+											onclick="defineNewType();">Define new</button></div>
 					</div>
 				</div>
 			</div>
 			<div id="definitionForm" class="container" style="display: none;">
-				<form>
-					<div class="form-group">
-						<label for="category">Category</label>
-						<input type="select" class="form-control" id="category" placeholder="Choose resource category">
-					</div>
+				<form action="ResourcesView.html">
 
 					<div class="form-group">
-						<label for="resourceType">Resource Type Name</label>
-						<input type="text" class="form-control" id="resourceType" placeholder="Enter resource name">
+						<label for="resCat">Resource Category</label>
+						<select id="resCat" class="form-control">
+							<option value="0">Select desired category</option>
+							<option value="1">Aircrafts</option>
+							<option value="2">Automobiles</option>
+							<option value="3">Railroad transport</option>
+							<option value="4">Ships</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="resourceType">Resource Type</label>
+						<select id="resourceType" class="form-control">
+							<option value="0">Select desired type</option>
+							<option>Car</option>
+							<option>Bus</option>
+							<option>Motorcycle</option>
+							<option>Truck</option>
+						</select>
+					</div>
+					<div class="container-fluid">
+						<br>
+						<h4>Resource Type Properties</h4>
+						<hr>
+
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+										data-target="#existProps">Add existing</button>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+										data-target="#newProp">Add new</button>
+
+						<div id="existProps" class="modal fade">
+							<div class="modal-dialog">
+								<div class="modal-content">
+
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4>Resource Properties</h4>
+									</div>
+									<div class="modal-body">
+										<div class="container-fluid">
+											<form>
+												<ul>
+													<li><label><input type="checkbox"> Width, meters (m)</label></li>
+													<li><label><input type="checkbox"> Width, centimeters (cm)</label></li>
+													<li><label><input type="checkbox"> Height, meters (m)</label></li>
+													<li><label><input type="checkbox"> Height, centimeters (cm)</label></li>
+													<li><label><input type="checkbox"> Power, watts (W)</label></li>
+													<li><label><input type="checkbox"> Power, kilo watts (kW)</label></li>
+													<li><label><input type="checkbox"> Power, horse power(HP)</label></li>
+													<li><label><input type="checkbox"> Weight, kilograms(kg)</label></li>
+													<li><label><input type="checkbox"> Weight, pounds(p)</label></li>
+													<li><label><input type="checkbox"> Weight, tons(t)</label></li>
+													<li><label><input type="checkbox"> Color</label></li>
+												</ul>
+												<div class="pull-right">
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Accept</button>
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Discard</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="newProp" class="modal fade">
+							<div class="modal-dialog">
+								<div class="modal-content">
+
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4>Define new Property</h4>
+									</div>
+									<form>
+										<div class="modal-body">
+											<form class="form">
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label for="title">Property title</label>
+															<input type="text" class="form-control" id="title"
+																		 placeholder="Title">
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label for="name">Property name</label>
+															<input type="text" class="form-control" id="name"
+																		 placeholder="Name">
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-5">
+														<div class="form-group">
+															<label for="units">Measuring units</label>
+															<input type="text" class="form-control" id="units"
+																		 placeholder="e.g. cc (cubical centimeters)">
+														</div>
+													</div>
+													<div class="row">
+														<div class="col-sm-3">
+															<div class="form-group">
+																<label for="valueType">Value type</label>
+																<select class="form-control" id="valueType"
+																				placeholder="Select value type">
+																	<option value="0">Select value type</option>
+																	<option value="1">integer</option>
+																	<option value="2">decimal</option>
+																	<option value="3">string</option>
+																	<option value="4">boolean</option>
+																	<option value="5">timestamp</option>
+																	<option value="6">resource property</option>
+																</select>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="form-group">
+																<label for="default">Default value</label>
+																<input type="text" class="form-control" id="default"
+																			 placeholder="0">
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="regex">Validation regex</label>
+													<input type="text" class="form-control" id="regex"
+																 placeholder="regex string, e.g. [0-9]+\.[0-9]*[1-9] for decimal with non-zero last digit">
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="essential"><span class="font-bold">Essential</span></label>
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="multi"><span class="font-bold">Multivalued</span></label>
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="req"><span class="font-bold">Required</span></label>
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="secured"><span class="font-bold">Secured</span></label>
+												</div>
+												<div class="form-group pull-right">
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Save</button>
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Save/Add New</button>
+												</div>
+											</form>
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<table class="table table-hover">
+							<thead>
+							<tr>
+								<th>Characteristic Name</th>
+								<th>Details</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>Char 1</td>
+								<td>Det 1</td>
+								<td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
+								<td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td>Char2</td>
+								<td>Det 2</td>
+								<td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
+								<td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td>Char3</td>
+								<td>Det 3</td>
+								<td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
+								<td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							</tbody>
+						</table>
 					</div>
 
-					<button type="submit" class="btn btn-default">Add Characteristic</button>
-
-					<table class="table table-hover">
-						<thead>
-						<tr>
-							<th>Characteristic Name</th>
-							<th>Details</th>
-							<th>Edit</th>
-							<th>Delete</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td>Char 1</td>
-							<td>Det 1</td>
-							<td><a href="#"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a></td>
-							<td><a href="#"><i class="glyphicon glyphicon-remove" aria-hidden="true"></i></a></td>
-						</tr>
-						<tr>
-							<td>Char2</td>
-							<td>Det 2</td>
-							<td><a href="#"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a></td>
-							<td><a href="#"><i class="glyphicon glyphicon-remove" aria-hidden="true"></i></a></td>
-						</tr>
-						<tr>
-							<td>Char3</td>
-							<td>Det 3</td>
-							<td><a href="#"><i class="glyphicon glyphicon-edit" aria-hidden="true"></i></a></td>
-							<td><a href="#"><i class="glyphicon glyphicon-remove" aria-hidden="true"></i></a></td>
-						</tr>
-						</tbody>
-					</table>
 					<button type="submit" class="btn btn-default">Save</button>
 				</form>
 			</div>
