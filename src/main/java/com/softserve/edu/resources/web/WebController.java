@@ -12,7 +12,7 @@ import com.softserve.edu.resources.service.UserService;
 public class WebController {
     
     @Autowired
-    UserService userService;
+    private UserService userService;
     
     @RequestMapping("/")
     public String home() {
