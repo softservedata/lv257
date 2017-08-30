@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-//@Transactional
+import java.util.List;
+
+@Transactional
 @Repository
-public class RoleDAOImpl implements RoleDAO {
+public class RoleDAOImpl implements RoleDAO  {
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -29,8 +31,19 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
+    public List<Role> getAllRoles() {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(Role.class);
+        return crit.list();
+    }
+
+    @Override
     public void delete(Role role) {
 
     }
+
+
+
+
 
 }

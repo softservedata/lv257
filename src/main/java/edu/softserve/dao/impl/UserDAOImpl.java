@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Qualifier("userDAO")
 @Transactional
@@ -33,5 +35,18 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void delete(User user) {
 
+    }
+
+    @Override
+    public User addUser(User user) {
+        return null;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        Session session = sessionFactory.getCurrentSession();
+        List<User> list = session.createCriteria(User.class).list();
+        System.out.println("Hallo from userDAO" + list);
+        return list;
     }
 }

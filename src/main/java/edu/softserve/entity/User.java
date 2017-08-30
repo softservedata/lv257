@@ -20,9 +20,11 @@ public class User {
     private boolean enabled;
     private String secret;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+
+    //@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public User() {
         super();
@@ -55,12 +57,12 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Collection<Role> getRoles() {
-        return roles;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Long getId() {
@@ -113,7 +115,7 @@ public class User {
                 .append(", password=").append(password)
                 .append(", enabled=").append(enabled)
                 .append(", secret=").append(secret)
-                .append(", roles=").append(roles).append("]");
+                .append(", roles=").append(role).append("]");
         return builder.toString();
     }
 }

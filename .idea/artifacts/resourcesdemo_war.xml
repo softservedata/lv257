@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" name="resourcesdemo:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="SpringMVCHibernateSecurity.war">
+    <root id="archive" name="resourcesdemo.war">
       <element id="artifact" artifact-name="resourcesdemo:war exploded" />
     </root>
   </artifact>
