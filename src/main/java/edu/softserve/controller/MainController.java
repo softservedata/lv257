@@ -70,7 +70,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public ModelAndView roles (Model model) {
+    public ModelAndView roles () {
         ModelAndView rolesModel = new ModelAndView("rolesPage");
         List<Role> list = roleDAO.getAllRoles();
         List<String> names = new ArrayList<>();
@@ -93,6 +93,15 @@ public class MainController {
         model.addObject("list",names);
         return model;
     }
+
+    @RequestMapping(value = "/addRole", method = RequestMethod.POST)
+    public ModelAndView addRole () {
+        ModelAndView model = new ModelAndView("roleInfo");
+
+        model.addObject("list");
+        return model;
+    }
+
 
     @RequestMapping(value = { "/privileges" }, method = RequestMethod.GET)
     public ModelAndView privilegesPage() {
