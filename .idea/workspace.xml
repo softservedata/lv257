@@ -6,7 +6,7 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e336c91-7c1c-4e7f-bc42-0b53b1ab0a4b" name="Default" comment="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality">
+    <list default="true" id="9e336c91-7c1c-4e7f-bc42-0b53b1ab0a4b" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -740,7 +740,7 @@
       <workItem from="1504171152647" duration="4304000" />
       <workItem from="1504178093622" duration="4210000" />
       <workItem from="1504217470641" duration="17611000" />
-      <workItem from="1504257491304" duration="7038000" />
+      <workItem from="1504257491304" duration="7046000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1503533797240</created>
@@ -777,11 +777,18 @@
       <option name="project" value="LOCAL" />
       <updated>1504264546846</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality">
+      <created>1504264908782</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1504264908782</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="210608000" />
+    <option name="totallyTimeSpent" value="210616000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
