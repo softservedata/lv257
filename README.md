@@ -12,10 +12,12 @@ URLs under /users, /roles etc. must be accessible to only logged users with righ
 
 # Build and run
 1. Check out the project source code from github : git clone https://github.com/benas/todolist-mvc.git
-2. Open a terminal and run the following command from root directory : mvn install
-3. Choose a web framework to test and run it. For example : cd todolist-web-springmvc && mvn tomcat7:run
-4. Browse the following URL : localhost:8080/
-5. You can register a new account or login using the following credentials : dbuser1 / 12345
+2. Import resources_MYSQL_DB.sql to newly created schema named mydatabase
+3. Open a terminal and run the following command from root directory : mvn install
+4. Choose a web framework to test and run it. For example : cd todolist-web-springmvc && mvn tomcat7:run
+5. Browse the following URL : localhost:8080/
+6. You can register a new account or login using the following credentials : dbuser1 / 12345
+
 
 # Todo
 
