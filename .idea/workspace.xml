@@ -7,200 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e336c91-7c1c-4e7f-bc42-0b53b1ab0a4b" name="Default" comment="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata.keystream" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata.keystream.len" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata.len" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata.values.at" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata_i" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/_metadata_/metadata_i.len" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/dataSources/c2372a54-6299-4dab-bb39-7e98474e68a6/storage.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_postgresql_postgresql_9_4_1212.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/service/PrivilegeService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/service/RoleService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/resources_MYSQL_DB.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/about.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/account.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/resources.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/signuprequest.jsp" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_paginationspring_pagination_1_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_paginationspring_pagination_taglibs_1_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_6.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/hibernate.cfg.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/_menu.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/dashboard.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/loginPageOLD.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/viewWithPaginationExample.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/datasource-cfg.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/App.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/authentication/MyUserDetailsService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/config/ApplicationContextConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/config/SpringSecurityInitializer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/config/SpringWebAppInitializer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/config/WebMvcConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/config/WebSecurityConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/controller/MainController.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/dao/PrivilegeDAO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/dao/RoleDAO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/dao/UserDAO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/dao/impl/PrivilegeDAOImpl.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/dao/impl/RoleDAOImpl.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/dao/impl/UserDAOImpl.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/entity/Privilege.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/entity/Role.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/entity/User.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/entity/UserDetails.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/edu/softserve/service/UserService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/hibernate.cfg.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo.war" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/datasource-cfg.properties" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/App.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/authentication/MyUserDetailsService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/config/ApplicationContextConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/config/SpringSecurityInitializer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/config/SpringWebAppInitializer.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/config/WebMvcConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/config/WebSecurityConfig.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/controller/MainController.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/dao/PrivilegeDAO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/dao/RoleDAO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/dao/UserDAO.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/dao/impl/PrivilegeDAOImpl.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/dao/impl/RoleDAOImpl.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/dao/impl/UserDAOImpl.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/entity/Privilege.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/entity/Role.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/entity/User.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/entity/UserDetails.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/edu/softserve/service/UserService.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/classes/hibernate.cfg.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/aerogear-otp-java-1.0.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/antlr-2.7.7.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/aopalliance-1.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/c3p0-0.9.2.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/commons-dbcp-1.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/commons-lang-2.6.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/commons-logging-1.2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/commons-pool-1.5.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/dom4j-1.6.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/hibernate-c3p0-4.3.8.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/hibernate-commons-annotations-4.0.5.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/hibernate-core-4.3.8.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/hibernate-entitymanager-4.3.8.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/jandex-1.1.0.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/javassist-3.18.1-GA.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/jboss-logging-3.1.3.GA.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/jboss-logging-annotations-1.2.0.Beta1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.0.0.Final.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/jstl-1.2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/jtds-1.3.1.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/log4j-1.2.16.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/mchange-commons-java-0.2.3.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/mysql-connector-java-5.1.34.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/pagination-1.0.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/pagination-taglibs-1.0.3.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/slf4j-api-1.7.21.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/slf4j-log4j12-1.6.4.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-aop-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-beans-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-context-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-core-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-expression-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-jdbc-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-orm-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-security-acl-4.0.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-security-config-4.0.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-security-core-4.0.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-security-taglibs-4.0.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-security-web-4.0.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-tx-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-web-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/spring-webmvc-4.1.4.RELEASE.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/lib/xml-apis-1.0.b2.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/403Page.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/Lookup.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/SuccessfulUserCreation.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/_menu.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/_menu2.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/adminPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/dashboard.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/loginPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/loginPageOLD.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/logoutSuccessfulPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/metadata.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/privilegesPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/resources-logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/roleInfo.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/rolesEditPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/rolesPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/signupPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/text.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/userInfoPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/usersPage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/viewWithPaginationExample.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/pages/welcomePage.jsp" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/WEB-INF/web.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/resources/css/bootstrap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/resources/css/bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/resources/css/dashboard.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/resourcesdemo/resources/css/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-edu.softserve.AppTest.xml" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/surefire-reports/edu.softserve.AppTest.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/edu/softserve/A.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/edu/softserve/Animal.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/edu/softserve/AppTest.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/edu/softserve/Mammal.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/resourcesdemo_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/resourcesdemo_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dataSources.xml" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resourcesdemo.iml" afterPath="$PROJECT_DIR$/resourcesdemo.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/authentication/MyUserDetailsService.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/authentication/MyUserDetailsService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/config/ApplicationContextConfig.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/config/ApplicationContextConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/config/SpringWebAppInitializer.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/config/SpringWebAppInitializer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/config/WebMvcConfig.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/config/WebMvcConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/config/WebSecurityConfig.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/config/WebSecurityConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/controller/MainController.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/controller/MainController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/UserDAO.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/UserDAO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/PrivilegeDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/PrivilegeDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/RoleDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/RoleDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/UserDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/UserDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/entity/Role.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/entity/Role.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/entity/User.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/entity/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/entity/UserDetails.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/entity/UserDetails.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/service/UserService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/datasource-cfg.properties" afterPath="$PROJECT_DIR$/src/main/resources/datasource-cfg.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/_menu2.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/_menu2.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/metadata.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/metadata.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/roleInfo.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/roleInfo.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/403Page.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/403.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/Lookup.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lookup.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/SuccessfulUserCreation.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/successfulUserCreation.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/adminPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/loginPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/login.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/logoutSuccessfulPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/logoutSuccessful.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/privilegesPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/privileges.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/resources-logo.png" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/resources-logo.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/rolesEditPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/rolesEdit.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/rolesPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/roles.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/signupPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/signup.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/text.png" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/text.png" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/userInfoPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/profile.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/usersPage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/users.jsp" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/welcomePage.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/welcome.jsp" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -253,8 +60,8 @@
       <file leaf-file-name="_menu2.jsp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/_menu2.jsp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="952">
-              <caret line="56" column="41" lean-forward="false" selection-start-line="56" selection-start-column="41" selection-end-line="56" selection-end-column="41" />
+            <state relative-caret-position="221">
+              <caret line="13" column="46" lean-forward="true" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
               <folding />
             </state>
           </provider>
@@ -370,6 +177,11 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="GradleLocalSettings">
     <option name="externalProjectsViewState">
@@ -586,6 +398,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="resourcesdemo" type="b2602c69:ProjectViewProjectNode" />
+              <item name="resourcesdemo" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="resourcesdemo" type="b2602c69:ProjectViewProjectNode" />
@@ -920,7 +740,7 @@
       <workItem from="1504171152647" duration="4304000" />
       <workItem from="1504178093622" duration="4210000" />
       <workItem from="1504217470641" duration="17611000" />
-      <workItem from="1504257491304" duration="4436000" />
+      <workItem from="1504257491304" duration="7038000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1503533797240</created>
@@ -943,11 +763,25 @@
       <option name="project" value="LOCAL" />
       <updated>1504095844518</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality">
+      <created>1504262336793</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1504262336793</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality">
+      <created>1504264546846</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1504264546846</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="208006000" />
+    <option name="totallyTimeSpent" value="210608000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -984,7 +818,7 @@
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.9013158" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2677761" sideWeight="0.5131579" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2549168" sideWeight="0.4868421" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2549168" sideWeight="0.4868421" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1065,6 +899,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <MESSAGE value="First commit" />
     <MESSAGE value="Some changes" />
     <MESSAGE value="Added some jsp files" />
@@ -1557,8 +1392,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/_menu2.jsp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="56" column="41" lean-forward="false" selection-start-line="56" selection-start-column="41" selection-end-line="56" selection-end-column="41" />
+        <state relative-caret-position="221">
+          <caret line="13" column="46" lean-forward="true" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
           <folding />
         </state>
       </provider>
