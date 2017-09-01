@@ -25,13 +25,6 @@
                 </ul>
             </div>
             <br/>
-            <%--<div class="row">
-                <div class="container">
-                    <div class="margin-bottom">
-                        <button type="button" class="btn btn-primary">Add new User</button>
-                    </div>
-                </div>
-            </div>--%>
             <div class="container">
                 <div class="table-responsive">
                     <form>

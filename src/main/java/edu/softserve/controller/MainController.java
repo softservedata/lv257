@@ -1,46 +1,44 @@
 package edu.softserve.controller;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.softserve.dao.RoleDAO;
-import edu.softserve.dao.UserDAO;
-import edu.softserve.dao.impl.PrivilegeDAOImpl;
-import edu.softserve.entity.Privilege;
-import edu.softserve.entity.Role;
 import edu.softserve.entity.User;
+import edu.softserve.service.PrivilegeService;
+import edu.softserve.service.RoleService;
+import edu.softserve.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
+import java.util.Map;
 
 @Controller
 @Transactional
 public class MainController {
 
-    /*@Autowired
-    private UserValidator userValidator;*/
+    @Autowired
+    UserService userService;
+    @Autowired
+    RoleService roleService;
 
     @Autowired
-    PrivilegeDAOImpl privilegeDAO;
-
-    @Autowired
-    UserDAO userDAO;
-
-    @Autowired
-    RoleDAO roleDAO;
+    PrivilegeService privilegeService;
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model) {
         model.addAttribute("title", "Resources");
         model.addAttribute("message", "Welcome to Resources!");
-        return "welcomePage";
+        return "welcome";
+    }
+
+    @RequestMapping(value = { "/about"}, method = RequestMethod.GET)
+    public String aboutPage(Model model) {
+        model.addAttribute("title", "About");
+        return "about";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
@@ -48,49 +46,48 @@ public class MainController {
         return "adminPage";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model ) {
-        return "loginPage";
+    @RequestMapping(value = "/lookup", method = RequestMethod.GET)
+    public String lookupPage(Model model) {
+        return "lookup";
     }
 
-    /*@RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String signupPage(Model model ) {
-        return "signupPage";
-    }*/
+    @RequestMapping(value = "/resources", method = RequestMethod.GET)
+    public String resourcesPage(Model model) {
+        return "resources";
+    }
 
-    @RequestMapping(value = "/signupPage", method = RequestMethod.GET)
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String loginPage(Model model ) {
+        return "login";
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
-        return "signupPage"; //назва JSP
+        return "signup"; //назва JSP
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String users (Model model) {
-        return "usersPage";
+    public ModelAndView users () {
+        ModelAndView usersModel = new ModelAndView("users");
+        usersModel.addObject("users",userService.getAllUsers());
+        return usersModel;
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public ModelAndView roles () {
-        ModelAndView rolesModel = new ModelAndView("rolesPage");
-        List<Role> list = roleDAO.getAllRoles();
-        List<String> names = new ArrayList<>();
-        for (Role x : list) {
-            names.add(x.getName());
-            System.out.println(x.getName());
-        }
-        rolesModel.addObject("list",names);
+        ModelAndView rolesModel = new ModelAndView("roles");
+        rolesModel.addObject("list",roleService.getAllRoles());
         return rolesModel;
     }
 
-    @RequestMapping(value = "/roleInfo", method = RequestMethod.GET)
-    public ModelAndView roleInfo () {
+    //rn - roleName
+    //TODO its not safe to show our role names in the URL so we need to ...
+    @RequestMapping(value = "/roleInfo", params = {"rn"}, method = RequestMethod.GET)
+    public ModelAndView roleInfo (@RequestParam Map<String,String> queryUser) {
+        String roleName = queryUser.get("rn");
         ModelAndView model = new ModelAndView("roleInfo");
-        List<Privilege> list = privilegeDAO.getAllPrivileges();
-        List<String> names = new ArrayList<>();
-        for (Privilege x:list) {
-            names.add(x.getName());
-        }
-        model.addObject("list",names);
+        model.addObject("list",roleService.getRolePrivileges(roleName));
         return model;
     }
 
@@ -103,57 +100,35 @@ public class MainController {
     }
 
 
+    //Returns list of privileges
     @RequestMapping(value = { "/privileges" }, method = RequestMethod.GET)
     public ModelAndView privilegesPage() {
-        ModelAndView model = new ModelAndView("privilegesPage");
-        //model.addAttribute("title", "Resources");
-        //model.addAttribute("message", "Welcome to Privileges page!\n" + privilegeDAO.getAllPrivileges());
-        List<Privilege> list = privilegeDAO.getAllPrivileges();
-        List<String> names = new ArrayList<>();
-        for (Privilege p : list) {
-            names.add(p.getName());
-        }
-        model.addObject("list",names);
+        ModelAndView model = new ModelAndView("privileges");
+
+        model.addObject("list",privilegeService.getAllPrivileges());
         return model;
     }
-
-    @RequestMapping(value = "/pagination", method = RequestMethod.GET)
-    public String pagination (Model model) {
-
-        return "viewWithPaginationExample";
-    }
-    /*@RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-        userValidator.validate(userForm, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        }
-
-        userService.save(userForm);
-
-        securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
-
-        return "redirect:/welcome";
-    }*/
 
 
     //SuccessfulUserCreation
     @RequestMapping(value = "/logoutSuccessful", method = RequestMethod.GET)
     public String logoutSuccessfulPage(Model model) {
         model.addAttribute("title", "Logout");
-        return "logoutSuccessfulPage";
+        return "logoutSuccessful";
     }
 
-    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
 
         // After user login successfully.
         String userName = principal.getName();
 
-        System.out.println("User Name: "+ userName);
-
-        return "userInfoPage";
+        return "profile";
+    }
+    @RequestMapping(value = { "/account"}, method = RequestMethod.GET)
+    public String accountPage(Model model) {
+        model.addAttribute("title", "Account");
+        return "account";
     }
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
@@ -166,6 +141,6 @@ public class MainController {
             model.addAttribute("msg",
                     "You do not have permission to access this page!");
         }
-        return "403Page";
+        return "403";
     }
 }

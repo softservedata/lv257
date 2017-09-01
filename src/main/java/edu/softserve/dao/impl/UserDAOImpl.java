@@ -33,6 +33,14 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    public User findById(long id) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria crit = session.createCriteria(User.class);
+        crit.add(Restrictions.eq("id", id));
+        return (User)crit.uniqueResult();
+    }
+
+    @Override
     public void delete(User user) {
 
     }
@@ -46,7 +54,6 @@ public class UserDAOImpl implements UserDAO {
     public List<User> getAllUsers() {
         Session session = sessionFactory.getCurrentSession();
         List<User> list = session.createCriteria(User.class).list();
-        System.out.println("Hallo from userDAO" + list);
         return list;
     }
 }

@@ -1,15 +1,5 @@
 package edu.softserve.config;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
-import edu.softserve.dao.PrivilegeDAO;
-import edu.softserve.dao.RoleDAO;
-import edu.softserve.dao.UserDAO;
-import edu.softserve.dao.impl.PrivilegeDAOImpl;
-import edu.softserve.dao.impl.RoleDAOImpl;
-import edu.softserve.dao.impl.UserDAOImpl;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +14,9 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.sql.DataSource;
+import java.util.Properties;
+
 @Configuration
 @ComponentScan("edu.softserve.*")
 @EnableTransactionManagement
@@ -35,15 +28,6 @@ public class ApplicationContextConfig {
     // and stores all the properties loaded by the @PropertySource
     @Autowired
     private Environment env;
-
-    @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
-    private RoleDAO roleDAO;
-
-    @Autowired
-    private PrivilegeDAO privilegeDAO;
 
     @Bean
     public ResourceBundleMessageSource messageSource() {
@@ -64,6 +48,18 @@ public class ApplicationContextConfig {
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
+
+        //POSTGRES HEROKU CONFIG
+        //throws URISyntaxException
+       /* URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + dbUri.getPath();
+        dataSource.setDriverClassName(env.getProperty("ds.database-driver"));
+        dataSource.setUrl(dbUrl);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);*/
+
 
         // See: datasouce-cfg.properties
         dataSource.setDriverClassName(env.getProperty("ds.database-driver"));

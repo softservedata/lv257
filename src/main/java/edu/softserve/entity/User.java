@@ -1,8 +1,8 @@
 package edu.softserve.entity;
 
-import javax.persistence.*;
-import java.util.Collection;
 import org.jboss.aerogear.security.otp.api.Base32;
+
+import javax.persistence.*;
 
 
 @Entity

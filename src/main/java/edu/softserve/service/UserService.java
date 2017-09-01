@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -23,9 +23,7 @@ public class UserService {
 
     @Transactional
     public User getUserForSpring (String email){
-        System.out.println("Userservice HALoo");
         User user = userDAO.findByEmail(email);
-        System.out.println(user.toString());
         System.out.println("User extracted");
        Role role = user.getRole();
         System.out.println("Role extracted");
@@ -33,4 +31,17 @@ public class UserService {
         System.out.println("Privileges extracted");
         return user;
     }
+
+    @Transactional
+    public User getUserById (Long id){
+        User user = userDAO.findById(id);
+
+        return user;
+    }
+
+    public List<User> getAllUsers(){
+        return userDAO.getAllUsers();
+    }
+
+
 }

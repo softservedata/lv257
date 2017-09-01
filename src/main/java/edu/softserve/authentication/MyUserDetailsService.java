@@ -1,10 +1,5 @@
 package edu.softserve.authentication;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import edu.softserve.dao.RoleDAO;
 import edu.softserve.dao.UserDAO;
 import edu.softserve.entity.Privilege;
 import edu.softserve.entity.Role;
@@ -17,53 +12,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserDAO userDAO;
-    @Autowired
-    private RoleDAO roleDAO;
-    @Autowired
-    private UserService userService;
 
-
+    @Autowired
+    UserService userService;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        System.out.println("Halooooooooooo");
-        User user = userService.getUserForSpring(username);
-
-//        User user = userDAO.findByEmail(username);
-        System.out.println("user is " + user.toString());
-
-        Role role =  user.getRole();
-        System.out.println("single role entoty from  is " + role.toString());
-
-
-        /*for (GrantedAuthority grantedAuthority: myGrantedAuthorities()) {
-            System.out.println("1   -   " + myGrantedAuthorities());
-        }*/
-
-
-        System.out.println("User = " + user);
+        User user = userService.getUserForSpring(email);
+        //User user = getUserForSpring(email);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User " + username + " was not found in the database");
+            throw new UsernameNotFoundException("User " + email + " was not found in the database");
         }
 
         boolean accountNonExpired = true;
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-
-
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, getAuthorities(role));
-        //return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, myGrantedAuthorities());
-
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, getAuthorities(user.getRole()));
     }
 
     private final Collection<? extends GrantedAuthority> getAuthorities(Role role) {
@@ -93,15 +69,18 @@ public class MyUserDetailsService implements UserDetailsService {
         return authorities;
     }
 
-    /*private final Collection<? extends GrantedAuthority> myGrantedAuthorities() {
-        final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+    //should be this service method here or be replaced to another service class?
+    /*@Transactional
+    User getUserForSpring (String email){
+        System.out.println(1);
+        User user = userDAO.findByEmail(email);
+        System.out.println(2);
+        Role role = user.getRole();
+        System.out.println(3);
 
-        authorities.add(new SimpleGrantedAuthority("READ_PRIVILEGE"));
-        authorities.add(new SimpleGrantedAuthority("WRITE_PRIVILEGE"));
-        authorities.add(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE"));
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        return authorities;
+        //To start lazy initialization
+        ArrayList<Privilege> privileges = new ArrayList<>(role.getPrivileges());
+        System.out.println(4);
+        return user;
     }*/
-
 }

@@ -1,7 +1,6 @@
 package edu.softserve.entity;
 
 
-import javax.persistence.*;
 
 public class UserDetails {
 
