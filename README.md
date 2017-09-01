@@ -11,7 +11,7 @@ View technology may vary for each framework. Here, JSP views are (re)used for mo
 URLs under /users, /roles etc. must be accessible to only logged users with right privileges. This requirement implemented using Spring Security
 
 # Build and run
-1. Check out the project source code from github : git clone https://github.com/benas/todolist-mvc.git
+1. Check out the project source code from github : git clone https://github.com/softservedata/lv257.git
 2. Import resources_MYSQL_DB.sql to newly created schema named mydatabase
 3. Open a terminal and run the following command from root directory : mvn install
 4. Choose a web framework to test and run it. For example : cd todolist-web-springmvc && mvn tomcat7:run
