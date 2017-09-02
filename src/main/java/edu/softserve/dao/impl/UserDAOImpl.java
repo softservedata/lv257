@@ -2,15 +2,13 @@ package edu.softserve.dao.impl;
 
 import edu.softserve.dao.UserDAO;
 import edu.softserve.entity.User;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -18,26 +16,26 @@ import java.util.List;
 @Transactional
 public class UserDAOImpl implements UserDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public UserDAOImpl() {
     }
 
     @Override
     public User findByEmail(String email) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(User.class);
-        crit.add(Restrictions.eq("username", email));
-        return (User)crit.uniqueResult();
+        Query query = entityManager.createQuery("select i from User i where i.username = :username")
+                .setParameter("username", email);
+        User user = (User)query.getSingleResult();
+        return user;
     }
 
     @Override
     public User findById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(User.class);
-        crit.add(Restrictions.eq("id", id));
-        return (User)crit.uniqueResult();
+        Query query = entityManager.createQuery("select i from User i where i.id = :id")
+                .setParameter("id", id);
+        User user = (User)query.getSingleResult();
+        return user;
     }
 
     @Override
@@ -51,9 +49,9 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<User> getAllUsers() {
-        Session session = sessionFactory.getCurrentSession();
-        List<User> list = session.createCriteria(User.class).list();
-        return list;
+        List<?> list = entityManager.createQuery("SELECT p FROM User p").getResultList();
+        return (List<User>) list;
     }
 }

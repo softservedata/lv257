@@ -2,31 +2,25 @@ package edu.softserve.dao.impl;
 
 import edu.softserve.dao.PrivilegeDAO;
 import edu.softserve.entity.Privilege;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 public class PrivilegeDAOImpl implements PrivilegeDAO {
 
-    @Autowired
-    private SessionFactory sessionFactory;
-
-    public PrivilegeDAOImpl() {
-
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Privilege findByName(String name) {
-        Session session = sessionFactory.getCurrentSession();
-        Criteria crit = session.createCriteria(Privilege.class);
-        crit.add(Restrictions.eq("name", name));
-        return (Privilege)crit.uniqueResult();
+        Query query = entityManager.createQuery("select i from Privilege i where i.name = :name")
+                .setParameter("name", name);
+        Privilege privilege = (Privilege) query.getSingleResult();
+        return privilege;
     }
 
     @Override
@@ -40,10 +34,9 @@ public class PrivilegeDAOImpl implements PrivilegeDAO {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<Privilege> getAllPrivileges() {
-
-        Session session = sessionFactory.getCurrentSession();
-        List<Privilege> list = session.createCriteria(Privilege.class).list();
-        return list;
+        List<?> list = entityManager.createQuery("SELECT p FROM Privilege p").getResultList();
+        return (List<Privilege>) list;
     }
 }
