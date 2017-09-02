@@ -9,7 +9,6 @@
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
       <secret-storage>master_key</secret-storage>
       <user-name>root</user-name>
-      <introspection-schemas>*:mydatabase</introspection-schemas>
     </data-source>
     <data-source name="mydatabase@localhost [2]" uuid="c2372a54-6299-4dab-bb39-7e98474e68a6">
       <database-info product="PostgreSQL" version="9.6.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.1.1">
@@ -18,7 +17,6 @@
       <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
-      <introspection-schemas>postgres:public</introspection-schemas>
     </data-source>
   </component>
 </project>
