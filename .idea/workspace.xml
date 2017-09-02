@@ -7,16 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e336c91-7c1c-4e7f-bc42-0b53b1ab0a4b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/resources/datasource-cfg.properties" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/resourcesdemo_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/resourcesdemo_war_exploded.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resourcesdemo.iml" afterPath="$PROJECT_DIR$/resourcesdemo.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/App.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/App.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/config/ApplicationContextConfig.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/config/ApplicationContextConfig.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/PrivilegeDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/PrivilegeDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/RoleDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/RoleDAOImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/UserDAOImpl.java" afterPath="$PROJECT_DIR$/src/main/java/edu/softserve/dao/impl/UserDAOImpl.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -70,7 +61,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/softserve/config/DBConfig.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="573">
-              <caret line="62" column="26" lean-forward="true" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
+              <caret line="62" column="26" lean-forward="false" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -689,7 +680,7 @@
       <workItem from="1504257491304" duration="7745000" />
       <workItem from="1504284020149" duration="2442000" />
       <workItem from="1504299182854" duration="1971000" />
-      <workItem from="1504375322807" duration="2227000" />
+      <workItem from="1504375322807" duration="2513000" />
     </task>
     <task id="LOCAL-00001" summary="First commit">
       <created>1503533797240</created>
@@ -740,11 +731,18 @@
       <option name="project" value="LOCAL" />
       <updated>1504264916048</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Changed SessionFactory to EntityManager">
+      <created>1504377692061</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1504377692061</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="217955000" />
+    <option name="totallyTimeSpent" value="218241000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -757,7 +755,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -776,8 +773,8 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Java Enterprise" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="true" show_stripe_button="true" weight="0.73478264" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="23" width="1362" height="705" />
+      <window_info id="Version Control" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.73478264" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="23" width="1362" height="705" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.9013158" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2677761" sideWeight="0.5131579" order="2" side_tool="true" content_ui="tabs" />
@@ -867,7 +864,8 @@
     <MESSAGE value="Some changes" />
     <MESSAGE value="Added some jsp files" />
     <MESSAGE value="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working version of project skeleton ready to deploy and lunch&#10;Basic Spring Authorization and Authentication (DB stored user credentials)&#10;&#10;jsp's for basic functionality" />
+    <MESSAGE value="Changed SessionFactory to EntityManager" />
+    <option name="LAST_COMMIT_MESSAGE" value="Changed SessionFactory to EntityManager" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1169,7 +1167,7 @@
         <state relative-caret-position="305">
           <caret line="38" column="33" lean-forward="false" selection-start-line="37" selection-start-column="8" selection-end-line="38" selection-end-column="33" />
           <folding>
-            <element signature="e#985#1015#0" expanded="true" />
+            <element signature="e#745#775#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1209,7 +1207,7 @@
         <state relative-caret-position="424">
           <caret line="41" column="5" lean-forward="false" selection-start-line="41" selection-start-column="5" selection-end-line="41" selection-end-column="5" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1241,7 +1239,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/softserve/config/DBConfig.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="573">
-          <caret line="62" column="26" lean-forward="true" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
+          <caret line="62" column="26" lean-forward="false" selection-start-line="62" selection-start-column="26" selection-end-line="62" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
