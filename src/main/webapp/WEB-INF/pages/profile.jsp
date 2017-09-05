@@ -30,12 +30,12 @@
         </div>
         <div class="row">
             <br>
-            <div class="font-bold">First Name</div>
+            <div class="font-bold" value="${userDetails.firstname}">First Name</div>
             <input class="form-control"/>
         </div>
         <div class="row">
             <br>
-            <div class="font-bold">Second Name</div>
+            <div class="font-bold" value="${user.getId}">Second Name</div>
             <input class="form-control"/>
         </div>
         <div class="row">

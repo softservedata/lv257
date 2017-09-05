@@ -1,6 +1,5 @@
 package edu.softserve.authentication;
 
-import edu.softserve.dao.UserDAO;
 import edu.softserve.entity.Privilege;
 import edu.softserve.entity.Role;
 import edu.softserve.entity.User;
@@ -19,9 +18,6 @@ import java.util.List;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-
-    @Autowired
-    private UserDAO userDAO;
 
     @Autowired
     UserService userService;

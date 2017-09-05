@@ -50,13 +50,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:if test="${not empty list}">
+                        <c:if test="${not empty users}">
 
                             <ul>
                                 <c:forEach var="listValue" items="${users}">
                                     <tr>
-                                        <td><a href="${pageContext.request.contextPath}/roleInfo?rn=${listValue}">${listValue}</a></td>
-                                        <td ><a href="${pageContext.request.contextPath}/roleInfo?rn=${listValue}">
+                                        <td>${listValue.id}</td>
+                                        <td>${listValue.username}</td>
+                                        <td>${listValue.password}</td>
+                                        <td>${listValue.role.name}</td>
+                                        <td>${listValue.enabled}</td>
+                                        <td ><a href="${pageContext.request.contextPath}/roleInfo?rn=${listValue.id}">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a></td>
                                         <td ><a href="#">
@@ -70,22 +74,6 @@
                             </ul>
 
                         </c:if>
-                        <tr>
-                            <td>10</td>
-                            <td>User10</td>
-                            <td>Mail10</td>
-                            <td>Role10</td>
-                            <td>Region10</td>
-                            <td ><a href="UsersRoles.html">
-                                <span class="glyphicon glyphicon-edit"></span>
-                            </a></td>
-                            <td ><a href="#">
-                                <span class="glyphicon glyphicon-copy"></span>
-                            </a></td>
-                            <td ><a href="#">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </a></td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>

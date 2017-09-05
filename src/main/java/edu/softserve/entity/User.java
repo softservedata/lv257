@@ -26,10 +26,22 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private UserDetails userDetails;
+
     public User() {
         super();
         this.secret = Base32.random();
         this.enabled = false;
+    }
+
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+        userDetails.setUser(this);
     }
 
     public String getUsername() {

@@ -16,18 +16,18 @@
 <div class="container-fluid">
     <center>
         <h2>Sing up/Registration</h2>
-        <form action="/signuprequest">
+        <form action="/signup" method="post">
             <div class="form-group" style="width: 400px;">
                 <label for="email" style="float: left;">Login/Email:</label>
                 <input type="email" class="form-control" id="email" placeholder="Enter login/email" name="email">
             </div>
             <div class="form-group" style="width: 400px;">
-                <label for="pwd" style="float: left;">Password:</label>
-                <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+                <label for="password" style="float: left;">Password:</label>
+                <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
             </div>
             <div class="form-group" style="width: 400px;">
-                <label for="pwd" style="float: left;">Repeat password:</label>
-                <input type="password" class="form-control" id="pwd" placeholder="Repeat password" name="pwd">
+                <label for="matchingPassword" style="float: left;">Repeat password:</label>
+                <input type="password" class="form-control" id="matchingPassword" placeholder="Repeat password" name="matchingPassword">
             </div>
             <button type="submit" class="btn btn-default">Create account</button>
         </form>

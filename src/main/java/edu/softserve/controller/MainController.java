@@ -1,18 +1,23 @@
 package edu.softserve.controller;
 
+import edu.softserve.dto.UserDTO;
 import edu.softserve.entity.User;
 import edu.softserve.service.PrivilegeService;
 import edu.softserve.service.RoleService;
 import edu.softserve.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Map;
 
@@ -21,15 +26,25 @@ import java.util.Map;
 public class MainController {
 
     @Autowired
+    private HttpServletRequest request;
+    @Autowired
     UserService userService;
     @Autowired
     RoleService roleService;
-
     @Autowired
     PrivilegeService privilegeService;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
-    public String welcomePage(Model model) {
+    public String welcomePage(Model model, HttpServletRequest request) {
+        System.out.println("Checking if ADMIN");
+        System.out.println(request.isUserInRole("ROLE_ADMIN"));
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            System.out.println(request.isUserInRole("ROLE_ADMIN"));
+            System.out.println("Yes I am ADMIN");
+        }
+        System.out.println("Your IP is " + request.getRemoteAddr());
         model.addAttribute("title", "Resources");
         model.addAttribute("message", "Welcome to Resources!");
         return "welcome";
@@ -44,6 +59,14 @@ public class MainController {
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public String adminPage(Model model) {
         return "adminPage";
+    }
+
+    @RequestMapping(value = "/lookup", method = RequestMethod.GET)
+    public String lookupPage(@RequestParam Map<String,String> lookupby) {
+        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
+            return "lookupByType";
+        else
+            return "lookupByOwner";
     }
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
@@ -65,6 +88,18 @@ public class MainController {
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
         return "signup"; //назва JSP
+    }
+
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid final UserDTO userDTO) {
+        System.out.println("new userDTO is:");
+        System.out.println(userDTO);
+
+        final User registered = userService.registerNewUserAccount(userDTO);
+
+        System.out.println("new user info is:");
+        System.out.println(registered);
+        return new ModelAndView("successfulUserCreation", "user", userDTO);
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -117,6 +152,17 @@ public class MainController {
         return "logoutSuccessful";
     }
 
+    @RequestMapping(value = "/profile", params = {"id"}, method = RequestMethod.GET)
+    public ModelAndView profile (@RequestParam Map<String,String> queryUser) {
+        String roleName = queryUser.get("id");
+        ModelAndView model = new ModelAndView("profile");
+        User user = userService.getUserById(Long.parseLong(queryUser.get("id")));
+        model.addObject("user", user);
+        System.out.println(user);
+        System.out.println(user.getUserDetails());
+        model.addObject("userDetails", user.getUserDetails());
+        return model;
+    }
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String userInfo(Model model, Principal principal) {
 
