@@ -69,10 +69,12 @@ public class MainController {
             return "lookupByOwner";
     }
 
+/*
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
     public String lookupPage(Model model) {
         return "lookup";
     }
+*/
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     public String resourcesPage(Model model) {
