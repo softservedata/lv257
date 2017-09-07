@@ -191,4 +191,15 @@ public class MainController {
         }
         return "403";
     }
+
+    @RequestMapping(value = "/code", params = {"code"}, method = RequestMethod.GET)
+    public ModelAndView instaCode (@RequestParam Map<String,String> queryUser) {
+        String authCode = queryUser.get("code");
+        ModelAndView model = new ModelAndView("profile");
+        /*User user = userService.getUserById(Long.parseLong(queryUser.get("id")));
+        model.addObject("user", user);*/
+        System.out.println(authCode);
+        //model.addObject("userDetails", user.getUserDetails());
+        return model;
+    }
 }
