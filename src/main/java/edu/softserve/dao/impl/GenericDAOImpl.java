@@ -60,6 +60,10 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         // merge() handles transient AND detached instances
         return em.merge(instance);
     }
+/*    public void makePersistent(T instance) {
+        // merge() handles transient AND detached instances
+        em.persist(instance);
+    }*/
 
     public void makeTransient(T instance) {
         em.remove(instance);

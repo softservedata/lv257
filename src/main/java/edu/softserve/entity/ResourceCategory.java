@@ -14,7 +14,7 @@ public class ResourceCategory {
     @Column(name = "Category_Name")
     private String categoryName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
@@ -27,11 +27,14 @@ public class ResourceCategory {
     @Column(name = "Path_To_Root")
     private String pathToRoot;
 
-    @OneToMany(mappedBy = "Id_Category")
+    @OneToMany(mappedBy = "resourceCategory")
     private Set<ResourceType> resourceTypes;
 
     public ResourceCategory(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public ResourceCategory() {
     }
 
     public Long getId() {
@@ -96,5 +99,11 @@ public class ResourceCategory {
         final StringBuilder builder = new StringBuilder();
         builder.append("Resource Category [name=").append(categoryName).append("]").append("[id=").append(id).append("]");
         return builder.toString();
+    }
+
+    public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {
+        this.categoryName = categoryName;
+        this.parentCategory = parentCategory;
+        this.resourceTypes = resourceTypes;
     }
 }

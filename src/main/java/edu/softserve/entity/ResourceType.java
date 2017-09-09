@@ -12,7 +12,7 @@ import java.util.Set;
 *
 * */
 @Entity
-@Table(name = "RESOURCE_CATEGORIES")
+@Table(name = "RESOURCE_TYPES")
 public class ResourceType {
 
     @Id
@@ -31,6 +31,8 @@ public class ResourceType {
     private ResourceCategory resourceCategory;
     /*private Set<ResourceProperty> properties;*/
 
+    public ResourceType() {
+    }
 
     @Override
     public boolean equals(Object o) {

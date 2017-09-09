@@ -1,8 +1,10 @@
 package edu.softserve.controller;
 
 import edu.softserve.dto.UserDTO;
+import edu.softserve.entity.ResourceCategory;
 import edu.softserve.entity.User;
 import edu.softserve.service.PrivilegeService;
+import edu.softserve.service.ResourceCategoryService;
 import edu.softserve.service.RoleService;
 import edu.softserve.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +21,15 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @Transactional
 public class MainController {
 
+    @Autowired
+    ResourceCategoryService categoryService;
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -47,6 +52,30 @@ public class MainController {
         System.out.println("Your IP is " + request.getRemoteAddr());
         model.addAttribute("title", "Resources");
         model.addAttribute("message", "Welcome to Resources!");
+
+        ResourceCategory root = new ResourceCategory("root", null, null);
+        ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
+        ResourceCategory branch2 = new ResourceCategory("branch2", root, null);
+        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1, null);
+        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1, null);
+        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
+        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
+        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
+
+        categoryService.addResourceCategory(root);
+        categoryService.addResourceCategory(branch1);
+        categoryService.addResourceCategory(branch2);
+        categoryService.addResourceCategory(leaf1_1);
+        categoryService.addResourceCategory(leaf1_2);
+        categoryService.addResourceCategory(leaf2_1);
+        categoryService.addResourceCategory(leaf2_2);
+        categoryService.addResourceCategory(leaf1_3);
+
+        List<ResourceCategory> list = categoryService.findAllResourceCategories();
+        for (ResourceCategory cat : list) {
+            System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
+        }
+
         return "welcome";
     }
 
@@ -202,4 +231,5 @@ public class MainController {
         //model.addObject("userDetails", user.getUserDetails());
         return model;
     }
+
 }

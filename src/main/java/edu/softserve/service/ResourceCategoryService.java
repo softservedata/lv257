@@ -40,12 +40,12 @@ public class ResourceCategoryService {
         if (parentCategory != null) {
             resourceCategory.setPathToRoot(
                     parentCategory.getPathToRoot() + "/"
-                            + resourceCategory.getId());
+                            + resourceCategory.getCategoryName());
             resourceCategory.setHierarchyLevel(
                     parentCategory.getHierarchyLevel() + 1);
         } else {
             resourceCategory
-                    .setPathToRoot("/" + resourceCategory.getId());
+                    .setPathToRoot("/" + resourceCategory.getCategoryName());
             resourceCategory.setHierarchyLevel(0);
         }
         resourceCategoryDAO.makePersistent(resourceCategory);
