@@ -29,8 +29,9 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     Long getCount();
 
-    T makePersistent(T entity);
-    /*void makePersistent(T entity);*/
+    T mergeObject(T entity);
+    /*T makePersistent(T entity);*/
+    void makePersistent(T entity);
 
     void makeTransient(T entity);
 

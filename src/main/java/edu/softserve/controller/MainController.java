@@ -53,6 +53,8 @@ public class MainController {
         model.addAttribute("title", "Resources");
         model.addAttribute("message", "Welcome to Resources!");
 
+        categoryService.findAllResourceCategories().stream().forEach(categoryService::deleteResourceCategory);
+
         ResourceCategory root = new ResourceCategory("root", null, null);
         ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
         ResourceCategory branch2 = new ResourceCategory("branch2", root, null);
@@ -61,6 +63,23 @@ public class MainController {
         ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
         ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
         ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
+
+/*        ResourceCategory root = new ResourceCategory("root");
+        ResourceCategory branch1 = new ResourceCategory("branch1");
+        ResourceCategory branch2 = new ResourceCategory("branch2");
+        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1");
+        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2");
+        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1");
+        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2");
+        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3");
+
+        root.getChildrenCategories().add(branch1);
+        root.getChildrenCategories().add(branch2);
+        branch1.getChildrenCategories().add(leaf1_1);
+        branch1.getChildrenCategories().add(leaf1_2);
+        branch1.getChildrenCategories().add(leaf1_3);
+        branch2.getChildrenCategories().add(leaf2_1);
+        branch2.getChildrenCategories().add(leaf2_2);*/
 
         categoryService.addResourceCategory(root);
         categoryService.addResourceCategory(branch1);
@@ -75,6 +94,10 @@ public class MainController {
         for (ResourceCategory cat : list) {
             System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
         }
+
+/*        ResourceCategory c1 = categoryService.findCategoryByName("branch1");
+        c1.setCategoryName("NEW_CAT");
+        categoryService.updateResourceCategory(c1);*/
 
         return "welcome";
     }

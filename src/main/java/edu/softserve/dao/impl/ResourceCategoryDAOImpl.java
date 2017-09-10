@@ -20,7 +20,7 @@ public class ResourceCategoryDAOImpl
 
     @Override
     public ResourceCategory findByName(String name) {
-        Query query = entityManager.createQuery("select i from ResourceCategory i where i.name = :name")
+        Query query = entityManager.createQuery("select i from ResourceCategory i where i.categoryName = :name")
                 .setParameter("name", name);
         return (ResourceCategory) query.getSingleResult();
     }

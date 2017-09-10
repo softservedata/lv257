@@ -11,10 +11,10 @@ public class ResourceCategory {
     @Column(name = "Id")
     private Long id;
 
-    @Column(name = "Category_Name")
+    @Column(name = "Category_Name"/*, unique = true*/)
     private String categoryName;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 

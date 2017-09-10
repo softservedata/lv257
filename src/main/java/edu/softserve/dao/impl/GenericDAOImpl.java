@@ -56,14 +56,17 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         return em.createQuery(c).getSingleResult();
     }
 
-    public T makePersistent(T instance) {
-        // merge() handles transient AND detached instances
+    public T mergeObject(T instance) {
         return em.merge(instance);
     }
-/*    public void makePersistent(T instance) {
+
+/*    public T makePersistent(T instance) {
         // merge() handles transient AND detached instances
-        em.persist(instance);
+        return em.merge(instance);
     }*/
+    public void makePersistent(T instance) {
+        em.persist(instance);
+    }
 
     public void makeTransient(T instance) {
         em.remove(instance);
