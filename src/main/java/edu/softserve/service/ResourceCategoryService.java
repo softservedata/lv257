@@ -33,10 +33,10 @@ public class ResourceCategoryService {
     @Transactional
     public void addResourceCategory(ResourceCategory resourceCategory) {
         setRootPath(resourceCategory);
-        /*List<ResourceCategory> existingCategories = this.findAllResourceCategories();*/
-        /*if (existingCategories.stream().anyMatch(c -> c.getCategoryName().equalsIgnoreCase(resourceCategory.getCategoryName())))*/
+//        List<ResourceCategory> existingCategories = this.findAllResourceCategories();
+//        if (existingCategories.stream().anyMatch(c -> c.getCategoryName().equalsIgnoreCase(resourceCategory.getCategoryName())))
         {
-            resourceCategoryDAO.makePersistent(resourceCategory);
+               resourceCategoryDAO.makePersistent(resourceCategory);
         }
     }
 

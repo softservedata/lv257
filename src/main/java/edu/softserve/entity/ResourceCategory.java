@@ -1,6 +1,7 @@
 package edu.softserve.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,7 +20,7 @@ public class ResourceCategory {
     private ResourceCategory parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")
-    private Set<ResourceCategory> childrenCategories;
+    private Set<ResourceCategory> childrenCategories = new HashSet<>();
 
     @Column(name = "Hierarchy_Level")
     private Integer hierarchyLevel;
@@ -28,7 +29,7 @@ public class ResourceCategory {
     private String pathToRoot;
 
     @OneToMany(mappedBy = "resourceCategory")
-    private Set<ResourceType> resourceTypes;
+    private Set<ResourceType> resourceTypes = new HashSet<>();
 
     public ResourceCategory(String categoryName) {
         this.categoryName = categoryName;

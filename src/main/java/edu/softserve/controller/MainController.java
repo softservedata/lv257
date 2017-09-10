@@ -63,15 +63,14 @@ public class MainController {
         ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
         ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
         ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
-
-/*        ResourceCategory root = new ResourceCategory("root");
+        /*ResourceCategory root = new ResourceCategory("root");
         ResourceCategory branch1 = new ResourceCategory("branch1");
         ResourceCategory branch2 = new ResourceCategory("branch2");
         ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1");
         ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2");
         ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1");
         ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2");
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3");
+        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3");*/
 
         root.getChildrenCategories().add(branch1);
         root.getChildrenCategories().add(branch2);
@@ -79,7 +78,7 @@ public class MainController {
         branch1.getChildrenCategories().add(leaf1_2);
         branch1.getChildrenCategories().add(leaf1_3);
         branch2.getChildrenCategories().add(leaf2_1);
-        branch2.getChildrenCategories().add(leaf2_2);*/
+        branch2.getChildrenCategories().add(leaf2_2);
 
         categoryService.addResourceCategory(root);
         categoryService.addResourceCategory(branch1);
