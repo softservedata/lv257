@@ -52,7 +52,8 @@
 		<jackson.core.version>2.4.4</jackson.core.version>
 		<google.gson.version>2.5</google.gson.version>
 		<!-- - - - - - Test - - - - - -->
-		<org.testng.version>6.9.10</org.testng.version>
+		<!-- <org.testng.version>6.9.10</org.testng.version> -->
+		<org.testng.version>6.11</org.testng.version>
 		<testng.reports.directory>./target/surefire-reports/test-output</testng.reports.directory>
 		<maven.surefire.plugin.version>2.19.1</maven.surefire.plugin.version>
 		<org.seleniumhq.version>3.1.0</org.seleniumhq.version>

@@ -3,7 +3,8 @@
 
 <suite name="Suite1">
 	<!-- 3 ERROR 5 WARNING 7 INFO -->
-	<test verbose="5" name="Test1">
+	<!-- <test verbose="5" name="Test1"> -->
+	<test verbose="9" name="Test1">
 		<parameter name="numberTest" value="Test" />
 		<classes>
 			<!-- <class name="com.softserve.edu.resources.AppTest" /> -->

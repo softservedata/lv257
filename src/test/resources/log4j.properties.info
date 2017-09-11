@@ -1,0 +1,40 @@
+# Root logger option
+#log4j.rootLogger=INFO, stdout, file
+log4j.rootLogger=DEBUG, stdout, file
+
+#log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+#log4j.appender.stdout.Target=System.out
+#log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+#log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
+
+#log4j.appender.file=org.apache.log4j.RollingFileAppender
+#log4j.appender.file.File=target/logs/app.log
+#log4j.appender.file.MaxFileSize=1MB
+#log4j.appender.file.layout=org.apache.log4j.PatternLayout
+#log4j.appender.file.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
+
+log4j.rootCategory = INFO, consoleAppender, rollingFileAppender
+# log4j.rootCategory = DEBUG, consoleAppender, rollingFileAppender
+# log4j.rootCategory = TRACE, consoleAppender, rollingFileAppender
+
+log4j.appender.consoleAppender = org.apache.log4j.ConsoleAppender
+log4j.appender.consoleAppender.layout = org.apache.log4j.PatternLayout
+log4j.appender.consoleAppender.layout.ConversionPattern = [%p] time: %d{ABSOLUTE} file: %F class: %c method: %M line: %L - %m%n
+
+# log4j.appender.fileAppender = org.apache.log4j.FileAppender
+# log4j.appender.fileAppender.layout = org.apache.log4j.PatternLayout
+# log4j.appender.fileAppender.layout.ConversionPattern = [%p] time: %d{ABSOLUTE} file: %F class: %c method: %M line: %L - %m%n
+# log4j.appender.fileAppender.File = ./target/surefire-reports/test-output/TestResults.log
+
+log4j.appender.rollingFileAppender=org.apache.log4j.RollingFileAppender
+# log4j.appender.rollingFileAppender.MaxFileSize = 2KB
+log4j.appender.rollingFileAppender.MaxFileSize = 10MB
+log4j.appender.rollingFileAppender.MaxBackupIndex = 2
+log4j.appender.rollingFileAppender.Append = true
+log4j.appender.rollingFileAppender.encoding = UTF-8
+log4j.appender.rollingFileAppender.layout = org.apache.log4j.PatternLayout
+log4j.appender.rollingFileAppender.layout.ConversionPattern = [%p] time: %d{yyyy-MM-dd HH:mm:ss} file: %F class: %c method: %M line: %L - %m%n
+log4j.appender.rollingFileAppender.File= ./target/surefire-reports/test-output/TestLogs.log
+
+# log4j.logger.org.apache.http = ERROR
+# log4j.logger.org.apache.http.impl.conn = ERROR
