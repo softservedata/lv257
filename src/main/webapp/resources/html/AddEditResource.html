@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Add Resource definition</title>
+	<link rel="icon" href="../image/resources-logo.png">
+	<link rel="stylesheet"
+				href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link
+			href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
+			rel="stylesheet" />
+	<link href="../css/main.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery.min.js"></script>
+	<script
+			src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+	<script>
+      function defineNewType(){
+          definitionForm.style = 'display: initial;';
+          additionBtn.style = 'display: none;';
+      }
+	</script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+							aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" rel="home" href="Main.html"
+				 title="Project Resources"> <img
+					style="max-width: 100px; margin-top: -10px;"
+					src="../image/resources-logo.png">
+			</a> <a class="navbar-brand" rel="home" href="#"
+							title="Project Resources"> <img style="max-width: 100px"
+																							src="../image/text.png"></a>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li ><a href="LookUpResources.html">Look up</a></li>
+				<li><a href="ManageUsersAndRoles.html">Users</a></li>
+				<li class="active"><a href="ResourcesRequest.html">Resources</a></li>
+				<li><a href="#">Community</a></li>
+				<li><a href="#about">About</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="language-panel"><a href="" class="dropdown-toggle"
+																			data-toggle="dropdown" role="button" aria-haspopup="true"
+																			aria-expanded="false"><span class="glyphicon glyphicon-globe"></span>
+					Language<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="">English</a></li>
+						<li><a href="">Ukrainian</a></li>
+						<li><a href="">Russian</a></li>
+					</ul></li>
+				<li class="Account"><a href="" class="dropdown-toggle"
+															 data-toggle="dropdown" role="button" aria-haspopup="true"
+															 aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+					Profile (Resource Admin)<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="">Signed in as Resource Admin</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="Account.html">Your profile</a></li>
+						<li><a href="Profile.html">Settings</a></li>
+						<li><a href="">Help</a></li>
+						<li><a href="">Sign out</a></li>
+						<li role="separator" class="divider"></li>
+						<li class="dropdown-header">Debug information</li>
+						<li><a href="">A.10</a></li>
+					</ul></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+<br />
+		<div class="container">
+			<ul class="nav nav-tabs">
+				<li ><a href="ResourcesView.html">View</a></li>
+				<li class="active"><a href="#">Add</a></li>
+				<li> <a href="ResourcesRequest.html">Requests <span class="badge">3</span></a></li>
+			</ul>
+		</div>
+		<div class="container">
+
+			<div class="container-fluid col-sd-12">
+				<div class="container-fluid">
+					<br>
+					<h3>Choose a way to create definition</h3>
+					<br>
+					<div class="row">
+						<div>
+							<a href="ResourcesView.html" class="btn btn-primary" type="button">Clone existing</a>
+							<!--</div>-->
+							<!--<div class="col-sm-2">-->
+							<button id="additionBtn" class="btn btn-primary" type="button"
+											onclick="defineNewType();">Define new</button></div>
+					</div>
+				</div>
+			</div>
+			<div id="definitionForm" class="container" style="display: none;">
+				<form action="ResourcesView.html">
+
+					<div class="form-group">
+						<label for="resCat">Resource Category</label>
+						<select id="resCat" class="form-control">
+							<option value="0">Select desired category</option>
+							<option value="1">Aircrafts</option>
+							<option value="2">Automobiles</option>
+							<option value="3">Railroad transport</option>
+							<option value="4">Ships</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="resourceType">Resource Type</label>
+						<select id="resourceType" class="form-control">
+							<option value="0">Select desired type</option>
+							<option>Car</option>
+							<option>Bus</option>
+							<option>Motorcycle</option>
+							<option>Truck</option>
+						</select>
+					</div>
+					<div class="container-fluid">
+						<br>
+						<h4>Resource Type Properties</h4>
+						<hr>
+
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+										data-target="#existProps">Add existing</button>
+						<button type="button" class="btn btn-primary" data-toggle="modal"
+										data-target="#newProp">Add new</button>
+
+						<div id="existProps" class="modal fade">
+							<div class="modal-dialog">
+								<div class="modal-content">
+
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4>Resource Properties</h4>
+									</div>
+									<div class="modal-body">
+										<div class="container-fluid">
+											<form>
+												<ul>
+													<li><label><input type="checkbox"> Width, meters (m)</label></li>
+													<li><label><input type="checkbox"> Width, centimeters (cm)</label></li>
+													<li><label><input type="checkbox"> Height, meters (m)</label></li>
+													<li><label><input type="checkbox"> Height, centimeters (cm)</label></li>
+													<li><label><input type="checkbox"> Power, watts (W)</label></li>
+													<li><label><input type="checkbox"> Power, kilo watts (kW)</label></li>
+													<li><label><input type="checkbox"> Power, horse power(HP)</label></li>
+													<li><label><input type="checkbox"> Weight, kilograms(kg)</label></li>
+													<li><label><input type="checkbox"> Weight, pounds(p)</label></li>
+													<li><label><input type="checkbox"> Weight, tons(t)</label></li>
+													<li><label><input type="checkbox"> Color</label></li>
+												</ul>
+												<div class="pull-right">
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Accept</button>
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Discard</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="newProp" class="modal fade">
+							<div class="modal-dialog">
+								<div class="modal-content">
+
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+											&times;
+										</button>
+										<h4>Define new Property</h4>
+									</div>
+										<div class="modal-body">
+									<div class="container-fluid">
+											<form class="form">
+												<div class="row">
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label for="title">Property title</label>
+															<input type="text" class="form-control" id="title"
+																		 placeholder="Title">
+														</div>
+													</div>
+													<div class="col-sm-6">
+														<div class="form-group">
+															<label for="name">Property name</label>
+															<input type="text" class="form-control" id="name"
+																		 placeholder="Name">
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-5">
+														<div class="form-group">
+															<label for="units">Measuring units</label>
+															<input type="text" class="form-control" id="units"
+																		 placeholder="e.g. cc (cubical centimeters)">
+														</div>
+													</div>
+													
+														<div class="col-sm-3">
+															<div class="form-group">
+																<label for="valueType">Value type</label>
+																<select class="form-control" id="valueType"
+																				placeholder="Select value type">
+																	<option value="0">Select value type</option>
+																	<option value="1">integer</option>
+																	<option value="2">decimal</option>
+																	<option value="3">string</option>
+																	<option value="4">boolean</option>
+																	<option value="5">timestamp</option>
+																	<option value="6">resource property</option>
+																</select>
+															</div>
+														</div>
+														<div class="col-sm-3">
+															<div class="form-group">
+																<label for="default">Default value</label>
+																<input type="text" class="form-control" id="default"
+																			 placeholder="0">
+															</div>
+														</div>
+													
+												</div>
+												<div class="form-group">
+													<label for="regex">Validation regex</label>
+													<input type="text" class="form-control" id="regex"
+																 placeholder="regex string, e.g. [0-9]+\.[0-9]*[1-9] for decimal with non-zero last digit">
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="essential"><span class="font-bold">Essential</span></label>
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="multi"><span class="font-bold">Multivalued</span></label>
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="req"><span class="font-bold">Required</span></label>
+												</div>
+												<div class="checkbox">
+													<label><input type="checkbox" id="secured"><span class="font-bold">Secured</span></label>
+												</div>
+												<div class="container-fluid pull-right">
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Save</button>
+													<button type="reset" class="btn btn-primary" data-dismiss="modal">Save/Add New</button>
+											</div>
+												</div>
+										</div>
+
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<table class="table table-hover">
+							<thead>
+							<tr>
+								<th>Characteristic Name</th>
+								<th>Details</th>
+								<th>Edit</th>
+								<th>Delete</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>Char 1</td>
+								<td>Det 1</td>
+								<td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
+								<td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td>Char2</td>
+								<td>Det 2</td>
+								<td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
+								<td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							<tr>
+								<td>Char3</td>
+								<td>Det 3</td>
+								<td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
+								<td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<button type="submit" class="btn btn-default">Save</button>
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+<footer class="footer">
+	<div class="container">
+		<p class="text-muted">&copy; Lv257_Java</p>
+	</div>
+</footer>
+
+</body>
+</html>

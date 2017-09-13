@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +93,7 @@ public class MainController {
         List<ResourceCategory> list = categoryService.findAllResourceCategories();
         for (ResourceCategory cat : list) {
             System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
+            System.out.println("Childrens: " + Arrays.asList(cat.getChildrenCategories()));
         }
 
 /*        ResourceCategory c1 = categoryService.findCategoryByName("branch1");
