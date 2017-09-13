@@ -12,10 +12,6 @@ public interface ResourceRequestDAO {
 
     List<ResourceRequest> getAllRequests();
 
-    List<ResourceRequest> getNewResourcesRequest();
-
-    List<ResourceRequest> getProcessedRequest() ;
-
-   // List<ResourceRequest> getAllRequestsForOneRegister();
+    ResourceRequest findById(long id);
 
 }

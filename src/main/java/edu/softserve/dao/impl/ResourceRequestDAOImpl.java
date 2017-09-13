@@ -29,77 +29,27 @@ public class ResourceRequestDAOImpl implements ResourceRequestDAO {
     }
 
     @Override
-    public void updateRequest(ResourceRequest request) {
-        entityManager.refresh(request);
-    }
-
-    //search on client
     public List<ResourceRequest> getAllRequests() {
+        Query query = entityManager.createQuery("SELECT m FROM ResourceRequest m");
+        List<?> result = query.getResultList();
+        return (List<ResourceRequest>) result;
+    }
 
-        CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+    @Override
+    public ResourceRequest findById(long id) {
+        Query query = entityManager.createQuery("select i from ResourceRequest i where i.id = :id")
+                .setParameter("id", id);
+        ResourceRequest request = (ResourceRequest) query.getSingleResult();
+        return request;
+    }
 
-        CriteriaQuery<ResourceRequest> criteriaQuery = builder.createQuery(ResourceRequest.class);
-        Root<ResourceRequest> request = criteriaQuery.from(ResourceRequest.class);
-
-        criteriaQuery.select(request);
-        Query query = entityManager.createQuery(criteriaQuery);
-        List<ResourceRequest> result = query.getResultList();
-        return result;
+    @Override
+    public void updateRequest(ResourceRequest request) {
+        entityManager.merge(request);
     }
 
 
-    //search in db
-    public List<ResourceRequest> getNewResourcesRequest() {
-        List<ResourceRequest> requests = new ArrayList<>();
 
-        Field entityStatusField = null;
-        try {
-            entityStatusField = ResourceRequest.class.getDeclaredField("status");
-
-            Column columnStatus = entityStatusField.getDeclaredAnnotation(Column.class);
-            String columnStatusName = columnStatus.name();
-
-            Field entityNotifyField = ResourceRequest.class.getDeclaredField("notifyExecutor");
-            Column columnNotifying = entityNotifyField.getDeclaredAnnotation(Column.class);
-            String columnNotifyingName = columnNotifying.name();
-
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-            CriteriaQuery criteriaQuery = builder.createQuery();
-            Root request = criteriaQuery.from(ResourceRequest.class);
-
-            criteriaQuery.select(request);
-            criteriaQuery.where(builder.and(builder.equal(request.get(columnStatusName), "NEW")
-                    , builder.equal(request.get(columnNotifyingName), true)));
-            Query query = entityManager.createQuery(criteriaQuery);
-            requests = query.getResultList();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return requests;
-    }
-
-    public List<ResourceRequest> getProcessedRequest() {
-        List<ResourceRequest> requests = new ArrayList<>();
-        try {
-            Field entityStatusField = ResourceRequest.class.getDeclaredField("status");
-            Column column = entityStatusField.getDeclaredAnnotation(Column.class);
-            String columnName = column.name();
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-            CriteriaQuery criteriaQuery = builder.createQuery();
-            Root request = criteriaQuery.from(ResourceRequest.class);
-
-            criteriaQuery.select(request);
-            criteriaQuery.where(builder.and(builder.equal(request.get(columnName), "ACCEPTED")
-                    , builder.equal(request.get(columnName), "DELETED")));
-            Query query = entityManager.createQuery(criteriaQuery);
-            requests = query.getResultList();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return requests;
-    }
 
     public List<ResourceRequest> getAllRequestsForOneRegister(){
 
