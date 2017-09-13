@@ -2,8 +2,6 @@ package edu.softserve.entity;
 
 import javax.persistence.*;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -11,36 +9,35 @@ import java.util.Set;
  */
 
 @Entity
+@Table(name = "Documents")
 public class Document {
+
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "series")
+    @Column(name = "series", nullable = false)
     private String series;
 
-    @Column(name = "number")
+    @Column(name = "number", nullable = false)
     private String number;
 
 
-    @OneToMany(mappedBy = "document")
-    private Collection<ResourceRequest> requests;
-
-
-   private Set<URL> copies;
 
 
     public Document() {
+        super();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public Document setId(int id) {
+    public Document setId(long id) {
         this.id = id;
         return this;
     }
@@ -72,12 +69,6 @@ public class Document {
         return this;
     }
 
-    public Set<URL> getCopies() {
-        return new HashSet<>();
-    }
 
-//    public Document setCopies(Set<URL> copies) {
-//       // this.copies = copies;
-//        return this;
-//    }
+
 }

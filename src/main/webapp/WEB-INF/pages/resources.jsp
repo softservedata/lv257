@@ -9,10 +9,26 @@
 <body>
 <jsp:include page="_menu2.jsp" />
 
-<h2>Resources Page</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+            <div class="container">
 
+                <ul class="nav nav-tabs">
+                    <li ><a href="${pageContext.request.contextPath}/resources/registration">Register resource</a></li>
+                    <li id="sendRequest"><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
+                    <li ><a href="${pageContext.request.contextPath}/resources/history">History</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
-<h3>Here will be implemented Resources management functions</h3>
+    <script src="resources/js/resourcesRegister.js"></script>
+
+</div>
+                <br>
+                <br>
+
 
 
 </body>

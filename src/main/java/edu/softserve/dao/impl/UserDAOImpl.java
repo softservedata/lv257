@@ -26,9 +26,11 @@ public class UserDAOImpl implements UserDAO {
     public User findByEmail(String email) {
         Query query = entityManager.createQuery("select i from User i where i.username = :username")
                 .setParameter("username", email);
+
         User user = (User)query.getSingleResult();
         return user;
     }
+
 
     @Override
     public User findById(long id) {
