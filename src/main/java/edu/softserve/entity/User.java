@@ -3,6 +3,7 @@ package edu.softserve.entity;
 import org.jboss.aerogear.security.otp.api.Base32;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 
 @Entity
@@ -29,6 +30,13 @@ public class User {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private UserDetails userDetails;
+
+    @OneToMany(mappedBy = "resourcesAdmin")
+    private Collection<ResourceRequest> requestsByAdmin;
+
+    @OneToMany(mappedBy = "register")
+    private Collection<ResourceRequest> requestsByRegister;
+
 
     public User() {
         super();
