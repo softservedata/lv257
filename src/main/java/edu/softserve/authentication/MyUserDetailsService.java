@@ -21,6 +21,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserService userService;
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -46,7 +47,7 @@ public class MyUserDetailsService implements UserDetailsService {
         final List<String> privileges = new ArrayList<String>();
         final List<Privilege> collection = new ArrayList<Privilege>();
 
-            collection.addAll(role.getPrivileges());
+        collection.addAll(role.getPrivileges());
 
         for (final Privilege item : collection) {
             privileges.add(item.getName());
