@@ -5,11 +5,13 @@ import edu.softserve.entity.User;
 import edu.softserve.service.PrivilegeService;
 import edu.softserve.service.RoleService;
 import edu.softserve.service.UserService;
+import edu.softserve.validator.FormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,14 +29,21 @@ public class MainController {
 
     @Autowired
     private HttpServletRequest request;
+
     @Autowired
     UserService userService;
+
     @Autowired
     RoleService roleService;
+
     @Autowired
     PrivilegeService privilegeService;
+
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private FormValidator formValidator;
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model, HttpServletRequest request) {
@@ -88,20 +97,27 @@ public class MainController {
 
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+        model.addAttribute("newUser", new UserDTO());
         return "signup"; //назва JSP
     }
 
+//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+//    public String signUp(@ModelAttribute("newUser") UserDTO user) {
+//        userService.registerNewUserAccount(user);
+//        return "successfulUserCreation";
+//    }
+
     @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ModelAndView registerUserAccount(@ModelAttribute("user") @Valid final UserDTO userDTO) {
-        System.out.println("new userDTO is:");
-        System.out.println(userDTO);
+    public String submitForm(@Valid @ModelAttribute(value = "newUser") UserDTO  userDTO, BindingResult result) {
 
-        final User registered = userService.registerNewUserAccount(userDTO);
+        formValidator.validate(userDTO, result);
 
-        System.out.println("new user info is:");
-        System.out.println(registered);
-        return new ModelAndView("successfulUserCreation", "user", userDTO);
+        if (result.hasErrors()) {
+            return "signup";
+        }
+
+        userService.registerNewUserAccount(userDTO);
+        return "successfulUserCreation";
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -201,5 +217,13 @@ public class MainController {
         System.out.println(authCode);
         //model.addObject("userDetails", user.getUserDetails());
         return model;
+    }
+
+    public FormValidator getFormValidator() {
+        return formValidator;
+    }
+
+    public void setFormValidator(FormValidator formValidator) {
+        this.formValidator = formValidator;
     }
 }

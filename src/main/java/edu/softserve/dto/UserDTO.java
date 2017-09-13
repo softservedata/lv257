@@ -1,31 +1,34 @@
 package edu.softserve.dto;
 
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//@PasswordMatches
 public class UserDTO {
-    /*@NotNull
-    @Size(min = 1)*/
+
+    @NotNull
+    @Size(min = 1)
     private String firstName;
 
-
-    /*@NotNull
-    @Size(min = 1)*/
     private String lastName;
 
-    //@ValidPassword
+    @NotEmpty(message = "Email should not be empty")
+    @NotNull
+    @Email(message = "Invalid email address!")
+    private String email;
+
+    @NotNull
+    @Size(min = 3, max = 15, message = "Password should be from 3 to 15 characters")
     private String password;
 
+    @Transient
+    @NotEmpty(message = "Confirm Password should not be empty")
     @NotNull
-    @Size(min = 1)
-    private String matchingPassword;
-
-    //@ValidEmail
-    @NotNull
-    @Size(min = 1)
-    private String email;
+    private String confirmPassword;
 
     private boolean isUsing2FA;
 
@@ -71,12 +74,12 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getMatchingPassword() {
-        return matchingPassword;
+    public String getConfirmPassword() {
+        return confirmPassword;
     }
 
-    public void setMatchingPassword(final String matchingPassword) {
-        this.matchingPassword = matchingPassword;
+    public void setConfirmPassword(final String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public boolean isUsing2FA() {
@@ -90,7 +93,7 @@ public class UserDTO {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("UserDto [firstName=").append(firstName).append(", lastName=").append(lastName).append(", password=").append(password).append(", matchingPassword=").append(matchingPassword).append(", email=").append(email).append(", isUsing2FA=")
+        builder.append("UserDto [firstName=").append(firstName).append(", lastName=").append(lastName).append(", password=").append(password).append(", confirmPassword=").append(confirmPassword).append(", email=").append(email).append(", isUsing2FA=")
                 .append(isUsing2FA).append(", role=").append(role).append("]");
         return builder.toString();
     }

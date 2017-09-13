@@ -1,5 +1,6 @@
 package edu.softserve.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,13 +16,13 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 public class ApplicationContextConfig {
 
 
-    @Bean
-    public ResourceBundleMessageSource messageSource() {
-        ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
-        // Load property in message/validator.properties
-        rb.setBasenames(new String[] { "messages/validator" });
-        return rb;
-    }
+//    @Bean
+//    public ResourceBundleMessageSource messageSource() {
+//        ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
+//        // Load property in message/validator.properties
+//        rb.setBasenames(new String[] { "messages/validator" });
+//        return rb;
+//    }
 
     @Bean(name = "viewResolver")
     public InternalResourceViewResolver getViewResolver() {
@@ -31,4 +32,13 @@ public class ApplicationContextConfig {
         return viewResolver;
     }
 
+    @Bean
+    public MessageSource messageSource(){
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+//        messageSource.setBasename("/WEB-INF/messages");
+        messageSource.setBasename("messages");
+        messageSource.setDefaultEncoding("UTF-8");
+
+        return messageSource;
+    }
 }
