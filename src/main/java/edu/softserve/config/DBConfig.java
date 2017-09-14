@@ -55,12 +55,15 @@ public class DBConfig {
                 getEntityManagerFactoryBean().getObject());
         return jpaTransactionManager;
     }
+
     private Properties jpaProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         properties.put("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+        properties.put("hibernate.use_sql_comments", env.getProperty("hibernate.use_sql_comments"));
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+        properties.put("hibernate.hbm2ddl.sql-load-script-source", env.getProperty("hibernate.hbm2ddl.sql-load-script-source"));
         return properties;
     }
 }
