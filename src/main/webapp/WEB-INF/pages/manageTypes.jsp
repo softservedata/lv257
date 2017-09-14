@@ -202,7 +202,7 @@
             console.log(window.JSON.stringify(list.nestable('serialize')));
         };
 
-        var json = ${inputJson};
+        var json = [${inputJson}];
 
         // activate Nestable for list 1
         $('#nestable').nestable({
