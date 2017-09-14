@@ -8,7 +8,7 @@ public interface AddressService {
 
     void addAddress(Address address);
 
-    Address findById(int id);
+    Address findById(long id);
 
     void updateAddress(Address address);
 

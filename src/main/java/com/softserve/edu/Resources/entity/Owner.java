@@ -1,15 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
-
-import lombok.*;
-
 import javax.persistence.*;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -22,26 +13,22 @@ public abstract class Owner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "owner_id")
-    private int id;
-
-    @Column(name = "owner_type")
-    private String ownerType;
+    private long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     private Address address;
-
-    @Column(name = "phone")
     private String phone;
 
-    public Owner setPhone(String phone) {
-        this.phone = phone;
-        return this;
+    public Owner() {
     }
 
-    public Owner setOwnerType(String ownerType) {
-        this.ownerType = ownerType;
-        return this;
+    public long getId() {
+        return id;
+    }
+
+    public Address getAddress() {
+        return address;
     }
 
     public Owner setAddress(Address address) {
@@ -49,8 +36,41 @@ public abstract class Owner {
         return this;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public Owner setPhone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Owner)) return false;
+
+        Owner owner = (Owner) o;
+
+        if (id != owner.id) return false;
+        if (address != null ? !address.equals(owner.address) : owner.address != null) return false;
+        return phone != null ? phone.equals(owner.phone) : owner.phone == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        return result;
+    }
+
     @Override
     public String toString() {
-        return String.format("Owner{ownerType='%s', phone='%s'}", ownerType, phone);
+        return "Owner{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                '}';
     }
+
 }

@@ -5,10 +5,12 @@ import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class AddressServiceImpl implements AddressService {
 
     @Autowired
@@ -20,7 +22,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address findById(int id) {
+    public Address findById(long id) {
         return addressDAO.findById(id);
     }
 

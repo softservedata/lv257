@@ -19,7 +19,7 @@ public class AddressDAOImpl implements AddressDAO {
         entityManager.persist(address);
     }
 
-    public Address findById(int id) {
+    public Address findById(long id) {
         Query query = entityManager.createQuery("SELECT a FROM Address a WHERE id = :id");
         query.setParameter("id", id);
         return (Address) query.getSingleResult();
