@@ -1,5 +1,9 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
@@ -18,21 +22,26 @@ public class ResourceType {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name = "Id")
     private Long id;
 
     @NotNull
     @Column(name = "Type_Name", unique = true, nullable = false)
+    @JsonProperty("typename")
     private String typeName;
 
     @NotNull
     @Column(name = "Table_Name", unique = true, nullable = false)
+    @JsonIgnore
     private String tableName;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "Id_Category")
     private ResourceCategory category;
 
     @ManyToMany(cascade = CascadeType.PERSIST)
+    @JsonIgnore
     @JoinTable(
             name = "RESOURCE_TYPES_PROPERTIES",
             joinColumns = @JoinColumn(name = "Resource_Type_Id"),
@@ -41,6 +50,7 @@ public class ResourceType {
     private Set<ResourceProperty> properties = new HashSet<>();
 
     @Column(name = "Instantiated")
+    @JsonIgnore
     private boolean instantiated;
 
 
@@ -69,11 +79,11 @@ public class ResourceType {
         properties = new HashSet<>();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public ResourceType setId(long id) {
+    public ResourceType setId(Long id) {
         this.id = id;
         return this;
     }
@@ -119,11 +129,6 @@ public class ResourceType {
         return properties.stream()
                        .filter(rp -> rp.getTitle().equalsIgnoreCase(propertyName))
                        .findFirst();
-    }
-
-    public ResourceType setId(Long id) {
-        this.id = id;
-        return this;
     }
 
     public ResourceCategory getCategory() {

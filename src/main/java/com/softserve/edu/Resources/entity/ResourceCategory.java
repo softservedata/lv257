@@ -39,6 +39,7 @@ public class ResourceCategory {
     private String pathToRoot;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     @JsonProperty("restypes")
     private Set<ResourceType> resourceTypes = new HashSet<>();
 

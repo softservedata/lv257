@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
@@ -25,9 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Transactional
@@ -269,14 +268,20 @@ public class MainController {
         branch2.getChildrenCategories().add(leaf2_1);
         branch2.getChildrenCategories().add(leaf2_2);
 
-        categoryService.updateResourceCategory(root);
-        categoryService.updateResourceCategory(branch1);
-        categoryService.updateResourceCategory(branch2);
-        categoryService.updateResourceCategory(leaf1_1);
-        categoryService.updateResourceCategory(leaf1_2);
-        categoryService.updateResourceCategory(leaf2_1);
-        categoryService.updateResourceCategory(leaf2_2);
-        categoryService.updateResourceCategory(leaf1_3);
+/*        ResourceType type1 = new ResourceType();
+        type1.setTypeName("type1").setCategory(leaf2_2);
+        Set<ResourceType> rtset = new HashSet<>();
+        rtset.add(type1);
+        leaf2_2.setResourceTypes(rtset);*/
+
+        categoryService.addResourceCategory(root);
+        categoryService.addResourceCategory(branch1);
+        categoryService.addResourceCategory(branch2);
+        categoryService.addResourceCategory(leaf1_1);
+        categoryService.addResourceCategory(leaf1_2);
+        categoryService.addResourceCategory(leaf2_1);
+        categoryService.addResourceCategory(leaf2_2);
+        categoryService.addResourceCategory(leaf1_3);
 
         List<ResourceCategory> list = categoryService.findAllResourceCategories();
         for (ResourceCategory cat : list) {
