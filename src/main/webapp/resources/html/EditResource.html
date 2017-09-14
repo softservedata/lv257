@@ -20,7 +20,90 @@
     <script src="../js/jquery.nestable.js"></script>
     <script>
         $(document).ready(function () {
-            $('#nestable').nestable({scroll: true})
+            var updateOutput = function(e) {
+                var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+                if(window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                }
+                else {
+                    output.val('JSON browser support required for this demo.');
+                }
+                console.log(window.JSON.stringify(list.nestable('serialize')));
+            };
+
+            var json = [{
+                "id" : 773,
+                "catname" : "root",
+                "children" : [ {
+                    "id" : 774,
+                    "catname" : "branch1",
+                    "children" : [ {
+                        "id" : 776,
+                        "catname" : "leaf1_1",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch1/leaf1_1",
+                        "restypes" : null
+                    }, {
+                        "id" : 777,
+                        "catname" : "leaf1_2",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch1/leaf1_2",
+                        "restypes" : null
+                    }, {
+                        "id" : 780,
+                        "catname" : "leaf1_3",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch1/leaf1_3",
+                        "restypes" : null
+                    } ],
+                    "level" : 1,
+                    "rootpath" : "/root/branch1",
+                    "restypes" : null
+                }, {
+                    "id" : 775,
+                    "catname" : "branch2",
+                    "children" : [ {
+                        "id" : 779,
+                        "catname" : "leaf2_2",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch2/leaf2_2",
+                        "restypes" : null
+                    }, {
+                        "id" : 778,
+                        "catname" : "leaf2_1",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch2/leaf2_1",
+                        "restypes" : null
+                    } ],
+                    "level" : 1,
+                    "rootpath" : "/root/branch2",
+                    "restypes" : null
+                } ],
+                "level" : 0,
+                "rootpath" : "/root",
+                "restypes" : null
+            }];
+
+            // activate Nestable for list 1
+            $('#nestable').nestable({
+                json: json,
+                contentCallback: function(item) {
+                    var content = item.catname || '' ? item.catname : item.id;
+                    content += ' <i>(id = ' + item.id + ')</i>';
+
+                    return content;
+                }
+            }).on('change', updateOutput);
+
+            // output initial serialised data
+            updateOutput($('#nestable').data('output', $('#nestable-output')));
+
             $('#nestable-menu').on('click', function (e) {
                 var target = $(e.target),
                     action = target.data('action');
@@ -107,7 +190,7 @@
         <button type="button" class="btn btn-primary" data-action="expand-all">Expand All</button>
         <button type="button" class="btn btn-primary" data-action="collapse-all">Collapse All</button>
     </div>
-    <div class="dd scrollable" id="nestable">
+<!--    <div class="dd scrollable" id="nestable">
         <ol class="dd-list">
             <li class="dd-item rcategory" data-id="1">
                 <div class="dd-handle">Item 1</div>
@@ -150,7 +233,14 @@
                 <div class="dd-handle">Item 12</div>
             </li>
         </ol>
-    </div>
+    </div>-->
+
+    <div class="dd scrollable" id="nestable"></div>
+
+    <p><strong>Serialised Output (per list)</strong></p>
+
+    <textarea id="nestable-output"></textarea>
+
     <div>
         <br>
         <h4>Properties of the selected resource type</h4>

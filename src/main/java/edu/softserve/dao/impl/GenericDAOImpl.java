@@ -56,7 +56,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         return em.createQuery(c).getSingleResult();
     }
 
-    public T mergeObject(T instance) {
+    public T merge(T instance) {
         return em.merge(instance);
     }
 

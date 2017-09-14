@@ -1,5 +1,9 @@
 package edu.softserve.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,22 +17,29 @@ public class ResourceCategory {
     private Long id;
 
     @Column(name = "Category_Name"/*, unique = true*/)
+    @JsonProperty("catname")
     private String categoryName;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")
+    @JsonManagedReference
+    @JsonProperty("children")
     private Set<ResourceCategory> childrenCategories = new HashSet<>();
 
     @Column(name = "Hierarchy_Level")
+    @JsonProperty("level")
     private Integer hierarchyLevel;
 
     @Column(name = "Path_To_Root")
+    @JsonProperty("rootpath")
     private String pathToRoot;
 
     @OneToMany(mappedBy = "resourceCategory")
+    @JsonProperty("restypes")
     private Set<ResourceType> resourceTypes = new HashSet<>();
 
     public ResourceCategory(String categoryName) {

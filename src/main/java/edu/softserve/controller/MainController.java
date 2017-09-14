@@ -1,5 +1,7 @@
 package edu.softserve.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.softserve.dto.UserDTO;
 import edu.softserve.entity.ResourceCategory;
 import edu.softserve.entity.User;
@@ -20,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
@@ -53,52 +56,6 @@ public class MainController {
         System.out.println("Your IP is " + request.getRemoteAddr());
         model.addAttribute("title", "Resources");
         model.addAttribute("message", "Welcome to Resources!");
-
-        categoryService.findAllResourceCategories().stream().forEach(categoryService::deleteResourceCategory);
-
-        ResourceCategory root = new ResourceCategory("root", null, null);
-        ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
-        ResourceCategory branch2 = new ResourceCategory("branch2", root, null);
-        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1, null);
-        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1, null);
-        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
-        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
-        /*ResourceCategory root = new ResourceCategory("root");
-        ResourceCategory branch1 = new ResourceCategory("branch1");
-        ResourceCategory branch2 = new ResourceCategory("branch2");
-        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1");
-        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2");
-        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1");
-        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2");
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3");*/
-
-        root.getChildrenCategories().add(branch1);
-        root.getChildrenCategories().add(branch2);
-        branch1.getChildrenCategories().add(leaf1_1);
-        branch1.getChildrenCategories().add(leaf1_2);
-        branch1.getChildrenCategories().add(leaf1_3);
-        branch2.getChildrenCategories().add(leaf2_1);
-        branch2.getChildrenCategories().add(leaf2_2);
-
-        categoryService.addResourceCategory(root);
-        categoryService.addResourceCategory(branch1);
-        categoryService.addResourceCategory(branch2);
-        categoryService.addResourceCategory(leaf1_1);
-        categoryService.addResourceCategory(leaf1_2);
-        categoryService.addResourceCategory(leaf2_1);
-        categoryService.addResourceCategory(leaf2_2);
-        categoryService.addResourceCategory(leaf1_3);
-
-        List<ResourceCategory> list = categoryService.findAllResourceCategories();
-        for (ResourceCategory cat : list) {
-            System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
-            System.out.println("Childrens: " + Arrays.asList(cat.getChildrenCategories()));
-        }
-
-/*        ResourceCategory c1 = categoryService.findCategoryByName("branch1");
-        c1.setCategoryName("NEW_CAT");
-        categoryService.updateResourceCategory(c1);*/
 
         return "welcome";
     }
@@ -253,6 +210,80 @@ public class MainController {
         model.addObject("user", user);*/
         System.out.println(authCode);
         //model.addObject("userDetails", user.getUserDetails());
+        return model;
+    }
+
+    @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
+    public ModelAndView manageTypes() {
+        ModelAndView model = new ModelAndView("manageTypes");
+        categoryService.findAllResourceCategories().stream().forEach(categoryService::deleteResourceCategory);
+
+        ResourceCategory root = new ResourceCategory("root", null, null);
+        ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
+        ResourceCategory branch2 = new ResourceCategory("branch2", root, null);
+        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1, null);
+        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1, null);
+        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
+        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
+        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
+
+        /*ResourceCategory root = new ResourceCategory("root");
+        ResourceCategory branch1 = new ResourceCategory("branch1");
+        ResourceCategory branch2 = new ResourceCategory("branch2");
+        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1");
+        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2");
+        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1");
+        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2");
+        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3");*/
+
+        root.getChildrenCategories().add(branch1);
+        root.getChildrenCategories().add(branch2);
+        branch1.getChildrenCategories().add(leaf1_1);
+        branch1.getChildrenCategories().add(leaf1_2);
+        branch1.getChildrenCategories().add(leaf1_3);
+        branch2.getChildrenCategories().add(leaf2_1);
+        branch2.getChildrenCategories().add(leaf2_2);
+
+        categoryService.addResourceCategory(root);
+        categoryService.addResourceCategory(branch1);
+        categoryService.addResourceCategory(branch2);
+        categoryService.addResourceCategory(leaf1_1);
+        categoryService.addResourceCategory(leaf1_2);
+        categoryService.addResourceCategory(leaf2_1);
+        categoryService.addResourceCategory(leaf2_2);
+        categoryService.addResourceCategory(leaf1_3);
+
+        List<ResourceCategory> list = categoryService.findAllResourceCategories();
+        for (ResourceCategory cat : list) {
+            System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
+            System.out.println("Childrens: " + Arrays.asList(cat.getChildrenCategories()));
+        }
+
+/*        ResourceCategory c1 = categoryService.findCategoryByName("branch1");
+        c1.setCategoryName("NEW_CAT");
+        categoryService.updateResourceCategory(c1);*/
+
+        ResourceCategory c1 = categoryService.findCategoryByName("root");
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(c1);
+            System.out.println(jsonInString);
+            model.addObject("inputJson", jsonInString);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        String json = "[{\"restypes\":null,\"rootpath\":\"/root/branch1/leaf1_1\",\"level\":2,\"catname\":\"leaf1_1\",\"id\":776,\"children\":[{\"restypes\":null,\"rootpath\":\"/root\",\"level\":0,\"catname\":\"root\",\"id\":773,\"children\":[{\"restypes\":null,\"rootpath\":\"/root/branch1\",\"level\":1,\"catname\":\"branch1\",\"id\":774,\"children\":[{\"restypes\":null,\"rootpath\":\"/root/branch1/leaf1_2\",\"level\":2,\"catname\":\"leaf1_2\",\"id\":777,\"children\":[]},{\"restypes\":null,\"rootpath\":\"/root/branch1/leaf1_3\",\"level\":2,\"catname\":\"leaf1_3\",\"id\":780,\"children\":[]}]},{\"restypes\":null,\"rootpath\":\"/root/branch2\",\"level\":1,\"catname\":\"branch2\",\"id\":775,\"children\":[{\"restypes\":null,\"rootpath\":\"/root/branch2/leaf2_2\",\"level\":2,\"catname\":\"leaf2_2\",\"id\":779,\"children\":[]},{\"restypes\":null,\"rootpath\":\"/root/branch2/leaf2_1\",\"level\":2,\"catname\":\"leaf2_1\",\"id\":778,\"children\":[]}]}]}]}]";
+        try {
+            List<ResourceCategory> list2 = Arrays.asList(mapper.readValue(json, ResourceCategory[].class));
+            System.out.println("DESERIALIZED");
+            for (ResourceCategory cat : list2) {
+                System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
+                System.out.println("Childrens: " + Arrays.asList(cat.getChildrenCategories()));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return model;
     }
 

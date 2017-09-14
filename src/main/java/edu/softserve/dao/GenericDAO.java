@@ -29,7 +29,7 @@ public interface GenericDAO<T, ID extends Serializable> {
 
     Long getCount();
 
-    T mergeObject(T entity);
+    T merge(T entity);
     /*T makePersistent(T entity);*/
     void makePersistent(T entity);
 
