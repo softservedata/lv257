@@ -178,7 +178,9 @@ public class MainController {
         model.addAttribute("title", "Logout");
         return "logoutSuccessful";
     }
-
+/*
+	Profile is moved to UserController.java
+	
     @RequestMapping(value = "/profile", params = {"id"}, method = RequestMethod.GET)
     public ModelAndView profile (@RequestParam Map<String,String> queryUser) {
         String roleName = queryUser.get("id");
@@ -198,6 +200,9 @@ public class MainController {
 
         return "profile";
     }
+	
+	*/
+	
     @RequestMapping(value = { "/account"}, method = RequestMethod.GET)
     public String accountPage(Model model) {
         model.addAttribute("title", "Account");
