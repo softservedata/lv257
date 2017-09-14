@@ -242,6 +242,15 @@ public class MainController {
         ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
         ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
         ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
+        System.out.println("HASH-HASH");
+        System.out.println(root.hashCode());
+        System.out.println(branch1.hashCode());
+        System.out.println(branch2.hashCode());
+        System.out.println(leaf1_1.hashCode());
+        System.out.println(leaf1_2.hashCode());
+        System.out.println(leaf1_3.hashCode());
+        System.out.println(leaf2_1.hashCode());
+        System.out.println(leaf2_2.hashCode());
 
         /*ResourceCategory root = new ResourceCategory("root");
         ResourceCategory branch1 = new ResourceCategory("branch1");
@@ -260,14 +269,14 @@ public class MainController {
         branch2.getChildrenCategories().add(leaf2_1);
         branch2.getChildrenCategories().add(leaf2_2);
 
-        categoryService.addResourceCategory(root);
-        categoryService.addResourceCategory(branch1);
-        categoryService.addResourceCategory(branch2);
-        categoryService.addResourceCategory(leaf1_1);
-        categoryService.addResourceCategory(leaf1_2);
-        categoryService.addResourceCategory(leaf2_1);
-        categoryService.addResourceCategory(leaf2_2);
-        categoryService.addResourceCategory(leaf1_3);
+        categoryService.updateResourceCategory(root);
+        categoryService.updateResourceCategory(branch1);
+        categoryService.updateResourceCategory(branch2);
+        categoryService.updateResourceCategory(leaf1_1);
+        categoryService.updateResourceCategory(leaf1_2);
+        categoryService.updateResourceCategory(leaf2_1);
+        categoryService.updateResourceCategory(leaf2_2);
+        categoryService.updateResourceCategory(leaf1_3);
 
         List<ResourceCategory> list = categoryService.findAllResourceCategories();
         for (ResourceCategory cat : list) {

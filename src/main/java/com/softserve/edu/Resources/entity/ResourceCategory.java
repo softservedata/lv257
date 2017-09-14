@@ -113,6 +113,21 @@ public class ResourceCategory {
         return builder.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ResourceCategory that = (ResourceCategory) o;
+
+        return categoryName.equals(that.categoryName);
+    }
+
+    @Override
+    public int hashCode() {
+        return categoryName.hashCode();
+    }
+
     public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {
         this.categoryName = categoryName;
         this.parentCategory = parentCategory;
