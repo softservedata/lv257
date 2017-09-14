@@ -1,13 +1,14 @@
 package com.softserve.edu.Resources.dao;
 
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.entity.UserDetails;
 
 import java.util.List;
 
 public interface UserDetailsDAO {
-    User getUser(User user);
-    User findByEmail(String email);
-    User findById(long id);
+    UserDetails getUser(User user);
+    UserDetails findByEmail(String email);
+    UserDetails findById(long id);
 
     void delete(User user);
 
