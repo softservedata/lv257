@@ -5,11 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.validator.FormValidator;
-import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
+import com.softserve.edu.Resources.validator.FormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
@@ -220,17 +219,6 @@ public class MainController {
                     "You do not have permission to access this page!");
         }
         return "403";
-    }
-
-    @RequestMapping(value = "/code", params = {"code"}, method = RequestMethod.GET)
-    public ModelAndView instaCode (@RequestParam Map<String,String> queryUser) {
-        String authCode = queryUser.get("code");
-        ModelAndView model = new ModelAndView("profile");
-        /*User user = userService.getUserById(Long.parseLong(queryUser.get("id")));
-        model.addObject("user", user);*/
-        System.out.println(authCode);
-        //model.addObject("userDetails", user.getUserDetails());
-        return model;
     }
 
     public FormValidator getFormValidator() {
