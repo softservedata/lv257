@@ -3,6 +3,7 @@ package com.softserve.edu.Resources.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
@@ -20,9 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Transactional
@@ -201,6 +200,15 @@ public class MainController {
         ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
         ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
         ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
+        System.out.println("HASH-HASH");
+        System.out.println(root.hashCode());
+        System.out.println(branch1.hashCode());
+        System.out.println(branch2.hashCode());
+        System.out.println(leaf1_1.hashCode());
+        System.out.println(leaf1_2.hashCode());
+        System.out.println(leaf1_3.hashCode());
+        System.out.println(leaf2_1.hashCode());
+        System.out.println(leaf2_2.hashCode());
 
         /*ResourceCategory root = new ResourceCategory("root");
         ResourceCategory branch1 = new ResourceCategory("branch1");
@@ -218,6 +226,12 @@ public class MainController {
         branch1.getChildrenCategories().add(leaf1_3);
         branch2.getChildrenCategories().add(leaf2_1);
         branch2.getChildrenCategories().add(leaf2_2);
+
+/*        ResourceType type1 = new ResourceType();
+        type1.setTypeName("type1").setCategory(leaf2_2);
+        Set<ResourceType> rtset = new HashSet<>();
+        rtset.add(type1);
+        leaf2_2.setResourceTypes(rtset);*/
 
         categoryService.addResourceCategory(root);
         categoryService.addResourceCategory(branch1);
