@@ -1,12 +1,13 @@
 package com.softserve.edu.Resources.service.impl;
 
 
+import com.softserve.edu.Resources.dao.RoleDAO;
 import com.softserve.edu.Resources.dao.UserDAO;
 import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.entity.Privilege;
-import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.dao.RoleDAO;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.exception.UserAlreadyExistException;
+import com.softserve.edu.Resources.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDAO userDAO;
+
     @Autowired
     RoleDAO roleDAO;
 
@@ -41,16 +43,23 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    @Transactional
+    public User findByEmail(String email) {
+        return userDAO.findByEmail(email);
+    }
+
     public List<User> getAllUsers(){
         System.out.println(userDAO.getAllUsers());
         return userDAO.getAllUsers();
     }
 
-    public User registerNewUserAccount(final UserDTO userDTO) /*throws UserAlreadyExistException */{
-        /*if (emailExist(userDTO.getEmail())) {
-            //throw new UserAlreadyExistException("There is an account with that email adress: " + userDTO.getEmail());
+    public User registerNewUserAccount(final UserDTO userDTO) throws UserAlreadyExistException {
+
+        if (emailExist(userDTO.getEmail())) {
             throw new UserAlreadyExistException("There is an account with that email adress: " + userDTO.getEmail());
-        }*/
+        }
+
         final User user = new User();
 
         System.out.println("setting password from DTO");
@@ -63,7 +72,13 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean emailExist(final String email) {
-        return userDAO.findByEmail(email) != null;
+
+        User user = userDAO.findByEmail(email);
+
+        if (user != null){
+            return true;
+        }
+        return false;
     }
 
 }
