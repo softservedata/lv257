@@ -2,17 +2,15 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="Suite1">
+	<parameter name="testurl" value="http://ssu-oms:8180/" />
 	<!-- 3 ERROR 5 WARNING 7 INFO -->
-	<!-- <test verbose="5" name="Test1"> -->
-	<test verbose="9" name="Test1">
-		<parameter name="numberTest" value="Test" />
+	<test verbose="5" name="Registrator_Test">
 		<classes>
-			<!-- <class name="com.softserve.edu.resources.AppTest" /> -->
-			<class name="com.softserve.edu.resources.AppTest">
-				<methods>
-					<include name="testApp" />
-				</methods>
-			</class>
+			<class name="com.softserve.edu.AppTest"/>
+<!-- 				<methods> -->
+<!-- 					<include name="testApp" /> -->
+<!-- 				</methods> -->
+<!-- 			</class> -->
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

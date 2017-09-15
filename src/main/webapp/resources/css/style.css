@@ -1,0 +1,511 @@
+body {
+	background: url("../images/content_bg.png") repeat-x scroll 0 0 #D2D1D0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 1em;
+	color: #343434;
+}
+
+/* layout end */
+#generate:after {
+	counter-increment: n;
+	content: counter(n);
+}
+
+.button {
+	background: none repeat scroll 0 0 #E3E3E3;
+	font-weight: bold;
+	border: 1px solid #BBBBBB;
+	border-radius: 3px 3px 3px 3px;
+	box-shadow: 0 0 1px 1px #F6F6F6 inset;
+	color: #333333;
+	font-size: 0.9em;
+	padding: 8px 12px 9px;
+	text-align: center;
+	text-shadow: 0 1px 0 #FFFFFF;
+	width: 150px;
+}
+
+.button:hover {
+	background: none repeat scroll 0 0 #D9D9D9;
+	box-shadow: 0 0 1px 1px #EAEAEA inset;
+	color: #222222;
+	cursor: pointer;
+}
+
+.button:active {
+	background: none repeat scroll 0 0 #D0D0D0;
+	box-shadow: 0 0 1px 1px #E3E3E3 inset;
+	color: #000000;
+}
+
+div#language li a {
+	padding-left: 4px;
+}
+
+span.flag {
+	width: 16px;
+	height: 11px;
+	display: inline-block;
+}
+
+.flag {
+	width: 16px;
+	height: 11px;
+	background: url("../images/flags.png") no-repeat
+}
+
+.flag.flag-es {
+	background-position: -16px 0
+}
+
+.flag.flag-en {
+	background-position: 0 -11px
+}
+
+.flag.flag-ua {
+	background-position: -16px -11px
+}
+
+#language ul {
+	list-style-type: none;
+}
+
+a,a:link,a:active {
+	color: #232323;
+	-moz-transition: color 0.3s linear 0s;
+	-webkit-transition: color 0.3s linear 0s;
+	transition: color 0.3s linear 0s;
+	text-decoration: none;
+}
+
+a:visited {
+	color: #232323;
+}
+
+a:hover {
+	color: #359BED;
+}
+
+div#error404 {
+	display: block;
+	padding: 80px;
+	font-size: 1.2em;
+	font-weight: bold;
+	background: url("../images/404.png") no-repeat scroll 100% 5px
+		rgba(0, 0, 0, 0);
+	top: 40px;
+	height: 450px;
+	width: 450px;
+}
+
+div#error404 span#sub404 {
+	font-size: 0.9em;
+	font-weight: 200;
+}
+
+/* TABLE STYLES */
+table {
+	clear: both;
+	counter-reset: n;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	border-collapse: collapse;
+	border-size: 1px;
+	font-size: 0.8em;
+	border-spacing: 0;
+	border: solid #ccc 1px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 1px 1px #ccc;
+	-moz-box-shadow: 0 1px 1px #ccc;
+	box-shadow: 0 1px 1px #ccc;
+}
+
+table tr {
+	border-bottom: 1px solid #CCC;
+	background-color: #f7f2f2;
+}
+
+table tr:nth-child(odd) td {
+	background-color: #ddd;
+}
+
+table tr:nth-child(even) td {
+	background-color: #aaa;
+}
+
+td,th {
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	padding: 10px;
+	text-align: left;
+}
+
+th {
+	text-align: left;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+	border-bottom: 1px solid #ccc;
+	background-color: #eee;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5),
+		to(#eee));
+	background-image: -webkit-linear-gradient(top, #f5f5f5, #eee);
+	background-image: -moz-linear-gradient(top, #f5f5f5, #eee);
+	background-image: -ms-linear-gradient(top, #f5f5f5, #eee);
+	background-image: -o-linear-gradient(top, #f5f5f5, #eee);
+	background-image: linear-gradient(top, #f5f5f5, #eee);
+}
+
+th:first-child {
+	-moz-border-radius: 6px 0 0 0;
+	-webkit-border-radius: 6px 0 0 0;
+	border-radius: 6px 0 0 0;
+}
+
+th:last-child {
+	-moz-border-radius: 0 6px 0 0;
+	-webkit-border-radius: 0 6px 0 0;
+	border-radius: 0 6px 0 0;
+}
+
+th:only-child {
+	-moz-border-radius: 6px 6px 0 0;
+	-webkit-border-radius: 6px 6px 0 0;
+	border-radius: 6px 6px 0 0;
+}
+
+table#tableUsers th,td {
+	max-width: 100px;
+	word-wrap: break-word;
+}
+
+table.table th,td {
+	max-width: 80px;
+}
+
+/* TABLE FORM STYLES */
+
+/* TABLE FORM STYLES END */
+table.form tr {
+	border-bottom: 1px;
+}
+
+table.form tr:nth-child(odd) td {
+	background-color: #f5f5f5;
+}
+
+table.form tr:nth-child(even) td {
+	background-color: #f5f5f5;
+}
+
+table.form td:first-child {
+	border-left: 1px;
+	border-top: 1px;
+	padding: 10px;
+	text-align: right;
+	font-weight: 600;
+	width: 26%;
+}
+
+table.form td:nth-child(2) {
+	border-left: 1px;
+	border-top: 1px;
+	padding: 10px;
+	text-align: left;
+	font-weight: 600;
+	width:22%;
+}
+
+table.form td:nth-child(3) {
+	border-left: 1px;
+	border-top: 1px;
+	padding: 10px;
+	text-align: left;
+	font-weight: 600;
+	width: 52%;
+}
+/* TABLE FORM STYLES END */
+
+/* BUTTON STYLES */
+input[type="button"],input[type="submit"] {
+	font-family: inherit;
+	padding: 0.5em 1em;
+	color: #444;
+	color: rgba(0, 0, 0, 0.80);
+	border: 1px solid #999;
+	background-color: #E6E6E6;
+	text-decoration: none;
+	border-radius: 2px;
+	min-width: 80px;
+	font-size: 0.9em;
+}
+
+input[type="submit"]:hover,input[type="submit"]:focus,input[type="button"]:hover,input[type="button"]:focus
+	{
+	cursor: pointer;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000',
+		endColorstr='#1a000000', GradientType=0);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(transparent),
+		color-stop(40%, rgba(0, 0, 0, 0.05)), to(rgba(0, 0, 0, 0.10)));
+	background-image: -webkit-linear-gradient(transparent, rgba(0, 0, 0, 0.05)
+		40%, rgba(0, 0, 0, 0.10));
+	background-image: -moz-linear-gradient(top, rgba(0, 0, 0, 0.05) 0%,
+		rgba(0, 0, 0, 0.10));
+	background-image: -o-linear-gradient(transparent, rgba(0, 0, 0, 0.05)
+		40%, rgba(0, 0, 0, 0.10));
+	background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.05) 40%,
+		rgba(0, 0, 0, 0.10));
+}
+
+input[type="submit"]:focus,input[type="button"]:focus {
+	outline: 0;
+}
+
+input[type="submit"]:active,input[type="button"]:active {
+	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15) inset, 0 0 6px
+		rgba(0, 0, 0, 0.20) inset;
+}
+/* BUTTON STYLES END */
+
+/* INPUT FIELD STYLES */
+input[type="text"],input[type="password"],input[type="number"] {
+	padding: 5px;
+	border: 1px solid #DDDDDD;
+	/*Applying CSS3 gradient*/
+	background: -moz-linear-gradient(center top, #FFFFFF, #EEEEEE 1px, #FFFFFF 20px);
+	background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF),
+		color-stop(5%, #EEEEEE) to(#FFFFFF));
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB',
+		endColorstr='#FFFFFF');
+	/*Applying CSS 3radius*/
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	/*Applying CSS3 box shadow*/
+	-moz-box-shadow: 0 0 2px #DDDDDD;
+	-webkit-box-shadow: 0 0 2px #DDDDDD;
+	box-shadow: 0 0 2px #DDDDDD;
+}
+
+input[type="text"]:hover,input[type="password"]:hover {
+	border: 1px solid #cccccc;
+}
+
+input[type="text"]:focus,input[type="password"]:focus {
+	box-shadow: 0 0 2px #FFFE00;
+}
+/* INPUT FIELD STYLES END */
+
+/* Aligned Forms */
+.control-group {
+	margin-bottom: 0.5em;
+}
+
+.control-group label {
+	text-align: right;
+	display: inline-block;
+	vertical-align: middle;
+	width: 10em;
+	margin: 0 1em 0 0;
+}
+
+div.center {
+	width: 180px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* for error */
+.error {
+	padding-left: 10px;
+	color: #ff0000;
+}
+
+/* for red stars in form */
+em.star {
+	color: red
+}
+
+.clear {
+	clear: both;
+}
+
+/*TRANSPORT FORM SELECT TAG*/
+table.form select.selectRoutes {
+	border: 1px solid #006;
+	width: 183px;
+}
+
+/* Responses Styles */
+div#tripInfo {
+	padding: 20px;
+	height: 90px;
+	width: 580px;
+	background: none repeat scroll 0 0 #FEFEFE;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #E7E7E7;
+}
+
+div#tripInfo h3 {
+	font-size: 1.4em;
+	font-weight: bold;
+}
+
+div#tripInfo div#live_resp_btn {
+	float: right;
+	margin-top: -10px;
+	padding-right: 10px;
+}
+
+div#response {
+	padding: 15px 10px;
+	margin-top: 15px;
+	margin-left: 80px;
+	background: none repeat scroll 0 0 #FEFEFE;
+	border-radius: 5px;
+	box-shadow: 0 0 2px #E7E7E7;
+	width: 570px;
+}
+
+span.user_avatar {
+	display: inline-block;
+	float: left;
+	padding-right: 10px;
+}
+
+.user_avatar {
+	background: url("../images/default_avatar.png") no-repeat;
+	background-size: 60px 60px;
+	height: 60px;
+	width: 60px;
+}
+
+div.user_name {
+	padding-top: 5px;
+	font-size: 1.0em;
+	font-weight: bold;
+}
+
+span.response_date {
+	padding-left: 5px;
+	font-weight: 100;
+	font-size: 0.8em;
+}
+
+div.commentText {
+	padding: 10px 0 10px 70px;
+	word-wrap: break-word;
+	max-width: 540px;
+}
+/* Responses Styles END */
+
+form.pad_top_bottom {
+	padding: 10px 0;
+}
+
+.pad_top_bottom {
+	padding: 10px 0;
+}
+
+.pad_top_bottom4 {
+	padding: 4px 0;
+}
+
+fieldset {
+	border: 1px solid #aaa;
+	padding: 1em;
+	font: 80%/1 sans-serif;
+}
+
+fieldset legend {
+	padding: 5px 10px;
+	font-size: 1.2em;
+	border-radius: 5px;
+	box-shadow: 0 0 0 3px #aaa;
+	margin-left: 20px;
+}
+
+fieldset div label {
+	float: left;
+	width: 25%;
+	margin-right: 0.5em;
+	padding-top: 0.7em;
+	text-align: right;
+	font-weight: bold;
+}
+
+.half_width {
+	width: 50%;
+	margin-bottom: -80px;
+}
+
+#res_per_page {
+	float: right;
+	margin-right: -100px;
+}
+
+#res_per_page_label {
+	vertical-align: 10px;
+}
+
+form#regForm {
+	font-size: 1.1em;
+	font-weight: 100;
+}
+
+#routesTrips {
+	width: 78%;
+}
+
+.clear {
+	clear: both;
+}
+
+.right {
+	float: right;
+}
+
+input#btnFindRoutes {
+	float: right;
+	margin-top: -70px;
+}
+
+.pad_right {
+	padding-right: 5px;
+}
+
+div#btnFindUsers input {
+	float: right;
+	margin-top: -72px;
+}
+
+div.group_c1 {
+	max-width: 300px;
+}
+
+div.group_c2 {
+	float: right;
+	padding-right: 170px;
+	margin-top: -58px;
+	max-width: 500px;
+}
+
+fieldset div label.thin {
+	width: 15%;
+}
+
+form#searchForm {
+	border: 1px solid #aaa;
+	padding: 10px;
+}
+
+form#searchForm div#btnTripsFind input {
+	margin-top: -208px;
+	float: right;
+}
+
+form#searchForm div#btnTransportFind input {
+	margin-top: -200px;
+	float: right;
+}
