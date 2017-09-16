@@ -2,12 +2,12 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ResourceCategoryService {
@@ -40,7 +40,7 @@ public class ResourceCategoryService {
 //        List<ResourceCategory> existingCategories = this.findAllResourceCategories();
 //        if (existingCategories.stream().noneMatch(c -> c.getCategoryName().equalsIgnoreCase(resourceCategory.getCategoryName())))
         {
-               resourceCategoryDAO.makePersistent(resourceCategory);
+            resourceCategoryDAO.makePersistent(resourceCategory);
         }
     }
 
@@ -69,5 +69,60 @@ public class ResourceCategoryService {
                     .setPathToRoot("/" + resourceCategory.getCategoryName());
             resourceCategory.setHierarchyLevel(0);
         }
+    }
+
+    @Transactional
+    public Optional<ResourceCategory> getRoot() {
+        for (ResourceCategory rc : findAllResourceCategories()) {
+            if (rc.getParentCategory() == null) {
+                return Optional.ofNullable(rc);
+            }
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<ResourceCategory> getChildren(ResourceCategory resourceCategory) {
+        List<ResourceCategory> list = new ArrayList<>();
+        for (ResourceCategory rc : findAllResourceCategories()) {
+            if (resourceCategory.equals(rc.getParentCategory())) {
+                list.add(rc);
+            }
+        }
+        return list;
+    }
+
+    @Transactional
+    public List<ResourceCategory> getDescendants(ResourceCategory resourceCategory) {
+        List<ResourceCategory> list = new ArrayList<>();
+        for (ResourceCategory rc : findAllResourceCategories()) {
+            if (resourceCategory.equals(rc.getParentCategory())) {
+                list.add(rc);
+                list.addAll(getDescendants(rc));
+            }
+        }
+        return list;
+    }
+
+    @Transactional
+    public Optional<ResourceCategory> getParent(ResourceCategory resourceCategory) {
+        for (ResourceCategory rc : findAllResourceCategories()) {
+            if (rc.equals(resourceCategory)) {
+                return Optional.ofNullable(rc.getParentCategory());
+            }
+        }
+        return null;
+    }
+
+    @Transactional
+    public List<ResourceCategory> getAncestors(ResourceCategory resourceCategory) {
+        List<ResourceCategory> list = new ArrayList<>();
+        for (ResourceCategory rc : findAllResourceCategories()) {
+            if (rc.equals(resourceCategory) && rc.getParentCategory() != null) {
+                list.add(rc.getParentCategory());
+                list.addAll(getAncestors(rc.getParentCategory()));
+            }
+        }
+        return list;
     }
 }
