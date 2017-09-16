@@ -3,16 +3,19 @@ package com.softserve.edu.Resources.service;
 
 import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.exception.UserAlreadyExistException;
 
 import java.util.List;
 
 public interface UserService {
 
-    public User getUserForSpring (String email);
+    User getUserForSpring (String email);
 
-    public User getUserById (Long id);
+    User getUserById (Long id);
 
-    public List<User> getAllUsers();
+    User findByEmail(String email);
 
-    public User registerNewUserAccount(final UserDTO userDTO);
+    List<User> getAllUsers();
+
+    User registerNewUserAccount(final UserDTO userDTO) throws UserAlreadyExistException;
 }

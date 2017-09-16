@@ -2,25 +2,21 @@ package com.softserve.edu.Resources.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
-import com.softserve.edu.Resources.validator.FormValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -45,9 +41,6 @@ public class MainController {
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;
-
-    @Autowired
-    private FormValidator formValidator;
 
     @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
     public String welcomePage(Model model, HttpServletRequest request) {
@@ -97,31 +90,6 @@ public class MainController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage(Model model ) {
         return "login";
-    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.GET)
-    public String registration(Model model) {
-        model.addAttribute("newUser", new UserDTO());
-        return "signup"; //назва JSP
-    }
-
-//    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-//    public String signUp(@ModelAttribute("newUser") UserDTO user) {
-//        userService.registerNewUserAccount(user);
-//        return "successfulUserCreation";
-//    }
-
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String submitForm(@Valid @ModelAttribute(value = "newUser") UserDTO  userDTO, BindingResult result) {
-
-        formValidator.validate(userDTO, result);
-
-        if (result.hasErrors()) {
-            return "signup";
-        }
-
-        userService.registerNewUserAccount(userDTO);
-        return "successfulUserCreation";
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
@@ -215,14 +183,6 @@ public class MainController {
                     "You do not have permission to access this page!");
         }
         return "403";
-    }
-
-    public FormValidator getFormValidator() {
-        return formValidator;
-    }
-
-    public void setFormValidator(FormValidator formValidator) {
-        this.formValidator = formValidator;
     }
 
     @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
