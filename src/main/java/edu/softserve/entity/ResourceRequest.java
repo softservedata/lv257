@@ -1,10 +1,13 @@
 package edu.softserve.entity;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "RequestResourceType")
@@ -16,12 +19,14 @@ public class ResourceRequest {
     @Column(name = "id_request")
     private long id_request;
 
-    @NotBlank(message = "Please, enter new type of resource!")
+    private String code;
+
     @Column(name = "theme", nullable = false)
+    @NotBlank(message = "Please, enter new type of resource!")
     private String theme;
 
-    @NotBlank(message = "Please, enter description to your request!")
     @Column(name = "details")
+    @NotBlank(message = "Please, enter description to your request!")
     private String details;
 
     @ManyToOne (cascade = CascadeType.MERGE)
@@ -46,9 +51,19 @@ public class ResourceRequest {
     @Column(name = "notify_executor")
     private boolean notifyExecutor;
 
+    @Transient
+    private MultipartFile file;
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public ResourceRequest(){
-       super();
+       this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
     }
 
     public ResourceRequest(String theme, String details, User register, User resourcesAdmin, Document document,
@@ -69,6 +84,14 @@ public class ResourceRequest {
 
     public void setId(long id_request) {
         this.id_request = id_request;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getTheme() {

@@ -6,12 +6,12 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
+import java.io.File;
 
 public class SpringWebAppInitializer implements WebApplicationInitializer {
+
+    private int maxUploadSizeInMb = 5 * 1024 * 1024; // 5 MB
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
@@ -20,6 +20,8 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
 
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("SpringDispatcher",
                 new DispatcherServlet(appContext));
+        File tempdir = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+        dispatcher.setMultipartConfig(new MultipartConfigElement(tempdir.getAbsolutePath(), maxUploadSizeInMb, maxUploadSizeInMb * 2, maxUploadSizeInMb / 2));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
 
@@ -38,5 +40,6 @@ public class SpringWebAppInitializer implements WebApplicationInitializer {
         //TODO after first initialization to fulfill tables in DB with testing data(privileges, roles, users, resources etc )
 
     }
+
 
 }
