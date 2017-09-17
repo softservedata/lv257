@@ -1,6 +1,6 @@
-package edu.softserve.validator;
+package com.softserve.edu.Resources.validator;
 
-import edu.softserve.entity.ResourceRequest;
+import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 

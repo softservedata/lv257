@@ -1,9 +1,9 @@
-package edu.softserve.controller;
+package com.softserve.edu.Resources.controller;
 
-import edu.softserve.entity.ResourceRequest;
-import edu.softserve.service.RequestService;
-import edu.softserve.util.FileUploadUtility;
-import edu.softserve.validator.UploadFileValidator;
+import com.softserve.edu.Resources.entity.ResourceRequest;
+import com.softserve.edu.Resources.service.impl.RequestService;
+import com.softserve.edu.Resources.util.FileUploadUtility;
+import com.softserve.edu.Resources.validator.UploadFileValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
