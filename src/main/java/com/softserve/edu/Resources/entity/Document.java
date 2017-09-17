@@ -25,9 +25,6 @@ public class Document {
     @Column(name = "number")
     private String number;
 
-    @OneToMany(mappedBy = "document")
-    private Collection<ResourceRequest> requests;
-
     @Transient
     private Set<URL> copies = new HashSet<>();
 

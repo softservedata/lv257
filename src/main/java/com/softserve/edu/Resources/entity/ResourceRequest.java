@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "RequestResourceType")
+@Table(name = "RESOURCE_REQUEST")
 
 public class ResourceRequest {
 
@@ -19,6 +19,7 @@ public class ResourceRequest {
     @Column(name = "id_request")
     private long id_request;
 
+    @Column(name = "code", nullable = false)
     private String code;
 
     @Column(name = "theme", nullable = false)
@@ -37,10 +38,6 @@ public class ResourceRequest {
     @JoinColumn(name = "id_executor_user")
     private User resourcesAdmin;
 
-    @ManyToOne
-    @JoinColumn(name = "id_document")
-    private Document document;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
@@ -48,8 +45,9 @@ public class ResourceRequest {
     @Column(name = "updated")
     private Date update;
 
-    @Column(name = "notify_executor")
-    private boolean notifyExecutor;
+    public enum Status {
+        NEW, ACCEPTED, DECLINED, TO_REFINEMENT;
+    }
 
     @Transient
     private MultipartFile file;
@@ -67,14 +65,12 @@ public class ResourceRequest {
     }
 
     public ResourceRequest(String theme, String details, User register, User resourcesAdmin, Document document,
-                           Status status, Date update, boolean notifyExecutor) {
+                           Status status, Date update) {
         this.theme = theme;
         this.details = details;
         this.register = register;
-        this.document = document;
         this.update = update;
         this.status = status;
-        this.notifyExecutor = notifyExecutor;
         this.resourcesAdmin = resourcesAdmin;
     }
 
@@ -126,14 +122,6 @@ public class ResourceRequest {
         this.resourcesAdmin = resourcesAdmin;
     }
 
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -150,17 +138,6 @@ public class ResourceRequest {
         this.update = update;
     }
 
-    public boolean isNotifyExecutorTrue() {
-        return notifyExecutor == true ? true : false;
-    }
-
-    public void setNotifyExecutor(boolean notifyExecutor) {
-        this.notifyExecutor = notifyExecutor;
-    }
-
-    public boolean getNotifyExecutor() {
-        return notifyExecutor;
-    }
 
     @Override
     public String toString() {
@@ -170,10 +147,8 @@ public class ResourceRequest {
                 ", details='" + details + '\'' +
                 ", register=" + register +
                 ", resourcesAdmin=" + resourcesAdmin +
-                ", document=" + document +
                 ", status=" + status +
                 ", update=" + update +
-                ", notifyExecutor=" + notifyExecutor +
                 '}';
     }
 }
