@@ -30,23 +30,22 @@
         </div>
         <div class="row">
             <br>
-            <%--<div class="font-bold" value="${userDetails.firstname}">First Name</div>--%>
-            <div class="font-bold">First Name</div>
-            <%--<input class="form-control" value="${userDetails.firstname}"/>--%>
-        </div>
-        <div class="row">
-            <br>
-            <%--<div class="font-bold" value="${user.getId}">Second Name</div>--%>
+            <div class="font-bold" value="${profile.first_name}">First Name - </div>
             <input class="form-control"/>
         </div>
         <div class="row">
             <br>
-            <div class="font-bold">Middle Name</div>
-            <%--<input class="form-control" value="${Middle_name}"/>--%>
+            <div class="font-bold" value="${profile.second_name}">Second Name - name01</div>
+            <input class="form-control"/>
         </div>
         <div class="row">
             <br>
-            <div class="font-bold">Passport series</div>
+            <div class="font-bold" value="${profile.id}">Middle Name</div>
+            <input class="form-control"/>s
+        </div>
+        <div class="row">
+            <br>
+            <div class="font-bold" value="${profile.date_of_issue}">Passport series profile.id</div>
             <input class="form-control"/>
         </div>
         <div class="row">
@@ -87,11 +86,8 @@
     <div class="col-md-3 float-left">
         <br>
         <div class="row">
-            <%--<div class="pull-right"><img src="NoFoto.png" alt="your advertisement could be here" width="200px" height="200"></div>--%>
-            <div class="pull-right"><img
-                    <%--style="max-width: 100px; margin-top: -10px;"--%>
-                    src="<c:url value="/resources/img/NoFoto.png"/>"
-                    width="200" height="200"></div>
+            <div class="pull-right"><img src="NoFoto.png" alt="your advertisement could be here" width="200px" height="200"></div>
+            <div><br></div>
             <br>
 
             <button class="btn btn-default pull-right">Upload foto</button>
