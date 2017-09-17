@@ -35,7 +35,7 @@
         </div>
         <div class="row">
             <br>
-            <div class="font-bold" value="${profile.second_name}">Second Name - name01</div>
+            <div class="font-bold" value="${profile.second_name}">Second Name - name02</div>
             <input class="form-control"/>
         </div>
         <div class="row">
