@@ -3,16 +3,16 @@ package com.softserve.edu.Resources.service;
 import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 public interface ResourceTypeService {
 
     Collection<ResourceType> getTypes();
 
-    int getTypeCount();
+    long getTypeCount();
 
-    void add(ResourceType resourceType);
+    ResourceType add(ResourceType resourceType);
 
     void remove(ResourceType resourceType);
 
@@ -20,11 +20,7 @@ public interface ResourceTypeService {
 
     void create(String typeName);
 
-    ResourceTypeService setTypes(Map<String, ResourceType> types);
-
-    Map<ResourceType, String> getInstances();
-
-    ResourceTypeService setInstances(Map<ResourceType, String> instances);
+    List<ResourceType> getInstances();
 
     int getInstancesCount();
 

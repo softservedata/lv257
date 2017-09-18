@@ -2,12 +2,14 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ResourceCategoryService {
@@ -17,7 +19,7 @@ public class ResourceCategoryService {
 
     @Transactional
     public ResourceCategory findCategoryById(Long id) {
-        return resourceCategoryDAO.findById(id);
+        return resourceCategoryDAO.findById(id).get();
     }
 
     @Transactional

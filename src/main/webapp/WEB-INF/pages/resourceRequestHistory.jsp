@@ -25,7 +25,7 @@
 
     <div class="container">
         <ul class="nav nav-tabs">
-            <li><a href="AddEditResourse.html">Add</a></li>
+            <li><a href="${pageContext.request.contextPath}/resources/addResource">Add</a></li>
             <li class="active"> <a href="#">Request</a></li>
         </ul>
     </div>
