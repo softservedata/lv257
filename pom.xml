@@ -258,16 +258,22 @@
 			<version>1.4.01</version>
 		</dependency>
 		<!-- - - - - - Apache Tiles- - - - - -->
+	<!-- <dependency> -->
+	<!-- <groupId>org.apache.tiles</groupId> -->
+	<!-- <artifactId>tiles-core</artifactId> -->
+	<!-- <version>${org.apache.tiles.version}</version> -->
+	<!-- </dependency> -->
+	<!-- <dependency> -->
+	<!-- <groupId>org.apache.tiles</groupId> -->
+	<!-- <artifactId>tiles-jsp</artifactId> -->
+	<!-- <version>${org.apache.tiles.version}</version> -->
+	<!-- </dependency> -->
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-core</artifactId>
+			<artifactId>tiles-extras</artifactId>
 			<version>${org.apache.tiles.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-jsp</artifactId>
-			<version>${org.apache.tiles.version}</version>
-		</dependency>
+		
 		<!-- - - - - - JSON - - - - - -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
