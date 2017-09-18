@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan("edu.softserve.*")
+@ComponentScan(basePackages = {"edu.softserve."})
 @EnableTransactionManagement
 /*// Load to Environment.
 @PropertySource("classpath:datasource-cfg.properties")*/

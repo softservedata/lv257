@@ -22,8 +22,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
         // Users in memory. uncomment to try
-        /*auth.inMemoryAuthentication().withUser("user1").password("12345").roles("USER");
-        auth.inMemoryAuthentication().withUser("admin1").password("12345").roles("USER, ADMIN");*/
+        auth.inMemoryAuthentication().withUser("user1").password("12345").roles("USER");
+        auth.inMemoryAuthentication().withUser("admin1").password("12345").roles("ADMIN");
 
         // For User in database.
         auth.userDetailsService(myUserDetailsService);
