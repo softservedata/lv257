@@ -3,11 +3,11 @@ $('#add_resource_address_btn').on('click', function () {
     var $placeholder = $('#resource_address_form_placeholder');
     var addressFormAndBtn = addAddressForm("resource", $placeholder, fieldsMetadata.rowsForAddress);
 
-    parseFormAndSaveResource($placeholder, addressFormAndBtn);
+    parseFormAndSaveResourceAddress($placeholder, addressFormAndBtn);
 
 });
 
-function parseFormAndSaveResource(placeholder, addressFormAndBtn) {
+function parseFormAndSaveResourceAddress(placeholder, addressFormAndBtn) {
     var addressFormId = addressFormAndBtn[0];
     var submitButtonId = addressFormAndBtn[1];
 
@@ -16,8 +16,7 @@ function parseFormAndSaveResource(placeholder, addressFormAndBtn) {
     button.on('click', function (e) {
         e.preventDefault();
         var json = toJSONString(addressFormId);
-        alert(json);
-
+        console.log(json);
 
         $.ajax({
             type: "POST",
@@ -26,18 +25,18 @@ function parseFormAndSaveResource(placeholder, addressFormAndBtn) {
             accept: "text/plain",
             data: json,
             success: function (result) {
-                closePopUp(placeholder);
+                closePopUp(placeholder, 'Resource Address was saved', '#resourseAdressPopUp');
             }
         })
     });
 };
 
-function closePopUp(placeholder) {
+function closePopUp(placeholder, text, modalId) {
 
     placeholder.empty();
 
     var result = $('<div/>', {
-        text: 'Resource Address was saved'
+        text: text
     });
     var closePopUp = $('<button/>', {
         text: 'Close',
@@ -52,7 +51,7 @@ function closePopUp(placeholder) {
     placeholder.append(clear);
 
     closePopUp.on('click', function () {
-        $('#resourseAdressPopUp').modal('hide');
+        $(modalId).modal('hide');
     });
 }
 
@@ -200,6 +199,6 @@ var fieldsMetadata = {
     rowsForPerson: [
         [new FieldAndSize('First Name', 6, 'First Name'), new FieldAndSize('Last Name', 6, 'Last Name')],
         [new FieldAndSize('Middle Name', 12, 'Middle Name')],
-        [new FieldAndSize('Passport Series', 3, 'KC'), new FieldAndSize('Passport Number', 4, '149875'), new FieldAndSize('Personal Phone', 5, '+30679365998')]
+        [new FieldAndSize('Passport Series', 3, 'KC'), new FieldAndSize('Passport Number', 4, '149875'), new FieldAndSize('Phone', 5, '+30679365998')]
     ]
 }
