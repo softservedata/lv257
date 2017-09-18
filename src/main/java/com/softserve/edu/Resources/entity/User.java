@@ -22,8 +22,6 @@ public class User {
 
     private String secret;
 
-
-    //@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
@@ -36,7 +34,6 @@ public class User {
 
     @OneToMany(mappedBy = "register")
     private Collection<ResourceRequest> requestsByRegister;
-
 
     public User() {
         super();
