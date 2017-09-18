@@ -11,12 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
 /**
- * Instances of @ResourceProperty describe particular property
- * intrinsic to a particular kind of GenericResource. GenericResource
- * can have a collection (a set in general) of different properties.
+ * Instances of @ResourceProperty describe particular property intrinsic to a
+ * particular kind of GenericResource. GenericResource can have a collection (a
+ * set in general) of different properties.
  */
 
 @Entity
@@ -27,10 +25,10 @@ public class ResourceProperty {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="Column_Name")
+    @Column(name = "Column_Name")
     private String columnName;
 
-    @Column(name="Title")
+    @Column(name = "Title")
     private String title;
 
     @Column(name = "Units")
@@ -164,12 +162,15 @@ public class ResourceProperty {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
         ResourceProperty that = (ResourceProperty) o;
 
-        if (!columnName.equals(that.columnName)) return false;
+        if (!columnName.equals(that.columnName))
+            return false;
         return units != null ? units.equals(that.units) : that.units == null;
     }
 
@@ -183,8 +184,5 @@ public class ResourceProperty {
     public String getDescription() {
         return units == null ? columnName : String.join(", ", columnName, units);
     }
-    
-    
-    
-    
+
 }

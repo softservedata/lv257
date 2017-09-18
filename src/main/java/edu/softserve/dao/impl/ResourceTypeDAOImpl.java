@@ -1,15 +1,13 @@
 package edu.softserve.dao.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +40,7 @@ public class ResourceTypeDAOImpl implements ResourceTypeDAO {
     }
 
     @Override
-    public ResourceType findWithPropertiesByID(int resourceTypeID) {
+    public ResourceType findWithPropertiesByID(Long resourceTypeID) {
 
         return (ResourceType) entityManager
                 .createQuery("SELECT r FROM ResourceType r LEFT JOIN FETCH r.properties WHERE r.id =:id")
@@ -53,7 +51,7 @@ public class ResourceTypeDAOImpl implements ResourceTypeDAO {
     public ResourceType findWithPropertiesByTableName(String tableName) {
 
         return (ResourceType) entityManager
-                .createQuery("SELECT r FROM ResourceType r LEFT JOIN FETCH r.properties WHERE r.tableName =:tableName")
+                .createQuery("SELECT r FROM ResourceType r LEFT JOIN r.properties WHERE r.tableName =:tableName")
                 .setParameter("tableName", tableName).getSingleResult();
     }
 
@@ -76,7 +74,8 @@ public class ResourceTypeDAOImpl implements ResourceTypeDAO {
         for (Map.Entry<String, String> entry : valuesToSearch.entrySet()) {
             for (ResourceProperty property : resourceProperties) {
                 if (property.getColumnName().equals(entry.getKey())) {
-                    argsTypes[i++] = property.getValueType().getSqlType();
+                    argsTypes[i++] = property.getValueType().getSqlType(); // if it comes from database??
+                    break; 
                 }
             }
 
@@ -91,7 +90,7 @@ public class ResourceTypeDAOImpl implements ResourceTypeDAO {
             genRes.setId(Integer.parseInt(String.valueOf(mapRow.get("id"))));
             genRes.setId_Address(Integer.parseInt(String.valueOf(mapRow.get("id_Address"))));
 
-            Set<PropertyValue> propertyValues = new TreeSet<>();
+            Set<PropertyValue> propertyValues = new HashSet<>();
 
             for (ResourceProperty property : resourceProperties) {
                 PropertyValue propertyValue = new PropertyValue(property,

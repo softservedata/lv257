@@ -44,7 +44,7 @@ public class LookUpController {
     @RequestMapping(value = "/loadSpecResourceProperties", method = RequestMethod.GET)
     public List<ResourceProperty> loadSpecResourceProperty(@RequestBody String resourceTypeId){
         
-        ResourceType resourceType = resTypeService.findWithPropertiesByID(Integer.parseInt(resourceTypeId));
+        ResourceType resourceType = resTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
         
         List <ResourceProperty> specialResourceProperties = resTypeService.getSpecialResourceProperties(resourceType);
         

@@ -47,6 +47,12 @@ public class GenericResource {
     }
 
 
+    @Override
+    public String toString() {
+        return "GenericResource [id=" + id + ", id_Address=" + id_Address + ", resourceValues=" + resourceValues + "]";
+    }
+
+
     public void setResourceValues(Set<PropertyValue> resourceValues) {
         this.resourceValues = resourceValues;
     }

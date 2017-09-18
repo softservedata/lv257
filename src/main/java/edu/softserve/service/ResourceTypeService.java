@@ -11,7 +11,7 @@ public interface ResourceTypeService {
 
     List <ResourceType> findAll();
 
-    ResourceType findWithPropertiesByID(int resourceID);
+    ResourceType findWithPropertiesByID(Long resourceID);
 
     List<ResourceProperty> getSpecialResourceProperties(ResourceType resourceWithProperties);
     

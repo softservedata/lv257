@@ -2,7 +2,7 @@ package edu.softserve.dto;
 
 public class ResourceTypeDTO {
 
-    private int id;
+    private long id;
     private String typeName;
     private String tableName;
     
@@ -17,10 +17,10 @@ public class ResourceTypeDTO {
         this.tableName = tableName;
     }
     
-    public int getId() {
+    public long getId() {
         return id;
     }
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
     public String getTypeName() {

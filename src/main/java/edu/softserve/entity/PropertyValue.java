@@ -42,6 +42,11 @@ public class PropertyValue {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "PropertyValue [id=" + id + ", type=" + type + ", value=" + value + "]";
+    }
     
     
     

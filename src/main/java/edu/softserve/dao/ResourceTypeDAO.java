@@ -12,7 +12,7 @@ public interface ResourceTypeDAO {
 
     List <ResourceType> findAll();
 
-    ResourceType findWithPropertiesByID(int resourceTypeID);
+    ResourceType findWithPropertiesByID(Long resourceTypeID);
     
     List <GenericResource> findResourcesByResourceType(String sqlQuery, 
             Map <String,String> valuesToSearh, List <ResourceProperty> resourceProperties);

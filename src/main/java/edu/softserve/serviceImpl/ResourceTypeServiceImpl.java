@@ -30,7 +30,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     @Override
     @Transactional
-    public ResourceType findWithPropertiesByID(int resourceTypeID) {
+    public ResourceType findWithPropertiesByID(Long resourceTypeID) {
         return resourceTypeDao.findWithPropertiesByID(resourceTypeID);
     }
 
