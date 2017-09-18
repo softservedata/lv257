@@ -1,9 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.entity.ResourceCategory;
-import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
@@ -188,91 +187,16 @@ public class MainController {
     @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
     public ModelAndView manageTypes() {
         ModelAndView model = new ModelAndView("manageTypes");
-//        categoryService.findAllResourceCategories().stream().forEach(categoryService::deleteResourceCategory);
-
-        ResourceCategory root = new ResourceCategory("root", null, null);
-        ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
-        ResourceCategory branch2 = new ResourceCategory("branch2", root, null);
-        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1, null);
-        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1, null);
-        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
-        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
-        System.out.println("HASH");
-        System.out.println(root.hashCode());
-        System.out.println(branch1.hashCode());
-        System.out.println(branch2.hashCode());
-        System.out.println(leaf1_1.hashCode());
-        System.out.println(leaf1_2.hashCode());
-        System.out.println(leaf1_3.hashCode());
-        System.out.println(leaf2_1.hashCode());
-        System.out.println(leaf2_2.hashCode());
-
-        /*ResourceCategory root = new ResourceCategory("root");
-        ResourceCategory branch1 = new ResourceCategory("branch1");
-        ResourceCategory branch2 = new ResourceCategory("branch2");
-        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1");
-        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2");
-        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1");
-        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2");
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3");*/
-
-        root.getChildrenCategories().add(branch1);
-        root.getChildrenCategories().add(branch2);
-        branch1.getChildrenCategories().add(leaf1_1);
-        branch1.getChildrenCategories().add(leaf1_2);
-        branch1.getChildrenCategories().add(leaf1_3);
-        branch2.getChildrenCategories().add(leaf2_1);
-        branch2.getChildrenCategories().add(leaf2_2);
-
-/*        ResourceType type1 = new ResourceType();
-        type1.setTypeName("type1").setCategory(leaf2_2);
-        Set<ResourceType> rtset = new HashSet<>();
-        rtset.add(type1);
-        leaf2_2.setResourceTypes(rtset);*/
-
-/*        categoryService.addResourceCategory(root);
-        categoryService.addResourceCategory(branch1);
-        categoryService.addResourceCategory(branch2);
-        categoryService.addResourceCategory(leaf1_1);
-        categoryService.addResourceCategory(leaf1_2);
-        categoryService.addResourceCategory(leaf2_1);
-        categoryService.addResourceCategory(leaf2_2);
-        categoryService.addResourceCategory(leaf1_3);*/
-
-        List<ResourceCategory> list = categoryService.findAllResourceCategories();
-        for (ResourceCategory cat : list) {
-            System.out.println(cat.toString() + " Root: " + cat.getPathToRoot() + " Level: " + cat.getHierarchyLevel());
-            System.out.println("Childrens: " + Arrays.asList(cat.getChildrenCategories()));
-        }
-
-        ResourceCategory c1 = categoryService.getRoot().get();
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            String jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(c1);
-            System.out.println(jsonInString);
-            model.addObject("inputJson", jsonInString);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+        categoryService.insertCategoriesTEMPORARY();
+        List<ResourceCategory> rootCategories = categoryService.getRootsFromDB();
+        model.addObject("inputJson", categoryService.serializeCategoriesIntoJson(rootCategories));
         return model;
     }
 
     @ResponseBody
     @RequestMapping(value = "/manageTypes", method = RequestMethod.POST)
     public void saveResultsOfManagingTypes(@RequestBody String outputJson) {
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            List<ResourceCategory> list2 = Arrays.asList(mapper.readValue(outputJson, ResourceCategory[].class));
-            System.out.println("DESCENDANTS");
-//            list2.addAll(categoryService.getDescendants(list2.get(0)));
-            for (ResourceCategory cat : list2) {
-                categoryService.updateResourceCategory(cat);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       List<ResourceCategory> categoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
+       categoriesFromWeb.forEach(categoryService::updateResourceCategory);
     }
-
 }

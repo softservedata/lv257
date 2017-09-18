@@ -1,8 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "RESOURCE_CATEGORIES")
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ResourceCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +22,8 @@ public class ResourceCategory {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
+//    @JsonProperty("parent_id")
+//    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
