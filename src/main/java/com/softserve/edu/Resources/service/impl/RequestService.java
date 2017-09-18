@@ -26,7 +26,8 @@ public class RequestService {
 
     public void fillUpRequest(ResourceRequest requestService) {
 
-        org.springframework.security.core.userdetails.User userSpring = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        org.springframework.security.core.userdetails.User userSpring =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         requestService.setStatus(ResourceRequest.Status.NEW);
 
@@ -37,8 +38,28 @@ public class RequestService {
 
         requestService.setRegister(user);
 
+
+
         resourceRequestDAO.persistRequest(requestService);
 
+    }
+
+    public List<ResourceRequest> getRequestsForRegistrar(){
+
+        org.springframework.security.core.userdetails.User userSpring =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDAO.findByEmail(userSpring.getUsername());
+
+
+
+        List<ResourceRequest> requests = getResourcesRequest()
+                .stream()
+                .filter(request -> request.getRegister().getId() == user.getId())
+                .collect(Collectors.toList());
+
+
+        return requests;
     }
 
     public void response(long requestId, Message message) {
