@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -29,6 +28,8 @@ public class RequestResourceController {
 
     @RequestMapping(value="/request", method= RequestMethod.GET)
     public ModelAndView sendResourcesRequests(@RequestParam(value = "operation", required = false) String operation) {
+
+        requestService.getRequestsForRegistrar();
 
         ModelAndView mv = new ModelAndView("sendRequest");
 
@@ -47,10 +48,9 @@ public class RequestResourceController {
         return mv;
     }
 
-
     @RequestMapping(value="/request", method=RequestMethod.POST)
     public String handleRequestSubmission(@Valid @ModelAttribute("request") ResourceRequest mRequest, BindingResult results,
-                                          Model model, HttpServletRequest httpRequest){
+                                          Model model, HttpServletRequest httpRequest) throws Exception {
 
         //check if there are any errors
         new UploadFileValidator().validate(mRequest, results);
@@ -71,7 +71,6 @@ public class RequestResourceController {
         if(!mRequest.getFile().getOriginalFilename().equals("")){
             FileUploadUtility.uploadFile(httpRequest, mRequest.getFile(),mRequest.getCode());
         }
-
 
        return "redirect:/resources/request?operation=request";
     }

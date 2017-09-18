@@ -52,14 +52,6 @@ public class ResourceRequest {
     @Transient
     private MultipartFile file;
 
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-
     public ResourceRequest(){
        this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
     }
@@ -72,6 +64,14 @@ public class ResourceRequest {
         this.update = update;
         this.status = status;
         this.resourcesAdmin = resourcesAdmin;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public long getId() {
