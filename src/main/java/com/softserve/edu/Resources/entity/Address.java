@@ -1,5 +1,8 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,18 +16,36 @@ public class Address {
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @JsonProperty("country")
     private String country;
+
+    @JsonProperty("region")
     private String region;
+
+    @JsonProperty("district")
     private String district;
 
+    @JsonProperty("postal index")
     @Column(name = "postal_index")
     private String postalIndex;
+
+    @JsonProperty("locality")
     private String locality;
+
+    @JsonProperty("street")
     private String street;
+
+    @JsonProperty("building")
     private int building;
+
+    @JsonProperty("block")
     private String block;
+
+    @JsonProperty("apartment")
     private int apartment;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Owner> owners;
 

@@ -12,6 +12,8 @@ import java.util.Optional;
 @Table(name = "RESOURCE_PROPERTIES")
 public class ResourceProperty {
 
+    @Transient
+    static long idgen = 0;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -44,8 +46,10 @@ public class ResourceProperty {
     public ResourceProperty() {
     }
 
-    public ResourceProperty(String name) {
-        this.columnName = name;
+    public ResourceProperty(String title) {
+        this.columnName = title;
+        this.title = title;
+        this.id = idgen++;
     }
 
     public Class<?> valueClassFor(String classDescription) {

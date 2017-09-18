@@ -2,10 +2,9 @@ package com.softserve.edu.Resources.service.impl;
 
 
 import com.softserve.edu.Resources.dao.UserDAO;
-import com.softserve.edu.Resources.entity.Message;
 import com.softserve.edu.Resources.dao.ResourceRequestDAO;
+import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.ResourceRequest;
-import com.softserve.edu.Resources.entity.Status;
 import com.softserve.edu.Resources.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,7 +28,7 @@ public class RequestService {
 
         org.springframework.security.core.userdetails.User userSpring = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        requestService.setStatus(Status.NEW);
+        requestService.setStatus(ResourceRequest.Status.NEW);
 
         Date date = new Date();
         requestService.setUpdate(date);
@@ -45,23 +44,14 @@ public class RequestService {
     public void response(long requestId, Message message) {
         ResourceRequest request = resourceRequestDAO.findById(requestId);
         request.setUpdate(new Date());
-        switch (message.getPurpose()) {
-            case Decline: {
-                request.setStatus(Status.DECLINED);
-                break;
-            }
-            case Accept: {
-                request.setStatus(Status.ACCEPTED);
-                break;
-            }
-            case Refinement: {
-                request.setNotifyExecutor(false);
-                break;
-            }
-        }
+        request.setStatus(message.getRequestStatus());
+        System.out.println("before Update");
         resourceRequestDAO.updateRequest(request);
+        System.out.println("after Update");
+
         sendMessage(request.getResourcesAdmin(), request.getRegister(), message);
     }
+
 
     void sendMessage(User sender, User receiver, Message message) {
     }
@@ -75,23 +65,16 @@ public class RequestService {
         return resourceRequestDAO.getAllRequests();
     }
 
-    public List<ResourceRequest> getNewResourcesRequest() {
 
-        List<ResourceRequest> requests = getResourcesRequest()
-                .stream()
-                .filter(request -> request.getStatus().equals(Status.NEW) & request.isNotifyExecutorTrue())
-                .collect(Collectors.toList());
-        return requests;
+    public List<ResourceRequest> getNewResourcesRequest() {
+        return filterByStatus(getResourcesRequest(), ResourceRequest.Status.NEW);
     }
 
     public List<ResourceRequest> getHistoryResourcesRequest() {
-
-        List<ResourceRequest> requests = getResourcesRequest()
-                .stream()
-                .filter(request -> request.getStatus().equals(Status.ACCEPTED)
-                        | request.getStatus().equals(Status.DECLINED))
-                .collect(Collectors.toList());
-        return requests;
+        List<ResourceRequest> requests = getResourcesRequest();
+        List<ResourceRequest> history=filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
+        history.addAll(filterByStatus(requests, ResourceRequest.Status.DECLINED));
+        return history;
     }
 
     public ResourceRequest assignResourceAdmin(long requestId, String resourceAdminEmail) {
@@ -105,6 +88,11 @@ public class RequestService {
 
     }
 
+    private List<ResourceRequest> filterByStatus(List<ResourceRequest> requests, ResourceRequest.Status status) {
+        return requests.stream()
+                .filter(request -> request.getStatus().equals(status))
+                .collect(Collectors.toList());
+    }
 
 
 }

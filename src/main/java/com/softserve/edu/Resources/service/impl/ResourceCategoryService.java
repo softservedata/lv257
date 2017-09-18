@@ -19,12 +19,12 @@ public class ResourceCategoryService {
     private ResourceCategoryDAO resourceCategoryDAO;
 
     @Transactional
-    public ResourceCategory findCategoryById(Long id) {
+    public Optional<ResourceCategory> findCategoryById(Long id) {
         return resourceCategoryDAO.findById(id);
     }
 
     @Transactional
-    public ResourceCategory findCategoryByName(
+    public Optional<ResourceCategory> findCategoryByName(
             String categoryName) {
         return resourceCategoryDAO.findByName(categoryName);
     }

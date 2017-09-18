@@ -2,12 +2,21 @@ package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.service.impl.RequestService;
+import com.softserve.edu.Resources.util.FileUploadUtility;
+import com.softserve.edu.Resources.validator.UploadFileValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
 
 @Controller
 @RequestMapping("/resources")
@@ -38,13 +47,31 @@ public class RequestResourceController {
         return mv;
     }
 
+
     @RequestMapping(value="/request", method=RequestMethod.POST)
-//    @ResponseBody
-    public String handleRequestSubmission(@ModelAttribute("request") ResourceRequest mRequest){
+    public String handleRequestSubmission(@Valid @ModelAttribute("request") ResourceRequest mRequest, BindingResult results,
+                                          Model model, HttpServletRequest httpRequest){
+
+        //check if there are any errors
+        new UploadFileValidator().validate(mRequest, results);
+
+
+        if(results.hasErrors()){
+            //model.addAttribute("userClickSendRequest", true);
+            model.addAttribute("title", "Send Request");
+            model.addAttribute("message", "Validation failed for sending request!");
+
+            return "sendRequest";
+        }
 
         requestService.fillUpRequest(mRequest);
 
         logger.info(mRequest.toString());
+
+        if(!mRequest.getFile().getOriginalFilename().equals("")){
+            FileUploadUtility.uploadFile(httpRequest, mRequest.getFile(),mRequest.getCode());
+        }
+
 
        return "redirect:/resources/request?operation=request";
     }

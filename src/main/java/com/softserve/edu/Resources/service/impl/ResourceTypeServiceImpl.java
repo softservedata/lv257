@@ -1,64 +1,64 @@
 package com.softserve.edu.Resources.service.impl;
 
+import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.ResourceTypeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+@Service("resourceTypeService")
 public class ResourceTypeServiceImpl implements ResourceTypeService {
 
-    private Map<String, ResourceType> types = new HashMap<>();
-    private Map<ResourceType, String> instances = new HashMap<>();
+    @Autowired
+    ResourceTypeDAO resourceTypeDAO;
 
     @Override
     public Collection<ResourceType> getTypes() {
-        return Collections.unmodifiableCollection(types.values());
+        return resourceTypeDAO.findAll();
     }
 
     @Override
-    public int getTypeCount() {
-        return types.values().size();
+    public long getTypeCount() {
+        return resourceTypeDAO.getCount();
     }
+
     @Override
-    public void add(ResourceType resourceType) {
-        types.putIfAbsent(resourceType.getName(), resourceType);
+    public ResourceType add(ResourceType resourceType) {
+        return resourceTypeDAO.makePersistent(resourceType);
     }
 
     @Override
     public void remove(ResourceType resourceType) {
-        types.remove(resourceType.getName());
+        resourceTypeDAO.makeTransient(resourceType);
     }
 
     @Override
     public Optional<ResourceType> get(String typeName) {
-        return Optional.ofNullable(types.get(typeName));
+        return resourceTypeDAO.findByName(typeName);
     }
 
     @Override
     public void create(String typeName) {
-        ResourceType type = types.get(typeName);
+        /*ResourceType type = types.get(typeName);
         if (type != null&& !instances.containsKey(typeName)) {
             System.out.printf("Creating ResourceTable '%s':%n", type.getName());
             type.getProperties().forEach(rp -> System.out.printf("adding field '%s'%n", rp.getTitle()));
             System.out.println("done.");instances.put(type, type.getTableName());
-        }
+        }*/
 
     }
 
     @Override
-    public ResourceTypeService setTypes(Map<String, ResourceType> types) {
-        this.types = types;
-        return this;
+    public List<ResourceType> getInstances() {
+        return resourceTypeDAO.getInstances();
     }
 
-    @Override
-    public Map<ResourceType, String> getInstances() {
-        return Collections.unmodifiableMap(instances);
-    }
-
-    @Override
-    public ResourceTypeService setInstances(Map<ResourceType, String> instances) {
-        this.instances = instances;
+    public ResourceTypeService instantiate(Map<ResourceType, String> instances) {
         return this;
     }
 

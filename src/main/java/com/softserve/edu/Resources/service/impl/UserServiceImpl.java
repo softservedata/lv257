@@ -6,6 +6,7 @@ import com.softserve.edu.Resources.dao.UserDAO;
 import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.entity.Privilege;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.entity.UserDetails;
 import com.softserve.edu.Resources.exception.UserAlreadyExistException;
 import com.softserve.edu.Resources.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,8 +67,9 @@ public class UserServiceImpl implements UserService {
         user.setPassword(userDTO.getPassword());
         user.setUsername(userDTO.getEmail());
         user.setEnabled(true);
-//        user.setUsing2FA(userDTO.isUsing2FA());
         user.setRole(roleDAO.findByName("ROLE_USER"));
+        UserDetails userDetails = new UserDetails();
+        user.setUserDetails(userDetails);
         return userDAO.addUser(user);
     }
 
