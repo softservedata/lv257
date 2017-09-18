@@ -1,9 +1,10 @@
 package com.softserve.edu.Resources.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -45,11 +46,12 @@ public class Address {
     @JsonProperty("apartment")
     private int apartment;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonIgnore
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Owner> owners;
 
     public Address() {
+        owners = new ArrayList<>();
     }
 
     public long getId() {
@@ -143,6 +145,11 @@ public class Address {
 
     public Address setOwners(List<Owner> owners) {
         this.owners = owners;
+        return this;
+    }
+
+    public Address addOwner(Owner owner){
+        this.owners.add(owner);
         return this;
     }
 
