@@ -39,6 +39,7 @@ public class ResourceCategory {
     private String pathToRoot;
 
     @OneToMany(mappedBy = "category")
+    @JsonManagedReference
     @JsonProperty("restypes")
     private Set<ResourceType> resourceTypes = new HashSet<>();
 
@@ -111,6 +112,21 @@ public class ResourceCategory {
         final StringBuilder builder = new StringBuilder();
         builder.append("Resource Category [name=").append(categoryName).append("]").append("[id=").append(id).append("]");
         return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ResourceCategory that = (ResourceCategory) o;
+
+        return categoryName.equals(that.categoryName);
+    }
+
+    @Override
+    public int hashCode() {
+        return categoryName.hashCode();
     }
 
     public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {

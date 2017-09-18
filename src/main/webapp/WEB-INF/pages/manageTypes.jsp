@@ -1,4 +1,7 @@
 <%@page session="false"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -25,9 +28,13 @@
 
     <div class="dd scrollable" id="nestable"></div>
 
-    <p><strong>Serialised Output (per list)</strong></p>
-
-    <textarea id="nestable-output"></textarea>
+    <p><strong>Serialised Output</strong></p>
+    <%--<sf:form method="POST" action="${pageContext.request.contextPath}/manageTypes">--%>
+    <div class="form-group">
+        <textarea <%--path="outputJson" --%>id="nestable-output" class="form-control" rows="5" cols = "30"></textarea>
+        <button type="button" class="btn btn-primary" id="save-json">Save</button>
+    </div>
+    <%--</sf:form>--%>
 
     <div>
         <br>
@@ -228,6 +235,23 @@
                 $('.dd').nestable('collapseAll');
             }
         });
+    });
+</script>
+<script>
+    $('#save-json').on('click', function (e) {
+        e.preventDefault();
+        var json = $('#nestable-output').val();
+        alert(json);
+        $.ajax({
+            type: "POST",
+            contentType: "text/plain",
+            url: "/manageTypes",
+            accept: "text/plain",
+            data: json,
+            success: function (result) {
+                alert("URA!")
+            }
+        })
     });
 </script>
 </body>

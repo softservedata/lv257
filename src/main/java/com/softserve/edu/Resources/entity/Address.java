@@ -1,5 +1,8 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,32 +15,45 @@ public class Address {
 
     @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
+
+    @JsonProperty("country")
     private String country;
+
+    @JsonProperty("region")
     private String region;
+
+    @JsonProperty("district")
     private String district;
 
+    @JsonProperty("postal index")
     @Column(name = "postal_index")
     private String postalIndex;
+
+    @JsonProperty("locality")
     private String locality;
+
+    @JsonProperty("street")
     private String street;
+
+    @JsonProperty("building")
     private int building;
+
+    @JsonProperty("block")
     private String block;
+
+    @JsonProperty("apartment")
     private int apartment;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Owner> owners;
 
     public Address() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
-    }
-
-    public Address setId(int id) {
-        this.id = id;
-        return this;
     }
 
     public String getCountry() {
@@ -133,36 +149,36 @@ public class Address {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Address)) return false;
 
         Address address = (Address) o;
 
         if (id != address.id) return false;
         if (building != address.building) return false;
         if (apartment != address.apartment) return false;
-        if (!country.equals(address.country)) return false;
-        if (!region.equals(address.region)) return false;
-        if (!district.equals(address.district)) return false;
-        if (!postalIndex.equals(address.postalIndex)) return false;
-        if (!locality.equals(address.locality)) return false;
-        if (!street.equals(address.street)) return false;
-        if (!block.equals(address.block)) return false;
-        return owners.equals(address.owners);
+        if (country != null ? !country.equals(address.country) : address.country != null) return false;
+        if (region != null ? !region.equals(address.region) : address.region != null) return false;
+        if (district != null ? !district.equals(address.district) : address.district != null) return false;
+        if (postalIndex != null ? !postalIndex.equals(address.postalIndex) : address.postalIndex != null) return false;
+        if (locality != null ? !locality.equals(address.locality) : address.locality != null) return false;
+        if (street != null ? !street.equals(address.street) : address.street != null) return false;
+        if (block != null ? !block.equals(address.block) : address.block != null) return false;
+        return owners != null ? owners.equals(address.owners) : address.owners == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + country.hashCode();
-        result = 31 * result + region.hashCode();
-        result = 31 * result + district.hashCode();
-        result = 31 * result + postalIndex.hashCode();
-        result = 31 * result + locality.hashCode();
-        result = 31 * result + street.hashCode();
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (district != null ? district.hashCode() : 0);
+        result = 31 * result + (postalIndex != null ? postalIndex.hashCode() : 0);
+        result = 31 * result + (locality != null ? locality.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
         result = 31 * result + building;
-        result = 31 * result + block.hashCode();
+        result = 31 * result + (block != null ? block.hashCode() : 0);
         result = 31 * result + apartment;
-        result = 31 * result + owners.hashCode();
+        result = 31 * result + (owners != null ? owners.hashCode() : 0);
         return result;
     }
 

@@ -1,56 +1,62 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<spring:url var="js" value="/resources/js"></spring:url>
 <html>
 <head>
-    <title>Send Request</title>
+    <title>${title}</title>
+    <jsp:include page="metadata.jsp"/>
 </head>
 <body>
 <jsp:include page="_menu2.jsp" />
 <jsp:include page="resources.jsp" />
-
+<jsp:include page="metadata.jsp"/>
 
 <div class="container-fluid">
     <div class="row">
 
-        <c:if test="${not empty message}">
-
-        <div class="col-xs-12">
-
-            <div class="alert alert-success alert-dismissible">
-
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-
-                ${message}
-
-            </div>
-        </div>
-        </c:if>
-
         <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
-            <div class="container">
 
+            <div class="container">
+                <c:if test="${not empty message}">
+
+                    <div class="alert alert-success alert-dismissible">
+
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+                            ${message}
+                    </div>
+
+                </c:if>
                 <%--@elvariable id="request" type=""--%>
-                <sf:form modelAttribute="request" action="${pageContext.request.contextPath}/resources/request" method="POST">
+                <sf:form id="requestForm" modelAttribute="request" action="${pageContext.request.contextPath}/resources/request"
+                         method="POST" enctype="multipart/form-data">
 
                     <div class="form-group">
                         <label>Requested category</label>
                         <sf:input type="text" path="theme" class="form-control" placeholder="Enter new kind of resource"/>
+                        <sf:errors path="theme" cssClass="help-block" element="em"></sf:errors>
                     </div>
 
 
                     <div class="form-group">
                         <label>Details</label>
                         <sf:input type="text" path="details" class="form-control" placeholder="Enter details"/>
+                        <sf:errors path="details" cssClass="help-block" element="em"></sf:errors>
                         <%--<label class="control-label col-md-4" for="theme">Details about new resource</label>--%>
                         <%--<sf:textarea class="form-control" path="details" id="details"--%>
                                      <%--placeholder="Enter details about new resource" rows="3"/>--%>
                     </div>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label for="exampleInputFile">Upload document</label>--%>
-                        <%--<input type="file"  class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">--%>
-                    <%--</div>--%>
+
+                        <label for="file">Upload document</label>
+
+                        <sf:input type="file" path="file" id="file" class="form-control"/>
+                        <sf:errors path="file" cssClass="help-block errHighlight"
+                                   element="em"/>
+
 
                     <%--<sf:hidden path="id"/>--%>
                     <%--<sf:hidden path="register"/>--%>
@@ -67,6 +73,11 @@
             </div>
         </div>
     </div>
+
+
+    <script src="${js }/jquery.validate.js"></script>
+
+    <script src="${js }/messageTimeOut.js"></script>
 </div>
 </body>
 </html>

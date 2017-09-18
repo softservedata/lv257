@@ -10,12 +10,6 @@ import javax.validation.constraints.Size;
 
 public class UserDTO {
 
-    @NotNull
-    @Size(min = 1)
-    private String firstName;
-
-    private String lastName;
-
     @NotEmpty(message = "Email should not be empty")
     @NotNull
     @Email(message = "Invalid email address!")
@@ -50,22 +44,6 @@ public class UserDTO {
         this.role = role;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -93,7 +71,7 @@ public class UserDTO {
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();
-        builder.append("UserDto [firstName=").append(firstName).append(", lastName=").append(lastName).append(", password=").append(password).append(", confirmPassword=").append(confirmPassword).append(", email=").append(email).append(", isUsing2FA=")
+        builder.append("UserDto [password=").append(password).append(", confirmPassword=").append(confirmPassword).append(", email=").append(email).append(", isUsing2FA=")
                 .append(isUsing2FA).append(", role=").append(role).append("]");
         return builder.toString();
     }

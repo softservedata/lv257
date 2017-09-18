@@ -4,42 +4,56 @@
 package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.GenericDAO;
-import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
-import java.util.List;
+import java.lang.invoke.MethodHandles;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Repository
 public abstract class GenericDAOImpl<T, ID extends Serializable>
     implements GenericDAO<T, ID> {
+
+    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().getClass().getName());
+
+    private final Logger logger;
 
     @PersistenceContext
     protected EntityManager em;
 
     protected final Class<T> entityClass;
 
-    protected GenericDAOImpl(Class<T> entityClass) {
+    public GenericDAOImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
+        this.logger = LOGGER;
+    }
+
+    protected GenericDAOImpl(Class<T> entityClass, Logger logger) {
+        this.entityClass = entityClass;
+        this.logger = logger;
     }
 
     public void setEntityManager(EntityManager em) {
         this.em = em;
     }
 
-    public T findById(ID id) {
+    public Optional<T> findById(ID id) {
         return findById(id, LockModeType.NONE);
     }
 
-    public T findById(ID id, LockModeType lockModeType) {
-        return em.find(entityClass, id, lockModeType);
+    public Optional<T> findById(ID id, LockModeType lockModeType) {
+        return Optional.ofNullable(em.find(entityClass, id, lockModeType));
     }
 
-    public T findReferenceById(ID id) {
-        return em.getReference(entityClass, id);
+    public Optional<T> findReferenceById(ID id) {
+        try {
+            return Optional.ofNullable(em.getReference(entityClass, id));
+        } catch (EntityNotFoundException e) {
+            return Optional.empty();
+        }
     }
 
     public List<T> findAll() {
@@ -60,12 +74,70 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         return em.merge(instance);
     }
 
-/*    public T makePersistent(T instance) {
-        // merge() handles transient AND detached instances
-        return em.merge(instance);
-    }*/
-    public void makePersistent(T instance) {
-        em.persist(instance);
+//    public T makePersistent(T instance) {
+//         merge() handles transient AND detached instances
+//        return em.merge(instance);
+//    }
+    public T makePersistent(T instance) {
+        T persisted = instance;
+        if (em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(instance) == null) {
+            em.persist(instance);
+        } else {
+            persisted = em.merge(instance);
+        }
+        return persisted;
+    }
+
+    public Optional<T> querySingleResult(String queryWithNamedParams, String paramName, Object paramValue) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(paramName, paramValue);
+        return querySingleResult(queryWithNamedParams, params);
+    }
+
+    @Override
+    public Optional<T> querySingleResult(String queryWithNamedParams, Map<String, Object> params) {
+        Optional<T> result = Optional.empty();
+        try {
+            final TypedQuery<T> query = em.createQuery(queryWithNamedParams, entityClass);
+
+            params.entrySet().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+
+            result = Optional.ofNullable(query.getSingleResult());
+        } catch (NoResultException nre) {
+            final String warn = String.format("{} - failed to find %s matching to params [%s]",
+                                              entityClass.getSimpleName(),
+                                              collectParamsString(params));
+            logger.warn(warn, nre);
+        } catch (PersistenceException pe) {
+            logger.error("{} {}", pe, pe.getMessage());
+        }
+
+        return result;
+    }
+
+    public List<T> queryResultList(String queryWithNamedParams, String paramName, Object paramValue) {
+        Map<String, Object> params = new HashMap<>();
+        params.put(paramName, paramValue);
+        return queryResultList(queryWithNamedParams, params);
+    }
+
+    @Override
+    public List<T> queryResultList(String queryWithNamedParams, Map<String, Object> params) {
+        try {
+            final TypedQuery<T> query = em.createQuery(queryWithNamedParams, entityClass);
+
+            params.entrySet().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
+
+            return query.getResultList();
+
+        } catch (PersistenceException pe) {
+            logger.error("{} {}", pe, pe.getMessage());
+            return Collections.emptyList();
+        }
+    }
+
+    private String collectParamsString(Map<String, Object> params) {
+        return params.values().stream().map(Object::toString).collect(Collectors.joining("', '", "'", "'"));
     }
 
     public void makeTransient(T instance) {

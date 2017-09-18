@@ -6,6 +6,8 @@ package com.softserve.edu.Resources.dao;
 import javax.persistence.LockModeType;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * An interface shared by all business data access objects.
@@ -19,22 +21,26 @@ import java.util.List;
  */
 public interface GenericDAO<T, ID extends Serializable> {
 
-    T findById(ID id);
+    Optional<T> findById(ID id);
 
-    T findById(ID id, LockModeType lockModeType);
+    Optional<T> findById(ID id, LockModeType lockModeType);
 
-    T findReferenceById(ID id);
+    Optional<T> findReferenceById(ID id);
 
     List<T> findAll();
 
     Long getCount();
 
     T merge(T entity);
-    /*T makePersistent(T entity);*/
-    void makePersistent(T entity);
+
+    T makePersistent(T entity);
+//    void makePersistent(T entity);
 
     void makeTransient(T entity);
 
     void checkVersion(T entity, boolean forceUpdate);
 
+    Optional<T> querySingleResult(String queryWithNamedParams, Map<String, Object> params);
+
+    List<T> queryResultList(String queryWithNamedParams, Map<String, Object> params);
 }
