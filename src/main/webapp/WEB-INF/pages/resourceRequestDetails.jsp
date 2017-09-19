@@ -22,29 +22,21 @@
 
 <div class="container">
 
-    <h3>Additional information</h3>
-    <p>${request.details}</p>
+    <h3>Requested category: ${request.theme}</h3>
+
+    <p><span>Additional information: </span>${request.details}</p>
     <h3>Document example</h3>
     <hr>
-    <%--<c:if test="${request.file.getContentType().equals('application/pdf')}">--%>
-        <%--<img--%>
-                <%--class="document-view"--%>
-                <%--src="/resources/upload/${request.code}.pdf">--%>
-    <%--</c:if>--%>
-    <%--<c:if test="${request.file.getContentType().equals('application/jpg')}">--%>
-        <%--<img--%>
-                <%--class="document-view"--%>
-                <%--src="/resources/upload/${request.code}.jpg">--%>
+    <div>
+        <img class="documentImg-view" src="/resources/upload/${request.code}.jpg"></div>
+    <div>
+        <embed class="documentPdf-view" src="/resources/upload/${request.code}.pdf">
+    </div>
 
-    <%--</c:if>--%>
-    <img class="document-view" src="/resources/upload/${request.code}.jpg">
-<hr>
-<br />
-<button class="btn btn-primary" name="back" onclick="history.back()">Back</button>
+    <%--<hr>--%>
+    <%--<br />--%>
+    <%--<button class="btn btn-primary" name="back" onclick="history.back()">Back</button>--%>
 </div>
-
-
-
 
 
 </body>
