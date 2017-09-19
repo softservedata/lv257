@@ -9,7 +9,7 @@ public interface UserDetailsService {
 
     public UserDetails getUserDetailsByEmail(String email);
 
-    public UserDetails getUserDetailsById (Long id);
+    public UserDetails getUserDetailsByUserId(Long id);
 
     public List<User> getAllUsersDetails();
 }

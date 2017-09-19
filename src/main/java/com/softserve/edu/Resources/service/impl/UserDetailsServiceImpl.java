@@ -28,8 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     }
 
     @Transactional
-    public UserDetails getUserDetailsById (Long id){
-        UserDetails userDetails = userDetailsDAO.findById(id);
+    public UserDetails getUserDetailsByUserId(Long id){
+        UserDetails userDetails = userDetailsDAO.findByUserId(id);
 
         return userDetails;
     }
