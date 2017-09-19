@@ -51,6 +51,7 @@ function closePopUp(placeholder, text, modalId) {
     placeholder.append(clear);
 
     closePopUp.on('click', function () {
+        placeholder.empty();
         $(modalId).modal('hide');
     });
 }
@@ -136,7 +137,6 @@ function appendButton(form, forWhat, text, right, success) {
         class: 'btn' +
         (right ? ' pull-right ' : ' pull-left ') +
         (success ? ' btn-success ' : ' btn-primary '),
-        type: 'submit',
         text: text,
         id: forWhat + '_custom_btn'
     });
@@ -191,7 +191,7 @@ var fieldsMetadata = {
 
     rowsForCompany: [
         [new FieldAndSize('Full Name', 12, 'Full Name')],
-        [new FieldAndSize('Short Name', 6, 'Short Name'), new FieldAndSize('Orgsnization Form', 6, 'TzOV')],
+        [new FieldAndSize('Short Name', 6, 'Short Name'), new FieldAndSize('Organization Form', 6, 'TzOV')],
         [new FieldAndSize('CEO', 12, 'CEO')],
         [new FieldAndSize('Phone', 12, '+380679365998')]
     ],
