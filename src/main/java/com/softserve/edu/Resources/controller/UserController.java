@@ -31,9 +31,8 @@ public class UserController {
 
     @Autowired
     private HttpServletRequest request;
-    /* todo : is CHANGED UserService userService; TO UserDetailsService userDetailsService*/
     @Autowired
-            UserDetailsService userDetailsService;
+    UserDetailsService userDetailsService;
     @Autowired
     UserService userService;
     @Autowired
