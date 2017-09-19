@@ -59,7 +59,12 @@ font-weight: normal;
   text-align: left;
 }
 
-.document-view{
-  max-width: 500px; max-height: 500px;
+.documentImg-view{
+ max-width: 500px; max-height: 600px;
+}
+
+.documentPdf-view{
+  width:650px; height:900px;
+  min-height: 0px; min-width:0px;
 }
 
