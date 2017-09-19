@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>User Info</title>
+    <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>

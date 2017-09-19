@@ -16,8 +16,6 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-/*todo CHANGE from "userDAO" to "userDrtailsDAO"*/
-//@Qualifier("userDAO")
 @Qualifier("userDrtailsDAO")
 @Transactional
 public class UserDetailsDAOImpl implements UserDetailsDAO {
@@ -27,11 +25,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
     public UserDetailsDAOImpl() {
     }
-
-    /*@Override
-    public User getUser(User user) {
-        return null;
-    }*/
 
     @Override
     public UserDetails getUser(User user) {
@@ -45,14 +38,9 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         UserDetails userDetails = (UserDetails)query.getSingleResult();
         return userDetails;
     }
-/* todo changed Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id").setParameter("id", id);
- */
+
     @Override
     public UserDetails findById(long id) {
-        /*
-                Query query = entityManager.createQuery("select i from User i where i.id = :id")
-                .setParameter("id", id);
-         */
         Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id")
                 .setParameter("id", id);
         UserDetails userDetails = (UserDetails) query.getSingleResult();
