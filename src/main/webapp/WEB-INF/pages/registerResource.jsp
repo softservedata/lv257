@@ -239,7 +239,7 @@
                                             <label for="owner_type">Please specify what type of owner you want to
                                                 add:</label>
                                             <select id="owner_type" class="form-control">
-                                                <option value="1">Choose type here</option>
+                                                <option value="1" selected>Choose type here</option>
                                                 <option value="2">Company</option>
                                                 <option value="3">Person</option>
                                             </select>
@@ -314,7 +314,7 @@
 
                     <div id="resource_address_id_input">
 
-                        <%--May be I will rendder hidder input here with resource address id.--%>
+                   <%--May be I will rendder hidder input here with resource address id.--%>
 
                     </div>
 
@@ -352,82 +352,129 @@
     /* Generate owner form depending on owner type */
     $('#owner_type').on('change', function () {
         var ownerType = this.value;
-        var formPlaceholder = $('#resource_owner_form');
-        var resourceAddressForm = $('#owner_address_form');
+        // in this div will be rendered form for the owner registration
+        var $ownerForm = $('#resource_owner_form');
+        // in this div will be rendered form for the owner address
+        var $ownerAddressForm = $('#owner_address_form');
 
+        // if selected value is 1 ("Choose owner type"), these two divs are cleared
         if (ownerType == 1) {
-            formPlaceholder.empty();
-            resourceAddressForm.empty();
+            $ownerForm.empty();
+            $ownerAddressForm.empty();
         } else if (ownerType == 2) {
-            addOwnerForm(formPlaceholder, resourceAddressForm, "company", fieldsMetadata.rowsForCompany, ownerType);
+            // company form will be rendered
+            addOwnerForm($ownerForm, $ownerAddressForm, "company", fieldsMetadata.rowsForCompany, ownerType);
         } else if (ownerType == 3) {
-            addOwnerForm(formPlaceholder, resourceAddressForm, "person", fieldsMetadata.rowsForPerson, ownerType);
+            // person form will be rendered
+            addOwnerForm($ownerForm, $ownerAddressForm, "person", fieldsMetadata.rowsForPerson, ownerType);
         }
-
     });
 
-    function addOwnerForm(formPlaceholder, resourceAddressForm, forWhat, rows, ownerType) {
-        resourceAddressForm.empty();
-        formPlaceholder.empty();
+    /**
+     * Builds owner form with the possibility to add owner's address.
+     * Make ajax call to the server to save owner with address.
+     */
+    function addOwnerForm($ownerForm, $ownerAddressForm, forWhat, rows, ownerType) {
+        $ownerForm.empty();
+        $ownerAddressForm.empty();
 
+        // here will be stored json string
+        // 0 index - owner address json string
+        // 1 index - owner json string
+        // 2 index - owner type, just number
         var ownerAddressFormAndOwnerForm = [];
 
+        // id for the form
         var ownerFormId = 'register_owner_' + forWhat;
         var form = $('<form/>', {
             class: 'form',
             id: ownerFormId
         });
-        formPlaceholder.append(form);
-
+        // append form for the owner and append all rows needed by this form
+        $ownerForm.append(form);
         appendRows(form, forWhat, rows);
 
+        var $clearfix = $('<div/>', {
+           class: 'clearfix'
+        });
         var $registerOwnerBtn = $('<button/>', {
-            text: "Register Owner"
+            text: "Register Owner",
+            class: 'btn pull-right btn-success'
         });
-        formPlaceholder.append($registerOwnerBtn);
-
         var $addOwnerAddresBtn = $('<button/>', {
-            text: "Add Owner Address"
+            text: "Add Owner Address",
+            class: 'btn pull-left btn-primary'
         });
-        formPlaceholder.append($addOwnerAddresBtn);
 
+        // append button to register owner
+        $ownerForm.append($registerOwnerBtn);
+        $ownerForm.append($clearfix);
+        // append button to add owner's address
+        $ownerForm.append($addOwnerAddresBtn);
+        $ownerForm.append($clearfix);
+
+        // another div where I place form for the owner's address and button
+        // before user press 'Add Owner Address'
+        // I do it right now, because I want to add listener to 'Register Address' button.
         var $addressDiv = $('<div/>', {
-            id: 'ghostDiv'
-        });
-        var addressFormId = addAddressFormWithoutBtn(forWhat, $addressDiv, fieldsMetadata.rowsForAddress);
-        var $registerOwnerAddressBtn = $('<button/>', {
-            text: "Register Address"
+            id: 'ghostDiv',
+            class: 'padding_top_40'
         });
 
+        // add address form iside $addressDiv and returns form id
+        var addressFormId = addAddressFormWithoutBtn(forWhat, $addressDiv, fieldsMetadata.rowsForAddress);
+
+        // 'Register Address' button, I attach listener to it to retrieve all inputs filled by user
+        var $registerOwnerAddressBtn = $('<button/>', {
+            text: "Register Address",
+            class: 'btn pull-right btn-success'
+        });
         $addressDiv.append($registerOwnerAddressBtn);
 
+        // when press 'Add owner's address', $addressDiv with already appended form for address and button
+        // is appended to ownerAddress div placehlder
         $addOwnerAddresBtn.on('click', function (e) {
             e.preventDefault();
             $registerOwnerBtn.prop('disabled', true);
             $(this).remove();
-            resourceAddressForm.append($addressDiv);
+            $ownerAddressForm.append($addressDiv);
+            $ownerAddressForm.append($clearfix);
         });
 
+        // here I retrieve all inputs for the owner address form
+        // add push this json into the array
         $registerOwnerAddressBtn.on('click', function (e) {
             e.preventDefault();
             $registerOwnerBtn.prop('disabled', false);
             var json = toJSONString(addressFormId);
             ownerAddressFormAndOwnerForm.push(json);
-            alert(ownerAddressFormAndOwnerForm);
-            resourceAddressForm.empty();
+            console.log(ownerAddressFormAndOwnerForm);
+            $ownerAddressForm.empty();
+            $ownerForm.append($clearfix);
         });
 
+        // here I retrieve all inputs for the owner form,
+        // push this json into the array, also push ownerType
+        // and call ajax function to register owner
         $registerOwnerBtn.on('click', function (e) {
             e.preventDefault();
             var json = toJSONString(ownerFormId);
             ownerAddressFormAndOwnerForm.push(json);
             ownerAddressFormAndOwnerForm.push(ownerType);
 
-            registerOwner(ownerAddressFormAndOwnerForm, formPlaceholder);
+            registerOwner(ownerAddressFormAndOwnerForm, $ownerForm);
         });
     };
 
-    function registerOwner(addressAndOwnerJson, formPlaceholder) {
+    /**
+     * Takes:
+     * addressAndOwnerJson - data to be send to the server
+     * $ownerForm - element to be cleared, when owner is registered
+     */
+    function registerOwner(addressAndOwnerJson, $ownerForm) {
+        // Building string than contains addressJson, ownerJson and owner type with "|" delimiter
+        // In the controller this string will be splited by "\\|" regexp
+        // and I can parse owner and address json separately
         var jsonToSend = addressAndOwnerJson[0] + "|" + addressAndOwnerJson[1] + "|" + addressAndOwnerJson[2];
         console.log(jsonToSend);
 
@@ -438,12 +485,22 @@
             accept: "text/plain",
             data: jsonToSend,
             success: function (result) {
-                closePopUp(formPlaceholder, 'Owner was saved', '#createNewOwnerPopUp');
+                closePopUp($ownerForm, 'Owner was saved.', '#createNewOwnerPopUp');
             }
         })
 
     }
 
+    /**
+     *  Dynamic adding address form
+     * Takes:
+     * string   - addressFor - purpose of this address form, needed to generate form id
+     * element  - formPlaceholder - div element, in which form will be placed
+     *
+     * Returns:
+     * id - id of generated form
+     *
+     */
     function addAddressFormWithoutBtn(addressFor, formPlaceholder, rows) {
         // clears div element
         formPlaceholder.empty();

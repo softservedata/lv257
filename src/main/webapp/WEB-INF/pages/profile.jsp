@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>User Info</title>
+    <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
@@ -67,11 +67,6 @@
             <input class="form-control" value="${date_of_issue}"/>
         </div>
 
-<%--        <div class="row">
-            <div class="font-bold">Address</div>
-            <input class="form-control" value="${bank_id}"/>
-        </div>--%>
-
         <div class="row">
             <div class="font-bold">ID Bank</div>
             <input class="form-control" value="${bank_id}"/>
@@ -114,51 +109,12 @@
 
                             ${message}
                     </div>
-
                 </c:if>
-                <%--UNFINISHED--%>
-                <%--@elvariable id="request" type=""--%>
-                <%--<sf:form id="requestForm" modelAttribute="request" action="${pageContext.request.contextPath}/profile"
-                         method="POST" enctype="multipart/form-data">
-
-
-                    <label for="file">Upload document</label>
-
-                    <sf:input type="file" path="file" id="file" class="form-control"/>
-                    <sf:errors path="file" cssClass="help-block errHighlight"
-                               element="em"></sf:errors>
-
-                    <br>
-                    <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>
-                </sf:form>--%>
-
-<%--
-                       UNFINISHED
-                    <sf:form id="requestForm" modelAttribute="request" action="${pageContext.request.contextPath}/resources/request"
-                         method="POST" enctype="multipart/form-data">
-
-                    <div class="form-group">
-                    <label>Details</label>
-                    <sf:input type="text" path="details" class="form-control" placeholder="Enter details"/>
-                    <sf:errors path="details" cssClass="help-block" element="em"></sf:errors>
-                    </div>
-
-
-                    <label for="file">Upload document</label>
-
-                    <sf:input type="file" path="file" id="file" class="form-control"/>
-                    <sf:errors path="file" cssClass="help-block errHighlight"
-                               element="em"/>
-
-                    &lt;%&ndash;<button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>&ndash;%&gt;
-                </sf:form>--%>
-
             </div>
         </div>
 
     </div>
 </div>
-
 
 </body>
 </html>

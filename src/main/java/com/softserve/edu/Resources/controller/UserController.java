@@ -29,11 +29,12 @@ import java.security.Principal;
 @Transactional
 public class UserController {
 
-//    @Autowired
-//    private HttpServletRequest request;
-    /* todo : is CHANGED UserService userService; TO UserDetailsService userDetailsService*/
+
     @Autowired
-            UserDetailsService userDetailsService;
+    private HttpServletRequest request;
+/* todo : is CHANGED UserService userService; TO UserDetailsService userDetailsService*/
+    @Autowired
+    UserDetailsService userDetailsService;
     @Autowired
     UserService userService;
     @Autowired
@@ -53,8 +54,7 @@ public class UserController {
         ModelAndView profile = new ModelAndView("profile");
 
         UserDetails userDetailsServiceInstance = userDetailsService.getUserDetailsById(user_ID);
-        model.addAttribute("title", "Send Request");
-        profile.addObject("profile",userDetailsServiceInstance);
+        model.addAttribute("title", "Profile");
         profile.addObject("first_name",userDetailsServiceInstance.getFirst_name());
         profile.addObject("second_name",userDetailsServiceInstance.getSecond_name());
         profile.addObject("middle_name",userDetailsServiceInstance.getMiddle_name());
@@ -66,73 +66,5 @@ public class UserController {
 
         return profile;
     }
-
-
-/** @version 2--(unfinished)
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-//
-    public ModelAndView profile(@RequestParam(value = "operation", required = false) String operation, Model model, Principal principal) {
-        String userName = principal.getName();
-        User user = userService.findByEmail(userName);
-        long user_ID = user.getId();
-        ModelAndView profile = new ModelAndView("profile");
-//
-        ResourceRequest nRequest = new ResourceRequest();
-
-        UserDetails userDetailsServiceInstance = userDetailsService.getUserDetailsById(user_ID);
-//
-        profile.addObject("userClickSendRequest", true);
-        profile.addObject("request", nRequest);
-
-        model.addAttribute("title", "Send Request");
-        profile.addObject("profile",userDetailsServiceInstance);
-        profile.addObject("first_name",userDetailsServiceInstance.getFirst_name());
-        profile.addObject("second_name",userDetailsServiceInstance.getSecond_name());
-        profile.addObject("middle_name",userDetailsServiceInstance.getMiddle_name());
-        profile.addObject("passport_series",userDetailsServiceInstance.getPassport_series());
-        profile.addObject("passport_number",userDetailsServiceInstance.getPassport_number());
-        profile.addObject("issued_by",userDetailsServiceInstance.getIssued_by());
-        profile.addObject("date_of_issue",userDetailsServiceInstance.getDate_of_issue());
-        profile.addObject("bank_id",userDetailsServiceInstance.getBank_id());
-
-        if(operation != null){
-            if(operation.equals("request")){
-                profile.addObject("message", "Request sent successfully!");
-            }
-        }
-
-        return profile;
-    }
-
-
-    @RequestMapping(value="/profile", method=RequestMethod.POST)
-    public String handleProfileSubmission(@Valid @ModelAttribute("request") ResourceRequest mRequest, BindingResult results,
-                                          Model model, HttpServletRequest httpRequest){
-
-        //check if there are any errors
-        new UploadFileValidator().validate(mRequest, results);
-
-
-        if(results.hasErrors()){
-            //model.addAttribute("userClickSendRequest", true);
-            model.addAttribute("title", "Send Request");
-            model.addAttribute("message", "Validation failed for sending request!");
-
-            return "sendRequest";
-        }
-
-        requestService.fillUpRequest(mRequest);
-
-        logger.info(mRequest.toString());
-
-        if(!mRequest.getFile().getOriginalFilename().equals("")){
-            FileUploadUtility.uploadFile(httpRequest, mRequest.getFile(),mRequest.getCode());
-        }
-
-
-        return "redirect:/resources/request?operation=request";
-    }
-}
-*/
 
 }

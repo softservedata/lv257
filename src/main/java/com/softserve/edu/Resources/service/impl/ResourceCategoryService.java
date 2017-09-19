@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class ResourceCategoryService {
@@ -134,7 +133,7 @@ public class ResourceCategoryService {
     public void fillParents(List<ResourceCategory> categoryList) {
         for (ResourceCategory rc : categoryList) {
             Set<ResourceCategory> children = rc.getChildrenCategories();
-            for (ResourceCategory ch : children) {
+            for (ResourceCategory ch: children) {
                 ch.setParentCategory(rc);
             }
         }

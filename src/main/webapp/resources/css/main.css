@@ -68,3 +68,11 @@ font-weight: normal;
   min-height: 0px; min-width:0px;
 }
 
+/* Oleg */
+.padding_bottom_15{
+    padding-bottom: 15px;
+}
+
+.padding_top_40{
+    padding-top: 40px;
+}

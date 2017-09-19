@@ -68,9 +68,9 @@
             <hr>
             <div class="container">
               <button type="button" class="btn btn-primary" data-toggle="modal"
-                      data-target="#existentProps">Add existing</button>
+                      data-target="#existent-props">Add existing</button>
               <button type="button" class="btn btn-primary" data-toggle="modal"
-                      data-target="#newProperty">Add new</button>
+                      data-target="#new-property">Add new</button>
             </div>
 
             <jsp:include page="dialogs/existentProperties.jsp"/>

@@ -1,9 +1,9 @@
 package com.softserve.edu.Resources.dto;
 
+import com.softserve.edu.Resources.entity.ResourceType;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.softserve.edu.Resources.entity.ResourceType;
 
 
 
@@ -18,7 +18,7 @@ public class DtoUtilMapper {
         ResourceTypeDTO resTypeDTO = new ResourceTypeDTO();
         resTypeDTO.setId(resType.getId());
         resTypeDTO.setTableName(resType.getTableName());
-        resTypeDTO.setTypeName(resType.getTypeName()); 
+        resTypeDTO.setTypeName(resType.getTypeName());
         
         resTypeDTOs.add(resTypeDTO);
        }
