@@ -28,7 +28,7 @@ public class QueryBuilderServiceImpl implements QueryBuilderService {
 
         List<ResourceProperty> allResourceProperties = new ArrayList<>(resourceType.getProperties());
 
-        System.out.println(allResourceProperties);
+        System.out.println("all Resource Properties of Resource type: " + allResourceProperties);
 
         StringBuilder createQuery = new StringBuilder();
         createQuery.append("SELECT gr.id, gr.id_Address");

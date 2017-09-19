@@ -95,7 +95,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     @Override
     public void testHello() {
-        System.out.println("Try test");
+        System.out.println("Yeah, it works!");
     }
     
     

@@ -33,8 +33,8 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     ResourceDao resourceDao;
 
-    public ResourceServiceImpl() {
-    }
+//    public ResourceServiceImpl() {
+//    }
 
 //    @Override
 //    public Collection<GenericResource> getResources() {
@@ -63,6 +63,7 @@ public class ResourceServiceImpl implements ResourceService {
         
         List<ResourceProperty> resourceProperties = new ArrayList<>(
                 resourceTypeDAO.findWithPropertiesByTableName(tableName).getProperties());
+        System.out.println(resourceProperties);
 
         return resourceDao.findResourcesByResourceType(query, valuesToSearch, resourceProperties);
     }

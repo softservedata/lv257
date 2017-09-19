@@ -1,10 +1,10 @@
 package com.softserve.edu.Resources.dao.impl;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.sql.DataSource;
 
@@ -62,11 +62,12 @@ public class ResourceDaoImpl implements ResourceDao {
             genResource.setId(Integer.parseInt(String.valueOf(mapRow.get("id"))));
             genResource.setId_Address(Integer.parseInt(String.valueOf(mapRow.get("id_Address"))));
 
-            Set<PropertyValue> propertyValues = new HashSet<>();
+            Set<PropertyValue> propertyValues = new TreeSet<>();
 
             for (ResourceProperty property : resourceProperties) {
                 PropertyValue propertyValue = new PropertyValue(property,
                         String.valueOf(mapRow.get(property.getColumnName())));
+                
                 propertyValues.add(propertyValue);
             }
 

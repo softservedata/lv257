@@ -29,8 +29,8 @@ import java.security.Principal;
 @Transactional
 public class UserController {
 
-    @Autowired
-    private HttpServletRequest request;
+//    @Autowired
+//    private HttpServletRequest request;
     /* todo : is CHANGED UserService userService; TO UserDetailsService userDetailsService*/
     @Autowired
             UserDetailsService userDetailsService;

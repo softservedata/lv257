@@ -1,6 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
-public class PropertyValue {
+public class PropertyValue implements Comparable<PropertyValue> {
 
   private int id;
   private ResourceProperty type;
@@ -36,6 +36,7 @@ public class PropertyValue {
       throw new NullPointerException("NOT NULL constraint violation.");
     }
     if (!validate(value)) {
+        System.out.println(value);
       throw new IllegalArgumentException("Invalid value format. Should match "
                                              + type.getRegex());
     }
@@ -44,13 +45,20 @@ public class PropertyValue {
   }
 
   private boolean validate(String value) {
+      System.out.println(type.getRegex());
     return ((type.getRegex() != null) && (value != null))
                && value.matches(type.getRegex());
   }
 
     @Override
     public String toString() {
-        return "PropertyValue [id=" + id + ", type=" + type + ", value=" + value + "]";
+        return "PropertyValue [type=" + type + ", value=" + value + "]";
+    }
+
+    @Override
+    public int compareTo(PropertyValue o) {
+        
+        return this.getType().getColumnName().compareTo(o.getType().getColumnName());
     }
 
   

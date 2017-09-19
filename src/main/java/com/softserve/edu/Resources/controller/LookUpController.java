@@ -42,7 +42,7 @@ public class LookUpController {
     }
     
     
-    @RequestMapping(value = "/resourceProperties/getEssentials", method = RequestMethod.GET)
+    @RequestMapping(value = "/resourceProperties/getEssentials", method = RequestMethod.POST)
     public List<ResourceProperty> loadSpecResourceProperty(@RequestBody String resourceTypeId){
         
         ResourceType resourceType = resTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
@@ -53,7 +53,7 @@ public class LookUpController {
     }
     
     
-    @RequestMapping(value = "/lookUpByInputValues", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookUpByInputValues", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO){
         
         String tableName = resourceDTO.getResourceTableName();
