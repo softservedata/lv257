@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,15 +14,19 @@ import javax.persistence.Table;
 public class Company extends Owner {
 
     @Column(name = "full_name")
+    @JsonProperty("full name")
     private String fullName;
 
     @Column(name = "short_name")
+    @JsonProperty("short name")
     private String shortName;
 
     @Column(name = "organization_form")
+    @JsonProperty("organization form")
     private String organizationForm;
 
     @Column(name = "CEO")
+    @JsonProperty("ceo")
     private String ceo;
 
     public Company() {

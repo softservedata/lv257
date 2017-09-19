@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.Optional;
 
 @Repository
 public class ResourceCategoryDAOImpl
@@ -19,9 +20,9 @@ public class ResourceCategoryDAOImpl
     }
 
     @Override
-    public ResourceCategory findByName(String name) {
-        Query query = entityManager.createQuery("select i from ResourceCategory i where i.categoryName = :name")
+    public Optional<ResourceCategory> findByName(String name) {
+        Query query = entityManager.createQuery("select rc from ResourceCategory rc where rc.categoryName = :name")
                 .setParameter("name", name);
-        return (ResourceCategory) query.getSingleResult();
+        return Optional.ofNullable((ResourceCategory)query.getSingleResult());
     }
 }

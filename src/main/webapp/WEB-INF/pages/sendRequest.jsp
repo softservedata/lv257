@@ -12,7 +12,7 @@
 <body>
 <jsp:include page="_menu2.jsp" />
 <jsp:include page="resources.jsp" />
-<jsp:include page="metadata.jsp"/>
+
 
 <div class="container-fluid">
     <div class="row">
@@ -37,14 +37,14 @@
                     <div class="form-group">
                         <label>Requested category</label>
                         <sf:input type="text" path="theme" class="form-control" placeholder="Enter new kind of resource"/>
-                        <sf:errors path="theme" cssClass="help-block" element="em"></sf:errors>
+                        <sf:errors path="theme" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
                     </div>
 
 
                     <div class="form-group">
                         <label>Details</label>
                         <sf:input type="text" path="details" class="form-control" placeholder="Enter details"/>
-                        <sf:errors path="details" cssClass="help-block" element="em"></sf:errors>
+                        <sf:errors path="details" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
                         <%--<label class="control-label col-md-4" for="theme">Details about new resource</label>--%>
                         <%--<sf:textarea class="form-control" path="details" id="details"--%>
                                      <%--placeholder="Enter details about new resource" rows="3"/>--%>
@@ -55,9 +55,11 @@
 
                         <sf:input type="file" path="file" id="file" class="form-control"/>
                         <sf:errors path="file" cssClass="help-block errHighlight"
-                                   element="em"/>
+                                   element="em" cssStyle="color: #ff0000;"/>
 
 
+                    <br>
+                    <br>
                     <%--<sf:hidden path="id"/>--%>
                     <%--<sf:hidden path="register"/>--%>
                     <%--<sf:hidden path="resourcesAdmin"/>--%>

@@ -22,23 +22,21 @@
 
 <div class="container">
 
-    <h3>Additional information</h3>
-    <p>${info}</p>
-    <h3>Document example</h3>
-    <p>
+    <h3>Requested category: ${request.theme}</h3>
 
+    <p><span>Additional information: </span>${request.details}</p>
+    <h3>Document example</h3>
     <hr>
     <div>
-       ${file}
+        <img class="documentImg-view" src="/resources/upload/${request.code}.jpg"></div>
+    <div>
+        <embed class="documentPdf-view" src="/resources/upload/${request.code}.pdf">
     </div>
-    <hr>
-    </p>
-    <br />
-    <button class="btn btn-primary" name="back" onclick="history.back()">back</button>
+
+    <%--<hr>--%>
+    <%--<br />--%>
+    <%--<button class="btn btn-primary" name="back" onclick="history.back()">Back</button>--%>
 </div>
-
-
-
 
 
 </body>

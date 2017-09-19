@@ -26,7 +26,8 @@ public class RequestService {
 
     public void fillUpRequest(ResourceRequest requestService) {
 
-        org.springframework.security.core.userdetails.User userSpring = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        org.springframework.security.core.userdetails.User userSpring =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         requestService.setStatus(ResourceRequest.Status.NEW);
 
@@ -37,23 +38,39 @@ public class RequestService {
 
         requestService.setRegister(user);
 
+
         resourceRequestDAO.persistRequest(requestService);
 
     }
 
-    public void response(long requestId, Message message) {
-        ResourceRequest request = resourceRequestDAO.findById(requestId);
+    public List<ResourceRequest> getRequestsForRegistrar() {
+
+        org.springframework.security.core.userdetails.User userSpring =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user = userDAO.findByEmail(userSpring.getUsername());
+
+
+        List<ResourceRequest> requests = getResourcesRequest()
+                .stream()
+                .filter(request -> request.getRegister().getId() == user.getId())
+                .collect(Collectors.toList());
+
+
+        return requests;
+    }
+
+    public void response(Message message) {
+        ResourceRequest request = resourceRequestDAO.findById(message.getId_request());
         request.setUpdate(new Date());
         request.setStatus(message.getRequestStatus());
-        System.out.println("before Update");
         resourceRequestDAO.updateRequest(request);
-        System.out.println("after Update");
-
         sendMessage(request.getResourcesAdmin(), request.getRegister(), message);
     }
 
 
     void sendMessage(User sender, User receiver, Message message) {
+        System.out.println(message.getMessageContent());
     }
 
 
@@ -72,7 +89,7 @@ public class RequestService {
 
     public List<ResourceRequest> getHistoryResourcesRequest() {
         List<ResourceRequest> requests = getResourcesRequest();
-        List<ResourceRequest> history=filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
+        List<ResourceRequest> history = filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
         history.addAll(filterByStatus(requests, ResourceRequest.Status.DECLINED));
         return history;
     }
@@ -93,6 +110,5 @@ public class RequestService {
                 .filter(request -> request.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
-
 
 }

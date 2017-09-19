@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -25,7 +26,7 @@
 <div class="container">
     <ul class="nav nav-tabs">
         <li><a href="${pageContext.request.contextPath}/resources/addResource">Add</a></li>
-        <li class="active"><a href="#">Request</a></li>
+        <li class="active"><a href="#">Requests</a></li>
     </ul>
 </div>
 <br>
@@ -91,59 +92,14 @@
                                 <c:choose>
                                     <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
 
-                                        <a href="/add">
+                                        <a href="${pageContext.request.contextPath}/resources/addResource">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
-                                        <button class="btn btn-primary" type="button" data-toggle="modal"
+                                        <button class="btn btn-primary responce" data-id=${request.id} type="button"
+                                                data-toggle="modal"
                                                 data-target="#myModal">Responce
                                         </button>
-                                        <div id="myModal" class="modal fade">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                aria-hidden="true">&times;
-                                                        </button>
-                                                        <h3 class="modal-title " style="text-align: left">
-                                                            Response</h3>
-                                                        <br>
-                                                        <h5 class="modal-title" style="text-align: left">
-                                                            Theme: ${request.theme}</h5>
-                                                        <br>
 
-
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form>
-                                                            <h6 class="modal-title" style="text-align: left">
-                                                                Comment:</h6>
-                                                            <div class="form-group">
-
-                                                                    <textarea class="form-control" rows="5"
-                                                                              style=" resize: vertical"></textarea>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer">
-
-                                                        <div style="text-align: left">
-                                                            <h6 class="modal-title">Purpose:</h6>
-                                                            <form name="Purpose">
-                                                                    <input type="radio" name="radioName" value="Refinement" checked /> Refinement
-                                                                    <br />
-                                                                    <input type="radio" name="radioName" value="Accept" /> Accept <br />
-                                                                    <input type="radio" name="radioName" value="Decline" /> Decline <br />
-                                                            </form>
-                                                        </div>
-
-                                                        <button type="button" class="btn btn-primary send"
-                                                                data-id=${request.id}
-                                                                        data-dismiss="modal">Send
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </c:when>
                                     <c:otherwise>
                                         <a href="/add">
@@ -181,23 +137,64 @@
 
 </div>
 </div>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;
+                </button>
+                <h3 class="modal-title left-align">
+                    Response</h3>
+                <br>
+                <h5 class="modal-title" id="idRequest" hidden></h5>
+                <br>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <h6 class="modal-title left-align">
+                        Comment:</h6>
+                    <div class="form-group">
+
+                                                                    <textarea class="form-control" id="comment" rows="5"
+                                                                              style=" resize: vertical"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <div class="left-align">
+                    <h6 class="modal-title">Purpose:</h6>
+                    <form id="Purpose">
+                        <input type="radio" name="radioName" value="Refinement" checked/> Refinement
+                        <br/>
+                        <input type="radio" name="radioName" value="Accept"/> Accept <br/>
+                        <input type="radio" name="radioName" value="Decline"/> Decline <br/>
+                    </form>
+                </div>
+
+                <button type="button" class="btn btn-primary send"
+                        data-dismiss="modal">Send
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script>
     $.extend(true, $.fn.dataTable.defaults, {
         "searching": true,
         "sPageButton": "paginate_button"
     });
-
     $(document).ready(function () {
         var table = $('#requests').DataTable({
             'dom': 'rt<"bottom"lp><"clear">',
             stateSave: true
         });
-
         table
             .order([[5, 'asc'], [3, 'desc']])
             .draw();
-
         $("#search").on('keyup change', function () {
             table
                 .columns(4)
@@ -205,7 +202,12 @@
                 .draw();
         });
 
-
+        var currentRow;
+        $('.responce').click(function () {
+            $('#idRequest').text($(this).attr('data-id'))
+            currentRow = table
+                .row($(this).parents('tr'));
+        })
         $('.assign').click(function () {
             var id = $(this).attr('data-id');
             $.ajax(
@@ -219,26 +221,31 @@
                 })
         })
 
+
         $('.send').click(function () {
-            var row= table
-                .row( $(this).parents('tr') );
-            var id = $(this).attr('data-id');
-            var form =
-                alert(id);
+
+            var comment = $('#comment').val();
+            var purpose = ($('input[name=radioName]:checked', "#Purpose").val());
+            var id_request = $("#idRequest").text();
+            var message = {
+                id_request: id_request,
+                purpose: purpose,
+                comment: comment
+            }
             $.ajax(
                 {
                     type: "POST",
-                    url: "sendResponce",
-                    data: {id: id},
+                    contentType: "text/plain",
+                    url: "/resources/sendResponce",
+                    accept: "text/plain",
+                    data: JSON.stringify(message),
+
                     success: function (obj) {
-                        alert(obj)
-                        row.remove().draw();
-                        alert(obj)
+                        $("#comment").val('');
+                        currentRow.remove().draw();
                     }
                 })
         })
     });
-
-
 </script>
 </html>
