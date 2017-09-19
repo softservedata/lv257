@@ -63,3 +63,11 @@ font-weight: normal;
   max-width: 500px; max-height: 500px;
 }
 
+/* Oleg */
+.padding_bottom_15{
+    padding-bottom: 15px;
+}
+
+.padding_top_40{
+    padding-top: 40px;
+}
