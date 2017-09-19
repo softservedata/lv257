@@ -19,7 +19,7 @@
                 <ul class="nav nav-tabs">
                     <li ><a href="${pageContext.request.contextPath}/resources/registration">Register resource</a></li>
                     <li id="sendRequest"><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
-                    <li ><a href="${pageContext.request.contextPath}/resources/history">History</a></li>
+                    <li ><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
                 </ul>
             </div>
         </div>

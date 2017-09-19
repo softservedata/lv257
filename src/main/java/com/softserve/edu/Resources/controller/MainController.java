@@ -1,7 +1,5 @@
 package com.softserve.edu.Resources.controller;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.PrivilegeService;
@@ -16,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Transactional
@@ -26,6 +24,7 @@ public class MainController {
 
     @Autowired
     ResourceCategoryService categoryService;
+    
     @Autowired
     private HttpServletRequest request;
 
@@ -86,7 +85,7 @@ public class MainController {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {
             return "resAdminMain";
         }
-        return "resources";
+        return "redirect:/resources/registration";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

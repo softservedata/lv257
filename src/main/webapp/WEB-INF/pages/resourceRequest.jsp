@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: User
@@ -24,7 +25,7 @@
 <jsp:include page="_menu2.jsp"/>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${pageContext.request.contextPath}/resources/addResource">Add</a></li>
+        <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
 </div>
@@ -91,7 +92,7 @@
                                 <c:choose>
                                     <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
 
-                                        <a href="${pageContext.request.contextPath}/resources/addResource">
+                                        <a href="${pageContext.request.contextPath}/resources/addType">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
                                         <button class="btn btn-primary responce" data-id=${request.id} type="button"
@@ -148,11 +149,11 @@
                     Response</h3>
                 <br>
                 <h5 class="modal-title" id="idRequest" hidden></h5>
-                    <br>
+                <br>
             </div>
             <div class="modal-body">
                 <form>
-                    <h6 class="modal-title left-align" >
+                    <h6 class="modal-title left-align">
                         Comment:</h6>
                     <div class="form-group">
 
@@ -221,52 +222,25 @@
         })
 
 
-//        $('.send').click(function () {
-//
-//           var comment=$('#comment').val();
-//           var purpose=($('input[name=radioName]:checked', "#Purpose").val());
-//           var id=$("#idRequest").text();
-//           var message={
-//               id:id,
-//               purpose:purpose,
-//               comment:comment
-//           }
-//           var json=JSON.stringify(message)
-//            alert(json)
-//            $.ajax(
-//                {
-//                    type: "POST",
-//                    url: "/resources/sendResponce",
-//                    contentType: 'application/json; charset=UTF-8',
-//                    data:json,
-//                    dataType:"json",
-//
-//                    success: function (obj) {
-//                        alert(obj)
-//                        $("#comment").val('');
-//                        currentRow.remove().draw();
-//                        alert(obj)
-//                    }
-//                })
-//        })
-
         $('.send').click(function () {
 
             var comment = $('#comment').val();
             var purpose = ($('input[name=radioName]:checked', "#Purpose").val());
-            var id = $("#idRequest").text();
-
+            var id_request = $("#idRequest").text();
+            var message = {
+                id_request: id_request,
+                purpose: purpose,
+                comment: comment
+            }
             $.ajax(
                 {
                     type: "POST",
+                    contentType: "text/plain",
                     url: "/resources/sendResponce",
-                    data: {
-                        id: id,
-                        purpose: purpose,
-                        comment: comment
-                    },
+                    accept: "text/plain",
+                    data: JSON.stringify(message),
+
                     success: function (obj) {
-                        alert(obj)
                         $("#comment").val('');
                         currentRow.remove().draw();
                     }

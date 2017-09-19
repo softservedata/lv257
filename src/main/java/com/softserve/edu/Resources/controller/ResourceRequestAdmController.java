@@ -41,36 +41,21 @@ public class ResourceRequestAdmController {
     }
 
 
-
     @RequestMapping(value = {"/sendResponce"}, method = RequestMethod.POST)
-    public @ResponseBody String sendResponse(@RequestParam("id") String id, @RequestParam("purpose") String purpose,
-                               @RequestParam("comment") String comment) {
-        Message message = new Message();
-        message.setComment(comment);
-        message.setPurpose(Message.Purpose.valueOf(purpose));
-        message.setId_request(Long.parseLong(id));
-        requestService.response(message);
-
+    public @ResponseBody
+    String sendResponse(@RequestBody String json) {
+        Message message;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            message = objectMapper.readValue(json, Message.class);
+            System.out.println(message);
+            requestService.response(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "success";
 
     }
-
-//    @ResponseBody
-//    @RequestMapping(value = {"/sendResponce"}, method = RequestMethod.POST)
-//    public String sendResponse(@RequestBody String json) {
-//        Message message;
-//        try {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            message = objectMapper.readValue(json, Message.class);
-//            System.out.println(message);
-//            requestService.response(message);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return "success";
-//
-//    }
 
 
     @RequestMapping(value = {"/requests"}, method = RequestMethod.GET)
@@ -95,8 +80,6 @@ public class ResourceRequestAdmController {
     public String requestsDetails(@PathVariable int id, Model model) {
 
         ResourceRequest request = requestService.getRequestById(id);
-//        model.addAttribute("info", request.getDetails());
-//       model.addAttribute("file", request.getFile());
         model.addAttribute("request", request);
         System.out.println(FileSystemView.getFileSystemView().getHomeDirectory());
         return "resourceRequestDetails";

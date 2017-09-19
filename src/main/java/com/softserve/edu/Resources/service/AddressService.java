@@ -13,4 +13,6 @@ public interface AddressService {
     void updateAddress(Address address);
 
     List<Address> getAllAddresses();
+
+    Address parseAddress(String json);
 }

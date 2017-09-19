@@ -1,9 +1,11 @@
 package com.softserve.edu.Resources.dao;
 
+import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ResourceTypeDAO extends GenericDAO<ResourceType, Long> {
@@ -15,5 +17,11 @@ public interface ResourceTypeDAO extends GenericDAO<ResourceType, Long> {
     List<String> getInstanceNames();
 
     List<ResourceType> getInstances();
+    
+    
+
+    ResourceType findWithPropertiesByID(Long resourceTypeID);
+
+    ResourceType findWithPropertiesByTableName(String tableName);
 
 }
