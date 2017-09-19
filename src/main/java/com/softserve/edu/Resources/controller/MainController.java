@@ -41,7 +41,7 @@ public class MainController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    @RequestMapping(value = { "/", "/welcome" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcomePage(Model model, HttpServletRequest request) {
         System.out.println("Checking if ADMIN");
         System.out.println(request.isUserInRole("ROLE_ADMIN"));
@@ -55,7 +55,7 @@ public class MainController {
         return "welcome";
     }
 
-    @RequestMapping(value = { "/about"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/about"}, method = RequestMethod.GET)
     public String aboutPage(Model model) {
         model.addAttribute("title", "About");
         return "about";
@@ -67,7 +67,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
-    public String lookupPage(@RequestParam Map<String,String> lookupby) {
+    public String lookupPage(@RequestParam Map<String, String> lookupby) {
         if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
             return "lookupByType";
         else
@@ -82,7 +82,7 @@ public class MainController {
 */
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
-    public String resourcesPage(Model model,HttpServletRequest request) {
+    public String resourcesPage(Model model, HttpServletRequest request) {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {
             return "resAdminMain";
         }
@@ -90,36 +90,36 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String loginPage(Model model ) {
+    public String loginPage(Model model) {
         return "login";
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ModelAndView users () {
+    public ModelAndView users() {
         ModelAndView usersModel = new ModelAndView("users");
-        usersModel.addObject("users",userService.getAllUsers());
+        usersModel.addObject("users", userService.getAllUsers());
         return usersModel;
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public ModelAndView roles () {
+    public ModelAndView roles() {
         ModelAndView rolesModel = new ModelAndView("roles");
-        rolesModel.addObject("list",roleService.getAllRoles());
+        rolesModel.addObject("list", roleService.getAllRoles());
         return rolesModel;
     }
 
     //rn - roleName
     //TODO its not safe to show our role names in the URL so we need to ...
     @RequestMapping(value = "/roleInfo", params = {"rn"}, method = RequestMethod.GET)
-    public ModelAndView roleInfo (@RequestParam Map<String,String> queryUser) {
+    public ModelAndView roleInfo(@RequestParam Map<String, String> queryUser) {
         String roleName = queryUser.get("rn");
         ModelAndView model = new ModelAndView("roleInfo");
-        model.addObject("list",roleService.getRolePrivileges(roleName));
+        model.addObject("list", roleService.getRolePrivileges(roleName));
         return model;
     }
 
     @RequestMapping(value = "/addRole", method = RequestMethod.POST)
-    public ModelAndView addRole () {
+    public ModelAndView addRole() {
         ModelAndView model = new ModelAndView("roleInfo");
 
         model.addObject("list");
@@ -128,11 +128,11 @@ public class MainController {
 
 
     //Returns list of privileges
-    @RequestMapping(value = { "/privileges" }, method = RequestMethod.GET)
+    @RequestMapping(value = {"/privileges"}, method = RequestMethod.GET)
     public ModelAndView privilegesPage() {
         ModelAndView model = new ModelAndView("privileges");
 
-        model.addObject("list",privilegeService.getAllPrivileges());
+        model.addObject("list", privilegeService.getAllPrivileges());
         return model;
     }
 
@@ -144,7 +144,7 @@ public class MainController {
         return "logoutSuccessful";
     }
 /*
-	Profile is moved to UserController.java
+    Profile is moved to UserController.java
 	
     @RequestMapping(value = "/profile", params = {"id"}, method = RequestMethod.GET)
     public ModelAndView profile (@RequestParam Map<String,String> queryUser) {
@@ -167,8 +167,8 @@ public class MainController {
     }
 	
 	*/
-	
-    @RequestMapping(value = { "/account"}, method = RequestMethod.GET)
+
+    @RequestMapping(value = {"/account"}, method = RequestMethod.GET)
     public String accountPage(Model model) {
         model.addAttribute("title", "Account");
         return "account";
@@ -187,10 +187,15 @@ public class MainController {
         return "403";
     }
 
+    boolean alreadyExecuted = false;
+
     @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
     public ModelAndView manageTypes() {
         ModelAndView model = new ModelAndView("manageTypes");
-        categoryService.insertCategoriesTEMPORARY();
+        if(!alreadyExecuted) {
+            categoryService.insertCategoriesTEMPORARY();
+            alreadyExecuted = true;
+        }
         List<ResourceCategory> rootCategories = categoryService.getRootsFromDB();
         model.addObject("inputJson", categoryService.serializeCategoriesIntoJson(rootCategories));
         return model;
@@ -199,7 +204,11 @@ public class MainController {
     @ResponseBody
     @RequestMapping(value = "/manageTypes", method = RequestMethod.POST)
     public void saveResultsOfManagingTypes(@RequestBody String outputJson) {
-       List<ResourceCategory> categoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
-       categoriesFromWeb.forEach(categoryService::updateResourceCategory);
+        List<ResourceCategory> categoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
+        if (!categoryService.hasCycleDependencies(categoriesFromWeb)) {
+            categoryService.updateChangedCategories(categoriesFromWeb);
+        } else {
+            throw new RuntimeException("Can not save hierarchy of Resource Categories with cycle dependencies");
+        }
     }
 }

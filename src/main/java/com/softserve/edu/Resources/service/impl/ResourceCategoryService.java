@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ResourceCategoryService {
@@ -150,6 +151,15 @@ public class ResourceCategoryService {
         return descendants;
     }
 
+    public List<ResourceCategory> getAncestors(ResourceCategory resourceCategory) {
+        List<ResourceCategory> ancestors = new ArrayList<>();
+        if (resourceCategory != null && resourceCategory.getParentCategory() != null) {
+            ancestors.add(resourceCategory.getParentCategory());
+            ancestors.addAll(getAncestors(resourceCategory.getParentCategory()));
+        }
+        return ancestors;
+    }
+
     public void insertCategoriesTEMPORARY() {
         findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
 
@@ -207,5 +217,31 @@ public class ResourceCategoryService {
             e.printStackTrace();
         }
         return categories;
+    }
+
+    @Transactional
+    public void updateChangedCategories(List<ResourceCategory> categoriesFromWeb) {
+        List<ResourceCategory> categoriesFromDB = findAllResourceCategories();
+        List<ResourceCategory> changedCategories = new ArrayList<>();
+        for (ResourceCategory c : categoriesFromWeb) {
+            if (!categoriesFromDB.contains(c)
+                    || (categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory() != null && c.getParentCategory() == null)
+                    || (categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory() == null && c.getParentCategory() != null)
+                    || !categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory().getCategoryName().equals(c.getParentCategory().getCategoryName())) {
+                changedCategories.add(c);
+            }
+            if (!changedCategories.isEmpty()) {
+                changedCategories.forEach(this::updateResourceCategory);
+            }
+        }
+    }
+
+    public boolean hasCycleDependencies(List<ResourceCategory> categories) {
+        for (ResourceCategory resourceCategory : categories) {
+            for (ResourceCategory descendant : getDescendants(resourceCategory)) {
+                if (getAncestors(resourceCategory).contains(descendant)) return true;
+            }
+        }
+        return false;
     }
 }
