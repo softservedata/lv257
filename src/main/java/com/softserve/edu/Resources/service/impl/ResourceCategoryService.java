@@ -10,11 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class ResourceCategoryService {
@@ -24,7 +20,7 @@ public class ResourceCategoryService {
 
     @Transactional
     public Optional<ResourceCategory> findCategoryById(Long id) {
-        return resourceCategoryDAO.findById(id).get();
+        return resourceCategoryDAO.findById(id);
     }
 
     @Transactional
@@ -137,7 +133,7 @@ public class ResourceCategoryService {
     public void fillParents(List<ResourceCategory> categoryList) {
         for (ResourceCategory rc : categoryList) {
             Set<ResourceCategory> children = rc.getChildrenCategories();
-            for (ResourceCategory ch : children) {
+            for (ResourceCategory ch: children) {
                 ch.setParentCategory(rc);
             }
         }

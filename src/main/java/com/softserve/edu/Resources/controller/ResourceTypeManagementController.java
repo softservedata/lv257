@@ -21,15 +21,15 @@ public class ResourceTypeManagementController {
     @Autowired
     private PropertyService propertyService;
 
-    @RequestMapping(value = "/editResource", method = RequestMethod.GET)
+    @RequestMapping(value = "/editType", method = RequestMethod.GET)
     public String editResource(@RequestParam(value = "id") long id) {
         return "editResource";
     }
 
-    @RequestMapping(value = "/addResource", method = RequestMethod.GET)
+    @RequestMapping(value = "/addType", method = RequestMethod.GET)
     public String addResource(Model model) {
         List<ResourceProperty> properties = propertyService.getProperties();
         model.addAttribute("properties", properties);
-        return "editResource";
+        return "editType";
     }
 }

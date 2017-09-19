@@ -25,7 +25,7 @@
 <jsp:include page="_menu2.jsp"/>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${pageContext.request.contextPath}/resources/addResource">Add</a></li>
+        <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
 </div>
@@ -92,7 +92,7 @@
                                 <c:choose>
                                     <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
 
-                                        <a href="${pageContext.request.contextPath}/resources/addResource">
+                                        <a href="${pageContext.request.contextPath}/resources/addType">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
                                         <button class="btn btn-primary responce" data-id=${request.id} type="button"

@@ -23,7 +23,7 @@
 
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${pageContext.request.contextPath}/resources/addResource">Add</a></li>
+        <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
 </div>

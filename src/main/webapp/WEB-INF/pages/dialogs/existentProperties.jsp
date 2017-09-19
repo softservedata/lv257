@@ -1,5 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<div id="existentProps" class="modal fade">
+<div id="existent-props" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
 
