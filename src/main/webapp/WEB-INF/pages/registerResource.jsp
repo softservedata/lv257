@@ -21,9 +21,9 @@
             <div class="container">
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#">Register resource</a></li>
-                    <li><a href="/resources/request">Send request</a></li>
-                    <li><a href="/resources/history">History</a></li>
+                    <li class="active"><a href="${pageCont1ext.request.contextPath}/resources/registration">Register resource</a></li>
+                    <li><a href="${pageCont1ext.request.contextPath}/resources/request">Send request</a></li>
+                    <li><a href="${pageContext.request.contextPath}/resources/history">History</a></li>
                 </ul>
                 <br>
                 <br>
@@ -312,9 +312,15 @@
                         </div>
                     </div>
 
+                    <div id="resource_owner_id_input">
+
+                        <%--May be I will rendder hidden input here with resource ownerr id.--%>
+
+                    </div>
+
                     <div id="resource_address_id_input">
 
-                   <%--May be I will rendder hidder input here with resource address id.--%>
+                   <%--May be I will rendder hidden input here with resource address id.--%>
 
                     </div>
 
@@ -485,6 +491,8 @@
             accept: "text/plain",
             data: jsonToSend,
             success: function (result) {
+                console.log(result);
+                insertHiddenInput('#resource_owner_id_input', 'resource_owner_id', result);
                 closePopUp($ownerForm, 'Owner was saved.', '#createNewOwnerPopUp');
             }
         })

@@ -25,10 +25,31 @@ function parseFormAndSaveResourceAddress(placeholder, addressFormAndBtn) {
             accept: "text/plain",
             data: json,
             success: function (result) {
+                alert(result);
+                console.log(result);
+                insertHiddenInput('#resource_address_id_input', 'resource_address_id' , result);
                 closePopUp(placeholder, 'Resource Address was saved', '#resourseAdressPopUp');
             }
         })
     });
+};
+
+/**
+ * Appends hidden input with some value and name.
+ * It is used when server saves owner or address using ajax call,
+ * gives you id of entity saved into the database.
+ * Than when resource form inputs will be reed, I can retrieve from database
+ * owner or address and set it to the concrete resource.
+ */
+function insertHiddenInput(placeholderId, name, value){
+    var $placeholder = $(placeholderId);
+    $placeholder.empty();
+    var $hiddenInput = $('<input>', {
+       type: 'hidden',
+       name: name,
+       value: value
+    });
+    $placeholder.append($hiddenInput);
 };
 
 function closePopUp(placeholder, text, modalId) {

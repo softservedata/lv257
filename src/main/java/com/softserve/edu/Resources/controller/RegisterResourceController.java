@@ -33,7 +33,7 @@ public class RegisterResourceController {
         address = addressService.parseAddress(json);
         addressService.addAddress(address);
 
-        return "";
+        return "" + address.getId();
     }
 
     @ResponseBody
@@ -43,7 +43,8 @@ public class RegisterResourceController {
         owner = ownerService.parseOwnerWithAddress(json);
         ownerService.addOwner(owner);
 
-        return "";
+        System.out.println(owner.getId());
+        return "" + owner.getId();
     }
 
 }
