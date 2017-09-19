@@ -24,6 +24,7 @@ public class MainController {
 
     @Autowired
     ResourceCategoryService categoryService;
+    
     @Autowired
     private HttpServletRequest request;
 

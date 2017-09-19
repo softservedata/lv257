@@ -48,4 +48,11 @@ public class PropertyValue {
                && value.matches(type.getRegex());
   }
 
+    @Override
+    public String toString() {
+        return "PropertyValue [id=" + id + ", type=" + type + ", value=" + value + "]";
+    }
+
+  
+  
 }

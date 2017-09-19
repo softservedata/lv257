@@ -74,4 +74,25 @@ public class RequestResourceController {
 
        return "redirect:/resources/request?operation=request";
     }
+
+    @RequestMapping(value={"/story"}, method= RequestMethod.GET)
+    public String sendRegistrarRequests(Model model) {
+
+        model.addAttribute("gRequest", requestService.getRequestsForRegistrar());
+        model.addAttribute("title", "Story of Request");
+
+        return "requestHistory";
+    }
+
+
+    @RequestMapping(value={"/info/{id}"}, method= RequestMethod.GET)
+    public String infoResourcesRequests(@PathVariable int id, Model model) {
+
+        ResourceRequest request = requestService.getRequestById(id);
+        model.addAttribute("info", request.getDetails());
+        model.addAttribute("code", request.getCode());
+        model.addAttribute("title", "Info about Request");
+
+        return "infoRequest";
+    }
 }
