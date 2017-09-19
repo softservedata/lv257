@@ -48,34 +48,4 @@ public class ResourceRequestDAOImpl implements ResourceRequestDAO {
         entityManager.merge(request);
     }
 
-
-
-
-    public List<ResourceRequest> getAllRequestsForOneRegister(){
-
-        List<ResourceRequest> requests = new ArrayList<>();
-        ResourceRequest requestForRegister = new ResourceRequest();
-
-        try {
-            Field entityRegisterField = ResourceRequest.class.getDeclaredField("id_from");
-
-            Column columnRegister = entityRegisterField.getDeclaredAnnotation(Column.class);
-            String columnRegisterName = columnRegister.name();
-
-            CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-
-            CriteriaQuery criteriaQuery = builder.createQuery();
-            Root request = criteriaQuery.from(ResourceRequest.class);
-
-            criteriaQuery.select(request);
-            criteriaQuery.where(builder.and(builder.equal(request.get(columnRegisterName),
-                    requestForRegister.getRegister().getId())));
-            Query query = entityManager.createQuery(criteriaQuery);
-            requests = query.getResultList();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        return requests;
-    }
-
 }

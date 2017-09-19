@@ -1,8 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +8,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "RESOURCE_CATEGORIES")
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ResourceCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +22,8 @@ public class ResourceCategory {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonBackReference
+//    @JsonProperty("parent_id")
+//    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
@@ -121,12 +123,15 @@ public class ResourceCategory {
 
         ResourceCategory that = (ResourceCategory) o;
 
-        return categoryName.equals(that.categoryName);
+        if (!categoryName.equals(that.categoryName)) return false;
+        return childrenCategories != null ? childrenCategories.equals(that.childrenCategories) : that.childrenCategories == null;
     }
 
     @Override
     public int hashCode() {
-        return categoryName.hashCode();
+        int result = categoryName.hashCode();
+        result = 31 * result + (childrenCategories != null ? childrenCategories.hashCode() : 0);
+        return result;
     }
 
     public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {

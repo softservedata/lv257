@@ -16,7 +16,7 @@ public class FileUploadUtility {
 
     public static void uploadFile(HttpServletRequest httpRequest, MultipartFile file, String code) {
 
-        // get the Real Path
+
         REAL_PATH = httpRequest.getSession().getServletContext().getRealPath("/resources/upload/");
 
         logger.info(REAL_PATH);
@@ -34,11 +34,16 @@ public class FileUploadUtility {
         }
 
         try {
-            // server upload
-            file.transferTo(new File(REAL_PATH + code + ".jpg"));
-            // project directory upload
-            file.transferTo(new File(ABS_PATH + code + ".jpg"));
-
+            if(file.getContentType().equals("application/pdf")){
+                file.transferTo(new File(REAL_PATH + code + ".pdf"));
+                // project directory upload
+                file.transferTo(new File(ABS_PATH + code + ".pdf"));
+            } else {
+                // server upload
+                file.transferTo(new File(REAL_PATH + code + ".jpg"));
+                // project directory upload
+                file.transferTo(new File(ABS_PATH + code + ".jpg"));
+            }
         } catch (IOException e) {
 
             e.printStackTrace();

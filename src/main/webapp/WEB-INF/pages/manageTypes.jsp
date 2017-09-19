@@ -209,7 +209,7 @@
             console.log(window.JSON.stringify(list.nestable('serialize')));
         };
 
-        var json = [${inputJson}];
+        var json = ${inputJson};
 
         // activate Nestable for list 1
         $('#nestable').nestable({
@@ -241,7 +241,6 @@
     $('#save-json').on('click', function (e) {
         e.preventDefault();
         var json = $('#nestable-output').val();
-        alert(json);
         $.ajax({
             type: "POST",
             contentType: "text/plain",
@@ -249,7 +248,7 @@
             accept: "text/plain",
             data: json,
             success: function (result) {
-                alert("URA!")
+                alert("JSON has been uploaded!")
             }
         })
     });

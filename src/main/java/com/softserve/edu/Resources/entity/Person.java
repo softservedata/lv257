@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -12,18 +14,23 @@ import javax.persistence.Table;
 public class Person extends Owner {
 
     @Column(name = "first_name")
+    @JsonProperty("first name")
     private String firstName;
 
     @Column(name = "last_name")
+    @JsonProperty("last name")
     private String lastName;
 
     @Column(name = "middle_name")
+    @JsonProperty("middle name")
     private String middleName;
 
     @Column(name = "passport_series")
+    @JsonProperty("passport series")
     private String passportSeries;
 
     @Column(name = "passport_number")
+    @JsonProperty("passport number")
     private String passportNumber;
 
     public Person() {

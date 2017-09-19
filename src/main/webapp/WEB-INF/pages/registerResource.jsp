@@ -22,8 +22,8 @@
 
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#">Register resource</a></li>
-                    <li><a href="ResourcesSendRequest.html">Send request</a></li>
-                    <li><a href="ResourcesHistory.html">History</a></li>
+                    <li><a href="/resources/request">Send request</a></li>
+                    <li><a href="/resources/history">History</a></li>
                 </ul>
                 <br>
                 <br>
@@ -39,16 +39,17 @@
                                 data-live-search="true"
                                 title="Choose one of the following">
                             <%--<c:forEach items="${resourceTypes}" var="resource">--%>
-                                <%--<option>${resource.typeName}</option>--%>
+                            <%--<option>${resource.typeName}</option>--%>
                             <%--</c:forEach>--%>
 
-                        <option disabled style="background-color: lightgray; text-indent: 0px;">Capital</option>
-                        <option disabled style="background-color: lightgray; text-indent: 10px;">Real Estate</option>
-                        <option style="text-indent: 20px;">Cottages</option>
-                        <option style="text-indent: 20px;">Apartment Buildings</option>
-                        <option disabled style="background-color: lightgray; text-indent: 10px;">Transport</option>
-                        <option style="text-indent: 20px;">Vehicles</option>
-                        <option style="text-indent: 20px;">Trucks</option>
+                            <option disabled style="background-color: lightgray; text-indent: 0px;">Capital</option>
+                            <option disabled style="background-color: lightgray; text-indent: 10px;">Real Estate
+                            </option>
+                            <option style="text-indent: 20px;">Cottages</option>
+                            <option style="text-indent: 20px;">Apartment Buildings</option>
+                            <option disabled style="background-color: lightgray; text-indent: 10px;">Transport</option>
+                            <option style="text-indent: 20px;">Vehicles</option>
+                            <option style="text-indent: 20px;">Trucks</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -67,7 +68,7 @@
                         </button>
                         <button class="btn btn-primary"
                                 type="button" data-toggle="modal"
-                                data-target="#myModal3">Add new Owner
+                                data-target="#createNewOwnerPopUp">Add new Owner
                         </button>
                     </div>
 
@@ -221,7 +222,7 @@
                         </div>
                     </div>
 
-                    <div id="myModal3" class="modal fade">
+                    <div id="createNewOwnerPopUp" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
@@ -246,15 +247,16 @@
 
                                         <div id="owner_form">
 
-                                            <%--Here owner form and owner address form will be rendered--%>
 
                                             <div id="resource_owner_form">
 
+                                                <%--Here owner form will be rendered--%>
 
                                             </div>
 
                                             <div id="owner_address_form">
 
+                                                <%--Here owner address form will be rendered--%>
 
                                             </div>
 
@@ -357,55 +359,90 @@
             formPlaceholder.empty();
             resourceAddressForm.empty();
         } else if (ownerType == 2) {
-            addOwnerForm(formPlaceholder, resourceAddressForm, "company", fieldsMetadata.rowsForCompany);
+            addOwnerForm(formPlaceholder, resourceAddressForm, "company", fieldsMetadata.rowsForCompany, ownerType);
         } else if (ownerType == 3) {
-            addOwnerForm(formPlaceholder, resourceAddressForm, "person", fieldsMetadata.rowsForPerson);
+            addOwnerForm(formPlaceholder, resourceAddressForm, "person", fieldsMetadata.rowsForPerson, ownerType);
         }
+
     });
 
-    function addOwnerForm(formPlaceholder, resourceAddressForm, forWhat, rows) {
+    function addOwnerForm(formPlaceholder, resourceAddressForm, forWhat, rows, ownerType) {
         resourceAddressForm.empty();
         formPlaceholder.empty();
+
+        var ownerAddressFormAndOwnerForm = [];
+
+        var ownerFormId = 'register_owner_' + forWhat;
         var form = $('<form/>', {
-            class: 'form'
+            class: 'form',
+            id: ownerFormId
         });
         formPlaceholder.append(form);
 
         appendRows(form, forWhat, rows);
-        var btnId = appendButton(form, forWhat, "Add address", false, false);
-        var registerOwnerButtonId = appendButton(form, forWhat, "Register new Owner", true, true);
 
-        $('#' + registerOwnerButtonId).on('click', function (e) {
-            e.preventDefault();
-            alert(registerOwnerButtonId);
-            console.log("wtf");
+        var $registerOwnerBtn = $('<button/>', {
+            text: "Register Owner"
         });
+        formPlaceholder.append($registerOwnerBtn);
 
-        var $companyAddAddresBtn = $('#' + btnId);
+        var $addOwnerAddresBtn = $('<button/>', {
+            text: "Add Owner Address"
+        });
+        formPlaceholder.append($addOwnerAddresBtn);
 
         var $addressDiv = $('<div/>', {
             id: 'ghostDiv'
         });
+        var addressFormId = addAddressFormWithoutBtn(forWhat, $addressDiv, fieldsMetadata.rowsForAddress);
+        var $registerOwnerAddressBtn = $('<button/>', {
+            text: "Register Address"
+        });
 
-        var addressFormIdAndBtn = addAddressForm(forWhat, $addressDiv, fieldsMetadata.rowsForAddress);
+        $addressDiv.append($registerOwnerAddressBtn);
 
-        var $addressBtn = $('#' + addressFormIdAndBtn[1]);
-
-        $companyAddAddresBtn.on('click', function (e) {
+        $addOwnerAddresBtn.on('click', function (e) {
             e.preventDefault();
+            $registerOwnerBtn.prop('disabled', true);
             $(this).remove();
-            disableButton(registerOwnerButtonId, true);
             resourceAddressForm.append($addressDiv);
         });
 
+        $registerOwnerAddressBtn.on('click', function (e) {
+            e.preventDefault();
+            $registerOwnerBtn.prop('disabled', false);
+            var json = toJSONString(addressFormId);
+            ownerAddressFormAndOwnerForm.push(json);
+            alert(ownerAddressFormAndOwnerForm);
+            resourceAddressForm.empty();
+        });
+
+        $registerOwnerBtn.on('click', function (e) {
+            e.preventDefault();
+            var json = toJSONString(ownerFormId);
+            ownerAddressFormAndOwnerForm.push(json);
+            ownerAddressFormAndOwnerForm.push(ownerType);
+
+            registerOwner(ownerAddressFormAndOwnerForm, formPlaceholder);
+        });
     };
 
-    function disableButton(buttonId, condition) {
-        var $button = $('#' + buttonId);
-        $button.prop('disabled', condition);
+    function registerOwner(addressAndOwnerJson, formPlaceholder) {
+        var jsonToSend = addressAndOwnerJson[0] + "|" + addressAndOwnerJson[1] + "|" + addressAndOwnerJson[2];
+        console.log(jsonToSend);
+
+        $.ajax({
+            type: "POST",
+            contentType: "text/plain",
+            url: "/resources/owner",
+            accept: "text/plain",
+            data: jsonToSend,
+            success: function (result) {
+                closePopUp(formPlaceholder, 'Owner was saved', '#createNewOwnerPopUp');
+            }
+        })
+
     }
-
-
 
     function addAddressFormWithoutBtn(addressFor, formPlaceholder, rows) {
         // clears div element

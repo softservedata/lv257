@@ -1,5 +1,8 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -17,7 +20,10 @@ public abstract class Owner {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
+    @JsonIgnore
     private Address address;
+
+    @JsonProperty("phone")
     private String phone;
 
     public Owner() {
