@@ -14,19 +14,25 @@
 <jsp:include page="resources.jsp" />
 <br>
 
-
 <div class="container">
 
-    <h3>Additional information</h3>
-    <p>${info}</p>
-    <h3> Uploaded Document </h3>
-    <hr>
+    <h4>Requested category: ${theme}</h4>
 
-    <img class="document-view" src="/resources/upload/${code}.jpg">
+    <h4>Additional information: ${info}</h4>
+    <h4>Uploaded Document</h4>
     <hr>
-    <br />
+    <div>
+        <img class="documentImg-view" src="/resources/upload/${code}.jpg"></div>
+    <%--<div>--%>
+        <%--<embed class="documentPdf-view" src="/resources/upload/${code}.pdf">--%>
+    <%--</div>--%>
+
+
+    <hr>
+    <br>
     <button class="btn btn-primary" name="back" onclick="history.back()">Back</button>
 </div>
+
 
 </body>
 </html>

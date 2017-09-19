@@ -89,6 +89,7 @@ public class RequestResourceController {
     public String infoResourcesRequests(@PathVariable int id, Model model) {
 
         ResourceRequest request = requestService.getRequestById(id);
+        model.addAttribute("theme", request.getTheme());
         model.addAttribute("info", request.getDetails());
         model.addAttribute("code", request.getCode());
         model.addAttribute("title", "Info about Request");
