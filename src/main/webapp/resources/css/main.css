@@ -55,8 +55,11 @@ font-weight: normal;
 }
 
 /* Ira */
-.margin-bottom {
-	margin-bottom: 20px;
+.left-align {
+  text-align: left;
 }
 
+.document-view{
+  max-width: 500px; max-height: 500px;
+}
 

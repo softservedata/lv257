@@ -23,18 +23,24 @@
 <div class="container">
 
     <h3>Additional information</h3>
-    <p>${info}</p>
+    <p>${request.details}</p>
     <h3>Document example</h3>
-    <p>
+    <hr>
+    <%--<c:if test="${request.file.getContentType().equals('application/pdf')}">--%>
+        <%--<img--%>
+                <%--class="document-view"--%>
+                <%--src="/resources/upload/${request.code}.pdf">--%>
+    <%--</c:if>--%>
+    <%--<c:if test="${request.file.getContentType().equals('application/jpg')}">--%>
+        <%--<img--%>
+                <%--class="document-view"--%>
+                <%--src="/resources/upload/${request.code}.jpg">--%>
 
-    <hr>
-    <div>
-       ${file}
-    </div>
-    <hr>
-    </p>
-    <br />
-    <button class="btn btn-primary" name="back" onclick="history.back()">back</button>
+    <%--</c:if>--%>
+    <img class="document-view" src="/resources/upload/${request.code}.jpg">
+<hr>
+<br />
+<button class="btn btn-primary" name="back" onclick="history.back()">Back</button>
 </div>
 
 

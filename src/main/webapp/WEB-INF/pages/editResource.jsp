@@ -18,7 +18,7 @@
       <ul class="nav nav-tabs">
         <li ><a href="ResourcesView.html">View</a></li>
         <li class="active"><a href="#">Add</a></li>
-        <li> <a href="ResourcesRequest.html">Requests <span class="badge">3</span></a></li>
+        <li> <a href="${pageContext.request.contextPath}/resources/requests">Requests</a></li>
       </ul>
     </div>
     <div class="container">

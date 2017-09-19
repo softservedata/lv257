@@ -7,8 +7,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<div>
     <head>
         <title>${title}</title>
         <jsp:include page="metadata.jsp"/>
@@ -26,7 +24,7 @@
     <div class="container">
         <ul class="nav nav-tabs">
             <li><a href="${pageContext.request.contextPath}/resources/addResource">Add</a></li>
-            <li class="active"> <a href="#">Request</a></li>
+            <li class="active"> <a href="#">Requests</a></li>
         </ul>
     </div>
     <br>
@@ -50,7 +48,7 @@
                         <div class="fht-cell"></div>
 
                     </th>
-                   <th>
+                    <th>
                         <div
                                 class="text-center ">Date
                         </div>
@@ -99,24 +97,19 @@
             </table>
         </div>
     </div>
-</div>
 </body>
 <script>
-
-
     $(document).ready(function () {
         var table = $('#requests').DataTable({
             "order": [[3,"desc"]],
             'dom':'rt<"bottom"lp><"clear">',
         } );
-
         $( "#searchReqCat").on( 'keyup change', function () {
             table
                 .columns(0)
                 .search(this.value)
                 .draw();
         } );
-
         $( "#searchRegister").on( 'keyup change', function () {
             table
                 .columns(1)
@@ -142,6 +135,5 @@
                 .draw();
         } );
     } );
-
 </script>
 </html>
