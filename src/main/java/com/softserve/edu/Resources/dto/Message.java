@@ -1,10 +1,17 @@
 package com.softserve.edu.Resources.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 
-public class Message {
-    private String theme;
-    private  Purpose purpose;
+import java.io.Serializable;
+
+public class Message implements Serializable{
+    @JsonProperty("id")
+    private long id_request;
+    // private String theme;
+    @JsonProperty("purpose")
+    private Purpose purpose;
+    @JsonProperty("comment")
     private String comment;
 
     public enum Purpose{
@@ -13,11 +20,20 @@ public class Message {
             public ResourceRequest.Status getNeededStatus() {
                 return ResourceRequest.Status.DECLINED;
             }
+
+            @Override
+            public String getMessageContent() {
+                return "Your request was declined.\n";
+            }
         },
         Accept{
             @Override
             public ResourceRequest.Status getNeededStatus() {
                 return ResourceRequest.Status.ACCEPTED;
+            }
+            @Override
+            public String getMessageContent() {
+                return "Your request was successfully accepted.\n";
             }
         },
         Refinement{
@@ -25,18 +41,23 @@ public class Message {
             public ResourceRequest.Status getNeededStatus() {
                 return ResourceRequest.Status.TO_REFINEMENT;
             }
+            @Override
+            public String getMessageContent() {
+                return "Your request needed more information.\n";
+            }
         };
 
         public abstract ResourceRequest.Status getNeededStatus();
+        public abstract String getMessageContent();
     }
 
-    public String getTheme() {
-        return theme;
-    }
-
-    public void setTheme(String theme) {
-        this.theme = theme;
-    }
+//    public String getTheme() {
+//        return theme;
+//    }
+//
+//    public void setTheme(String theme) {
+//        this.theme = theme;
+//    }
 
     public Purpose getPurpose() {
         return purpose;
@@ -54,7 +75,41 @@ public class Message {
         this.comment = comment;
     }
 
+    public long getId_request() {
+        return id_request;
+    }
+
+    public void setId_request(long id_request) {
+        this.id_request = id_request;
+    }
+
     public ResourceRequest.Status getRequestStatus(){
         return purpose.getNeededStatus();
+    }
+
+    public Message(long id_request, Purpose purpose, String comment) {
+        this.id_request = id_request;
+        this.purpose = purpose;
+        this.comment = comment;
+    }
+
+    public Message() {
+    }
+
+    public String getMessageContent(){
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("Hi!\n");
+        stringBuilder.append(purpose.getMessageContent());
+        stringBuilder.append(comment);
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "id_request=" + id_request +
+                ", purpose=" + purpose +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 }

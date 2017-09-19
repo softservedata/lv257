@@ -62,14 +62,15 @@ public class RequestService {
         return requests;
     }
 
-    public void response(long requestId, Message message) {
-        ResourceRequest request = resourceRequestDAO.findById(requestId);
+    public void response(Message message) {
+        ResourceRequest request = resourceRequestDAO.findById(message.getId_request());
         request.setUpdate(new Date());
         request.setStatus(message.getRequestStatus());
         System.out.println("before Update");
         resourceRequestDAO.updateRequest(request);
         System.out.println("after Update");
 
+        System.out.println(message.getMessageContent());
         sendMessage(request.getResourcesAdmin(), request.getRegister(), message);
     }
 
