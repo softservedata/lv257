@@ -8,7 +8,6 @@ import com.softserve.edu.Resources.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @Service
@@ -29,8 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     }
 
     @Transactional
-    public UserDetails getUserDetailsById (Long id){
-        UserDetails userDetails = userDetailsDAO.findById(id);
+    public UserDetails getUserDetailsByUserId(Long id){
+        UserDetails userDetails = userDetailsDAO.findByUserId(id);
 
         return userDetails;
     }

@@ -21,9 +21,9 @@
             <div class="container">
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#">Register resource</a></li>
-                    <li><a href="/resources/request">Send request</a></li>
-                    <li><a href="/resources/history">History</a></li>
+                    <li class="active"><a href="${pageCont1ext.request.contextPath}/resources/registration">Register resource</a></li>
+                    <li><a href="${pageCont1ext.request.contextPath}/resources/request">Send request</a></li>
+                    <li><a href="${pageContext.request.contextPath}/resources/history">History</a></li>
                 </ul>
                 <br>
                 <br>
@@ -239,7 +239,7 @@
                                             <label for="owner_type">Please specify what type of owner you want to
                                                 add:</label>
                                             <select id="owner_type" class="form-control">
-                                                <option value="1">Choose type here</option>
+                                                <option value="1" selected>Choose type here</option>
                                                 <option value="2">Company</option>
                                                 <option value="3">Person</option>
                                             </select>
@@ -312,9 +312,15 @@
                         </div>
                     </div>
 
+                    <div id="resource_owner_id_input">
+
+                        <%--May be I will rendder hidden input here with resource ownerr id.--%>
+
+                    </div>
+
                     <div id="resource_address_id_input">
 
-                        <%--May be I will rendder hidder input here with resource address id.--%>
+                   <%--May be I will rendder hidden input here with resource address id.--%>
 
                     </div>
 
@@ -346,119 +352,10 @@
     </div>
 </footer>
 
-<script src="../../resources/js/registerResource.js"></script>
+<script src="../../resources/js/addNewOwner.js"></script>
 <script>
 
-    /* Generate owner form depending on owner type */
-    $('#owner_type').on('change', function () {
-        var ownerType = this.value;
-        var formPlaceholder = $('#resource_owner_form');
-        var resourceAddressForm = $('#owner_address_form');
 
-        if (ownerType == 1) {
-            formPlaceholder.empty();
-            resourceAddressForm.empty();
-        } else if (ownerType == 2) {
-            addOwnerForm(formPlaceholder, resourceAddressForm, "company", fieldsMetadata.rowsForCompany, ownerType);
-        } else if (ownerType == 3) {
-            addOwnerForm(formPlaceholder, resourceAddressForm, "person", fieldsMetadata.rowsForPerson, ownerType);
-        }
-
-    });
-
-    function addOwnerForm(formPlaceholder, resourceAddressForm, forWhat, rows, ownerType) {
-        resourceAddressForm.empty();
-        formPlaceholder.empty();
-
-        var ownerAddressFormAndOwnerForm = [];
-
-        var ownerFormId = 'register_owner_' + forWhat;
-        var form = $('<form/>', {
-            class: 'form',
-            id: ownerFormId
-        });
-        formPlaceholder.append(form);
-
-        appendRows(form, forWhat, rows);
-
-        var $registerOwnerBtn = $('<button/>', {
-            text: "Register Owner"
-        });
-        formPlaceholder.append($registerOwnerBtn);
-
-        var $addOwnerAddresBtn = $('<button/>', {
-            text: "Add Owner Address"
-        });
-        formPlaceholder.append($addOwnerAddresBtn);
-
-        var $addressDiv = $('<div/>', {
-            id: 'ghostDiv'
-        });
-        var addressFormId = addAddressFormWithoutBtn(forWhat, $addressDiv, fieldsMetadata.rowsForAddress);
-        var $registerOwnerAddressBtn = $('<button/>', {
-            text: "Register Address"
-        });
-
-        $addressDiv.append($registerOwnerAddressBtn);
-
-        $addOwnerAddresBtn.on('click', function (e) {
-            e.preventDefault();
-            $registerOwnerBtn.prop('disabled', true);
-            $(this).remove();
-            resourceAddressForm.append($addressDiv);
-        });
-
-        $registerOwnerAddressBtn.on('click', function (e) {
-            e.preventDefault();
-            $registerOwnerBtn.prop('disabled', false);
-            var json = toJSONString(addressFormId);
-            ownerAddressFormAndOwnerForm.push(json);
-            alert(ownerAddressFormAndOwnerForm);
-            resourceAddressForm.empty();
-        });
-
-        $registerOwnerBtn.on('click', function (e) {
-            e.preventDefault();
-            var json = toJSONString(ownerFormId);
-            ownerAddressFormAndOwnerForm.push(json);
-            ownerAddressFormAndOwnerForm.push(ownerType);
-
-            registerOwner(ownerAddressFormAndOwnerForm, formPlaceholder);
-        });
-    };
-
-    function registerOwner(addressAndOwnerJson, formPlaceholder) {
-        var jsonToSend = addressAndOwnerJson[0] + "|" + addressAndOwnerJson[1] + "|" + addressAndOwnerJson[2];
-        console.log(jsonToSend);
-
-        $.ajax({
-            type: "POST",
-            contentType: "text/plain",
-            url: "/resources/owner",
-            accept: "text/plain",
-            data: jsonToSend,
-            success: function (result) {
-                closePopUp(formPlaceholder, 'Owner was saved', '#createNewOwnerPopUp');
-            }
-        })
-
-    }
-
-    function addAddressFormWithoutBtn(addressFor, formPlaceholder, rows) {
-        // clears div element
-        formPlaceholder.empty();
-
-        // id for the form
-        var formId = addressFor + '_address_form';
-        var form = $('<form/>', {
-            class: 'form',
-            id: formId
-        });
-
-        formPlaceholder.append(form);
-        appendRows(form, addressFor, rows);
-        return formId;
-    }
 
 </script>
 

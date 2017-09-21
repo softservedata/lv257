@@ -23,7 +23,7 @@ public class UserDetails {
 
 
     @OneToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id_user")
     private User user;
 
     public UserDetails() {

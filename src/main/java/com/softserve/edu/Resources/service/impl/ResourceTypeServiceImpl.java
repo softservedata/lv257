@@ -1,12 +1,15 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
+
+import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,7 +21,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     ResourceTypeDAO resourceTypeDAO;
 
     @Override
-    public Collection<ResourceType> getTypes() {
+    public List<ResourceType> getTypes() {
         return resourceTypeDAO.findAll();
     }
 
@@ -53,6 +56,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     }
 
+    @Transactional
     @Override
     public List<ResourceType> getInstances() {
         return resourceTypeDAO.getInstances();
@@ -62,9 +66,40 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         return this;
     }
 
+    
     @Override
     public int getInstancesCount() {
         return getInstances().size();
     }
+
+    @Transactional
+    @Override
+    public ResourceType findWithPropertiesByID(Long ID) {
+        return resourceTypeDAO.findWithPropertiesByID(ID);
+    }
+
+    @Override
+    public List<ResourceProperty> getSpecialResourcePropertiesByResType(ResourceType resourceWithProperties) {
+        List<ResourceProperty> essentialProperties = new ArrayList<>();
+
+        for (ResourceProperty resourceProperty : resourceWithProperties.getProperties()) {
+            if (resourceProperty.isEssential()) {
+                essentialProperties.add(resourceProperty);
+            }
+        }
+
+        return essentialProperties;
+    }
+
+   
+
+    @Override
+    public void testHello() {
+        System.out.println("Yeah, it works!");
+    }
+    
+    
+    
+    
 
 }

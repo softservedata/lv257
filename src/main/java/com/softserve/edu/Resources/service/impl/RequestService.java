@@ -39,18 +39,16 @@ public class RequestService {
         requestService.setRegister(user);
 
 
-
         resourceRequestDAO.persistRequest(requestService);
 
     }
 
-    public List<ResourceRequest> getRequestsForRegistrar(){
+    public List<ResourceRequest> getRequestsForRegistrar() {
 
         org.springframework.security.core.userdetails.User userSpring =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         User user = userDAO.findByEmail(userSpring.getUsername());
-
 
 
         List<ResourceRequest> requests = getResourcesRequest()
@@ -66,16 +64,13 @@ public class RequestService {
         ResourceRequest request = resourceRequestDAO.findById(message.getId_request());
         request.setUpdate(new Date());
         request.setStatus(message.getRequestStatus());
-        System.out.println("before Update");
         resourceRequestDAO.updateRequest(request);
-        System.out.println("after Update");
-
-        System.out.println(message.getMessageContent());
         sendMessage(request.getResourcesAdmin(), request.getRegister(), message);
     }
 
 
     void sendMessage(User sender, User receiver, Message message) {
+        System.out.println(message.getMessageContent());
     }
 
 
@@ -94,7 +89,7 @@ public class RequestService {
 
     public List<ResourceRequest> getHistoryResourcesRequest() {
         List<ResourceRequest> requests = getResourcesRequest();
-        List<ResourceRequest> history=filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
+        List<ResourceRequest> history = filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
         history.addAll(filterByStatus(requests, ResourceRequest.Status.DECLINED));
         return history;
     }
@@ -115,6 +110,5 @@ public class RequestService {
                 .filter(request -> request.getStatus().equals(status))
                 .collect(Collectors.toList());
     }
-
 
 }

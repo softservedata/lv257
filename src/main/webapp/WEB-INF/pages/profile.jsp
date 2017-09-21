@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>User Info</title>
+    <title>Profile</title>
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
@@ -34,47 +34,42 @@
 
         <div class="row">
             <div class="font-bold">First Name</div>
-            <input class="form-control" value="${first_name}"/>
+            <input class="form-control" value="${details.first_name}"/>
         </div>
 
         <div class="row">
-            <div class="font-bold">Second Name</div>
-            <input class="form-control" value="${second_name}"/>
+            <div class="font-bold">Last Name</div>
+            <input class="form-control" value="${details.second_name}"/>
         </div>
 
         <div class="row">
             <div class="font-bold">Middle Name</div>
-            <input class="form-control" value="${middle_name}"/>
+            <input class="form-control" value="${details.middle_name}"/>
         </div>
 
         <div class="row">
             <div class="font-bold">Passport series</div>
-            <input class="form-control" value="${passport_series}"/>
+            <input class="form-control" value="${details.passport_series}"/>
         </div>
 
         <div class="row">
             <div class="font-bold">Passport series</div>
-            <input class="form-control" value="${passport_number}"/>
+            <input class="form-control" value="${details.passport_number}"/>
         </div>
 
         <div class="row">
             <div class="font-bold">Issued by</div>
-            <input class="form-control" value="${issued_by}"/>
+            <input class="form-control" value="${details.issued_by}"/>
         </div>
 
         <div class="row">
             <div class="font-bold">Date of issue</div>
-            <input class="form-control" value="${date_of_issue}"/>
+            <input class="form-control" value="${details.date_of_issue}"/>
         </div>
-
-<%--        <div class="row">
-            <div class="font-bold">Address</div>
-            <input class="form-control" value="${bank_id}"/>
-        </div>--%>
 
         <div class="row">
             <div class="font-bold">ID Bank</div>
-            <input class="form-control" value="${bank_id}"/>
+            <input class="form-control" value="${details.bank_id}"/>
         </div>
 
         <div class="row">
@@ -114,51 +109,12 @@
 
                             ${message}
                     </div>
-
                 </c:if>
-                <%--UNFINISHED--%>
-                <%--@elvariable id="request" type=""--%>
-                <%--<sf:form id="requestForm" modelAttribute="request" action="${pageContext.request.contextPath}/profile"
-                         method="POST" enctype="multipart/form-data">
-
-
-                    <label for="file">Upload document</label>
-
-                    <sf:input type="file" path="file" id="file" class="form-control"/>
-                    <sf:errors path="file" cssClass="help-block errHighlight"
-                               element="em"></sf:errors>
-
-                    <br>
-                    <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>
-                </sf:form>--%>
-
-<%--
-                       UNFINISHED
-                    <sf:form id="requestForm" modelAttribute="request" action="${pageContext.request.contextPath}/resources/request"
-                         method="POST" enctype="multipart/form-data">
-
-                    <div class="form-group">
-                    <label>Details</label>
-                    <sf:input type="text" path="details" class="form-control" placeholder="Enter details"/>
-                    <sf:errors path="details" cssClass="help-block" element="em"></sf:errors>
-                    </div>
-
-
-                    <label for="file">Upload document</label>
-
-                    <sf:input type="file" path="file" id="file" class="form-control"/>
-                    <sf:errors path="file" cssClass="help-block errHighlight"
-                               element="em"/>
-
-                    &lt;%&ndash;<button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>&ndash;%&gt;
-                </sf:form>--%>
-
             </div>
         </div>
 
     </div>
 </div>
-
 
 </body>
 </html>

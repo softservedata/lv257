@@ -8,7 +8,7 @@ import java.util.List;
 public interface UserDetailsDAO {
     UserDetails getUser(User user);
     UserDetails findByEmail(String email);
-    UserDetails findById(long id);
+    UserDetails findByUserId(long id);
 
     void delete(User user);
 

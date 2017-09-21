@@ -17,4 +17,6 @@ public interface OwnerService {
     List<Owner> getAllOwners();
 
     Owner getOwnerById(long id);
+
+    Owner parseOwnerWithAddress(String json);
 }

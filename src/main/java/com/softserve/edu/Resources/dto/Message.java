@@ -2,20 +2,21 @@ package com.softserve.edu.Resources.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.entity.ResourceRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.io.Serializable;
 
-public class Message implements Serializable{
-    @JsonProperty("id")
+public class Message {
+    @JsonProperty("id_request")
     private long id_request;
-    // private String theme;
+
     @JsonProperty("purpose")
     private Purpose purpose;
+
     @JsonProperty("comment")
     private String comment;
 
-    public enum Purpose{
-        Decline{
+    public enum Purpose {
+        Decline {
             @Override
             public ResourceRequest.Status getNeededStatus() {
                 return ResourceRequest.Status.DECLINED;
@@ -26,21 +27,23 @@ public class Message implements Serializable{
                 return "Your request was declined.\n";
             }
         },
-        Accept{
+        Accept {
             @Override
             public ResourceRequest.Status getNeededStatus() {
                 return ResourceRequest.Status.ACCEPTED;
             }
+
             @Override
             public String getMessageContent() {
                 return "Your request was successfully accepted.\n";
             }
         },
-        Refinement{
+        Refinement {
             @Override
             public ResourceRequest.Status getNeededStatus() {
                 return ResourceRequest.Status.TO_REFINEMENT;
             }
+
             @Override
             public String getMessageContent() {
                 return "Your request needed more information.\n";
@@ -48,16 +51,9 @@ public class Message implements Serializable{
         };
 
         public abstract ResourceRequest.Status getNeededStatus();
+
         public abstract String getMessageContent();
     }
-
-//    public String getTheme() {
-//        return theme;
-//    }
-//
-//    public void setTheme(String theme) {
-//        this.theme = theme;
-//    }
 
     public Purpose getPurpose() {
         return purpose;
@@ -83,7 +79,7 @@ public class Message implements Serializable{
         this.id_request = id_request;
     }
 
-    public ResourceRequest.Status getRequestStatus(){
+    public ResourceRequest.Status getRequestStatus() {
         return purpose.getNeededStatus();
     }
 
@@ -96,8 +92,8 @@ public class Message implements Serializable{
     public Message() {
     }
 
-    public String getMessageContent(){
-        StringBuilder stringBuilder=new StringBuilder();
+    public String getMessageContent() {
+        StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Hi!\n");
         stringBuilder.append(purpose.getMessageContent());
         stringBuilder.append(comment);
