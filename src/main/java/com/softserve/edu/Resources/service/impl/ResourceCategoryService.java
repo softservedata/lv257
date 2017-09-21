@@ -211,7 +211,8 @@ public class ResourceCategoryService {
             List<ResourceCategory> rootCategories = mapper.readValue(json, listType);
             categories.addAll(rootCategories);
             rootCategories.forEach(c -> categories.addAll(getDescendants(c)));
-            fillParents(categories);
+            categories.forEach(c -> System.out.println(c + " Parent: " + c.getParentCategory()));
+//            fillParents(categories);
         } catch (IOException e) {
             System.out.println("Can not deserialize JSON into list of root Resource Categories");
             e.printStackTrace();
