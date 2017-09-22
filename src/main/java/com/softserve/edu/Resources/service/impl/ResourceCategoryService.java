@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.ListenableDirectedGraph;
+import org.jgrapht.graph.SimpleDirectedGraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -243,5 +249,17 @@ public class ResourceCategoryService {
             }
         }
         return false;
+    }
+
+    public boolean hasCycleDependencies1(List<ResourceCategory> categories) {
+        DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<ResourceCategory, DefaultEdge>(DefaultEdge.class);
+        for (ResourceCategory category: categories) {
+            categoriesGraph.addVertex(category);
+            if(category.getParentCategory() != null) {
+                categoriesGraph.addEdge(category, category.getParentCategory());
+            }
+        }
+        CycleDetector<ResourceCategory, DefaultEdge> cycleDetector = new CycleDetector<>(categoriesGraph);
+        return cycleDetector.detectCycles();
     }
 }

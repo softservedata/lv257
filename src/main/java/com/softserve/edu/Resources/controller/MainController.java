@@ -204,7 +204,7 @@ public class MainController {
     @RequestMapping(value = "/manageTypes", method = RequestMethod.POST)
     public void saveResultsOfManagingTypes(@RequestBody String outputJson) {
         List<ResourceCategory> categoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
-        if (!categoryService.hasCycleDependencies(categoriesFromWeb)) {
+        if (!categoryService.hasCycleDependencies1(categoriesFromWeb)) {
             categoryService.updateChangedCategories(categoriesFromWeb);
         } else {
             throw new RuntimeException("Can not save hierarchy of Resource Categories with cycle dependencies");
