@@ -1,12 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dto.Message;
-import com.softserve.edu.Resources.entity.Address;
+import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.service.impl.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 @Controller
 @Transactional
@@ -36,7 +33,16 @@ public class ResourceRequestAdmController {
                 (org.springframework.security.core.userdetails.User)
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         ResourceRequest request = requestService.assignResourceAdmin(Long.parseLong(id), userSpring.getUsername());
-        return "success";
+        String json="success";
+        RequestDTO requestDTO=new RequestDTO(request);
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.0"));
+            json = objectMapper.writeValueAsString(requestDTO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return json;
 
     }
 
@@ -54,7 +60,6 @@ public class ResourceRequestAdmController {
             e.printStackTrace();
         }
         return "success";
-
     }
 
 
@@ -81,7 +86,6 @@ public class ResourceRequestAdmController {
 
         ResourceRequest request = requestService.getRequestById(id);
         model.addAttribute("request", request);
-        System.out.println(FileSystemView.getFileSystemView().getHomeDirectory());
         return "resourceRequestDetails";
     }
 }

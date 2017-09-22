@@ -22,10 +22,10 @@
 
 <div class="container">
 
-    <h3>Requested category: ${request.theme}</h3>
+    <h3>Requested Resource Type: ${request.resourceType}</h3>
 
-    <p><span>Additional information: </span>${request.details}</p>
-    <h3>Document example</h3>
+    <p><span>Additional information: </span>${request.description}</p>
+    <h3>Document example:</h3>
     <hr>
     <div>
         <img class="documentImg-view" src="/resources/upload/${request.code}.jpg"></div>

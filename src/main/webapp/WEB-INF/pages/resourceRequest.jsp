@@ -34,7 +34,7 @@
 
 
     <div class="table-responsive">
-        <h2>List of requests</h2>
+        <h2>List of Resource Type requests</h2>
         <div align="right">
             <label for="search">Search by resource Admin:</label>
             <input type="text" class="form-control" id="search" placeholder="Resource Administrator"
@@ -46,7 +46,7 @@
             <tr>
                 <th>
                     <div class="text-center ">
-                        RequestedCategory
+                        Resource Type
                     </div>
 
                 </th>
@@ -80,7 +80,7 @@
             <c:forEach items="${resourceRequest}" var="request">
 
                 <tr>
-                    <td>${request.theme}</td>
+                    <td>${request.resourceType}</td>
                     <td>${request.register.username}</td>
                     <td><a href="/resources/details/${request.id}">details</a></td>
                     <td>${request.update}</td>
@@ -88,10 +88,9 @@
 
                     <c:choose>
                         <c:when test="${request.resourcesAdmin!=null}">
-                            <td data-order="1" name="action">
+                            <td data-order="1">
                                 <c:choose>
                                     <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
-
                                         <a href="${pageContext.request.contextPath}/resources/addType">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
@@ -115,7 +114,7 @@
 
                         </c:when>
                         <c:otherwise>
-                            <td data-order="0" name="action">
+                            <td data-order="0">
 
                                 <button class="btn btn-primary assign" data-id=${request.id}>Assign to me</button>
 
@@ -208,7 +207,9 @@
             currentRow = table
                 .row($(this).parents('tr'));
         })
+
         $('.assign').click(function () {
+            var cell = $(this).parents('td');
             var id = $(this).attr('data-id');
             $.ajax(
                 {
@@ -217,6 +218,25 @@
                     data: {id: id},
                     success: function (obj) {
                         alert(obj)
+                        var jsonRequest = JSON.parse(obj);
+                        alert(jsonRequest.status)
+                        table.cell( cell.closest('tr'), 3 ).data( jsonRequest.update ) ;
+                        table.cell( cell.closest('tr'), 4 ).data( jsonRequest.assignerName ) ;
+
+                        cell.replaceWith(
+
+                            "<td  data-order=\"1\" class=\"sorting_1\">"+
+                            "                                        <a href=\"${pageContext.request.contextPath}/resources/addType\">\n" +
+                            "                                            <button class=\"btn btn-primary\">Process</button>\n" +
+                            "                                        </a>\n" +
+                            "                                        <button class=\"btn btn-primary responce\" data-id=${request.id} type=\"button\"\n" +
+                            "                                                data-toggle=\"modal\"\n" +
+                            "                                                data-target=\"#myModal\">Responce\n" +
+                            "                                        </button>"+
+                                "</td>"
+                        );
+
+                        table.order([[5, 'asc'], [3, 'desc']]).draw();
                     }
                 })
         })
