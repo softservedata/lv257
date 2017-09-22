@@ -54,7 +54,6 @@ public class ResourceRequestAdmController {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             message = objectMapper.readValue(json, Message.class);
-            System.out.println(message);
             requestService.response(message);
         } catch (IOException e) {
             e.printStackTrace();

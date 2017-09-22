@@ -92,13 +92,7 @@ public class Message {
     public Message() {
     }
 
-    public String getMessageContent() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Hi!\n");
-        stringBuilder.append(purpose.getMessageContent());
-        stringBuilder.append(comment);
-        return stringBuilder.toString();
-    }
+
 
     @Override
     public String toString() {

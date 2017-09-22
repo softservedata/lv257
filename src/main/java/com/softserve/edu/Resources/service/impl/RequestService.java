@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,8 +33,7 @@ public class RequestService {
 
         requestService.setStatus(ResourceRequest.Status.NEW);
 
-        Date date = new Date();
-        requestService.setUpdate(date);
+        requestService.setUpdate(new Date());
 
         User user = userDAO.findByEmail(userSpring.getUsername());
 
@@ -55,8 +56,6 @@ public class RequestService {
                 .stream()
                 .filter(request -> request.getRegister().getId() == user.getId())
                 .collect(Collectors.toList());
-
-
         return requests;
     }
 
@@ -65,12 +64,7 @@ public class RequestService {
         request.setUpdate(new Date());
         request.setStatus(message.getRequestStatus());
         resourceRequestDAO.updateRequest(request);
-        sendMessage(request.getResourcesAdmin(), request.getRegister(), message);
-    }
-
-
-    void sendMessage(User sender, User receiver, Message message) {
-        System.out.println(message.getMessageContent());
+      //  new RequestMailSenderService().sendMessage(message);
     }
 
 
