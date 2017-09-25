@@ -43,6 +43,7 @@
         emptyClass: 'dd-empty',
         expandBtnHTML: '<button class="dd-expand" data-action="expand" type="button">Expand</button>',
         collapseBtnHTML: '<button class="dd-collapse" data-action="collapse" type="button">Collapse</button>',
+        addBtnHTML: '<button class="dd-add" data-action="add-item" type="button">Add Item</button>',
         group: 0,
         maxDepth: 5,
         threshold: 20,
