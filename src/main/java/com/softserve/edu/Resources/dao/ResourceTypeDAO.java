@@ -22,6 +22,6 @@ public interface ResourceTypeDAO extends GenericDAO<ResourceType, Long> {
 
     ResourceType findWithPropertiesByID(Long resourceTypeID);
 
-    ResourceType findWithPropertiesByTableName(String tableName);
+
 
 }

@@ -47,13 +47,13 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
 
     @Override
     public List<String> getInstanceNames() {
-        String queryInstanceNames = "select rp.typeName from RestourceType rp where rp.instantiated = true";
+        String queryInstanceNames = "select rp.typeName from ResourceType rp where rp.instantiated = true";
         return em.createQuery(queryInstanceNames, String.class).getResultList();
     }
 
     @Override
     public List<ResourceType> getInstances() {
-        String queryInstance = "select rp from RestourceType rp where rp.instantiated = true";
+        String queryInstance = "select rp from ResourceType rp where rp.instantiated = true";
         return em.createQuery(queryInstance, ResourceType.class).getResultList();
     }
 
@@ -65,11 +65,6 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
                 .setParameter("id", resourceTypeID).getSingleResult();
     }
 
-    @Override
-    public ResourceType findWithPropertiesByTableName(String tableName) {
-        return (ResourceType) em.createQuery("SELECT r FROM ResourceType r LEFT JOIN r.properties WHERE r.tableName =:tableName")
-                .setParameter("tableName", tableName).getSingleResult();
-    }
     
     
     

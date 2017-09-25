@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.service;
 
+import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.PropertyValue;
 import com.softserve.edu.Resources.entity.ResourceType;
@@ -17,6 +18,6 @@ public interface ResourceService {
 //
 //    GenericResource addResource(ResourceType resourceType, Set<PropertyValue> resourceValues);
     
-    List<GenericResource> findResourcesByResourceType(String query, String tableName, Map<String, String> valuesToSearch);
+    List<GenericResource> findResourcesByResourceType(GenericResourceDTO genericResourceDTO);
 
 }

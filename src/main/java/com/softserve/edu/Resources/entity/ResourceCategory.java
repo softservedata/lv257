@@ -27,17 +27,19 @@ public class ResourceCategory {
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory")
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonProperty("children")
     private Set<ResourceCategory> childrenCategories = new HashSet<>();
 
     @Column(name = "Hierarchy_Level")
-    @JsonProperty("level")
+//    @JsonProperty("level")
+    @JsonIgnore
     private Integer hierarchyLevel;
 
     @Column(name = "Path_To_Root")
-    @JsonProperty("rootpath")
+//    @JsonProperty("rootpath")
+    @JsonIgnore
     private String pathToRoot;
 
     @OneToMany(mappedBy = "category")
