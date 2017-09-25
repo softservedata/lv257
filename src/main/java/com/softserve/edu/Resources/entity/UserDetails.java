@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 
@@ -8,7 +9,8 @@ import javax.persistence.*;
 public class UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     private Long id;
     private String first_name;
     private String second_name;

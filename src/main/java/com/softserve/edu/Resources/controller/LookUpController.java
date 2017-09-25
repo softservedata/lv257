@@ -1,23 +1,22 @@
 package com.softserve.edu.Resources.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.softserve.edu.Resources.dto.DtoUtilMapper;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.ResourceTypeDTO;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.service.QueryBuilderService;
 import com.softserve.edu.Resources.service.ResourceService;
 import com.softserve.edu.Resources.service.ResourceTypeService;
-import com.softserve.edu.Resources.service.QueryBuilderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Map;
 
 
 

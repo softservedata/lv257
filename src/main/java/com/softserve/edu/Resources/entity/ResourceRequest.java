@@ -1,4 +1,4 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +15,8 @@ import java.util.UUID;
 public class ResourceRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     @Column(name = "id_request")
     private long id_request;
 

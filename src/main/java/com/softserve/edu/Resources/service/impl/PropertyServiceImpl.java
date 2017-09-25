@@ -5,18 +5,22 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourcePropertyDAO;
-import com.softserve.edu.Resources.service.PropertyService;
 import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.service.PropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*
  * @PropertyManager's is a dictionary of any kind of ResourceProperties.
  */
 @Service
+@Transactional
 public class PropertyServiceImpl implements PropertyService {
 
     @Autowired
@@ -42,8 +46,14 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public ResourceProperty addProperty(ResourceProperty property) {
+    public ResourceProperty add(ResourceProperty property) {
         return propertyDAO.makePersistent(property);
+    }
+
+    @Override
+    public ResourceProperty update(ResourceProperty property) {
+        return propertyDAO.makePersistent(property);
+//        return propertyDAO.update(property);
     }
 
     @Override
@@ -77,7 +87,7 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<String> propertyDescriptions() {
+    public List<String> getPropertyDescriptions() {
         return properties.stream()
                        .map(ResourceProperty::getDescription)
                        .sorted()

@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
 import javax.persistence.*;
 import java.util.Optional;
 
@@ -15,7 +17,8 @@ public class ResourceProperty {
     @Transient
     static long idgen = 0;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     private Long id;
 
     @Column(name="Column_Name")

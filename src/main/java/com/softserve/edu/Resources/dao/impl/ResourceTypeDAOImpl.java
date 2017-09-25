@@ -27,8 +27,7 @@ import javax.sql.DataSource;
 public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> implements ResourceTypeDAO {
 
     static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
-    
-    
+
 
     public ResourceTypeDAOImpl() {
         super(ResourceType.class, LOGGER);
@@ -46,6 +45,11 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
     }
 
     @Override
+    public void create(ResourceType resourceType) {
+
+    }
+
+    @Override
     public List<String> getInstanceNames() {
         String queryInstanceNames = "select rp.typeName from RestourceType rp where rp.instantiated = true";
         return em.createQuery(queryInstanceNames, String.class).getResultList();
@@ -57,8 +61,8 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
         return em.createQuery(queryInstance, ResourceType.class).getResultList();
     }
 
-    
-    
+
+
     @Override
     public ResourceType findWithPropertiesByID(Long resourceTypeID) {
         return (ResourceType) em.createQuery("SELECT r FROM ResourceType r LEFT JOIN FETCH r.properties WHERE r.id =:id")
@@ -70,9 +74,5 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
         return (ResourceType) em.createQuery("SELECT r FROM ResourceType r LEFT JOIN r.properties WHERE r.tableName =:tableName")
                 .setParameter("tableName", tableName).getSingleResult();
     }
-    
-    
-    
-    
-    
+
 }

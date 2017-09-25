@@ -38,8 +38,8 @@ public class ResourceCategoryService {
     @Transactional
     public List<ResourceCategory> findAllResourceCategories() {
         List<ResourceCategory> result = resourceCategoryDAO.findAll();
-        Comparator<ResourceCategory> categoryComparator = Comparator.comparing(ResourceCategory::getPathToRoot);
-        result.sort(categoryComparator);
+//        Comparator<ResourceCategory> categoryComparator = Comparator.comparing(ResourceCategory::getPathToRoot);
+//        result.sort(categoryComparator);
         return result;
     }
 
@@ -56,7 +56,8 @@ public class ResourceCategoryService {
     @Transactional
     public ResourceCategory updateResourceCategory(ResourceCategory resourceCategory) {
         setRootPath(resourceCategory);
-        return resourceCategoryDAO.merge(resourceCategory);
+        return resourceCategoryDAO.makePersistent(resourceCategory);
+//        return resourceCategoryDAO.update(resourceCategory);
     }
 
     @Transactional
@@ -138,7 +139,7 @@ public class ResourceCategoryService {
 
     public void fillParents(List<ResourceCategory> categoryList) {
         for (ResourceCategory rc : categoryList) {
-            Set<ResourceCategory> children = rc.getChildrenCategories();
+            Collection<ResourceCategory> children = rc.getChildrenCategories();
             for (ResourceCategory ch: children) {
                 ch.setParentCategory(rc);
             }
@@ -166,7 +167,7 @@ public class ResourceCategoryService {
     }
 
     public void insertCategoriesTEMPORARY() {
-        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
+//        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
 
         ResourceCategory root = new ResourceCategory("root", null, null);
         ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
@@ -186,13 +187,13 @@ public class ResourceCategoryService {
         branch2.getChildrenCategories().add(leaf2_2);
 
         addResourceCategory(root);
-        addResourceCategory(branch1);
-        addResourceCategory(branch2);
-        addResourceCategory(leaf1_1);
-        addResourceCategory(leaf1_2);
-        addResourceCategory(leaf2_1);
-        addResourceCategory(leaf2_2);
-        addResourceCategory(leaf1_3);
+//        addResourceCategory(branch1);
+//        addResourceCategory(branch2);
+//        addResourceCategory(leaf1_1);
+//        addResourceCategory(leaf1_2);
+//        addResourceCategory(leaf2_1);
+//        addResourceCategory(leaf2_2);
+//        addResourceCategory(leaf1_3);
     }
 
     public String serializeCategoriesIntoJson(List<ResourceCategory> categories) {

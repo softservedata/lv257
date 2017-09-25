@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
@@ -9,10 +11,11 @@ import java.util.Set;
 @Entity
 @Table(name = "RESOURCE_CATEGORIES")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
 public class ResourceCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     @Column(name = "Id")
     private Long id;
 
@@ -27,7 +30,7 @@ public class ResourceCategory {
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
-    @OneToMany(mappedBy = "parentCategory")
+    @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     @JsonManagedReference
     @JsonProperty("children")
     private Set<ResourceCategory> childrenCategories = new HashSet<>();
