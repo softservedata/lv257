@@ -36,15 +36,15 @@
 
                     <div class="form-group">
                         <label>Requested category</label>
-                        <sf:input type="text" path="theme" class="form-control" placeholder="Enter new kind of resource"/>
-                        <sf:errors path="theme" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
+                        <sf:input type="text" path="resourceType" class="form-control" placeholder="Enter new kind of resource"/>
+                        <sf:errors path="resourceType" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
                     </div>
 
 
                     <div class="form-group">
                         <label>Details</label>
-                        <sf:input type="text" path="details" class="form-control" placeholder="Enter details"/>
-                        <sf:errors path="details" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
+                        <sf:input type="text" path="description" class="form-control" placeholder="Enter details"/>
+                        <sf:errors path="description" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
                         <%--<label class="control-label col-md-4" for="theme">Details about new resource</label>--%>
                         <%--<sf:textarea class="form-control" path="details" id="details"--%>
                                      <%--placeholder="Enter details about new resource" rows="3"/>--%>

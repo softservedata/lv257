@@ -17,25 +17,25 @@ public class ResourceRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_request")
-    private long id_request;
+    private long id;
 
     @Column(name = "code", nullable = false)
     private String code;
 
-    @Column(name = "theme", nullable = false)
+    @Column(name = "resourceType", nullable = false)
     @NotBlank(message = "Please, enter new type of resource!")
-    private String theme;
+    private String resourceType;
 
-    @Column(name = "details")
+    @Column(name = "description")
     @NotBlank(message = "Please, enter description to your request!")
-    private String details;
+    private String description;
 
     @ManyToOne (cascade = CascadeType.MERGE)
-    @JoinColumn(name = "id_from")
+    @JoinColumn(name = "id_requester")
     private User register;
 
     @ManyToOne
-    @JoinColumn(name = "id_executor_user")
+    @JoinColumn(name = "id_assigner")
     private User resourcesAdmin;
 
     @Enumerated(EnumType.STRING)
@@ -53,13 +53,13 @@ public class ResourceRequest {
     private MultipartFile file;
 
     public ResourceRequest(){
-       this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
+        this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
     }
 
-    public ResourceRequest(String theme, String details, User register, User resourcesAdmin, Document document,
+    public ResourceRequest(String resourceType, String details, User register, User resourcesAdmin,
                            Status status, Date update) {
-        this.theme = theme;
-        this.details = details;
+        this.resourceType = resourceType;
+        this.description = details;
         this.register = register;
         this.update = update;
         this.status = status;
@@ -74,14 +74,6 @@ public class ResourceRequest {
         this.file = file;
     }
 
-    public long getId() {
-        return id_request;
-    }
-
-    public void setId(long id_request) {
-        this.id_request = id_request;
-    }
-
     public String getCode() {
         return code;
     }
@@ -90,20 +82,28 @@ public class ResourceRequest {
         this.code = code;
     }
 
-    public String getTheme() {
-        return theme;
+    public long getId() {
+        return id;
     }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public String getDetails() {
-        return details;
+    public String getResourceType() {
+        return resourceType;
     }
 
-    public void setDetails(String details) {
-        this.details = details;
+    public void setResourceType(String resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public User getRegister() {
@@ -142,9 +142,10 @@ public class ResourceRequest {
     @Override
     public String toString() {
         return "ResourceRequest{" +
-                "id=" + id_request +
-                ", theme='" + theme + '\'' +
-                ", details='" + details + '\'' +
+                "id_request=" + id +
+                ", code='" + code + '\'' +
+                ", resourceType='" + resourceType + '\'' +
+                ", description='" + description + '\'' +
                 ", register=" + register +
                 ", resourcesAdmin=" + resourcesAdmin +
                 ", status=" + status +

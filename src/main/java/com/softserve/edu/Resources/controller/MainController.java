@@ -83,7 +83,7 @@ public class MainController {
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     public String resourcesPage(Model model, HttpServletRequest request) {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {
-            return "resAdminMain";
+            return "redirect:/resources/requests";
         }
         return "redirect:/resources/registration";
     }
@@ -203,11 +203,13 @@ public class MainController {
     @ResponseBody
     @RequestMapping(value = "/manageTypes", method = RequestMethod.POST)
     public void saveResultsOfManagingTypes(@RequestBody String outputJson) {
-        List<ResourceCategory> categoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
-        if (!categoryService.hasCycleDependencies(categoriesFromWeb)) {
-            categoryService.updateChangedCategories(categoriesFromWeb);
+        List<ResourceCategory> rootCategoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
+        if (!categoryService.hasCycleDependencies1(rootCategoriesFromWeb)) {
+            categoryService.deleteMissingCategoriesInDB(rootCategoriesFromWeb);
+            rootCategoriesFromWeb.forEach(categoryService::saveResourceCategory);
         } else {
-            throw new RuntimeException("Can not save hierarchy of Resource Categories with cycle dependencies");
+            System.out.println("CYCLE!");
+//            throw new RuntimeException("Can not save hierarchy of Resource Categories with cycle dependencies");
         }
     }
 }

@@ -40,8 +40,8 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
     }
 
     @Override
-    public UserDetails findById(long id) {
-        Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id")
+    public UserDetails findByUserId(long id) {
+        Query query = entityManager.createQuery("select i from UserDetails i where i.user.id = :id")
                 .setParameter("id", id);
         UserDetails userDetails = (UserDetails) query.getSingleResult();
         return userDetails;
