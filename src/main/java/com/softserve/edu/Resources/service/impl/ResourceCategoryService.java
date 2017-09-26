@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ResourceCategoryService {
@@ -222,8 +223,7 @@ public class ResourceCategoryService {
     public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories) {
         List<ResourceCategory> allCategories = new ArrayList<>(rootCategories);
         rootCategories.forEach(c -> allCategories.addAll(getDescendants(c)));
-        allCategories.forEach(c -> System.out.println(c + " Parent: " + c.getParentCategory()));
-        //            fillParents(categories);
+        allCategories.forEach(c -> System.out.println(c + " Parent: " + c.getParentCategory() + " Children: " + Arrays.toString(c.getChildrenCategories().toArray()) + " end;"));
         return allCategories;
     }
 
@@ -237,17 +237,24 @@ public class ResourceCategoryService {
                     || (categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory() == null && c.getParentCategory() != null)
                     || !categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory().getCategoryName().equals(c.getParentCategory().getCategoryName())) {
                 changedCategories.add(c);
+                System.out.println("Cahnged categories: " + Arrays.toString(changedCategories.toArray()));
             }
             if (!changedCategories.isEmpty()) {
-                changedCategories.forEach(this::updateResourceCategory);
+                changedCategories.forEach(this::saveResourceCategory);
             }
         }
     }
 
+    @Transactional
     public void deleteMissingCategoriesInDB(List<ResourceCategory> rootCategoriesFromWeb) {
         List<ResourceCategory> allCategoriesFromWeb = deployAllCategoriesFromRoots(rootCategoriesFromWeb);
         List<ResourceCategory> allCategoriesFromDB = findAllResourceCategories();
-        allCategoriesFromDB.stream().filter(c -> !allCategoriesFromWeb.contains(c)).forEach(this::deleteResourceCategory);
+        allCategoriesFromDB.stream()
+                .filter(c -> !allCategoriesFromWeb.stream()
+                        .map(ResourceCategory::getId)
+                        .collect(Collectors.toList()).contains(c.getId()))
+                .forEach(this::deleteResourceCategory);
+        resourceCategoryDAO.flush();
     }
 
     public boolean hasCycleDependencies(List<ResourceCategory> categories) {
@@ -260,7 +267,7 @@ public class ResourceCategoryService {
     }
 
     public boolean hasCycleDependencies1(List<ResourceCategory> categories) {
-        DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<ResourceCategory, DefaultEdge>(DefaultEdge.class);
+        DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
         for (ResourceCategory category : categories) {
             categoriesGraph.addVertex(category);
             if (category.getParentCategory() != null) {

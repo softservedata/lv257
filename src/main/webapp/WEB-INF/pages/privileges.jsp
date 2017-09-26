@@ -8,8 +8,6 @@
 <body>
 <jsp:include page="_menu2.jsp" />
 <br>
-<br>
-<br>
 <div class="container-fluid">
     <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
         <div class="container">

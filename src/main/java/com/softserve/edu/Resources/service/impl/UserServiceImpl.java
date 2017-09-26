@@ -28,10 +28,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public User getUserForSpring (String email){
-        User user = userDAO.findByEmail(email);/*
-        System.out.println("User extracted");
-       Role role = user.getRole();
-        System.out.println("Role extracted");*/
+        User user = userDAO.findByEmail(email);
         ArrayList<Privilege> privileges = new ArrayList<>(user.getRole().getPrivileges());
         System.out.println("Privileges extracted");
         return user;

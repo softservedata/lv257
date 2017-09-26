@@ -2,9 +2,9 @@ package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.entity.UserDetails;
+import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserDetailsService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;

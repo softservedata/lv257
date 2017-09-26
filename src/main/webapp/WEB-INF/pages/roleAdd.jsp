@@ -24,11 +24,20 @@
             </div>
             <br/>
             <div class="container">
-                <h2>Editing ${roleName}</h2>
+                <h2>Adding new Role</h2>
             </div>
+            <div class="container">
+                <h1>My test Table</h1>
+
+            </div>
+
             <div class="container">
                 <div class="table-responsive">
                     <form>
+                        <div class="form-group">
+                            <label for="usr">Name:</label>
+                            <input type="text" class="form-control" id="usr">
+                        </div>
 
                         <table class="table table-striped">
                             <tbody>

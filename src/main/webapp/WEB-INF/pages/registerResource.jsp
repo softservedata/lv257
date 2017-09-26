@@ -61,18 +61,33 @@
                             <option>Owner 4</option>
                         </select>
                     </div>
-                    <div class="padding_bottom_15">
-                        <button class="btn btn-primary"
-                                type="button" data-toggle="modal"
-                                data-target="#myModal">Add from existing owners
-                        </button>
-                        <button class="btn btn-primary"
-                                type="button" data-toggle="modal"
-                                data-target="#createNewOwnerPopUp">Add new Owner
-                        </button>
+                    <%--<div class="padding_bottom_15">--%>
+                        <%--<button class="btn btn-primary"--%>
+                                <%--type="button" data-toggle="modal"--%>
+                                <%--data-target="#myModal">Add from existing owners--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary"--%>
+                                <%--type="button" data-toggle="modal"--%>
+                                <%--data-target="#createNewOwnerPopUp">Add new Owner--%>
+                        <%--</button>--%>
+                    <%--</div>--%>
+
+                    <div class="form-group">
+                        <div class="padding_bottom_15">
+                            <button class="btn btn-primary"
+                                    type="button" data-toggle="modal"
+                                    data-target="#search_existing_owner">Add existing owner
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary"
+                                    type="button" data-toggle="modal"
+                                    data-target="#createNewOwnerPopUp">Add new owner
+                            </button>
+                        </div>
                     </div>
 
-                    <div id="myModal" class="modal fade">
+                    <div id="search_existing_owner" class="modal fade">
                         <div class="modal-dialog">
                             <div class="modal-content">
 
@@ -270,12 +285,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="address">Resource Address</label>
-                        <select type="address" id="address" class="form-control">
-                            <option>Address 1</option>
-                            <option>Address 2</option>
-                            <option>Address 3</option>
-                            <option>Address 4</option>
+                        <label for="resource_address" class="display_none">Resource Address</label>
+                        <select type="address" id="resource_address" class="form-control display_none">
+
                         </select>
                     </div>
                     <div class="padding_bottom_15">
@@ -352,7 +364,8 @@
     </div>
 </footer>
 
-<script src="../../resources/js/addNewOwner.js"></script>
+<script src="../../resources/js/addNewOwnerAndAddress.js"></script>
+<script src="../../resources/js/jquery.validate.js"></script>
 <script>
 
 

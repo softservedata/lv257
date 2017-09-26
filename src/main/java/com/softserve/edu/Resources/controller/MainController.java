@@ -1,8 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,14 +114,24 @@ public class MainController {
         String roleName = queryUser.get("rn");
         ModelAndView model = new ModelAndView("roleInfo");
         model.addObject("list", roleService.getRolePrivileges(roleName));
+        model.addObject("roleName", roleName);
         return model;
     }
 
-    @RequestMapping(value = "/addRole", method = RequestMethod.POST)
-    public ModelAndView addRole() {
-        ModelAndView model = new ModelAndView("roleInfo");
+    @RequestMapping(value = "/userEdit", params = {"uid"}, method = RequestMethod.GET)
+    public ModelAndView userEdit(@RequestParam Map<String, String> queryUser) {
+        Long userId = Long.parseLong(queryUser.get("uid"));
+        System.out.println("useerID is " + userId);
+        ModelAndView model = new ModelAndView("userEdit");
+        model.addObject("user", userService.getUserById(userId));
+        model.addObject("uid", userId);
+        return model;
+    }
 
-        model.addObject("list");
+    @RequestMapping(value = "/addRole", method = RequestMethod.GET)
+    public ModelAndView addRole(){
+        ModelAndView model = new ModelAndView("roleAdd");
+        model.addObject("list", privilegeService.getAllPrivileges());
         return model;
     }
 
