@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -20,9 +19,9 @@ import java.util.Properties;
 import static org.hibernate.cfg.AvailableSettings.*;
 
 @Configuration
-@EnableTransactionManagement
 // Load to Environment.
 @PropertySource("classpath:database.properties")
+@EnableTransactionManagement
 public class DBConfig {
 
     // The Environment class serves as the property holder
@@ -33,8 +32,8 @@ public class DBConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean lcemfb = new LocalContainerEntityManagerFactoryBean();
-        lcemfb.setDataSource(getDataSource());
         lcemfb.setJpaVendorAdapter(getJpaVendorAdapter());
+        lcemfb.setDataSource(getDataSource());
         lcemfb.setJpaProperties(getJpaProperties());
         lcemfb.setPackagesToScan("com.softserve.edu.Resources.entity");
         return lcemfb;
@@ -43,7 +42,7 @@ public class DBConfig {
     @Bean
     public JpaVendorAdapter getJpaVendorAdapter() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setDatabase(Database.MYSQL);
+//        adapter.setDatabase(Database.MYSQL);
         return adapter;
     }
 

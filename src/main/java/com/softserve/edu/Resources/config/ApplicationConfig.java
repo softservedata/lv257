@@ -13,12 +13,10 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 
 import java.util.Properties;
 
-
-
 @Configuration
-@EnableTransactionManagement
+@ComponentScan(basePackages={ "com.softserve.edu.Resources.*"})
 @Import(DBConfig.class)
-@ComponentScan(basePackages={"com.softserve.edu.Resources"})
+@EnableTransactionManagement
 public class ApplicationConfig {
 
     @Bean
@@ -55,4 +53,6 @@ public class ApplicationConfig {
     }
 
 }
+
+
 

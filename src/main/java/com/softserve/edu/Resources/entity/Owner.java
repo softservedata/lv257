@@ -1,4 +1,5 @@
 package com.softserve.edu.Resources.entity;
+import com.softserve.edu.Resources.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +15,8 @@ import javax.persistence.*;
 public abstract class Owner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     @Column(name = "owner_id")
     private long id;
 
