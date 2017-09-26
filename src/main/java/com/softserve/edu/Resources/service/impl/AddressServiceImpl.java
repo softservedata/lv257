@@ -1,14 +1,13 @@
 package com.softserve.edu.Resources.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dao.AddressDAO;
+import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,8 +23,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address findById(long id) {
-        return addressDAO.findById(id);
+    public Address getById(long id) {
+        return addressDAO.getById(id);
     }
 
     @Override
@@ -39,14 +38,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public Address parseAddress(String json) {
-        Address address = null;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            address = objectMapper.readValue(json, Address.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return address;
+    public SelectInfoDTO fromAddressToDto(Address address) {
+        SelectInfoDTO infoDTO = new SelectInfoDTO();
+        infoDTO.setObjectId(address.getId());
+        infoDTO.setMessage(address.customToString());
+
+        return infoDTO;
     }
 }

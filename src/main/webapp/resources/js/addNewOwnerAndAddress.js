@@ -336,17 +336,17 @@ $(document).ready(function(){
                 country: {
                     required : true,
                     minlength : 3,
-                    maxlength: 20
+                    maxlength: 30
                 },
                 region: {
                     required : true,
                     minlength : 3,
-                    maxlength: 20
+                    maxlength: 30
                 },
                 district: {
                     required : false,
                     minlength : 3,
-                    maxlength: 20
+                    maxlength: 30
                 },
                 postal_index: {
                     required : false
@@ -354,12 +354,12 @@ $(document).ready(function(){
                 locality: {
                     required : true,
                     minlength : 3,
-                    maxlength: 20
+                    maxlength: 30
                 },
                 street: {
                     required : true,
                     minlength : 3,
-                    maxlength: 20
+                    maxlength: 30
                 },
                 building: {
                     required : true,
