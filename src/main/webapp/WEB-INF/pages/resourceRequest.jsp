@@ -88,13 +88,13 @@
 
                     <c:choose>
                         <c:when test="${request.resourcesAdmin!=null}">
-                            <td data-order="1">
+                            <td data-order="1" data-id=${request.id}>
                                 <c:choose>
                                     <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
                                         <a href="${pageContext.request.contextPath}/resources/addType">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
-                                        <button class="btn btn-primary responce" data-id=${request.id} type="button"
+                                        <button class="btn btn-primary responce" type="button"
                                                 data-toggle="modal"
                                                 data-target="#myModal">Responce
                                         </button>
@@ -114,9 +114,9 @@
 
                         </c:when>
                         <c:otherwise>
-                            <td data-order="0">
+                            <td data-order="0" data-id=${request.id}>
 
-                                <button class="btn btn-primary assign" data-id=${request.id}>Assign to me</button>
+                                <button class="btn btn-primary assign">Assign to me</button>
 
                             </td>
                         </c:otherwise>
@@ -147,7 +147,7 @@
                 <h3 class="modal-title left-align">
                     Response</h3>
                 <br>
-                <h5 class="modal-title" id="idRequest" hidden></h5>
+                <h5 class="modal-title" id="idRequest"></h5>
                 <br>
             </div>
             <div class="modal-body">
@@ -156,8 +156,8 @@
                         Comment:</h6>
                     <div class="form-group">
 
-                                                                    <textarea class="form-control" id="comment" rows="5"
-                                                                              style=" resize: vertical"></textarea>
+                        <textarea class="form-control" id="comment" rows="5"
+                                  style=" resize: vertical"></textarea>
                     </div>
                 </form>
             </div>
@@ -202,36 +202,35 @@
         });
 
         var currentRow;
-        $('.responce').click(function () {
-            $('#idRequest').text($(this).attr('data-id'))
+        $(document).on('click', '.responce', function () {
+            $('#idRequest').text($(this).parents('td').attr('data-id'));
             currentRow = table
                 .row($(this).parents('tr'));
         })
 
-        $('.assign').click(function () {
+        $('.assign').on('click', function () {
             var cell = $(this).parents('td');
-            var id = $(this).attr('data-id');
+            var id = cell.attr('data-id');
+            alert(id)
             $.ajax(
                 {
                     type: "POST",
                     url: "assignRequest",
                     accept: "application/json",
                     data: {id: id},
-                    success: function (jsonRequest) {
-                        alert(jsonRequest.update);
-                        table.cell(cell.closest('tr'), 3).data(jsonRequest.update);
-                        table.cell(cell.closest('tr'), 4).data(jsonRequest.assignerName);
-
-                        cell.replaceWith(
-                            "<td  data-order=\"1\" class=\"sorting_1\">" +
-                            "                                        <a href=\"${pageContext.request.contextPath}/resources/addType\">\n" +
-                            "                                            <button class=\"btn btn-primary\">Process</button>\n" +
-                            "                                        </a>\n" +
-                            "                                        <button class=\"btn btn-primary responce\" data-id=${request.id} type=\"button\"\n" +
-                            "                                                data-toggle=\"modal\"\n" +
-                            "                                                data-target=\"#myModal\">Responce\n" +
-                            "                                        </button>" +
-                            "</td>"
+                    success: function (responceRequest) {
+                        alert(responceRequest.update);
+                        table.cell(cell.closest('tr'), 3).data(responceRequest.update);
+                        table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
+//
+                        cell.replaceWith(" <td data-order=\"1\" data-id=" + id + ">\n" +
+                            "                       <a href=\"/resources/addType\">\n" +
+                            "                           <button class=\"btn btn-primary\">Process</button>\n" +
+                            "                       </a>\n" +
+                            "                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +
+                            "                                  data-toggle=\"modal\" data-target=\"#myModal\">Responce\n" +
+                            "                       </button>" +
+                            "              </td>"
                         );
                         table.destroy();
                         table = $('#requests').DataTable({
@@ -263,6 +262,7 @@
                     accept: "text/plain",
                     data: JSON.stringify(message),
                     success: function (obj) {
+                        alert("Your mail has already sent.")
                         $("#comment").val('');
                         currentRow.remove().draw();
                     }
