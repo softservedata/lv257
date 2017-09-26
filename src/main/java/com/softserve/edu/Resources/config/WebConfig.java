@@ -13,8 +13,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@EnableTransactionManagement
 @ComponentScan("com.softserve.edu.Resources.controller")
+@EnableTransactionManagement
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
@@ -34,5 +34,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         super.addResourceHandlers(registry);
     }
+
+
 
 }

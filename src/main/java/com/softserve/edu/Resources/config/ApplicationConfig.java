@@ -13,14 +13,13 @@ import org.springframework.web.multipart.support.StandardServletMultipartResolve
 
 import java.util.Properties;
 
-@Configuration
-@ComponentScan(basePackages={ "com.softserve.edu.Resources.*"})
-@Import(DBConfig.class)
 @EnableTransactionManagement
+@Configuration
+@Import(DBConfig.class)
+@ComponentScan(basePackages={"com.softserve.edu.Resources"})
 public class ApplicationConfig {
-
     @Bean
-    public MessageSource messageSource() {
+    public MessageSource messageSource(){
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("messages");
         messageSource.setDefaultEncoding("UTF-8");
@@ -53,6 +52,3 @@ public class ApplicationConfig {
     }
 
 }
-
-
-
