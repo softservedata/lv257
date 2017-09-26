@@ -10,8 +10,6 @@
 <jsp:include page="_menu2.jsp" />
 
 <br />
-<br />
-<br />
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
@@ -27,7 +25,7 @@
             <div class="row">
                 <div class="container">
                     <div class="margin-bottom">
-                        <button type="button" class="btn btn-primary" onclick="window.location='${pageContext.request.contextPath}/roleInfo';">Add new Role</button>
+                        <button type="button" class="btn btn-primary" onclick="window.location='${pageContext.request.contextPath}/addRole';">Add new Role</button>
                     </div>
                 </div>
             </div>
