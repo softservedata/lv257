@@ -25,6 +25,11 @@ public class RequestService {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    MailSenderService mailSender;
+    @Autowired
+    RequestMessageHandler messageHandler;
+
     public void fillUpRequest(ResourceRequest requestService) {
 
         org.springframework.security.core.userdetails.User userSpring =
@@ -60,14 +65,16 @@ public class RequestService {
 
     public void response(Message message) {
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(message.getId_request());
+
         ResourceRequest request;
-        System.out.println(requestOptional);
+        System.out.println(message.getId_request());
         if (requestOptional.isPresent()) {
             request = requestOptional.get();
             request.setUpdate(new Date());
             request.setStatus(message.getRequestStatus());
             resourceRequestDAO.merge(request);
-            //  new RequestMailSenderService().sendMessage(message);
+            messageHandler.setMessage(message);
+            mailSender.sendMessage(messageHandler);
         } else {
             System.out.println("ResourseRequest instance is undefined.");
         }

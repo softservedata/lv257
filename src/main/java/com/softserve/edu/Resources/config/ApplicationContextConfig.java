@@ -39,7 +39,7 @@ public class ApplicationContextConfig {
     }
 
     @Bean
-    public MessageSource messageSource(){
+    public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 //        messageSource.setBasename("/WEB-INF/messages");
         messageSource.setBasename("messages");
@@ -50,7 +50,7 @@ public class ApplicationContextConfig {
 
     @Bean(name = "multipartResolver")
     public StandardServletMultipartResolver createResolver() {
-        return   new StandardServletMultipartResolver();
+        return new StandardServletMultipartResolver();
 
 
     }
