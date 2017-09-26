@@ -20,7 +20,7 @@ public class ResourceCategory {
     @JsonProperty("catname")
     private String categoryName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JsonBackReference
 //    @JsonProperty("parent_id")
 //    @JsonIdentityReference(alwaysAsId = true)
