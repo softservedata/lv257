@@ -24,6 +24,8 @@
     <div id="nestable-menu">
         <button type="button" class="btn btn-primary" data-action="expand-all">Expand All</button>
         <button type="button" class="btn btn-primary" data-action="collapse-all">Collapse All</button>
+        <button type="button" class="btn btn-primary" data-action="add-item">Add new item</button>
+        <button type="button" class="btn btn-primary" data-action="remove-item">Remove item</button>
     </div>
 
     <div class="dd scrollable" id="nestable"></div>
@@ -210,6 +212,7 @@
         };
 
         var json = ${inputJson};
+        var lastId;
 
         // activate Nestable for list 1
         $('#nestable').nestable({
@@ -217,6 +220,7 @@
             contentCallback: function(item) {
                 var content = item.catname || '' ? item.catname : item.id;
                 content += ' <i>(id = ' + item.id + ')</i>';
+                lastId = item.id;
 
                 return content;
             }
@@ -233,6 +237,21 @@
             }
             if (action === 'collapse-all') {
                 $('.dd').nestable('collapseAll');
+            }
+            if(action === 'add-item') {
+                var newItem = {
+//                    "id": ++lastId,
+                    "catname": "new category",
+//                    "parent_id" : 1516,
+                    "content": "Item " + lastId,
+                };
+                $('#nestable').nestable('add', newItem);
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            }
+            if(action === 'remove-item') {
+                var branch2_id = $("[data-catname='branch2']").attr("data-id");
+                $('#nestable').nestable('remove', branch2_id);
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
             }
         });
     });

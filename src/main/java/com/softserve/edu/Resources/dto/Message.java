@@ -1,18 +1,11 @@
 package com.softserve.edu.Resources.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.entity.ResourceRequest;
-import org.springframework.web.bind.annotation.RequestBody;
-
 
 public class Message {
-    @JsonProperty("id_request")
+
     private long id_request;
-
-    @JsonProperty("purpose")
     private Purpose purpose;
-
-    @JsonProperty("comment")
     private String comment;
 
     public enum Purpose {
@@ -92,13 +85,7 @@ public class Message {
     public Message() {
     }
 
-    public String getMessageContent() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("Hi!\n");
-        stringBuilder.append(purpose.getMessageContent());
-        stringBuilder.append(comment);
-        return stringBuilder.toString();
-    }
+
 
     @Override
     public String toString() {

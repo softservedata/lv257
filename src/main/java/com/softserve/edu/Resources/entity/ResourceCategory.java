@@ -23,7 +23,7 @@ public class ResourceCategory {
     @JsonProperty("catname")
     private String categoryName;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JsonBackReference
 //    @JsonProperty("parent_id")
 //    @JsonIdentityReference(alwaysAsId = true)
@@ -36,11 +36,13 @@ public class ResourceCategory {
     private Set<ResourceCategory> childrenCategories = new HashSet<>();
 
     @Column(name = "Hierarchy_Level")
-    @JsonProperty("level")
+//    @JsonProperty("level")
+    @JsonIgnore
     private Integer hierarchyLevel;
 
     @Column(name = "Path_To_Root")
-    @JsonProperty("rootpath")
+//    @JsonProperty("rootpath")
+    @JsonIgnore
     private String pathToRoot;
 
     @OneToMany(mappedBy = "category")

@@ -28,7 +28,7 @@ public class ApplicationConfig {
 
     @Bean(name = "multipartResolver")
     public StandardServletMultipartResolver createResolver() {
-        return   new StandardServletMultipartResolver();
+        return new StandardServletMultipartResolver();
     }
 
     @Bean

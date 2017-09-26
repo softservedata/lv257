@@ -29,8 +29,10 @@ public class PrivilegeDAOImpl implements PrivilegeDAO {
     }
 
     @Override
-    public Privilege addPrivilege(Privilege privilege) {
-        return null;
+    public Privilege addPrivilege(String s) {
+        Privilege privilege = new Privilege(s);
+        entityManager.persist(privilege);
+        return privilege;
     }
 
     @Override

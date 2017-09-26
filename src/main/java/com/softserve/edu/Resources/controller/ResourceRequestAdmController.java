@@ -1,12 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dto.Message;
-import com.softserve.edu.Resources.entity.Address;
+import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.service.impl.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 @Controller
 @Transactional
@@ -28,33 +25,23 @@ public class ResourceRequestAdmController {
     RequestService requestService;
 
     @RequestMapping(value = {"/assignRequest"}, method = RequestMethod.POST)
-    public @ResponseBody
-    String assign(@RequestParam("id") String id
-    ) {
-        System.out.println(Long.parseLong(id));
+    public @ResponseBody RequestDTO assign(@RequestParam("id") String id) {
+
         org.springframework.security.core.userdetails.User userSpring =
                 (org.springframework.security.core.userdetails.User)
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         ResourceRequest request = requestService.assignResourceAdmin(Long.parseLong(id), userSpring.getUsername());
-        return "success";
+        RequestDTO requestDTO = new RequestDTO(request);
+        return requestDTO;
 
     }
 
 
     @RequestMapping(value = {"/sendResponce"}, method = RequestMethod.POST)
-    public @ResponseBody
-    String sendResponse(@RequestBody String json) {
-        Message message;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            message = objectMapper.readValue(json, Message.class);
-            System.out.println(message);
-            requestService.response(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public @ResponseBody String sendResponse(@RequestBody Message message) {
+        requestService.response(message);
         return "success";
-
     }
 
 
@@ -81,7 +68,6 @@ public class ResourceRequestAdmController {
 
         ResourceRequest request = requestService.getRequestById(id);
         model.addAttribute("request", request);
-        System.out.println(FileSystemView.getFileSystemView().getHomeDirectory());
         return "resourceRequestDetails";
     }
 }

@@ -10,7 +10,7 @@ import java.io.File;
 
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    public static final String location = "/tmp/resources/uploads";
+    public static String location = "/tmp/resources/uploads";
     private static final int maxFileSize = 5 * 1024 * 1024; // 5 MB
 
 
@@ -39,7 +39,8 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         super.onStartup(servletContext);
-        String location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
+
+        location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
 
         //31.08.2017
         //TODO after first initialization to fulfill tables in DB with testing data(privileges, roles, users, resources etc )

@@ -42,4 +42,6 @@ public interface GenericDAO<T, ID extends Serializable> {
     Optional<T> querySingleResult(String queryWithNamedParams, Map<String, Object> params);
 
     List<T> queryResultList(String queryWithNamedParams, Map<String, Object> params);
+
+    void flush();
 }

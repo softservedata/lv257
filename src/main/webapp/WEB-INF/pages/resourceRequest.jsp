@@ -34,7 +34,7 @@
 
 
     <div class="table-responsive">
-        <h2>List of requests</h2>
+        <h2>List of Resource Type requests</h2>
         <div align="right">
             <label for="search">Search by resource Admin:</label>
             <input type="text" class="form-control" id="search" placeholder="Resource Administrator"
@@ -46,7 +46,7 @@
             <tr>
                 <th>
                     <div class="text-center ">
-                        RequestedCategory
+                        Resource Type
                     </div>
 
                 </th>
@@ -80,7 +80,7 @@
             <c:forEach items="${resourceRequest}" var="request">
 
                 <tr>
-                    <td>${request.theme}</td>
+                    <td>${request.resourceType}</td>
                     <td>${request.register.username}</td>
                     <td><a href="/resources/details/${request.id}">details</a></td>
                     <td>${request.update}</td>
@@ -88,14 +88,13 @@
 
                     <c:choose>
                         <c:when test="${request.resourcesAdmin!=null}">
-                            <td data-order="1" name="action">
+                            <td data-order="1" data-id=${request.id}>
                                 <c:choose>
                                     <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
-
                                         <a href="${pageContext.request.contextPath}/resources/addType">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
-                                        <button class="btn btn-primary responce" data-id=${request.id} type="button"
+                                        <button class="btn btn-primary responce" type="button"
                                                 data-toggle="modal"
                                                 data-target="#myModal">Responce
                                         </button>
@@ -115,9 +114,9 @@
 
                         </c:when>
                         <c:otherwise>
-                            <td data-order="0" name="action">
+                            <td data-order="0" data-id=${request.id}>
 
-                                <button class="btn btn-primary assign" data-id=${request.id}>Assign to me</button>
+                                <button class="btn btn-primary assign">Assign to me</button>
 
                             </td>
                         </c:otherwise>
@@ -148,7 +147,7 @@
                 <h3 class="modal-title left-align">
                     Response</h3>
                 <br>
-                <h5 class="modal-title" id="idRequest" hidden></h5>
+                <h5 class="modal-title" id="idRequest"></h5>
                 <br>
             </div>
             <div class="modal-body">
@@ -157,8 +156,8 @@
                         Comment:</h6>
                     <div class="form-group">
 
-                                                                    <textarea class="form-control" id="comment" rows="5"
-                                                                              style=" resize: vertical"></textarea>
+                        <textarea class="form-control" id="comment" rows="5"
+                                  style=" resize: vertical"></textarea>
                     </div>
                 </form>
             </div>
@@ -203,20 +202,43 @@
         });
 
         var currentRow;
-        $('.responce').click(function () {
-            $('#idRequest').text($(this).attr('data-id'))
+        $(document).on('click', '.responce', function () {
+            $('#idRequest').text($(this).parents('td').attr('data-id'));
             currentRow = table
                 .row($(this).parents('tr'));
         })
-        $('.assign').click(function () {
-            var id = $(this).attr('data-id');
+
+        $('.assign').on('click', function () {
+            var cell = $(this).parents('td');
+            var id = cell.attr('data-id');
+            alert(id)
             $.ajax(
                 {
                     type: "POST",
                     url: "assignRequest",
+                    accept: "application/json",
                     data: {id: id},
-                    success: function (obj) {
-                        alert(obj)
+                    success: function (responceRequest) {
+                        alert(responceRequest.update);
+                        table.cell(cell.closest('tr'), 3).data(responceRequest.update);
+                        table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
+//
+                        cell.replaceWith(" <td data-order=\"1\" data-id=" + id + ">\n" +
+                            "                       <a href=\"/resources/addType\">\n" +
+                            "                           <button class=\"btn btn-primary\">Process</button>\n" +
+                            "                       </a>\n" +
+                            "                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +
+                            "                                  data-toggle=\"modal\" data-target=\"#myModal\">Responce\n" +
+                            "                       </button>" +
+                            "              </td>"
+                        );
+                        table.destroy();
+                        table = $('#requests').DataTable({
+                            'dom': 'rt<"bottom"lp><"clear">',
+                            stateSave: true
+                        });
+
+                        table.order([[5, 'asc'], [3, 'desc']]).draw();
                     }
                 })
         })
@@ -235,12 +257,12 @@
             $.ajax(
                 {
                     type: "POST",
-                    contentType: "text/plain",
+                    contentType: "application/json",
                     url: "/resources/sendResponce",
                     accept: "text/plain",
                     data: JSON.stringify(message),
-
                     success: function (obj) {
+                        alert("Your mail has already sent.")
                         $("#comment").val('');
                         currentRow.remove().draw();
                     }

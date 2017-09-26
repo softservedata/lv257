@@ -1,10 +1,20 @@
 package com.softserve.edu.Resources.service.impl;
 
+import com.softserve.edu.Resources.service.ResourceService;
+import com.softserve.edu.Resources.util.QueryBuilder;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
+import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.service.ResourceService;
+import com.softserve.edu.Resources.entity.ResourceType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,19 +32,31 @@ public class ResourceServiceImpl implements ResourceService {
     @Autowired
     ResourceDao resourceDao;
 
+    @Autowired
+    QueryBuilder queryBuilder;
+
 //    public ResourceServiceImpl() {
 //    }
 
     @Transactional
     @Override
-    public List<GenericResource> findResourcesByResourceType(String query, String tableName,
-            Map<String, String> valuesToSearch) {
+    public List<GenericResource> findResourcesByResourceType(GenericResourceDTO resourceDTO) {
+
+        long resourceTypeId = resourceDTO.getId();
+
+        ResourceType resourceType = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+
+        String tableName = resourceType.getTableName();
         
         List<ResourceProperty> resourceProperties = new ArrayList<>(
-                resourceTypeDAO.findWithPropertiesByTableName(tableName).getProperties());
+                resourceType.getProperties());
         System.out.println(resourceProperties);
 
-        return resourceDao.findResourcesByResourceType(query, valuesToSearch, resourceProperties);
+        Map <String, String> valuesToSearch = resourceDTO.getResourcePropertyValue();
+
+        String queryForDao = queryBuilder.lookUpByResouceType(tableName, valuesToSearch, resourceProperties);
+
+        return resourceDao.findResourcesByResourceType(queryForDao, valuesToSearch, resourceProperties);
     }
     
 }

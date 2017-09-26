@@ -6,31 +6,35 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
-public class AddressDAOImpl implements AddressDAO {
+public class AddressDAOImpl extends GenericDAOImpl<Address, Long> implements AddressDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    public AddressDAOImpl() {
+        super(Address.class);
+    }
+
+    @Override
     public void addAddress(Address address) {
-        entityManager.persist(address);
+        this.makePersistent(address);
     }
 
-    public Address findById(long id) {
-        Query query = entityManager.createQuery("SELECT a FROM Address a WHERE id = :id");
-        query.setParameter("id", id);
-        return (Address) query.getSingleResult();
+    @Override
+    public Address getById(long id) {
+        return this.findById(id).get();
     }
 
+    @Override
     public void updateAddress(Address address) {
-        entityManager.merge(address);
+        this.makePersistent(address);
     }
 
+    @Override
     public List<Address> getAllAddresses() {
-        Query query = entityManager.createQuery("SELECT a FROM Address a");
-        return (List<Address>) query.getResultList();
+        return this.findAll();  
     }
 }

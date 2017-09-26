@@ -7,9 +7,7 @@ import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.CycleDetector;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.ListenableDirectedGraph;
 import org.jgrapht.graph.SimpleDirectedGraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ResourceCategoryService {
@@ -44,7 +43,7 @@ public class ResourceCategoryService {
     }
 
     @Transactional
-    public void addResourceCategory(ResourceCategory resourceCategory) {
+    public void saveResourceCategory(ResourceCategory resourceCategory) {
         setRootPath(resourceCategory);
 //        List<ResourceCategory> existingCategories = this.findAllResourceCategories();
 //        if (existingCategories.stream().noneMatch(c -> c.getCategoryName().equalsIgnoreCase(resourceCategory.getCategoryName())))
@@ -140,7 +139,7 @@ public class ResourceCategoryService {
     public void fillParents(List<ResourceCategory> categoryList) {
         for (ResourceCategory rc : categoryList) {
             Collection<ResourceCategory> children = rc.getChildrenCategories();
-            for (ResourceCategory ch: children) {
+            for (ResourceCategory ch : children) {
                 ch.setParentCategory(rc);
             }
         }
@@ -187,14 +186,14 @@ public class ResourceCategoryService {
         branch2.getChildrenCategories().add(leaf2_1);
         branch2.getChildrenCategories().add(leaf2_2);
 
-        addResourceCategory(root);
-        addResourceCategory(branch1);
-        addResourceCategory(branch2);
-        addResourceCategory(leaf1_1);
-        addResourceCategory(leaf1_2);
-        addResourceCategory(leaf2_1);
-        addResourceCategory(leaf2_2);
-        addResourceCategory(leaf1_3);
+        saveResourceCategory(root);
+        saveResourceCategory(branch1);
+        saveResourceCategory(branch2);
+        saveResourceCategory(leaf1_1);
+        saveResourceCategory(leaf1_2);
+        saveResourceCategory(leaf2_1);
+        saveResourceCategory(leaf2_2);
+        saveResourceCategory(leaf1_3);
     }
     @Transactional
     public String serializeCategoriesIntoJson(List<ResourceCategory> categories) {
@@ -212,19 +211,22 @@ public class ResourceCategoryService {
     @Transactional
     public List<ResourceCategory> deserializeCategoriesFromJson(String json) {
         ObjectMapper mapper = new ObjectMapper();
-        List<ResourceCategory> categories = new ArrayList<>();
+        List<ResourceCategory> rootCategories = new ArrayList<>();
         try {
             JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, ResourceCategory.class);
-            List<ResourceCategory> rootCategories = mapper.readValue(json, listType);
-            categories.addAll(rootCategories);
-            rootCategories.forEach(c -> categories.addAll(getDescendants(c)));
-            categories.forEach(c -> System.out.println(c + " Parent: " + c.getParentCategory()));
-//            fillParents(categories);
+            rootCategories = mapper.readValue(json, listType);
         } catch (IOException e) {
             System.out.println("Can not deserialize JSON into list of root Resource Categories");
             e.printStackTrace();
         }
-        return categories;
+        return rootCategories;
+    }
+
+    public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories) {
+        List<ResourceCategory> allCategories = new ArrayList<>(rootCategories);
+        rootCategories.forEach(c -> allCategories.addAll(getDescendants(c)));
+        allCategories.forEach(c -> System.out.println(c + " Parent: " + c.getParentCategory() + " Children: " + Arrays.toString(c.getChildrenCategories().toArray()) + " end;"));
+        return allCategories;
     }
 
     @Transactional
@@ -237,11 +239,24 @@ public class ResourceCategoryService {
                     || (categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory() == null && c.getParentCategory() != null)
                     || !categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory().getCategoryName().equals(c.getParentCategory().getCategoryName())) {
                 changedCategories.add(c);
+                System.out.println("Cahnged categories: " + Arrays.toString(changedCategories.toArray()));
             }
             if (!changedCategories.isEmpty()) {
-                changedCategories.forEach(this::updateResourceCategory);
+                changedCategories.forEach(this::saveResourceCategory);
             }
         }
+    }
+
+    @Transactional
+    public void deleteMissingCategoriesInDB(List<ResourceCategory> rootCategoriesFromWeb) {
+        List<ResourceCategory> allCategoriesFromWeb = deployAllCategoriesFromRoots(rootCategoriesFromWeb);
+        List<ResourceCategory> allCategoriesFromDB = findAllResourceCategories();
+        allCategoriesFromDB.stream()
+                .filter(c -> !allCategoriesFromWeb.stream()
+                        .map(ResourceCategory::getId)
+                        .collect(Collectors.toList()).contains(c.getId()))
+                .forEach(this::deleteResourceCategory);
+        resourceCategoryDAO.flush();
     }
 
     public boolean hasCycleDependencies(List<ResourceCategory> categories) {
@@ -255,9 +270,9 @@ public class ResourceCategoryService {
 
     public boolean hasCycleDependencies1(List<ResourceCategory> categories) {
         DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
-        for (ResourceCategory category: categories) {
+        for (ResourceCategory category : categories) {
             categoriesGraph.addVertex(category);
-            if(category.getParentCategory() != null) {
+            if (category.getParentCategory() != null) {
                 categoriesGraph.addEdge(category, category.getParentCategory());
             }
         }

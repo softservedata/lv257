@@ -1,4 +1,4 @@
-package com.softserve.edu.Resources.service.impl;
+package com.softserve.edu.Resources.util;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,29 +6,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
-import com.softserve.edu.Resources.service.QueryBuilderService;
 
-@Service
-public class QueryBuilderServiceImpl implements QueryBuilderService {
+@Component
+public class QueryBuilder {
 
-    @Autowired
-    ResourceTypeDAO resourceTypeDao;
-
-    @Transactional
-    @Override
-    public String lookUpByResouceType(String tableName, Map<String, String> valuesToSearch) {
-
-        ResourceType resourceType = resourceTypeDao.findWithPropertiesByTableName(tableName);
-
-        List<ResourceProperty> allResourceProperties = new ArrayList<>(resourceType.getProperties());
-
-        System.out.println("all Resource Properties of Resource type: " + allResourceProperties);
+    public String lookUpByResouceType(String tableName, Map<String, String> valuesToSearch,
+            List<ResourceProperty> allResourceProperties) {
 
         StringBuilder createQuery = new StringBuilder();
         createQuery.append("SELECT gr.id, gr.id_Address");

@@ -153,4 +153,8 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
                 : LockModeType.OPTIMISTIC
         );
     }
+
+    public void flush() {
+        em.flush();
+    }
 }

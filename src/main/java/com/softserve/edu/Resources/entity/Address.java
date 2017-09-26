@@ -4,6 +4,8 @@ import com.softserve.edu.Resources.Constants;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,22 +22,28 @@ public class Address {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private long id;
 
+    @NotEmpty
+    @Length(max = 10, message = "Country name is too big.")
     @JsonProperty("country")
     private String country;
 
+    @NotEmpty
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("district")
     private String district;
 
-    @JsonProperty("postal index")
+    @NotEmpty
+    @JsonProperty("postal_index")
     @Column(name = "postal_index")
     private String postalIndex;
 
+    @NotEmpty
     @JsonProperty("locality")
     private String locality;
 
+    @NotEmpty
     @JsonProperty("street")
     private String street;
 
@@ -205,6 +213,19 @@ public class Address {
                 ", block='" + block + '\'' +
                 ", apartment=" + apartment +
                 '}';
+    }
+
+    public String customToString(){
+        return "Address: " +
+                country + ", " +
+                region + ", " +
+                district + ", " +
+                postalIndex + ", " +
+                locality + ", " +
+                street + ", " +
+                building + ", " +
+                block + ", " +
+                apartment + ".";
     }
 }
 
