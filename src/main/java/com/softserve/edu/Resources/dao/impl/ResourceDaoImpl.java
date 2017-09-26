@@ -10,6 +10,9 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.softserve.edu.Resources.dao.ResourceDao;
@@ -35,18 +38,21 @@ public class ResourceDaoImpl implements ResourceDao {
 
         Object[] args = new Object[valuesToSearch.size()];
 
-        int i = 0;
-
-        for (Map.Entry<String, String> entry : valuesToSearch.entrySet()) {
-            args[i++] = entry.getValue();
-        }
+//        int i = 0;
+//
+//        for (Map.Entry<String, String> entry : valuesToSearch.entrySet()) {
+//            args[i++] = entry.getValue();
+//        }
+        
+        args = valuesToSearch.values().toArray();
+        
 
         int[] argsTypes = new int[valuesToSearch.size()];
-        i = 0;
-        for (Map.Entry<String, String> entry : valuesToSearch.entrySet()) {
+        int i = 0;
+        for (String keyValue : valuesToSearch.keySet()) {
             for (ResourceProperty property : resourceProperties) {
-                if (property.getColumnName().equals(entry.getKey())) {
-                    argsTypes[i++] = property.getValueType().getSqlType(); /* if it works?*/
+                if (property.getColumnName().equals(keyValue)) {
+                    argsTypes[i++] = property.getValueType().getSqlType(); 
                     break;
                 }
             }
@@ -55,6 +61,7 @@ public class ResourceDaoImpl implements ResourceDao {
         i = 0;
 
         List<Map<String, Object>> genResRows = jdbcTemplate.queryForList(sqlQuery, args, argsTypes);
+       // it also possible to make with named parameters jdbcTemplate
 
         for (Map<String, Object> mapRow : genResRows) {
             GenericResource genResource = new GenericResource();

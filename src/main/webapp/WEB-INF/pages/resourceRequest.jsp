@@ -215,26 +215,29 @@
                 {
                     type: "POST",
                     url: "assignRequest",
+                    accept: "application/json",
                     data: {id: id},
-                    success: function (obj) {
-                        alert(obj)
-                        var jsonRequest = JSON.parse(obj);
-                        alert(jsonRequest.status)
-                        table.cell( cell.closest('tr'), 3 ).data( jsonRequest.update ) ;
-                        table.cell( cell.closest('tr'), 4 ).data( jsonRequest.assignerName ) ;
+                    success: function (jsonRequest) {
+                        alert(jsonRequest.update);
+                        table.cell(cell.closest('tr'), 3).data(jsonRequest.update);
+                        table.cell(cell.closest('tr'), 4).data(jsonRequest.assignerName);
 
                         cell.replaceWith(
-
-                            "<td  data-order=\"1\" class=\"sorting_1\">"+
+                            "<td  data-order=\"1\" class=\"sorting_1\">" +
                             "                                        <a href=\"${pageContext.request.contextPath}/resources/addType\">\n" +
                             "                                            <button class=\"btn btn-primary\">Process</button>\n" +
                             "                                        </a>\n" +
                             "                                        <button class=\"btn btn-primary responce\" data-id=${request.id} type=\"button\"\n" +
                             "                                                data-toggle=\"modal\"\n" +
                             "                                                data-target=\"#myModal\">Responce\n" +
-                            "                                        </button>"+
-                                "</td>"
+                            "                                        </button>" +
+                            "</td>"
                         );
+                        table.destroy();
+                        table = $('#requests').DataTable({
+                            'dom': 'rt<"bottom"lp><"clear">',
+                            stateSave: true
+                        });
 
                         table.order([[5, 'asc'], [3, 'desc']]).draw();
                     }
@@ -255,11 +258,10 @@
             $.ajax(
                 {
                     type: "POST",
-                    contentType: "text/plain",
+                    contentType: "application/json",
                     url: "/resources/sendResponce",
                     accept: "text/plain",
                     data: JSON.stringify(message),
-
                     success: function (obj) {
                         $("#comment").val('');
                         currentRow.remove().draw();

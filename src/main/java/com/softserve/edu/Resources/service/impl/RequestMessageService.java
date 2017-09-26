@@ -1,18 +1,20 @@
 package com.softserve.edu.Resources.service.impl;
 
-import com.softserve.edu.Resources.dao.ResourceRequestDAO;
+import com.softserve.edu.Resources.dao.impl.ResourceRequestDAOImpl;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class RequestMessageService {
     @Autowired
-    private ResourceRequestDAO requestDAO;
+    private ResourceRequestDAOImpl requestDAO;
 
     private Message message;
-    private ResourceRequest resourceRequest;
+    private Optional<ResourceRequest> resourceRequest;
 
     public RequestMessageService(Message message) {
         this.message = message;
@@ -20,11 +22,16 @@ public class RequestMessageService {
     }
 
     public String getSubject(){
-        String requestedType=resourceRequest.getResourceType();
-        return "Request for new resource type: "+requestedType;
+        if(!resourceRequest.isPresent()) {
+            return new String();
+        }
+        return "Request for new resource type: " + resourceRequest.get().getResourceType();
     }
 
     public String getContent() {
+        if(!resourceRequest.isPresent()) {
+            return new String();
+        }
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Dear register,\n");
         stringBuilder.append(message.getPurpose().getMessageContent()+" ");
@@ -34,11 +41,17 @@ public class RequestMessageService {
     }
 
     public String getReceiver(){
-        return resourceRequest.getRegister().getUsername();
+        if(!resourceRequest.isPresent()) {
+            return new String();
+        }
+        return resourceRequest.get().getRegister().getUsername();
     }
 
     public String getSender(){
-        return resourceRequest.getResourcesAdmin().getUsername();
+        if(!resourceRequest.isPresent()) {
+            return new String();
+        }
+        return resourceRequest.get().getResourcesAdmin().getUsername();
     }
 
     public RequestMessageService() {
