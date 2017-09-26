@@ -166,6 +166,7 @@ public class ResourceCategoryService {
         return ancestors;
     }
 
+    @Transactional
     public void insertCategoriesTEMPORARY() {
 //        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
 
@@ -187,15 +188,15 @@ public class ResourceCategoryService {
         branch2.getChildrenCategories().add(leaf2_2);
 
         addResourceCategory(root);
-//        addResourceCategory(branch1);
-//        addResourceCategory(branch2);
-//        addResourceCategory(leaf1_1);
-//        addResourceCategory(leaf1_2);
-//        addResourceCategory(leaf2_1);
-//        addResourceCategory(leaf2_2);
-//        addResourceCategory(leaf1_3);
+        addResourceCategory(branch1);
+        addResourceCategory(branch2);
+        addResourceCategory(leaf1_1);
+        addResourceCategory(leaf1_2);
+        addResourceCategory(leaf2_1);
+        addResourceCategory(leaf2_2);
+        addResourceCategory(leaf1_3);
     }
-
+    @Transactional
     public String serializeCategoriesIntoJson(List<ResourceCategory> categories) {
         ObjectMapper mapper = new ObjectMapper();
         String json = new String();
@@ -208,7 +209,7 @@ public class ResourceCategoryService {
         }
         return json;
     }
-
+    @Transactional
     public List<ResourceCategory> deserializeCategoriesFromJson(String json) {
         ObjectMapper mapper = new ObjectMapper();
         List<ResourceCategory> categories = new ArrayList<>();
@@ -253,7 +254,7 @@ public class ResourceCategoryService {
     }
 
     public boolean hasCycleDependencies1(List<ResourceCategory> categories) {
-        DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<ResourceCategory, DefaultEdge>(DefaultEdge.class);
+        DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
         for (ResourceCategory category: categories) {
             categoriesGraph.addVertex(category);
             if(category.getParentCategory() != null) {

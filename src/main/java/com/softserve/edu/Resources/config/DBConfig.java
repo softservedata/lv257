@@ -24,7 +24,6 @@ import static org.hibernate.cfg.AvailableSettings.*;
 // Load to Environment.
 @PropertySource("classpath:database.properties")
 public class DBConfig {
-    public static final String DATABASE_PLATFORM = "MYSQL";
     // The Environment class serves as the property holder
     // and stores all the properties loaded by the @PropertySource
     @Autowired

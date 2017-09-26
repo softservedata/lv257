@@ -1,23 +1,22 @@
 package com.softserve.edu.Resources.config;
 
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import javax.servlet.*;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 import java.io.File;
 
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    public static final String LOCATION = "/tmp/resources/uploads";
+    public static final String location = "/tmp/resources/uploads";
     private static final int maxFileSize = 5 * 1024 * 1024; // 5 MB
 
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] { RootConfig.class };
+        return new Class<?>[] { ApplicationConfig.class };
     }
 
     @Override
@@ -33,36 +32,19 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
-                new MultipartConfigElement(LOCATION, maxFileSize, maxFileSize * 2, maxFileSize / 2)
+                new MultipartConfigElement(location, maxFileSize, maxFileSize * 2, maxFileSize / 2)
         );
     }
 
-    /*@Override
+    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        AnnotationConfigWebApplicationContext appContext = new AnnotationConfigWebApplicationContext();
-
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("SpringDispatcher",
-                new DispatcherServlet(appContext));
+        super.onStartup(servletContext);
         String location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
-        MultipartConfigElement multipartConfigElement
-                = new MultipartConfigElement(location, maxFileSize, maxFileSize * 2, maxFileSize / 2);
-        dispatcher.setMultipartConfig(multipartConfigElement);
-
-        ContextLoaderListener contextLoaderListener = new ContextLoaderListener(appContext);
-
-        servletContext.addListener(contextLoaderListener);
-
-        // Filter.
-        FilterRegistration.Dynamic fr = servletContext.addFilter("encodingFilter", CharacterEncodingFilter.class);
-
-        fr.setInitParameter("encoding", "UTF-8");
-        fr.setInitParameter("forceEncoding", "true");
-        fr.addMappingForUrlPatterns(null, true, "/*");
 
         //31.08.2017
         //TODO after first initialization to fulfill tables in DB with testing data(privileges, roles, users, resources etc )
 
-    }*/
+    }
 
 
 }

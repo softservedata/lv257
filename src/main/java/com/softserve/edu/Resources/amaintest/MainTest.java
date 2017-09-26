@@ -1,20 +1,19 @@
 package com.softserve.edu.Resources.amaintest;
 
+import com.softserve.edu.Resources.config.ApplicationConfig;
+import com.softserve.edu.Resources.entity.GenericResource;
+import com.softserve.edu.Resources.service.ResourceService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import com.softserve.edu.Resources.config.RootConfig;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.service.ResourceService;
 
 public class MainTest {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(RootConfig.class);
+        ctx.register(ApplicationConfig.class);
         ctx.refresh();
 
 //        TestService testService = ctx.getBean(TestService.class);
