@@ -1,30 +1,26 @@
 package com.softserve.edu.Resources.controller;
 
-import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.List;
 import java.util.Map;
 
 @Controller
 @Transactional
 public class MainController {
 
-    @Autowired
-    ResourceCategoryService categoryService;
-    
     @Autowired
     private HttpServletRequest request;
 
@@ -196,30 +192,4 @@ public class MainController {
         return "403";
     }
 
-    boolean alreadyExecuted = false;
-
-    @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
-    public ModelAndView manageTypes() {
-        ModelAndView model = new ModelAndView("manageTypes");
-        if(!alreadyExecuted) {
-            categoryService.insertCategoriesTEMPORARY();
-            alreadyExecuted = true;
-        }
-        List<ResourceCategory> rootCategories = categoryService.getRootsFromDB();
-        model.addObject("inputJson", categoryService.serializeCategoriesIntoJson(rootCategories));
-        return model;
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/manageTypes", method = RequestMethod.POST)
-    public void saveResultsOfManagingTypes(@RequestBody String outputJson) {
-        List<ResourceCategory> rootCategoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
-        if (!categoryService.hasCycleDependencies1(rootCategoriesFromWeb)) {
-            categoryService.deleteMissingCategoriesInDB(rootCategoriesFromWeb);
-            rootCategoriesFromWeb.forEach(categoryService::saveResourceCategory);
-        } else {
-            System.out.println("CYCLE!");
-//            throw new RuntimeException("Can not save hierarchy of Resource Categories with cycle dependencies");
-        }
-    }
 }

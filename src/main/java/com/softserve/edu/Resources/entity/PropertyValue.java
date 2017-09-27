@@ -1,4 +1,4 @@
-package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
+package com.softserve.edu.Resources.entity;
 
 public class PropertyValue implements Comparable<PropertyValue> {
 
@@ -32,22 +32,22 @@ public class PropertyValue implements Comparable<PropertyValue> {
   }
 
   public PropertyValue setValue(String value) {
-    if (!type.isAllowsNull() && value == null) {
+    if (!type.isRequired() && value == null) {
       throw new NullPointerException("NOT NULL constraint violation.");
     }
     if (!validate(value)) {
         System.out.println(value);
       throw new IllegalArgumentException("Invalid value format. Should match "
-                                             + type.getRegex());
+                                             + type.getPattern());
     }
     this.value = value;
     return this;
   }
 
   private boolean validate(String value) {
-      System.out.println(type.getRegex());
-    return ((type.getRegex() != null) && (value != null))
-               && value.matches(type.getRegex());
+      System.out.println(type.getPattern());
+    return ((type.getPattern() != null) && (value != null))
+               && value.matches(type.getPattern());
   }
 
     @Override

@@ -89,11 +89,11 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public List<ResourceProperty> getSpecialResourcePropertiesByResType(ResourceType resourceWithProperties) {
+    public List<ResourceProperty> getSearchableProperties(ResourceType resourceWithProperties) {
         List<ResourceProperty> essentialProperties = new ArrayList<>();
 
         for (ResourceProperty resourceProperty : resourceWithProperties.getProperties()) {
-            if (resourceProperty.isEssential()) {
+            if (resourceProperty.isSearchable()) {
                 essentialProperties.add(resourceProperty);
             }
         }
