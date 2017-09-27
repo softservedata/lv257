@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
@@ -52,7 +53,6 @@ public class RegisterResourceController {
             System.out.println("has errors");
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
         }
-
         addressService.addAddress(address);
 
         SelectInfoDTO infoDTO = addressService.fromAddressToDto(address);
@@ -60,14 +60,30 @@ public class RegisterResourceController {
         return new ResponseEntity<>(infoDTO, HttpStatus.OK);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/owner", method = RequestMethod.POST)
-    public String saveResourceOwnerWithAddress(@RequestBody String json) {
-        Owner owner;
-        owner = ownerService.parseOwnerWithAddress(json);
+    public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner,
+                                                          BindingResult result) throws JsonProcessingException {
+
+        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
+
+        if (result.hasErrors()){
+            List<FieldError> fieldErrors = result.getFieldErrors();
+            fieldErrors.forEach(error -> validationErrorDTO.addFieldError(error.getField(), error.getDefaultMessage()));
+
+            fieldErrors.forEach(System.out::println);
+
+            System.out.println("has errors!!!");
+            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
+        }
         ownerService.addOwner(owner);
 
-        System.out.println(owner.getId());
-        return "" + owner.getId();
+        System.out.println(owner);
+        System.out.println(owner.getAddress());
+
+        SelectInfoDTO infoDTO = ownerService.fromAddressToDto(owner);
+
+        return new ResponseEntity<>(infoDTO, HttpStatus.OK);
     }
 
 }

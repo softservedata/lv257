@@ -3,22 +3,15 @@ $(document).ready(function(){
 
     /* Generate owner form depending on owner type */
     $('#owner_type').on('change', function () {
-        var ownerType = this.value;
-        // in this div will be rendered form for the owner registration
-        var $ownerForm = $('#resource_owner_form');
-        // in this div will be rendered form for the owner address
-        var $ownerAddressForm = $('#owner_address_form');
+        const ownerType = this.value;
 
-        // if selected value is 1 ("Choose owner type"), these two divs are cleared
-        if (ownerType == 1) {
-            $ownerForm.empty();
+        if (ownerType == 'absent') {
+            $resourceNewOwnerForm.empty();
             $ownerAddressForm.empty();
-        } else if (ownerType == 2) {
-            // company form will be rendered
-            addOwnerForm($ownerForm, $ownerAddressForm, "company", fieldsMetadata.rowsForCompany, ownerType);
-        } else if (ownerType == 3) {
-            // person form will be rendered
-            addOwnerForm($ownerForm, $ownerAddressForm, "person", fieldsMetadata.rowsForPerson, ownerType);
+        } else if (ownerType == 'company') {
+            addOwnerFormAndSaveResult(fieldsMetadata.rowsForCompany, ownerType);
+        } else if (ownerType == 'person') {
+            addOwnerFormAndSaveResult(fieldsMetadata.rowsForPerson, ownerType);
         }
     });
 
@@ -26,44 +19,36 @@ $(document).ready(function(){
      * Builds owner form with the possibility to add owner's address.
      * Make ajax call to the server to save owner with address.
      */
-    function addOwnerForm($ownerForm, $ownerAddressForm, forWhat, rows, ownerType) {
-        $ownerForm.empty();
+    function addOwnerFormAndSaveResult(rows, ownerType) {
+        $resourceNewOwnerForm.empty();
         $ownerAddressForm.empty();
 
-        // here will be stored json string
-        // 0 index - owner address json string
-        // 1 index - owner json string
-        // 2 index - owner type, just number
-        var ownerAddressFormAndOwnerForm = [];
-
-        // id for the form
-        var ownerFormId = 'register_owner_' + forWhat;
-        var form = $('<form/>', {
+        var $form = $('<form/>', {
             class: 'form',
             id: ownerFormId
         });
         // append form for the owner and append all rows needed by this form
-        $ownerForm.append(form);
-        appendRows(form, forWhat, rows);
+        $resourceNewOwnerForm.append($form);
+        appendRows($form, rows);
 
         var $clearfix = $('<div/>', {
             class: 'clearfix'
         });
         var $registerOwnerBtn = $('<button/>', {
-            text: "Register Owner",
+            text: "Register owner",
             class: 'btn pull-right btn-success'
         });
         var $addOwnerAddresBtn = $('<button/>', {
-            text: "Add Owner Address",
+            text: "Add owner address",
             class: 'btn pull-left btn-primary'
         });
 
         // append button to register owner
-        $ownerForm.append($registerOwnerBtn);
-        $ownerForm.append($clearfix);
+        $resourceNewOwnerForm.append($registerOwnerBtn);
+        $resourceNewOwnerForm.append($clearfix);
         // append button to add owner's address
-        $ownerForm.append($addOwnerAddresBtn);
-        $ownerForm.append($clearfix);
+        $resourceNewOwnerForm.append($addOwnerAddresBtn);
+        $resourceNewOwnerForm.append($clearfix);
 
         // another div where I place form for the owner's address and button
         // before user press 'Add Owner Address'
@@ -73,18 +58,18 @@ $(document).ready(function(){
             class: 'padding_top_40'
         });
 
-        // add address form iside $addressDiv and returns form id
-        var addressFormId = addAddressFormWithoutBtn(forWhat, $addressDiv, fieldsMetadata.rowsForAddress);
+        // add address form inside $addressDiv and returns form id
+        let $addressForm = addAddressFormWithoutBtn($addressDiv, fieldsMetadata.rowsForAddress);
 
         // 'Register Address' button, I attach listener to it to retrieve all inputs filled by user
         var $registerOwnerAddressBtn = $('<button/>', {
-            text: "Register Address",
+            text: "Register address",
             class: 'btn pull-right btn-success'
         });
         $addressDiv.append($registerOwnerAddressBtn);
 
         // when press 'Add owner's address', $addressDiv with already appended form for address and button
-        // is appended to ownerAddress div placehlder
+        // is appended to ownerAddress div placeholder
         $addOwnerAddresBtn.on('click', function (e) {
             e.preventDefault();
             $registerOwnerBtn.prop('disabled', true);
@@ -93,16 +78,30 @@ $(document).ready(function(){
             $ownerAddressForm.append($clearfix);
         });
 
+        //validating address form
+        validateAddress($addressForm);
+
+        if(ownerType == 'company'){
+            validateCompany($form);
+        } else {
+            validatePerson($form);
+        }
+
+        let ownerAddressJson;
         // here I retrieve all inputs for the owner address form
         // add push this json into the array
         $registerOwnerAddressBtn.on('click', function (e) {
             e.preventDefault();
-            $registerOwnerBtn.prop('disabled', false);
-            var json = toJSONString(addressFormId);
-            ownerAddressFormAndOwnerForm.push(json);
-            console.log(ownerAddressFormAndOwnerForm);
-            $ownerAddressForm.empty();
-            $ownerForm.append($clearfix);
+
+            if ($addressForm.valid()){
+                $registerOwnerBtn.prop('disabled', false);
+                ownerAddressJson = toJSONString(addressFormId);
+                console.log('owner address form: ' + JSON.stringify(ownerAddressJson));
+                $ownerAddressForm.hide(1500);
+                $resourceNewOwnerForm.append($clearfix);
+            } else {
+                console.log('owner address form is invalid!!');
+            }
         });
 
         // here I retrieve all inputs for the owner form,
@@ -110,65 +109,65 @@ $(document).ready(function(){
         // and call ajax function to register owner
         $registerOwnerBtn.on('click', function (e) {
             e.preventDefault();
-            var json = toJSONString(ownerFormId);
-            ownerAddressFormAndOwnerForm.push(json);
-            ownerAddressFormAndOwnerForm.push(ownerType);
 
-            registerOwner(ownerAddressFormAndOwnerForm, $ownerForm);
-        });
-    };
+            if($form.valid()){
+                console.log('owner form is valid!!');
 
-    /**
-     * Takes:
-     * addressAndOwnerJson - data to be send to the server
-     * $ownerForm - element to be cleared, when owner is registered
-     */
-    function registerOwner(addressAndOwnerJson, $ownerForm) {
-        // Building string than contains addressJson, ownerJson and owner type with "|" delimiter
-        // In the controller this string will be splited by "\\|" regexp
-        // and I can parse owner and address json separately
-        var jsonToSend = addressAndOwnerJson[0] + "|" + addressAndOwnerJson[1] + "|" + addressAndOwnerJson[2];
-        console.log(jsonToSend);
+                let ownerFormJson = toJSONString(ownerFormId);
 
-        $.ajax({
-            type: "POST",
-            contentType: "text/plain",
-            url: "/resources/owner",
-            accept: "text/plain",
-            data: jsonToSend,
-            success: function (result) {
-                console.log(result);
-                insertHiddenInput('#resource_owner_id_input', 'resource_owner_id', result);
-                closePopUp($ownerForm, 'Owner was saved.', '#createNewOwnerPopUp');
+                console.log('owner form: ' + JSON.stringify(ownerFormJson));
+                ownerFormJson["type"] = ownerType;
+                ownerFormJson["address"] = ownerAddressJson;
+
+                let ownerWithAddress = JSON.stringify(ownerFormJson);
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/resources/owner",
+                    accept: "application/json",
+                    data: ownerWithAddress,
+                    success: function (result) {
+                        console.log('result from the server: ' + result.objectId + " " + result.message);
+                        $ownerAddressForm.empty();
+                        $ownerAddressForm.show();
+
+                        showOptionsForSelect($resourceOwnersSelect, result);
+                        closePopUp($resourceNewOwnerForm, 'Resource owner was saved', $resourceNewOwnerPopUp);
+                    },
+                    // on errors, show messages with explanations
+                    error: function (result) {
+                        var parse = JSON.parse(result.responseText);
+                        console.log('errors in fields: ' + parse);
+
+                        $('.my_error_class').empty();
+                        $ownerAddressForm.show(1500);
+                        $ownerAddressForm.append($clearfix);
+                        appendHibernateErrors(parse);
+                    }
+                })
+            } else {
+                console.log('owner form is invalid!!');
             }
-        })
-
+        });
     }
 
     /**
      *  Dynamic adding address form
      * Takes:
-     * string   - addressFor - purpose of this address form, needed to generate form id
      * element  - formPlaceholder - div element, in which form will be placed
-     *
-     * Returns:
-     * id - id of generated form
-     *
      */
-    function addAddressFormWithoutBtn(formPlaceholder, rows) {
+    function addAddressFormWithoutBtn($placeholder, rows) {
         // clears div element
-        formPlaceholder.empty();
+        $placeholder.empty();
 
-        // id for the form
-        const formId = 'address_form';
-        var form = $('<form/>', {
+        var $addressForm = $('<form/>', {
             class: 'form',
-            id: formId
+            id: addressFormId
         });
-
-        formPlaceholder.append(form);
-        appendRows(form, addressFor, rows);
-        return formId;
+        $placeholder.append($addressForm);
+        appendRows($addressForm, rows);
+        return $addressForm;
     }
 
 
@@ -315,6 +314,7 @@ $(document).ready(function(){
                     error: function (result) {
                         var parse = JSON.parse(result.responseText);
                         console.log('errors in fields: ' + parse);
+                        $('.my_error_class').empty();
 
                         appendHibernateErrors(parse);
                     }
@@ -326,58 +326,6 @@ $(document).ready(function(){
         })
     }
 
-    /**
-     * @param $form - form element to ba validated by JQuery validator plugin
-     */
-    function validateAddress($form){
-        $form.validate({
-            errorClass: "my_error_class",
-            rules: {
-                country: {
-                    required : true,
-                    minlength : 3,
-                    maxlength: 30
-                },
-                region: {
-                    required : true,
-                    minlength : 3,
-                    maxlength: 30
-                },
-                district: {
-                    required : false,
-                    minlength : 3,
-                    maxlength: 30
-                },
-                postal_index: {
-                    required : false
-                },
-                locality: {
-                    required : true,
-                    minlength : 3,
-                    maxlength: 30
-                },
-                street: {
-                    required : true,
-                    minlength : 3,
-                    maxlength: 30
-                },
-                building: {
-                    required : true,
-                    number: true,
-                    max: 500
-                },
-                block: {
-                    required : false
-                },
-                apartment: {
-                    required : true,
-                    number: true,
-                    max: 500
-                },
-            }
-        });
-    }
-
     //show select for address and append option with saved address
     function showOptionsForSelect($placeholder, result) {
         $placeholder.removeClass('display_none');
@@ -387,7 +335,7 @@ $(document).ready(function(){
             value: result.objectId,
             text: result.message
         });
-        $resourceAddressSelect.append($option);
+        $placeholder.append($option);
     }
 
     function closePopUp($placeholder, text, $modal) {
@@ -418,8 +366,10 @@ $(document).ready(function(){
     // errors that are recieved from server
     function appendHibernateErrors(parse){
         for(let i = 0; i < parse.fieldErrors.length; i++){
-            console.log(parse.fieldErrors[i].field.split(/(?=[A-Z])/).join('_').toLowerCase());
-            var $errorDiv = $('#' + parse.fieldErrors[i].field.split(/(?=[A-Z])/).join('_').toLowerCase()).next();
+            let str = parse.fieldErrors[i].field;
+            console.log(str.split(/(?=[A-Z])/).join('_').toLowerCase());
+            console.log(str.substring(str.indexOf('.') + 1).split(/(?=[A-Z])/).join('_').toLowerCase());
+            var $errorDiv = $('#' + str.substring(str.indexOf('.') + 1).split(/(?=[A-Z])/).join('_').toLowerCase()).next();
             var text = parse.fieldErrors[i].message;
             $errorDiv.text(text);
         }
@@ -452,6 +402,138 @@ const $resourceAddressPopUp = $('#resourseAdressPopUp');
 const $resourceAddressSelect = $('#resource_address');
 const addressFormId = 'address_form';
 const customButtonId = 'custom_button';
+
+const $resourceNewOwnerForm =  $('#resource_new_owner_form');
+const $ownerAddressForm =  $('#owner_address_form');
+const $resourceOwnersSelect = $('#resource_owners');
+const $resourceNewOwnerPopUp = $('#createNewOwnerPopUp');
+const ownerFormId = 'owner_form';
+
+/**
+ * @param $form - form element to ba validated by JQuery validator plugin
+ */
+function validateAddress($form){
+    $form.validate({
+        errorClass: "my_error_class",
+        rules: {
+            country: {
+                required : true,
+                minlength : 3,
+                maxlength: 30
+            },
+            region: {
+                required : true,
+                minlength : 3,
+                maxlength: 30
+            },
+            district: {
+                required : false,
+                minlength : 3,
+                maxlength: 30
+            },
+            postal_index: {
+                required : false
+            },
+            locality: {
+                required : true,
+                minlength : 3,
+                maxlength: 30
+            },
+            street: {
+                required : true,
+                minlength : 3,
+                maxlength: 30
+            },
+            building: {
+                required : true,
+                number: true,
+                max: 500
+            },
+            block: {
+                required : false
+            },
+            apartment: {
+                required : true,
+                number: true,
+                max: 500
+            },
+        }
+    });
+}
+
+function validateCompany($form){
+    $form.validate({
+        errorClass: "my_error_class",
+        rules: {
+            full_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 30
+            },
+            short_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 30
+            },
+            organization_form: {
+                required: false,
+                minlength: 3,
+                maxlength: 30
+            },
+            ceo: {
+                required: false,
+                minlength: 3,
+                maxlength: 30
+            },
+            phone: {
+                required: true,
+                minlength: 11,
+                maxlength: 15,
+                digits: true
+            }
+        }
+    });
+}
+
+function validatePerson($form){
+    $form.validate({
+        errorClass: "my_error_class",
+        rules: {
+            first_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 30
+            },
+            last_name   : {
+                required: true,
+                minlength: 3,
+                maxlength: 30
+            },
+            middle_name: {
+                required: false,
+                minlength: 3,
+                maxlength: 30
+            },
+            // passport_series: {
+            //     required: true,
+            //     maxlength: 2,
+            //     minlength: 2
+            // },
+            passport_number: {
+                required: true,
+                digits: true,
+                maxlength: 6,
+                minlength: 6
+            },
+            phone: {
+                required: true,
+                digits: true,
+                minlength: 11,
+                maxlength: 15
+            }
+        }
+    });
+}
 
 /**
  * Custom object for dynamic form building.

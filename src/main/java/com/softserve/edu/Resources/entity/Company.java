@@ -1,6 +1,7 @@
 package com.softserve.edu.Resources.entity;
 import com.softserve.edu.Resources.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,19 +15,23 @@ import javax.persistence.Table;
 public class Company extends Owner {
 
     @Column(name = "full_name")
-    @JsonProperty("full name")
+    @JsonProperty("full_name")
+    @NotEmpty
     private String fullName;
 
     @Column(name = "short_name")
-    @JsonProperty("short name")
+    @JsonProperty("short_name")
+    @NotEmpty
     private String shortName;
 
     @Column(name = "organization_form")
-    @JsonProperty("organization form")
+    @JsonProperty("organization_form")
+    @NotEmpty
     private String organizationForm;
 
     @Column(name = "CEO")
     @JsonProperty("ceo")
+    @NotEmpty
     private String ceo;
 
     public Company() {
@@ -103,4 +108,12 @@ public class Company extends Owner {
                 "} " + super.toString();
     }
 
+    @Override
+    public String customToString() {
+        return super.customToString() + " " +
+                organizationForm + " " +
+                fullName + " " +
+                shortName + " " +
+                ceo + ".";
+    }
 }

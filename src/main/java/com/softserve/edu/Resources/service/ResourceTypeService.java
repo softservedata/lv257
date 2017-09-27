@@ -35,7 +35,7 @@ public interface ResourceTypeService {
     
     ResourceType findWithPropertiesByID(Long ID);
 
-    List<ResourceProperty> getSpecialResourcePropertiesByResType(ResourceType resourceWithProperties);
+    List<ResourceProperty> getSearchableProperties(ResourceType resourceWithProperties);
     
     void testHello();
 

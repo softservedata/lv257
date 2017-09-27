@@ -2,15 +2,18 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+
 <!DOCTYPE html>
 <html>
 <head>
   <title>Add Resource definition</title>
-  <jsp:include page="metadata.jsp"/>
+  <jsp:include page="${contextPath}metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="${contextPath}_menu2.jsp"/>
 <div class="container-fluid">
   <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
 
@@ -31,11 +34,11 @@
           <div class="row">
             <div>
               <a href="ResourcesView.html" class="btn btn-primary" type="button">Clone existing</a>
-              <button id="additionBtn" class="btn btn-primary" type="button">Define new</button></div>
+              <button id="addition-btn" class="btn btn-primary" type="button">Define new</button></div>
           </div>
         </div>
       </div>
-      <div id="definitionForm" class="container hidden"<%-- style="display: none;"--%>>
+      <div id="definition-form" class="container hidden"<%-- style="display: none;"--%>>
         <br>
         <form action="ResourcesView.html">
           <div class="row">
@@ -49,6 +52,10 @@
                 <option value="4">Ships</option>
               </select>
             </div>
+						<div id="categories-manager" class="col-sm-6 form-group">
+							<button type="button" class="btn btn-primary" data-toggle="modal"
+											data-target="#categories-view">Manage</button>
+						</div>
           </div>
           <div class="row">
             <div id="categoryTypes" class="col-sm-6 form-group">
@@ -74,8 +81,8 @@
             </div>
 
             <jsp:include page="dialogs/existentProperties.jsp"/>
-
             <jsp:include page="dialogs/newProperty.jsp"/>
+						<jsp:include page="dialogs/categories.jsp"/>
 
             <div class="container col-md-8">
               <table class="table table-hover">
@@ -102,11 +109,14 @@
   </div>
 </div>
 
-<jsp:include page="footer.jsp"/>
+<jsp:include page="${contextPath}footer.jsp"/>
 <script>
-    $("#additionBtn").on('click', function(e) {
-        $('#additionBtn, #definitionForm').toggleClass('hidden');
+    $("#addition-btn").on('click', function(e) {
+        $('#addition-btn, #definition-form').toggleClass('hidden');
     });
+
+    inputJson = ${inputJson};
 </script>
+<script src="${contextPath}/resources/js/categoriesManagement.js"></script>
 </body>
 </html>

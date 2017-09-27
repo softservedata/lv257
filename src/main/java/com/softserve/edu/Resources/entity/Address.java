@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +30,17 @@ public class Address {
     private String country;
 
     @NotEmpty
+    @Size(max = 7)
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("district")
+    @NotEmpty
     private String district;
 
-    @NotEmpty
     @JsonProperty("postal_index")
     @Column(name = "postal_index")
+    @NotEmpty
     private String postalIndex;
 
     @NotEmpty
@@ -47,12 +51,14 @@ public class Address {
     @JsonProperty("street")
     private String street;
 
+    @Min(1)
     @JsonProperty("building")
     private int building;
 
     @JsonProperty("block")
     private String block;
 
+    @Min(1)
     @JsonProperty("apartment")
     private int apartment;
 
