@@ -268,6 +268,9 @@
             data: json,
             success: function (result) {
                 alert("JSON has been uploaded!")
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
             }
         })
     });
