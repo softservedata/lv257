@@ -1,7 +1,6 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
-
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.ResourceTypeService;
@@ -15,6 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service("resourceTypeService")
+@Transactional
 public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     @Autowired
@@ -36,6 +36,12 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
+    public ResourceType update(ResourceType resourceType) {
+        return resourceTypeDAO.makePersistent(resourceType);
+//        return resourceTypeDAO.update(resourceType);
+    }
+
+    @Override
     public void remove(ResourceType resourceType) {
         resourceTypeDAO.makeTransient(resourceType);
     }
@@ -47,16 +53,20 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     @Override
     public void create(String typeName) {
-        /*ResourceType type = types.get(typeName);
-        if (type != null&& !instances.containsKey(typeName)) {
-            System.out.printf("Creating ResourceTable '%s':%n", type.getName());
-            type.getProperties().forEach(rp -> System.out.printf("adding field '%s'%n", rp.getTitle()));
-            System.out.println("done.");instances.put(type, type.getTableName());
-        }*/
-
+        final Optional<ResourceType> resourceType = resourceTypeDAO.findByName(typeName);
+        resourceType.ifPresent(this::create);
     }
 
-    @Transactional
+    @Override
+    public void createBatch(List<String> typeNames) {
+        typeNames.forEach(this::create);
+    }
+
+    @Override
+    public void create(ResourceType type) {
+        resourceTypeDAO.create(type);
+    }
+
     @Override
     public List<ResourceType> getInstances() {
         return resourceTypeDAO.getInstances();
@@ -66,13 +76,13 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         return this;
     }
 
-    
     @Override
     public int getInstancesCount() {
         return getInstances().size();
     }
 
-    @Transactional
+
+
     @Override
     public ResourceType findWithPropertiesByID(Long ID) {
         return resourceTypeDAO.findWithPropertiesByID(ID);

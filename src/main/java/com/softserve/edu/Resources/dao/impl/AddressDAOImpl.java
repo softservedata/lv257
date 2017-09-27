@@ -30,7 +30,7 @@ public class AddressDAOImpl extends GenericDAOImpl<Address, Long> implements Add
 
     @Override
     public void updateAddress(Address address) {
-        this.merge(address);
+        this.makePersistent(address);
     }
 
     @Override

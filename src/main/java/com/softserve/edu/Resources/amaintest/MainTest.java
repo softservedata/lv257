@@ -1,6 +1,15 @@
 package com.softserve.edu.Resources.amaintest;
 
 import com.softserve.edu.Resources.config.ApplicationConfig;
+import com.softserve.edu.Resources.entity.GenericResource;
+import com.softserve.edu.Resources.service.ResourceService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.softserve.edu.Resources.config.ApplicationConfig;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
@@ -116,7 +125,7 @@ public class MainTest {
         
         ResourceService resService = ctx.getBean(ResourceService.class);
         GenericResourceDTO  genResDto = new GenericResourceDTO(1, valuesToSearch);
-        
+
         List<GenericResource> listGenRes2 = resService.findResourcesByResourceType(genResDto);
         
         for (GenericResource genericResource : listGenRes2) {

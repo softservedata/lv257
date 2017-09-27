@@ -23,7 +23,7 @@ public class ResourceTypeManagementController {
 
     @RequestMapping(value = "/editType", method = RequestMethod.GET)
     public String editResource(@RequestParam(value = "id") long id) {
-        return "editResource";
+        return "editType";
     }
 
     @RequestMapping(value = "/addType", method = RequestMethod.GET)

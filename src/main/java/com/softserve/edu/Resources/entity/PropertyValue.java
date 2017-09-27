@@ -1,4 +1,4 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
 public class PropertyValue implements Comparable<PropertyValue> {
 

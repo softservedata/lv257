@@ -37,7 +37,7 @@ public class ResourceCategoryService {
     @Transactional
     public List<ResourceCategory> findAllResourceCategories() {
         List<ResourceCategory> result = resourceCategoryDAO.findAll();
-        Comparator<ResourceCategory> categoryComparator = Comparator.comparing(ResourceCategory::getPathToRoot);
+//        Comparator<ResourceCategory> categoryComparator = Comparator.comparing(ResourceCategory::getPathToRoot);
 //        result.sort(categoryComparator);
         return result;
     }
@@ -55,7 +55,8 @@ public class ResourceCategoryService {
     @Transactional
     public ResourceCategory updateResourceCategory(ResourceCategory resourceCategory) {
         setRootPath(resourceCategory);
-        return resourceCategoryDAO.merge(resourceCategory);
+        return resourceCategoryDAO.makePersistent(resourceCategory);
+//        return resourceCategoryDAO.update(resourceCategory);
     }
 
     @Transactional
@@ -137,7 +138,7 @@ public class ResourceCategoryService {
 
     public void fillParents(List<ResourceCategory> categoryList) {
         for (ResourceCategory rc : categoryList) {
-            Set<ResourceCategory> children = rc.getChildrenCategories();
+            Collection<ResourceCategory> children = rc.getChildrenCategories();
             for (ResourceCategory ch : children) {
                 ch.setParentCategory(rc);
             }
@@ -164,8 +165,9 @@ public class ResourceCategoryService {
         return ancestors;
     }
 
+    @Transactional
     public void insertCategoriesTEMPORARY() {
-        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
+//        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
 
         ResourceCategory root = new ResourceCategory("root", null, null);
         ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
@@ -193,7 +195,7 @@ public class ResourceCategoryService {
         saveResourceCategory(leaf2_2);
         saveResourceCategory(leaf1_3);
     }
-
+    @Transactional
     public String serializeCategoriesIntoJson(List<ResourceCategory> categories) {
         ObjectMapper mapper = new ObjectMapper();
         String json = new String();
@@ -206,7 +208,7 @@ public class ResourceCategoryService {
         }
         return json;
     }
-
+    @Transactional
     public List<ResourceCategory> deserializeCategoriesFromJson(String json) {
         ObjectMapper mapper = new ObjectMapper();
         List<ResourceCategory> rootCategories = new ArrayList<>();

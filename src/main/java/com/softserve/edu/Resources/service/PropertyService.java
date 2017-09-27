@@ -7,12 +7,13 @@ import java.util.Optional;
 
 public interface PropertyService {
 
-    ResourceProperty addProperty(ResourceProperty property);
+    ResourceProperty add(ResourceProperty property);
+
+    ResourceProperty update(ResourceProperty property);
 
     List<ResourceProperty> getProperties();
 
-    Optional<ResourceProperty> getProperty(String propertyName,
-                                           String unitsName);
+    Optional<ResourceProperty> getProperty(String propertyName, String unitsName);
 
     Optional<ResourceProperty> getProperty(String description);
 
@@ -20,6 +21,6 @@ public interface PropertyService {
 
     int propertiesCount();
 
-    List<String> propertyDescriptions();
+    List<String> getPropertyDescriptions();
 
 }

@@ -1,5 +1,5 @@
 package com.softserve.edu.Resources.entity;
-
+import com.softserve.edu.Resources.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
