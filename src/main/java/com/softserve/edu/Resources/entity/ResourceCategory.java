@@ -128,15 +128,12 @@ public class ResourceCategory {
 
         ResourceCategory that = (ResourceCategory) o;
 
-        if (!categoryName.equals(that.categoryName)) return false;
-        return childrenCategories != null ? childrenCategories.equals(that.childrenCategories) : that.childrenCategories == null;
+        return categoryName.equals(that.categoryName);
     }
 
     @Override
     public int hashCode() {
-        int result = categoryName.hashCode();
-        result = 31 * result + (childrenCategories != null ? childrenCategories.hashCode() : 0);
-        return result;
+        return categoryName.hashCode();
     }
 
     public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {

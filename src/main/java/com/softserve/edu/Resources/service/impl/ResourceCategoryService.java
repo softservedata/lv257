@@ -167,7 +167,7 @@ public class ResourceCategoryService {
 
     @Transactional
     public void insertCategoriesTEMPORARY() {
-//        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
+        findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
 
         ResourceCategory root = new ResourceCategory("root", null, null);
         ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
