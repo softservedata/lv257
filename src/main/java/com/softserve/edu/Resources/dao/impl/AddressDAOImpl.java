@@ -25,7 +25,7 @@ public class AddressDAOImpl extends GenericDAOImpl<Address, Long> implements Add
 
     @Override
     public Address getById(long id) {
-        return this.findById(id).get();
+        return this.findById(id).orElse(new Address());
     }
 
     @Override
