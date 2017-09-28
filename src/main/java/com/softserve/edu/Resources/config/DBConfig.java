@@ -24,12 +24,10 @@ import static org.hibernate.cfg.AvailableSettings.*;
 // Load to Environment.
 @PropertySource("classpath:database.properties")
 public class DBConfig {
-
     // The Environment class serves as the property holder
     // and stores all the properties loaded by the @PropertySource
     @Autowired
     private Environment env;
-
     @Bean
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean lcemfb = new LocalContainerEntityManagerFactoryBean();
@@ -39,14 +37,12 @@ public class DBConfig {
         lcemfb.setPackagesToScan("com.softserve.edu.Resources.entity");
         return lcemfb;
     }
-
     @Bean
     public JpaVendorAdapter getJpaVendorAdapter() {
         HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
         adapter.setDatabase(Database.MYSQL);
         return adapter;
     }
-
     @Bean
     public DataSource getDataSource() {
         BasicDataSource dataSource = new BasicDataSource();
@@ -56,7 +52,6 @@ public class DBConfig {
         dataSource.setPassword(env.getProperty("database.password"));
         return dataSource;
     }
-
     @Bean
     public PlatformTransactionManager txManager(){
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager(

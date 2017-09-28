@@ -72,7 +72,7 @@ public class RequestService {
             request = requestOptional.get();
             request.setUpdate(new Date());
             request.setStatus(message.getRequestStatus());
-            resourceRequestDAO.merge(request);
+            resourceRequestDAO.makePersistent(request);
             messageHandler.setMessage(message);
             mailSender.sendMessage(messageHandler);
         } else {
@@ -112,7 +112,7 @@ public class RequestService {
                 request = requestOptional.get();
                 request.setUpdate(new Date());
                 request.setResourcesAdmin(resourceAdmin);
-                resourceRequestDAO.merge(request);
+                resourceRequestDAO.makePersistent(request);
             } else {
                 System.out.println("ResourseRequest has already assigned to other resource admin.");
             }

@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
@@ -9,10 +11,11 @@ import java.util.Set;
 @Entity
 @Table(name = "RESOURCE_CATEGORIES")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
 public class ResourceCategory {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     @Column(name = "Id")
     private Long id;
 
@@ -20,7 +23,7 @@ public class ResourceCategory {
     @JsonProperty("catname")
     private String categoryName;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne
     @JsonBackReference
 //    @JsonProperty("parent_id")
 //    @JsonIdentityReference(alwaysAsId = true)
@@ -125,15 +128,12 @@ public class ResourceCategory {
 
         ResourceCategory that = (ResourceCategory) o;
 
-        if (!categoryName.equals(that.categoryName)) return false;
-        return childrenCategories != null ? childrenCategories.equals(that.childrenCategories) : that.childrenCategories == null;
+        return categoryName.equals(that.categoryName);
     }
 
     @Override
     public int hashCode() {
-        int result = categoryName.hashCode();
-        result = 31 * result + (childrenCategories != null ? childrenCategories.hashCode() : 0);
-        return result;
+        return categoryName.hashCode();
     }
 
     public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {

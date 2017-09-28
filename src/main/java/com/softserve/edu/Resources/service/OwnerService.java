@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.service;
 
+import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.entity.Owner;
 
 import java.util.List;
@@ -18,5 +19,6 @@ public interface OwnerService {
 
     Owner getOwnerById(long id);
 
-    Owner parseOwnerWithAddress(String json);
+    SelectInfoDTO fromAddressToDto(Owner owner);
+
 }

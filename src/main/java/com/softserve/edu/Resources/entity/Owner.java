@@ -1,26 +1,38 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "abstract_owner")
+@JsonTypeInfo(
+        use= JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Person.class, name = "person"),
+        @JsonSubTypes.Type(value = Company.class, name = "company")
+})
 /**
  * Common abstraction to all kind(particularly only two) of owners.
  */
 public abstract class Owner {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     @Column(name = "owner_id")
     private long id;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
-    @JsonIgnore
+    @Valid
     private Address address;
 
     @JsonProperty("phone")
@@ -77,6 +89,11 @@ public abstract class Owner {
                 "id=" + id +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public String customToString() {
+        return "Owner: " +
+                phone + " \n";
     }
 
 }
