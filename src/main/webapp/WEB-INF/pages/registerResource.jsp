@@ -86,48 +86,23 @@
                                     <h4>Find owner</h4>
                                 </div>
 
-                                <%--<div class="modal-body">--%>
+                                <div class="modal-body">
 
-                                    <%--<label for="owner_search">Select type of Owner:</label>--%>
-                                    <%--<select id="owner_search" class="form-control">--%>
-                                        <%--<option value="1">Choose type here</option>--%>
-                                        <%--<option value="2">Company</option>--%>
-                                        <%--<option value="3">Person</option>--%>
-                                    <%--</select>--%>
-
-                                    <%--<div id="search_existing_owner" class="modal fade">--%>
-                                        <%--<div class="modal-dialog">--%>
-                                            <%--<div class="modal-content">--%>
-
-                                                <%--<div class="modal-header">--%>
-                                                    <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">--%>
-                                                        <%--&times;--%>
-                                                    <%--</button>--%>
-                                                    <%--<h4>Find owner</h4>--%>
-                                                <%--</div>--%>
-
-                                                <%--<div class="modal-body">--%>
-
-                                                    <%--<label for="owner_search">Select type of Owner:</label>--%>
-                                                    <%--<select id="owner_search" class="form-control">--%>
-                                                        <%--<option value="1">Choose type here</option>--%>
-                                                        <%--<option value="2">Company</option>--%>
-                                                        <%--<option value="3">Person</option>--%>
-                                                    <%--</select>--%>
+                                    <label for="owner_search">Select type of Owner:</label>
+                                    <select id="owner_search" class="form-control">
+                                        <option value="absent">Choose type here</option>
+                                        <option value="company">Company</option>
+                                        <option value="person">Person</option>
+                                    </select>
 
 
-                                                    <%--<div id="search_owner_form">--%>
+                                    <div id="search_owner_form">
 
 
-                                                    <%--</div>--%>
+                                    </div>
 
 
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                                <%----%>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -254,6 +229,7 @@
 </footer>
 
 <script src="../../resources/js/addNewOwnerAndAddress.js"></script>
+<script src="../../resources/js/searchOwner.js"></script>
 <script src="../../resources/js/jquery.validate.js"></script>
 <script>
 
