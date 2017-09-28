@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.service;
 
+import com.softserve.edu.Resources.dto.SearchOwnerDTO;
 import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.entity.Owner;
 
@@ -19,6 +20,8 @@ public interface OwnerService {
 
     Owner getOwnerById(long id);
 
-    SelectInfoDTO fromAddressToDto(Owner owner);
+    SelectInfoDTO fromOwnerToDto(Owner owner);
+
+    List<Owner> findOwners(SearchOwnerDTO searchOwnerDTO);
 
 }
