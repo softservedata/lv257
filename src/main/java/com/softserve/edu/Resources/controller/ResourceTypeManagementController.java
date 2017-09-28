@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.controller;
 
+import com.softserve.edu.Resources.dto.ResourceCategoryDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.service.PropertyService;
@@ -55,12 +56,19 @@ public class ResourceTypeManagementController {
     @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
     public ModelAndView manageTypes() {
         ModelAndView model = new ModelAndView("manageTypes");
+        ResourceCategory root = new ResourceCategory();
         if(!alreadyExecuted) {
-            categoryService.insertCategoriesTEMPORARY();
+            root = categoryService.insertCategoriesTEMPORARY();
             alreadyExecuted = true;
         }
         List<ResourceCategory> rootCategories = categoryService.getRootsFromDB();
         model.addObject("inputJson", categoryService.serializeCategoriesIntoJson(rootCategories));
+
+        ResourceCategoryDTO dto = categoryService.createCategoryDTO(root);
+        System.out.println(dto);
+        ResourceCategory trans = categoryService.transferFromDtoToResourceCategory(dto);
+        System.out.println(trans);
+
         return model;
     }
 
