@@ -38,9 +38,9 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
 
         location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
+        super.onStartup(servletContext);
 
         //31.08.2017
         //TODO after first initialization to fulfill tables in DB with testing data(privileges, roles, users, resources etc )
