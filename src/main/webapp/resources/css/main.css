@@ -1,0 +1,86 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  padding-top: 50px;
+  margin-bottom: 60px;
+}
+
+.font-bold {
+font-weight: bold;
+}
+
+.font-normal {
+font-weight: normal;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.container .text-muted {
+  margin: 20px 0;
+}
+
+/* Temporarily disabled, because kills responsivity of table. */
+/*.scrollable-tbody {
+    display:block;
+    height:200px;
+    overflow-y:scroll;
+}
+.fixed-head, .scrollable-tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+.fixed-head {
+    width: calc( 100% - 1.2em );
+}  */
+
+/* Igor */
+.selected {
+  font-weight: bold;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: black;
+}
+
+/* Ira */
+.left-align {
+  text-align: left;
+}
+
+.documentImg-view{
+ max-width: 500px; max-height: 600px;
+}
+
+.documentPdf-view{
+  width:650px; height:900px;
+  min-height: 0px; min-width:0px;
+}
+
+/* Oleg */
+.padding_bottom_15{
+    padding-bottom: 15px;
+}
+
+.padding_top_40{
+    padding-top: 40px;
+}
+
+.display_none{
+    display: none;
+}
+
+.my_error_class {
+    color:#ad241a;  /* red */
+}
