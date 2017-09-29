@@ -53,12 +53,12 @@
             </div>
 
             <div class="form-group">
-              <label for="regex">Validation regex</label>
-              <input type="text" class="form-control" id="regex"
-                     placeholder="regex string, e.g. [0-9]+\.[0-9]*[1-9] for decimal with non-zero last digit">
+              <label for="pattern">Validation pattern</label>
+              <input type="text" class="form-control" id="pattern"
+                     placeholder="pattern string, e.g. [0-9]+\.[0-9]*[1-9] for decimal with non-zero last digit">
             </div>
             <div class="checkbox">
-              <label><input type="checkbox" id="essential"><span class="font-bold">Essential</span></label>
+              <label><input type="checkbox" id="searchable"><span class="font-bold">Essential</span></label>
             </div>
             <div class="checkbox">
               <label><input type="checkbox" id="multi"><span class="font-bold">Multivalued</span></label>

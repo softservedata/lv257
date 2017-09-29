@@ -10,8 +10,6 @@
 <jsp:include page="_menu2.jsp" />
 
 <br />
-<br />
-<br />
 
 <div class="container-fluid">
     <div class="row">
@@ -27,8 +25,101 @@
             <br/>
             <div class="row">
                 <div class="container">
-                    <div class="margin-bottom">
-                        <button type="button" class="btn btn-primary">Add new User</button>
+                    <div class="padding_bottom_15">
+                        <button id="add_resource_address_btn"
+                                class="btn btn-primary"
+                                type="button" data-toggle="modal"
+                                data-target="#resourseAdressPopUp">
+                            Add new User
+                        </button>
+                    </div>
+                </div>
+
+                <div id="resourseAdressPopUp" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    &times;
+                                </button>
+                                <h4>Adding user</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <div id="resource_address_form_placeholder">
+
+                                    <form class="form" id="add_user_form">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="Email">Email</label>
+                                                    <input type="text" class="form-control" name="email" id="Email" placeholder="example@mail.com ">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="activate">Activate</label>
+                                                    <select class="form-control" id="activate">
+                                                        <option>No</option>
+                                                        <option>Yes</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="Password">Password</label>
+                                                    <input type="text" class="form-control" name="password" id="Password" placeholder="Enter password">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="Repeat_password">Repeat password</label>
+                                                    <input type="text" class="form-control" name="repeat_password" id="Repeat_password" placeholder="Repeat password">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="sel1">Select Role:</label>
+                                                    <select class="form-control" id="sel1">
+                                                        <option>ROLE_USER</option>
+                                                        <option>ROLE_ADMIN</option>
+                                                        <option>ROLE_SYSTEM_ADMIN</option>
+                                                        <option>ROLE_RESOURCE_ADMIN</option>
+                                                        <option>ROLE_REGISTRATOR</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label for="select_privileges">Select privileges (hold shift to select more than one):</label>
+                                                <select multiple class="form-control" id="select_privileges">
+                                                    <option>RESOURCE:CREATE</option>
+                                                    <option>RESOURCE:READ</option>
+                                                    <option>RESOURCE:UPDATE</option>
+                                                    <option>RESOURCE:DELETE</option>
+                                                    <option>5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button class="btn pull-right  btn-success " id="resource_custom_btn">Add</button>
+                                        <div class="clearfix">
+
+                                        </div>
+                                    </form>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -39,8 +130,8 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Name</th>
                             <th>Email</th>
+                            <th>Password</th>
                             <th>Role</th>
                             <th>Enabled</th>
                             <th>Edit</th>
@@ -60,7 +151,7 @@
                                         <td>${listValue.password}</td>
                                         <td>${listValue.role.name}</td>
                                         <td>${listValue.enabled}</td>
-                                        <td ><a href="${pageContext.request.contextPath}/roleInfo?rn=${listValue.id}">
+                                        <td ><a href="${pageContext.request.contextPath}/userEdit?uid=${listValue.id}">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a></td>
                                         <td ><a href="#">

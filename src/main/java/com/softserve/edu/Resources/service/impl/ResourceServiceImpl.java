@@ -6,8 +6,8 @@ import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.entity.GenericResource;
-
 import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.service.ResourceService;
 import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.ArrayList;
@@ -18,11 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class ResourceServiceImpl implements ResourceService {
-
-    // private Collection<GenericResource> resources = new HashSet<>();
-    // private ResourceTypeService typeService = new ResourceTypeServiceImpl();
 
     @Autowired
     ResourceTypeDAO resourceTypeDAO;
@@ -57,17 +58,17 @@ public class ResourceServiceImpl implements ResourceService {
     // return resource;
     // }
 
-//    public void setResourceTypeDAO(ResourceTypeDAO resourceTypeDAO) {
-//        this.resourceTypeDAO = resourceTypeDAO;
-//    }
-//
-//    public void setResourceDao(ResourceDao resourceDao) {
-//        this.resourceDao = resourceDao;
-//    }
-//
-//    public void setQueryBuilder(QueryBuilder queryBuilder) {
-//        this.queryBuilder = queryBuilder;
-//    }
+    // public void setResourceTypeDAO(ResourceTypeDAO resourceTypeDAO) {
+    // this.resourceTypeDAO = resourceTypeDAO;
+    // }
+    //
+    // public void setResourceDao(ResourceDao resourceDao) {
+    // this.resourceDao = resourceDao;
+    // }
+    //
+    // public void setQueryBuilder(QueryBuilder queryBuilder) {
+    // this.queryBuilder = queryBuilder;
+    // }
 
     @Transactional
     @Override
@@ -79,8 +80,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         String tableName = resourceType.getTableName();
 
-        List<ResourceProperty> resourceProperties = new ArrayList<>();
-        resourceProperties.addAll(resourceType.getProperties());
+        List<ResourceProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
 
         Map<String, String> valuesToSearch = resourceDTO.getResourcePropertyValue();
 

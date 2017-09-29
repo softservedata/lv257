@@ -1,4 +1,4 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 import java.net.URL;
@@ -13,7 +13,8 @@ import java.util.Set;
 @Entity
 public class Document {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     private long id;
 
     @Column(name = "name", nullable = false)

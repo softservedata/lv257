@@ -2,17 +2,19 @@ package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.entity.UserDetails;
+import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserDetailsService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.PrivilegeService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,4 +51,41 @@ public class UserController {
         return profile;
     }
 
+    @RequestMapping(value="/profile", method=RequestMethod.POST)
+//    public String handleRequestSubmission(@RequestParam UserDetails userDetails/*@Valid @ModelAttribute("profile") UserDetails userDetails, BindingResult results,
+//                                          Model model, HttpServletRequest httpRequest*/) throws Exception {
+
+    public String handleRequestSubmission(@ModelAttribute UserDetails userDetails, Model model) throws Exception {
+
+        System.out.println("=======userDetails==============");
+        System.out.println(userDetails);
+        model.addAttribute("userDetails", userDetails);
+/*        System.out.println(1);
+        for (Map.Entry<String, String> x: userDetails.entrySet()) {
+            System.out.println(x.getKey() + " " + x.getValue());
+        }
+        System.out.println(2);*/
+
+//        model.addAttribute("bank_id","QQQ");
+
+        //check if there are any errors
+        //new UploadFileValidator().validate(userDetails, results);
+
+        /*if(results.hasErrors()){
+            //model.addAttribute("userClickSendRequest", true);
+            model.addAttribute("title", "Send Request");
+            model.addAttribute("message", "Validation failed for sending request!");
+            return "profile";
+        }*/
+        /*userDetailsService.fillUpRequest(userDetails);
+        logger.info(userDetails.toString());*/
+/*
+        if(!mRequest.getFile().getOriginalFilename().equals("")){
+            FileUploadUtility.uploadFile(httpRequest, mRequest.getFile(),mRequest.getCode());
+        }
+*/
+//        return "/profile";
+        return "redirect:/profile";
+//        return "redirect:/profile?operation=userDetails";
+    }
 }

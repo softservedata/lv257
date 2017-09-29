@@ -9,7 +9,7 @@ public interface PrivilegeDAO {
 
     void delete(Privilege privilege);
 
-    Privilege addPrivilege(Privilege privilege);
+    Privilege addPrivilege(String s);
 
     List<Privilege> getAllPrivileges();
 }

@@ -10,8 +10,6 @@
 <jsp:include page="_menu2.jsp" />
 
 <br />
-<br />
-<br />
 
 <div class="container-fluid">
     <div class="row">
@@ -19,19 +17,18 @@
             <div class="container">
                 <ul class="nav nav-tabs">
                     <li> <a href="${pageContext.request.contextPath}/users">Users</a></li>
-                    <li> <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
+                    <li class="active"> <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
                     <li> <a href="${pageContext.request.contextPath}/privileges">Privileges</a></li>
                     <li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>
                 </ul>
             </div>
             <br/>
             <div class="container">
+                <h2>Editing ${roleName}</h2>
+            </div>
+            <div class="container">
                 <div class="table-responsive">
                     <form>
-                        <div class="form-group">
-                            <label for="usr">Name:</label>
-                            <input type="text" class="form-control" id="usr">
-                        </div>
 
                         <table class="table table-striped">
                             <tbody>

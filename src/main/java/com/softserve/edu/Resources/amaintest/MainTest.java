@@ -1,13 +1,15 @@
 package com.softserve.edu.Resources.amaintest;
 
-import java.util.ArrayList;
+import com.softserve.edu.Resources.config.ApplicationConfig;
+import com.softserve.edu.Resources.entity.GenericResource;
+import com.softserve.edu.Resources.service.ResourceService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import com.softserve.edu.Resources.config.ApplicationContextConfig;
+import com.softserve.edu.Resources.config.ApplicationConfig;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
@@ -15,17 +17,22 @@ import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.entity.ValueType;
-import com.softserve.edu.Resources.service.ResourceTypeService;
 import com.softserve.edu.Resources.service.ResourceService;
-import com.softserve.edu.Resources.service.impl.ResourceServiceImpl;
+import com.softserve.edu.Resources.service.ResourceTypeService;
 import com.softserve.edu.Resources.service.impl.TestService;
 import com.softserve.edu.Resources.util.QueryBuilder;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class MainTest {
 
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-        ctx.register(ApplicationContextConfig.class);
+        ctx.register(ApplicationConfig.class);
         ctx.refresh();
 
         TestService testService = ctx.getBean(TestService.class);
@@ -118,7 +125,7 @@ public class MainTest {
         
         ResourceService resService = ctx.getBean(ResourceService.class);
         GenericResourceDTO  genResDto = new GenericResourceDTO(1, valuesToSearch);
-        
+
         List<GenericResource> listGenRes2 = resService.findResourcesByResourceType(genResDto);
         
         for (GenericResource genericResource : listGenRes2) {

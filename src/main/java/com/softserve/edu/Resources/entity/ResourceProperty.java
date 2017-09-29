@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
 import javax.persistence.*;
 import java.util.Optional;
 
@@ -15,7 +17,8 @@ public class ResourceProperty {
     @Transient
     static long idgen = 0;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     private Long id;
 
     @Column(name="Column_Name")
@@ -28,7 +31,7 @@ public class ResourceProperty {
     private String units;
 
     @Column(name = "Regex")
-    private String regex = ".+";
+    private String pattern = ".+";
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Value_Type")
@@ -37,11 +40,11 @@ public class ResourceProperty {
     @Column(name = "Multivalued")
     private boolean multivalued = false;
 
-    @Column(name = "Allows_Null")
-    private boolean allowsNull = true;
+    @Column(name = "Requered")
+    private boolean required = true;
 
-    @Column(name = "Essential")
-    private boolean essential = false;
+    @Column(name = "Searchable")
+    private boolean searchable = false;
 
     public ResourceProperty() {
     }
@@ -69,12 +72,12 @@ public class ResourceProperty {
         return this;
     }
 
-    public boolean isAllowsNull() {
-        return allowsNull;
+    public boolean isRequired() {
+        return required;
     }
 
-    public ResourceProperty setAllowsNull(boolean allowsNull) {
-        this.allowsNull = allowsNull;
+    public ResourceProperty setRequired(boolean required) {
+        this.required = required;
         return this;
     }
 
@@ -105,12 +108,12 @@ public class ResourceProperty {
         return this;
     }
 
-    public String getRegex() {
-        return regex;
+    public String getPattern() {
+        return pattern;
     }
 
-    public ResourceProperty setRegex(String regex) {
-        this.regex = regex;
+    public ResourceProperty setPattern(String pattern) {
+        this.pattern = pattern;
         return this;
     }
 
@@ -141,12 +144,12 @@ public class ResourceProperty {
         return this;
     }
 
-    public boolean isEssential() {
-        return essential;
+    public boolean isSearchable() {
+        return searchable;
     }
 
-    public ResourceProperty setEssential(boolean essential) {
-        this.essential = essential;
+    public ResourceProperty setSearchable(boolean searchable) {
+        this.searchable = searchable;
         return this;
     }
 

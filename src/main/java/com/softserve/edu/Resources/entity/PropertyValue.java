@@ -14,6 +14,7 @@ public class PropertyValue implements Comparable<PropertyValue> {
     }
 
     public PropertyValue(ResourceProperty type, String value) {
+
         this(type);
         setValue(value);
     }
@@ -32,20 +33,17 @@ public class PropertyValue implements Comparable<PropertyValue> {
     }
 
     public PropertyValue setValue(String value) {
-        if (!type.isAllowsNull() && value == null) {
+        if (!type.isRequired() && value == null) {
             throw new NullPointerException("NOT NULL constraint violation.");
+
         }
+
         if (!validate(value)) {
             System.out.println(value);
-            throw new IllegalArgumentException("Invalid value format. Should match " + type.getRegex());
+            throw new IllegalArgumentException("Invalid value format. Should match " + type.getPattern());
         }
         this.value = value;
         return this;
-    }
-
-    private boolean validate(String value) {
-        System.out.println(type.getRegex());
-        return ((type.getRegex() != null) && (value != null)) && value.matches(type.getRegex());
     }
 
     @Override
@@ -80,6 +78,11 @@ public class PropertyValue implements Comparable<PropertyValue> {
         } else if (!value.equals(other.value))
             return false;
         return true;
+    }
+
+    private boolean validate(String value) {
+        System.out.println(type.getPattern());
+        return ((type.getPattern() != null) && (value != null)) && value.matches(type.getPattern());
     }
 
     @Override

@@ -1,11 +1,12 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -15,7 +16,8 @@ import java.util.UUID;
 public class ResourceRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     @Column(name = "id_request")
     private long id;
 
@@ -56,10 +58,10 @@ public class ResourceRequest {
         this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
     }
 
-    public ResourceRequest(String resourceType, String details, User register, User resourcesAdmin,
+    public ResourceRequest(String resourceType, String description, User register, User resourcesAdmin,
                            Status status, Date update) {
         this.resourceType = resourceType;
-        this.description = details;
+        this.description = description;
         this.register = register;
         this.update = update;
         this.status = status;

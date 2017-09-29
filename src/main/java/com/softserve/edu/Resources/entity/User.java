@@ -1,5 +1,8 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
+import lombok.Getter;
 import org.jboss.aerogear.security.otp.api.Base32;
 
 import javax.persistence.*;
@@ -11,7 +14,8 @@ import java.util.Collection;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     private Long id;
     @Column(name = "email", length = 36, nullable = false)
     private String username;
@@ -65,7 +69,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public boolean isEnabled() {
         return enabled;

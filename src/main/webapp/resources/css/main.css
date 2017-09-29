@@ -76,3 +76,16 @@ font-weight: normal;
 .padding_top_40{
     padding-top: 40px;
 }
+
+.display_none{
+    display: none;
+}
+
+.my_error_class {
+    color:#ad241a;  /* red */
+}
+
+.my_success_class {
+    color: #405bad;  /* blue */
+}
+

@@ -1,6 +1,8 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,23 +16,28 @@ import javax.persistence.Table;
 public class Person extends Owner {
 
     @Column(name = "first_name")
-    @JsonProperty("first name")
+    @JsonProperty("first_name")
+    @NotEmpty
     private String firstName;
 
     @Column(name = "last_name")
-    @JsonProperty("last name")
+    @JsonProperty("last_name")
+    @NotEmpty
     private String lastName;
 
     @Column(name = "middle_name")
-    @JsonProperty("middle name")
+    @JsonProperty("middle_name")
     private String middleName;
 
     @Column(name = "passport_series")
-    @JsonProperty("passport series")
+    @JsonProperty("passport_series")
+    @NotEmpty
+    @Length(max = 2, min = 2, message = "This is invalid passport series.")
     private String passportSeries;
 
     @Column(name = "passport_number")
-    @JsonProperty("passport number")
+    @JsonProperty("passport_number")
+    @Length(max = 6, min = 6, message = "This is invalid passport number.")
     private String passportNumber;
 
     public Person() {
@@ -119,4 +126,13 @@ public class Person extends Owner {
                 "} " + super.toString();
     }
 
+    @Override
+    public String customToString() {
+        return super.customToString() + " " +
+                firstName + " " +
+                lastName + " " +
+                middleName + ", " +
+                passportSeries + " " +
+                passportNumber + ".";
+    }
 }

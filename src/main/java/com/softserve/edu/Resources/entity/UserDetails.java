@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 
@@ -8,7 +9,8 @@ import javax.persistence.*;
 public class UserDetails {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
+
     private Long id;
     private String first_name;
     private String second_name;
@@ -124,4 +126,23 @@ public class UserDetails {
     public void setUser(User user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "UserDetails{" +
+                "id=" + id +
+                ", first_name='" + first_name + '\'' +
+                ", second_name='" + second_name + '\'' +
+                ", middle_name='" + middle_name + '\'' +
+                ", passport_series='" + passport_series + '\'' +
+                ", passport_number='" + passport_number + '\'' +
+                ", issued_by='" + issued_by + '\'' +
+                ", date_of_issue='" + date_of_issue + '\'' +
+                ", id_address=" + id_address +
+                ", phone='" + phone + '\'' +
+                ", bank_id=" + bank_id +
+                ", user=" + user +
+                '}';
+    }
+
 }

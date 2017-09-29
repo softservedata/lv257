@@ -1,9 +1,15 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,34 +21,44 @@ import java.util.List;
 public class Address {
 
     @Id()
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(generator = Constants.ID_GENERATOR)
     private long id;
 
+    @NotEmpty
+    @Length(max = 10, message = "Country name is too big.")
     @JsonProperty("country")
     private String country;
 
+    @NotEmpty
+    @Size(max = 7)
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("district")
+    @NotEmpty
     private String district;
 
-    @JsonProperty("postal index")
+    @JsonProperty("postal_index")
     @Column(name = "postal_index")
+    @NotEmpty
     private String postalIndex;
 
+    @NotEmpty
     @JsonProperty("locality")
     private String locality;
 
+    @NotEmpty
     @JsonProperty("street")
     private String street;
 
+    @Min(1)
     @JsonProperty("building")
     private int building;
 
     @JsonProperty("block")
     private String block;
 
+    @Min(1)
     @JsonProperty("apartment")
     private int apartment;
 
@@ -203,6 +219,19 @@ public class Address {
                 ", block='" + block + '\'' +
                 ", apartment=" + apartment +
                 '}';
+    }
+
+    public String customToString(){
+        return "Address: " +
+                country + ", " +
+                region + ", " +
+                district + ", " +
+                postalIndex + ", " +
+                locality + ", " +
+                street + ", " +
+                building + ", " +
+                block + ", " +
+                apartment + ".";
     }
 }
 

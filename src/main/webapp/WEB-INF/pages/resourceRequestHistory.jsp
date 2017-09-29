@@ -31,7 +31,8 @@
 <div class="container">
 
     <div class="table-responsive">
-        <h2>List of processed requests</h2>
+        <h2>List of processed Resource Type requests</h2>
+
         <table class="table table-hover table-condensed text-center table-bordered" id="requests">
             <thead>
             <tr>
@@ -107,7 +108,7 @@
 <script>
     $(document).ready(function () {
         var table = $('#requests').DataTable({
-            "order": [[3, "desc"]],
+            "order": [[2, "desc"]],
             'dom': 'rt<"bottom"lp><"clear">',
         });
         $("#searchReqCat").on('keyup change', function () {

@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.omg.CORBA.Request;
 
@@ -11,6 +12,8 @@ public class RequestDTO {
     private String assignerName;
     private String resourceType;
     private String description;
+    @JsonFormat
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+3")
     private Date update;
     private ResourceRequest.Status status;
     private String code;

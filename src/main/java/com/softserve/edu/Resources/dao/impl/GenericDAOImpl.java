@@ -6,6 +6,7 @@ package com.softserve.edu.Resources.dao.impl;
 import com.softserve.edu.Resources.dao.GenericDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,7 +14,6 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.stream.Collectors;
-
 public abstract class GenericDAOImpl<T, ID extends Serializable>
     implements GenericDAO<T, ID> {
 
@@ -70,15 +70,12 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         return em.createQuery(c).getSingleResult();
     }
 
-    public T merge(T instance) {
+    public T makePersistent(T instance) {
+//         update() handles transient AND detached instances
         return em.merge(instance);
     }
 
-//    public T makePersistent(T instance) {
-//         merge() handles transient AND detached instances
-//        return em.merge(instance);
-//    }
-    public T makePersistent(T instance) {
+/*    public T makePersistent(T instance) {
         T persisted = instance;
         if (em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(instance) == null) {
             em.persist(instance);
@@ -86,7 +83,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
             persisted = em.merge(instance);
         }
         return persisted;
-    }
+    }*/
 
     public Optional<T> querySingleResult(String queryWithNamedParams, String paramName, Object paramValue) {
         Map<String, Object> params = new HashMap<>();
@@ -151,5 +148,9 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
                 ? LockModeType.OPTIMISTIC_FORCE_INCREMENT
                 : LockModeType.OPTIMISTIC
         );
+    }
+
+    public void flush() {
+        em.flush();
     }
 }

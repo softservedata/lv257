@@ -1,16 +1,16 @@
-package com.softserve.edu.Resources.entity;
+package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GenericResource implements Resource {
+public class GenericResource {
 
     private int id;
     // private Set<Owner> owners;
     private int id_Address;
-    //private ResourceType type;
+    private ResourceType type;
     private Set<PropertyValue> propertyValues;
-    //private Map<ResourceProperty, PropertyValue> resourceValues;
+    private Map<ResourceProperty, PropertyValue> resourceValues = new HashMap<>();
 
     public GenericResource() {
     }
@@ -24,10 +24,10 @@ public class GenericResource implements Resource {
      * @param resourceValues
      *            {@code Set} of {@code PropertyValue}s describing resource
      */
-//    public GenericResource(ResourceType resourceType, Set<PropertyValue> resourceValues) {
-//        type = resourceType;
-//        this.resourceValues = resourceValues.stream().collect(Collectors.toMap(PropertyValue::getType, value -> value));
-//    }
+    public GenericResource(ResourceType resourceType, Set<PropertyValue> resourceValues) {
+        type = resourceType;
+        this.resourceValues = resourceValues.stream().collect(Collectors.toMap(PropertyValue::getType, value -> value));
+    }
 
     public int getId() {
         return id;

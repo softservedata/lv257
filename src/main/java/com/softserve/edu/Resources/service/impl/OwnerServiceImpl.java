@@ -1,19 +1,17 @@
 package com.softserve.edu.Resources.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dao.OwnerDAO;
-import com.softserve.edu.Resources.entity.Address;
-import com.softserve.edu.Resources.entity.Company;
+import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.entity.Owner;
-import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -53,38 +51,36 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Owner parseOwnerWithAddress(String json) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Owner owner = null;
-        Address ownerAddress = null;
+    public SelectInfoDTO fromOwnerToDto(Owner owner) {
+        SelectInfoDTO infoDTO = new SelectInfoDTO();
+        infoDTO.setObjectId(owner.getId());
+        infoDTO.setMessage(owner.customToString());
 
-        String[] allOwnerInfo = json.split("\\|");
+        return infoDTO;
+    }
 
-        System.out.println(json);
-        System.out.println(Arrays.toString(allOwnerInfo));
-        String addressJson = allOwnerInfo[0];
-        System.out.println("address json: "  + addressJson);
-        String ownerJson = allOwnerInfo[1];
-        System.out.println("owner json: "  + ownerJson);
-        String ownerType = allOwnerInfo[2];
-        System.out.println("owner type: "  + ownerType);
-        try {
-            if (Integer.parseInt(ownerType) == 2) {
-                owner = objectMapper.readValue(ownerJson, Company.class);
-            } else {
-                owner = objectMapper.readValue(ownerJson, Person.class);
+    @Override
+    public List<Owner> findOwners(SearchOwnerDTO searchOwnerDTO) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String ownerType = searchOwnerDTO.getOwnerType();
+        String ownerTypeFirstChar = String.valueOf(ownerType.charAt(0)).toLowerCase();
+
+        Map<String, String> fieldsAndValues = searchOwnerDTO.getFieldsAndValues();
+
+        stringBuilder.append("SELECT " + ownerTypeFirstChar + " FROM " + ownerType + " " + ownerTypeFirstChar);
+        stringBuilder.append(" WHERE ");
+
+        Iterator<Map.Entry<String, String>> entries = fieldsAndValues.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry<String, String> entry = entries.next();
+            stringBuilder.append(entry.getKey() + "=\'" + entry.getValue() + "\' ");
+            if (entries.hasNext()) {
+                stringBuilder.append(" AND ");
             }
-            ownerAddress = objectMapper.readValue(addressJson, Address.class);
-
-            System.out.println(owner);
-            System.out.println(ownerAddress);
-
-            ownerAddress.addOwner(owner);
-            owner.setAddress(ownerAddress);
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return owner;
+        System.out.println(stringBuilder.toString());
+        String readyQuery = stringBuilder.toString();
+
+        return ownerDAO.findOwners(readyQuery);
     }
 }

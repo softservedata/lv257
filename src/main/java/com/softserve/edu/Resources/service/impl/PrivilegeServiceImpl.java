@@ -2,6 +2,7 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.PrivilegeDAO;
 import com.softserve.edu.Resources.entity.Privilege;
+import com.softserve.edu.Resources.service.PrivilegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PrivilegeService {
+public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Autowired
     PrivilegeDAO privilegeDAO;
@@ -24,5 +25,19 @@ public class PrivilegeService {
         return names;
     }
 
+    @Override
+    public Privilege getPrivilegeById(Long id) {
+        return null;
+    }
 
+    @Override
+    public void deletePrivilege() {
+
+    }
+
+    @Override
+    public Privilege addPrivilege(String s) {
+        Privilege privilege = privilegeDAO.addPrivilege(s);
+        return privilege;
+    }
 }
