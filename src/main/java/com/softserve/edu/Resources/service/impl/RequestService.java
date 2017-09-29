@@ -67,7 +67,6 @@ public class RequestService {
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(message.getId_request());
 
         ResourceRequest request;
-        System.out.println(message.getId_request());
         if (requestOptional.isPresent()) {
             request = requestOptional.get();
             request.setUpdate(new Date());
@@ -106,13 +105,16 @@ public class RequestService {
 
         ResourceRequest request = new ResourceRequest();
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(requestId);
+        System.out.println(requestOptional);
         User resourceAdmin = userDAO.findByEmail(resourceAdminEmail);
+        System.out.println();
         if (requestOptional.isPresent()) {
             if (requestOptional.get().getResourcesAdmin() == null) {
                 request = requestOptional.get();
                 request.setUpdate(new Date());
                 request.setResourcesAdmin(resourceAdmin);
-                resourceRequestDAO.makePersistent(request);
+                System.out.println(request);
+                return resourceRequestDAO.makePersistent(request);
             } else {
                 System.out.println("ResourseRequest has already assigned to other resource admin.");
             }

@@ -72,72 +72,81 @@ public class ResourceRequest {
         return file;
     }
 
-    public void setFile(MultipartFile file) {
+    public ResourceRequest setFile(MultipartFile file) {
         this.file = file;
+        return this;
     }
 
     public String getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public ResourceRequest setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public ResourceRequest setId(long id) {
         this.id = id;
+        return this;
     }
 
     public String getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(String resourceType) {
+    public ResourceRequest setResourceType(String resourceType) {
         this.resourceType = resourceType;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public ResourceRequest setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public User getRegister() {
         return this.register;
     }
 
-    public void setRegister(User register) {
+    public ResourceRequest setRegister(User register) {
         this.register = register;
+        return this;
     }
 
     public User getResourcesAdmin() {
         return resourcesAdmin;
     }
 
-    public void setResourcesAdmin(User resourcesAdmin) {
+    public ResourceRequest setResourcesAdmin(User resourcesAdmin) {
         this.resourcesAdmin = resourcesAdmin;
+        return this;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public ResourceRequest setStatus(Status status) {
         this.status = status;
+        return this;
     }
 
     public Date getUpdate() {
         return update;
     }
 
-    public void setUpdate(Date update) {
+    public ResourceRequest setUpdate(Date update) {
         this.update = update;
+        return this;
     }
 
 
@@ -153,5 +162,41 @@ public class ResourceRequest {
                 ", status=" + status +
                 ", update=" + update +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ResourceRequest request = (ResourceRequest) o;
+
+        if (id != request.id) return false;
+        if (code != null ? !code.equals(request.code) : request.code != null) return false;
+        if (resourceType != null ? !resourceType.equals(request.resourceType) : request.resourceType != null)
+            return false;
+        if (description != null ? !description.equals(request.description) : request.description != null) return false;
+        if (register.getUsername() != null ? !register.getUsername().equals(request.register.getUsername())
+                : request.register.getUsername() != null) return false;
+        if (resourcesAdmin.getUsername() != null ? !resourcesAdmin.getUsername().equals(request.resourcesAdmin.getUsername())
+                : request.resourcesAdmin.getUsername() != null)
+            return false;
+        if (status != request.status) return false;
+        if (update != null ? !update.equals(request.update) : request.update != null) return false;
+        return file != null ? file.equals(request.file) : request.file == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (code != null ? code.hashCode() : 0);
+        result = 31 * result + (resourceType != null ? resourceType.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (register != null ? register.hashCode() : 0);
+        result = 31 * result + (resourcesAdmin != null ? resourcesAdmin.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (update != null ? update.hashCode() : 0);
+        result = 31 * result + (file != null ? file.hashCode() : 0);
+        return result;
     }
 }
