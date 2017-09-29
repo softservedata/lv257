@@ -10,7 +10,7 @@
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+
 <jsp:include page="resources.jsp" />
 
 
@@ -35,14 +35,14 @@
                          method="POST" enctype="multipart/form-data">
 
                     <div class="form-group">
-                        <label>Requested category</label>
+                        <label>Requested resource type</label>
                         <sf:input type="text" path="resourceType" class="form-control" placeholder="Enter new kind of resource"/>
                         <sf:errors path="resourceType" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
                     </div>
 
 
                     <div class="form-group">
-                        <label>Details</label>
+                        <label>Description</label>
                         <sf:input type="text" path="description" class="form-control" placeholder="Enter details"/>
                         <sf:errors path="description" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
                         <%--<label class="control-label col-md-4" for="theme">Details about new resource</label>--%>

@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<jsp:include page="_menu2.jsp"/>
 <jsp:include page="resources.jsp" />
 
 <div class="wrapper">
@@ -57,7 +56,7 @@
 
                                 <tr>
                                     <td>${request.status}</td>
-                                    <td>${request.theme}</td>
+                                    <td>${request.resourceType}</td>
                                     <td>Not yet reviewed</td>
                                     <td><a href="/resources/info/${request.id}">documentLink1</a></td>
                                     <td>${request.update}</td>

@@ -84,3 +84,8 @@ font-weight: normal;
 .my_error_class {
     color:#ad241a;  /* red */
 }
+
+.my_success_class {
+    color: #405bad;  /* blue */
+}
+

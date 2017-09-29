@@ -1,8 +1,6 @@
 package com.softserve.edu.Resources.entity;
 
 import com.softserve.edu.Resources.Constants;
-
-import lombok.Getter;
 import org.jboss.aerogear.security.otp.api.Base32;
 
 import javax.persistence.*;
@@ -39,6 +37,7 @@ public class User {
     @OneToMany(mappedBy = "register")
     private Collection<ResourceRequest> requestsByRegister;
 
+
     public User() {
         super();
         this.secret = Base32.random();
@@ -69,7 +68,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public boolean isEnabled() {
         return enabled;
