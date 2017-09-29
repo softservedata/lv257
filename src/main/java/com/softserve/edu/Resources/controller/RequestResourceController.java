@@ -39,7 +39,7 @@ public class RequestResourceController {
         mv.addObject("userClickSendRequest", true);
         mv.addObject("title", "Send Request");
 
-       if(operation != null){
+        if(operation != null){
             if(operation.equals("request")){
                 mv.addObject("message", "Request sent successfully!");
             }
@@ -72,7 +72,7 @@ public class RequestResourceController {
             FileUploadUtility.uploadFile(httpRequest, mRequest.getFile(),mRequest.getCode());
         }
 
-       return "redirect:/resources/request?operation=request";
+        return "redirect:/resources/request?operation=request";
     }
 
     @RequestMapping(value={"/story"}, method= RequestMethod.GET)

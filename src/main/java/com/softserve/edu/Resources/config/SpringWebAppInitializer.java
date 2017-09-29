@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.config;
 
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.MultipartConfigElement;
@@ -10,7 +12,7 @@ import java.io.File;
 
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    public static String location = "/tmp/resources/uploads";
+    public static String location = "/resources/upload";
     private static final int maxFileSize = 5 * 1024 * 1024; // 5 MB
 
 
@@ -32,12 +34,14 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
+
                 new MultipartConfigElement(location, maxFileSize, maxFileSize * 2, maxFileSize / 2)
         );
     }
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
+
 
         location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
         super.onStartup(servletContext);
