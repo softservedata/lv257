@@ -18,4 +18,6 @@ public interface OwnerDAO {
 
     Owner getOwnerById(long id);
 
+    List<Owner> findOwners(String query);
+
 }

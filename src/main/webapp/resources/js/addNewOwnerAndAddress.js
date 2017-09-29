@@ -1,4 +1,3 @@
-
 $(document).ready(function(){
 
     /* Generate owner form depending on owner type */
@@ -169,9 +168,6 @@ $(document).ready(function(){
         appendRows($addressForm, rows);
         return $addressForm;
     }
-
-
-
 
     /**
      * Renders resource address form in the popUp window
@@ -375,25 +371,7 @@ $(document).ready(function(){
         }
     }
 
-    /**
-     * This function gets all inputs of a particular form.
-     * Takes as a parameter form id.
-     * Returns string containing json representation ('field': 'value' ...).
-     */
-    function toJSONString(form) {
-        var obj = {};
-        var elements = $('#' + form + ' input');
-        for (var i = 0; i < elements.length; i++) {
-            var element = elements[i];
-            var name = element.name;
-            var value = element.value;
 
-            if (name) {
-                obj[name] = value;
-            }
-        }
-        return obj;
-    }
 
 });
 
@@ -408,6 +386,26 @@ const $ownerAddressForm =  $('#owner_address_form');
 const $resourceOwnersSelect = $('#resource_owners');
 const $resourceNewOwnerPopUp = $('#createNewOwnerPopUp');
 const ownerFormId = 'owner_form';
+
+/**
+ * This function gets all inputs of a particular form.
+ * Takes as a parameter form id.
+ * Returns string containing json representation ('field': 'value' ...).
+ */
+function toJSONString(form) {
+    let obj = {};
+    let elements = $('#' + form + ' input');
+    for (let i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        let name = element.name;
+        let value = element.value;
+
+        if (name) {
+            obj[name] = value;
+        }
+    }
+    return obj;
+}
 
 /**
  * @param $form - form element to ba validated by JQuery validator plugin

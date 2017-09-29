@@ -19,12 +19,12 @@ public class UploadFileValidator implements Validator{
 
         if(resourceRequest.getFile() == null ||
                 resourceRequest.getFile().getOriginalFilename().equals("")){
-           errors.rejectValue("file", null, "Please select an file to upload!");
-           return;
+            errors.rejectValue("file", null, "Please select an file to upload!");
+            return;
         }
         if(!(resourceRequest.getFile().getContentType().equals("application/pdf") ||
                 resourceRequest.getFile().getContentType().equals("image/jpeg") ||
-                   resourceRequest.getFile().getContentType().equals("image/png"))){
+                resourceRequest.getFile().getContentType().equals("image/png"))){
             errors.rejectValue("file", null, "Please choose only pdf, jpeg or png files for upload!");
             return;
         }

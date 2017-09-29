@@ -17,7 +17,6 @@ public class MailSenderService {
     public void sendMessage(MessageHandler messageHandler) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(messageHandler.getReceiver());
-        mailMessage.setFrom("projectresources257@gmail.com");
         mailMessage.setSubject(messageHandler.getSubject());
         mailMessage.setText(messageHandler.getContent());
         emailSender.send(mailMessage);
