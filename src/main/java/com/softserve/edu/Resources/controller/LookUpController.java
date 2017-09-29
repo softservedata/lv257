@@ -26,33 +26,33 @@ import com.softserve.edu.Resources.service.ResourceTypeService;
 public class LookUpController {
     
     @Autowired
-    ResourceTypeService resTypeService;
+    ResourceTypeService resourceTypeService;
     
     @Autowired
     ResourceService resourceService;
     
 
-    @RequestMapping(value = "/resourceTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookUpByResourceType/resourceTypes", method = RequestMethod.GET)
     public List<ResourceTypeDTO> loadResourceTypes(){
         
-        List <ResourceTypeDTO> resTypeDTOs = DtoUtilMapper.resTypesToResTypesDTO(resTypeService.getInstances());
+        List <ResourceTypeDTO> resTypeDTOs = DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
         return resTypeDTOs;
         
     }
     
     
-    @RequestMapping(value = "/resourceProperties/getEssentials/{resourceTypeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookUpByResourceType/resourceProperties/getEssentials/{resourceTypeId}", method = RequestMethod.GET)
     public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId){
         
-        ResourceType resourceType = resTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
+        ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
         
-        List <ResourceProperty> specialResourceProperties = resTypeService.getSpecialResourcePropertiesByResType(resourceType);
+        List <ResourceProperty> specialResourceProperties = resourceTypeService.getSpecialResourcePropertiesByResType(resourceType);
         
         return specialResourceProperties;
     }
     
     
-    @RequestMapping(value = "/lookUpByInputValues", method = RequestMethod.POST)
+    @RequestMapping(value = "/lookUpByResourceType/inputValues", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO){
         
         List <GenericResource> genericResources = resourceService.findResourcesByResourceType(resourceDTO);
