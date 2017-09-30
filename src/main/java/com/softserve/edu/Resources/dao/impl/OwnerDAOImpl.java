@@ -24,13 +24,20 @@ public class OwnerDAOImpl extends GenericDAOImpl<Owner, Long> implements OwnerDA
     }
 
     @Override
-    public void addOwner(Owner owner) {
-        this.makePersistent(owner);
+    public Owner addOwner(Owner owner) {
+        return this.makePersistent(owner);
     }
 
     @Override
     public void updateOwner(Owner owner) {
         this.makePersistent(owner);
+    }
+
+    @Override
+    public void deleteOwnerById(Long id) {
+        Query query = em.createQuery("DELETE FROM Owner WHERE id= :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
     @Override
