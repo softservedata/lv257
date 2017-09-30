@@ -117,14 +117,14 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/owner/search", method = RequestMethod.POST)
-    public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody SearchOwnerDTO searchOwnerDTO){
+    public ResponseEntity<?> searchOwner(@RequestBody SearchOwnerDTO searchOwnerDTO){
 
         List<Owner> owners = ownerService.findOwners(searchOwnerDTO);
         List<SelectInfoDTO> ownerSelects = new ArrayList<>();
 
         if (owners.isEmpty()){
             System.out.println("Owner was not found");
-            return new ResponseEntity<>(new FieldErrorDTO("erros", "Nothing was found."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found."), HttpStatus.BAD_REQUEST);
         }
 
         owners.forEach(owner -> ownerSelects.add(new SelectInfoDTO(owner.getId(), owner.customToString())));
