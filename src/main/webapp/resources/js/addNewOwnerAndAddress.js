@@ -25,7 +25,7 @@ $(document).ready(function(){
         $resourceNewOwnerForm.empty();
         $ownerAddressForm.empty();
 
-        var $form = $('<form/>', {
+        let $form = $('<form/>', {
             class: 'form',
             id: ownerFormId
         });
@@ -33,14 +33,14 @@ $(document).ready(function(){
         $resourceNewOwnerForm.append($form);
         appendRows($form, rows);
 
-        var $clearfix = $('<div/>', {
+        let $clearfix = $('<div/>', {
             class: 'clearfix'
         });
-        var $registerOwnerBtn = $('<button/>', {
+        let $registerOwnerBtn = $('<button/>', {
             text: "Register owner",
             class: 'btn pull-right btn-success'
         });
-        var $addOwnerAddresBtn = $('<button/>', {
+        let $addOwnerAddresBtn = $('<button/>', {
             text: "Add owner address",
             class: 'btn pull-left btn-primary'
         });
@@ -55,7 +55,7 @@ $(document).ready(function(){
         // another div where I place form for the owner's address and button
         // before user press 'Add Owner Address'
         // I do it right now, because I want to add listener to 'Register Address' button.
-        var $addressDiv = $('<div/>', {
+        let $addressDiv = $('<div/>', {
             id: 'ghostDiv',
             class: 'padding_top_40'
         });
@@ -64,7 +64,7 @@ $(document).ready(function(){
         let $addressForm = addAddressFormWithoutBtn($addressDiv, fieldsMetadata.rowsForAddress);
 
         // 'Register Address' button, I attach listener to it to retrieve all inputs filled by user
-        var $registerOwnerAddressBtn = $('<button/>', {
+        let $registerOwnerAddressBtn = $('<button/>', {
             text: "Register address",
             class: 'btn pull-right btn-success'
         });
@@ -134,6 +134,8 @@ $(document).ready(function(){
                         $ownerAddressForm.empty();
                         $ownerAddressForm.show();
 
+                        showOwnersTable(result);
+
                         showOptionsForSelect($resourceOwnersSelect, result);
                         closePopUp($resourceNewOwnerForm, 'Resource owner was saved', $resourceNewOwnerPopUp);
                     },
@@ -152,6 +154,69 @@ $(document).ready(function(){
                 console.log('owner form is invalid!!');
             }
         });
+    }
+
+    function showOwnersTable(result){
+        $resourceOwnerTable.removeClass('display_none');
+        let $tr = $('<tr/>', {
+            class: 'new_owner',
+            id: result['ownerId']
+        });
+        $ownersTbody.append($tr);
+        for (let attributeValue in result) {
+            if (result.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
+                console.log(result[attributeValue]);
+                let $td = $('<td/>', {
+                    text: result[attributeValue]
+                });
+                $tr.append($td);
+            }
+        }
+
+        let $deleteOption = appendDeleteOption($tr);
+
+        $deleteOption.on('click', function (e) {
+            e.preventDefault();
+            if ( $(this).parent().attr('class') == 'new_owner'){
+                console.log($(this).parent().attr('id'));
+                deleteOwner($(this).parent().attr('id'));
+                $tr.remove();
+                checkIfOneOwner();
+                $deletedOwnerVersionTwo.fadeIn(300).delay(3500).fadeOut(300);
+            }
+        })
+
+    }
+
+    function checkIfOneOwner(){
+        if ($('.owners_tbody tr').length == 0){
+            console.log($('.owners_tbody tr').length);
+            $resourceOwnerTable.addClass('display_none');
+        }
+    }
+
+    function deleteOwner(ownerId){
+        $.ajax({
+            type: "DELETE",
+            url: "owner/" + ownerId + "/delete",
+            success: function (result) {
+                console.log("owner was deleted from db");
+                console.log(result);
+            }
+        })
+    }
+
+    function appendDeleteOption($tr){
+        $tdDelete = $('<td/>');
+        $aDelete = $('<a/>');
+        $iDelete = $('<i/>', {
+            class: 'glyphicon glyphicon-remove',
+            'aria-hidden': "true"
+        });
+        $tdDelete.append($aDelete);
+        $aDelete.append($iDelete);
+        $tr.append($tdDelete);
+        return $tdDelete;
     }
 
     /**
@@ -179,6 +244,157 @@ $(document).ready(function(){
         addAddressForm($resourceAddressFormPlaceholder, fieldsMetadata.rowsForAddress);
         validateFormAndSaveResult($resourceAddressFormPlaceholder, addressFormId, customButtonId);
     });
+
+    /**
+     * If client-side validation succeed, than send request to the server.
+     * Than server-side validation is performed.
+     * If server-side validation fall, message with error is shown
+     *
+     * @param $placeholder
+     * @param formId
+     * @param customButtonId
+     */
+    function validateFormAndSaveResult($placeholder, formId, customButtonId){
+        const $form = $('#' + formId);
+        const $submitButton = $('#' + customButtonId);
+
+        validateAddress($form);
+
+        $submitButton.on('click', function (e) {
+            e.preventDefault();
+            if($form.valid()){
+                console.log(formId + ' is valid');
+                let json = JSON.stringify(toJSONString(formId));
+                console.log('json from form ' + formId + ' : ' + json);
+
+                let url = '/resources/address';
+                if (updateAddress){
+                    url = '/resources/address/update';
+                }
+                saveAddressAjax(json, url);
+            } else {
+                alert("form invalid");
+            }
+        })
+    }
+
+    /**
+     * Saves new address or updates existing.
+     * @param json - address json
+     * @param url - save new address or update existing
+     */
+    function saveAddressAjax(json, url){
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: url,
+            accept: "application/json",
+            data: json,
+            // if success, show select for address and append option with saved address
+            success: function (result) {
+                console.log('result from the server: ' + result.addressId + " " + result.country);
+                $idAddressInput.val(result.addressId);
+                console.log('result length: ' + result.length);
+
+                if (updateAddress){
+                    console.log('showing message');
+                    $updatedAddress.fadeIn(300).delay(3500).hide(300);
+                }
+                showAddressTable(result);
+
+                // showOptionsForSelect($resourceAddressSelect, result);
+                // closePopUp($placeholder, 'Resource Address was saved', $resourceAddressPopUp);
+            },
+            // on errors, show messages with explanations
+            error: function (result) {
+                var parse = JSON.parse(result.responseText);
+                console.log('errors in fields: ' + parse);
+                $('.my_error_class').empty();
+
+                appendHibernateErrors(parse);
+            }
+        });
+    }
+
+    /**
+     * Builds one row in the address table
+     * @param result - address receiver from the server
+     */
+    function showAddressTable(result){
+        updateAddress = false;
+        $addResourceAddressBtn.hide(1500);
+        $resourceAddressTbl.removeClass('display_none');
+        $trSuccess.empty();
+        let $td;
+        for (let attributeValue in result) {
+            if (result.hasOwnProperty(attributeValue) && attributeValue != 'addressId') {
+                $td = $('<td/>', {
+                    text: result[attributeValue]
+                });
+                $trSuccess.append($td);
+            }
+        }
+
+        $resourceAddressPopUp.modal('hide');
+        let editDelete = appendEditDeleteOptions();
+
+        editDelete[0].on('click', function(e) {
+            e.preventDefault();
+            updateAddress = true;
+            $resourceAddressPopUp.modal('show');
+        });
+
+        editDelete[1].on('click', function (e) {
+            e.preventDefault();
+            $resourceAddressTbl.addClass('display_none');
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json",
+                url: "/resources/address/delete",
+                accept: "application/json",
+                data: JSON.stringify(toJSONString(addressFormId)),
+                success: function (result) {
+                    console.log('resource address was deleted');
+
+                    $deletedAddress.fadeIn(300).delay(3500).fadeOut(300);
+
+                },
+                // on errors, show messages with explanations
+                error: function (result) {
+                    console.log('some error during deleting resource address');
+                }
+            });
+            $addResourceAddressBtn.show(1500);
+            $trSuccess.empty();
+        })
+    }
+
+    /**
+     * Appends edit and delete Options to the table and returns that elements.
+     */
+    function appendEditDeleteOptions(){
+        $tdEdit = $('<td/>');
+        $aEdit = $('<a/>');
+        $iEdit = $('<i/>', {
+            class: 'glyphicon glyphicon-edit',
+            'aria-hidden': "true"
+        });
+        $tdEdit.append($aEdit);
+        $aEdit.append($iEdit);
+
+        $tdDelete = $('<td/>');
+        $aDelete = $('<a/>');
+        $iDelete = $('<i/>', {
+            class: 'glyphicon glyphicon-remove',
+            'aria-hidden': "true"
+        });
+        $tdDelete.append($aDelete);
+        $aDelete.append($iDelete);
+
+        $trSuccess.append($tdEdit);
+        $trSuccess.append($tdDelete);
+        return [$tdEdit, $tdDelete];
+    }
 
     /**
      * Dynamic adding address form
@@ -281,157 +497,6 @@ $(document).ready(function(){
         form.append($clearfix);
     }
 
-    /**
-     * If client-side validation succeed, than send request to the server.
-     * Than server-side validation is performed.
-     * If server-side validation fall, message with error is shown
-     *
-     * @param $placeholder
-     * @param formId
-     * @param customButtonId
-     */
-    function validateFormAndSaveResult($placeholder, formId, customButtonId){
-        const $form = $('#' + formId);
-        const $submitButton = $('#' + customButtonId);
-
-        validateAddress($form);
-
-        $submitButton.on('click', function (e) {
-            e.preventDefault();
-            if($form.valid()){
-                console.log(formId + ' is valid');
-                let json = JSON.stringify(toJSONString(formId));
-                console.log('json from form ' + formId + ' : ' + json);
-
-                let url = '/resources/address';
-                if (updateAddress){
-                    url = '/resources/address/update';
-                }
-                saveAddressAjax(json, url);
-            } else {
-                alert("form invalid");
-            }
-        })
-    }
-
-    /**
-     * Saves new address or updates existing.
-     * @param json - address json
-     * @param url - save new address or update existing
-     */
-    function saveAddressAjax(json, url){
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: url,
-            accept: "application/json",
-            data: json,
-            // if success, show select for address and append option with saved address
-            success: function (result) {
-                console.log('result from the server: ' + result.addressId + " " + result.country);
-                $idAddressInput.val(result.addressId);
-                console.log('result length: ' + result.length);
-
-                if (updateAddress){
-                    console.log('showing message');
-                    $updatedAddress.fadeIn(300).delay(3500).hide(300);
-                }
-                showAddressTable(result);
-
-                // showOptionsForSelect($resourceAddressSelect, result);
-                // closePopUp($placeholder, 'Resource Address was saved', $resourceAddressPopUp);
-            },
-            // on errors, show messages with explanations
-            error: function (result) {
-                var parse = JSON.parse(result.responseText);
-                console.log('errors in fields: ' + parse);
-                $('.my_error_class').empty();
-
-                appendHibernateErrors(parse);
-            }
-        });
-    }
-
-    /**
-     * Builds one row in the address table
-     * @param result - address receiver from the server
-     */
-    function showAddressTable(result){
-        updateAddress = false;
-        $addResourceAddressBtn.hide(1500);
-        $resourceAddressTbl.removeClass('display_none');
-        $trSucces.empty();
-        let $td;
-        for (let attributeValue in result) {
-            if (result.hasOwnProperty(attributeValue) && attributeValue != 'addressId') {
-                $td = $('<td/>', {
-                    text: result[attributeValue]
-                });
-                $trSucces.append($td);
-            }
-        }
-
-        $resourceAddressPopUp.modal('hide');
-        let editDelete = appendEditDeleteOptions();
-
-        editDelete[0].on('click', function(e) {
-            e.preventDefault();
-            updateAddress = true;
-            $resourceAddressPopUp.modal('show');
-        });
-
-        editDelete[1].on('click', function (e) {
-            e.preventDefault();
-            $resourceAddressTbl.addClass('display_none');
-            $.ajax({
-                type: "DELETE",
-                contentType: "application/json",
-                url: "/resources/address/delete",
-                accept: "application/json",
-                data: JSON.stringify(toJSONString(addressFormId)),
-                success: function (result) {
-                    console.log('resource address was deleted');
-
-                    $deletedAddress.fadeIn(300).delay(3500).fadeOut(300);
-
-                },
-                // on errors, show messages with explanations
-                error: function (result) {
-                    console.log('some error during deleting resource address');
-                }
-            });
-            $addResourceAddressBtn.show(1500);
-            $trSucces.empty();
-        })
-    }
-
-    /**
-     * Appends edit and delete Options to the table and returns that elements.
-     */
-    function appendEditDeleteOptions(){
-        $tdEdit = $('<td/>');
-        $aEdit = $('<a/>');
-        $iEdit = $('<i/>', {
-            class: 'glyphicon glyphicon-edit',
-            'aria-hidden': "true"
-        });
-        $tdEdit.append($aEdit);
-        $aEdit.append($iEdit);
-
-        $tdDelete = $('<td/>');
-        $aDelete = $('<a/>');
-        $iDelete = $('<i/>', {
-            class: 'glyphicon glyphicon-remove',
-            'aria-hidden': "true"
-        });
-        $tdDelete.append($aDelete);
-        $aDelete.append($iDelete);
-
-        $trSucces.append($tdEdit);
-        $trSucces.append($tdDelete);
-        return [$tdEdit, $tdDelete];
-    }
-
     //show select for address and append option with saved address
     function showOptionsForSelect($placeholder, result) {
         $placeholder.removeClass('display_none');
@@ -473,6 +538,10 @@ $(document).ready(function(){
     function appendHibernateErrors(parse){
         for(let i = 0; i < parse.fieldErrors.length; i++){
             let str = parse.fieldErrors[i].field;
+            if(str.split(/(?=[A-Z])/).join('_').toLowerCase() == 'address'){
+                alert('Address needs to be added!')
+                return;
+            }
             console.log(str.split(/(?=[A-Z])/).join('_').toLowerCase());
             console.log(str.substring(str.indexOf('.') + 1).split(/(?=[A-Z])/).join('_').toLowerCase());
             var $errorDiv = $('#' + str.substring(str.indexOf('.') + 1).split(/(?=[A-Z])/).join('_').toLowerCase()).next();
@@ -488,7 +557,7 @@ var $idAddressInput;
 const $deletedAddress = $('#deleted_address');
 const $updatedAddress = $('#updated_address');
 const $addResourceAddressBtn = $('#add_resource_address_btn');
-const $trSucces = $('.success');
+const $trSuccess = $('.success');
 const $resourceAddressTbl = $('.resource_address_table');
 const $resourceAddressFormPlaceholder = $('#resource_address_form_placeholder');
 const $resourceAddressPopUp = $('#resourseAdressPopUp');
@@ -496,6 +565,9 @@ const $resourceAddressSelect = $('#resource_address');
 const addressFormId = 'address_form';
 const customButtonId = 'custom_button';
 
+const $deletedOwnerVersionTwo = $('#deleted_owner');
+const $resourceOwnerTable = $('.resource_owner_table');
+const $ownersTbody = $('.owners_tbody');
 const $resourceNewOwnerForm =  $('#resource_new_owner_form');
 const $ownerAddressForm =  $('#owner_address_form');
 const $resourceOwnersSelect = $('#resource_owners');

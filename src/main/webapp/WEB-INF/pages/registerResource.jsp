@@ -53,26 +53,48 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="resource_owners" class="display_none">Resource Owners</label>
-                        <select type="owners" id="resource_owners" class="form-control display_none" multiple>
+                    <%--<div class="form-group">--%>
+                        <%--<label for="resource_owners" class="display_none">Resource Owners</label>--%>
+                        <%--<select type="owners" id="resource_owners" class="form-control display_none" multiple>--%>
 
-                        </select>
+                        <%--</select>--%>
+                    <%--</div>--%>
+
+                    <div id="deleted_owner" class="my_error_class">
+                        <h4> Owner was deleted. </h4>
+                    </div>
+
+                    <%--<div id="updated_address" class="my_success_class">--%>
+                        <%--<h4> Address was updated. </h4>--%>
+                    <%--</div>--%>
+
+
+                    <div class="resource_owner_table display_none">
+                        <label for="owner_table">Resource Owners</label>
+                        <table id="owner_table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Owner Type</th>
+                                <th>Phone</th>
+                                <th>Address</th>
+                                <th>Owner Info</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody class="owners_tbody">
+                            </tbody>
+                        </table>
                     </div>
 
                     <div class="form-group">
-                        <div class="padding_bottom_15">
-                            <button class="btn btn-primary"
+                            <button class="btn btn-primary width_12em"
                                     type="button" data-toggle="modal"
                                     data-target="#search_existing_owner">Add existing owner
                             </button>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary"
+                        <button class="btn btn-primary width_12em"
                                     type="button" data-toggle="modal"
                                     data-target="#createNewOwnerPopUp">Add new owner
-                            </button>
-                        </div>
+                        </button>
                     </div>
 
                     <div id="search_existing_owner" class="modal fade">
@@ -197,9 +219,9 @@
                     </div>
 
 
-                        <div class="padding_bottom_15">
+                    <div class="padding_bottom_15">
                         <button id="add_resource_address_btn"
-                                class="btn btn-primary"
+                                class="btn btn-primary width_12em"
                                 type="button" data-toggle="modal"
                                 data-target="#resourseAdressPopUp">
                             Add resource address
@@ -242,7 +264,7 @@
                         <input type="file" id="files" multiple="true">
                     </div>
                     <div class="padding_bottom_15">
-                        <button type="submit" class="btn btn-success">Register new resource</button>
+                        <button type="submit" class="btn btn-success width_12em">Register resource</button>
                     </div>
 
                 </form>
