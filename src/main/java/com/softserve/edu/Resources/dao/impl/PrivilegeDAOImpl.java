@@ -29,8 +29,15 @@ public class PrivilegeDAOImpl implements PrivilegeDAO {
     }
 
     @Override
-    public Privilege addPrivilege(String s) {
-        Privilege privilege = new Privilege(s);
+    public void deleteAllPrivileges() {
+        entityManager.createNativeQuery("TRUNCATE TABLE roles_privileges;").executeUpdate();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE table privilege;").executeUpdate();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
+    }
+
+    @Override
+    public Privilege addPrivilege(Privilege privilege) {
         entityManager.persist(privilege);
         return privilege;
     }

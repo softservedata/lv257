@@ -15,17 +15,97 @@
                 <li> <a href="${pageContext.request.contextPath}/users">Users</a></li>
                 <li> <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
                 <li class="active"> <a href="${pageContext.request.contextPath}/privileges">Privileges</a></li>
-                <li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>
+                <%--<li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>--%>
             </ul>
         </div>
 
         <div class="container">
             <div class="table-responsive">
                 <%--<h2>Privileges list</h2>--%>
-                <table class="table table-striped">
+                    <h2>System privileges</h2>
+                    <div class="container">
+                        <table class="table">
+                            <tbody>
+                        <c:forEach var="systemPrivilege" items="${list}">
+                            <c:if test="${systemPrivilege.privilegeType=='SYSTEM'}">
+                                <tr>
+                                    <th>${systemPrivilege.name}</th>
+                                    <th><input type="checkbox"></th>
+                                </tr>
+                            </c:if>
+                        </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2>Resource types privileges</h2>
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                                <th></th>
+                                <th>Read</th>
+                                <th>Create</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                                <th>All actions</th>
+                            </thead>
+                            <tr>
+                                <th>All resource types*</th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                            </tr>
+                            <tbody>
+                            <c:forEach var="systemPrivilege" items="${list}">
+                                <c:if test="${systemPrivilege.privilegeType=='RESOURCE_TYPE'}">
+                                    <tr>
+                                        <th>${systemPrivilege.name}</th>
+                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox"></th>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2>Resource properties privileges</h2>
+                    <div class="container">
+                        <table class="table">
+                            <thead>
+                            <th></th>
+                            <th>Read</th>
+                            <th>Update</th>
+                            </thead>
+                            <tr>
+                                <th>All resource properties*</th>
+                                <th><input type="checkbox"></th>
+                                <th><input type="checkbox"></th>
+                            </tr>
+                            <tbody>
+                            <c:forEach var="systemPrivilege" items="${list}">
+                                <c:if test="${systemPrivilege.privilegeType=='PROPERTY'}">
+                                    <tr>
+                                        <th>${systemPrivilege.name}</th>
+                                        <th><input type="checkbox"></th>
+                                        <th><input type="checkbox"></th>
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Type</th>
                         <th>Edit</th>
                         <th>Clone</th>
                         <th>Delete</th>
@@ -39,6 +119,7 @@
                             <c:forEach var="listValue" items="${list}">
                                 <tr>
                                     <td><a href="">${listValue}</a></td>
+                                    <td><a href="">${listValue.privilegeType}</a></td>
                                     <td ><a href="">
                                         <span class="glyphicon glyphicon-edit"></span>
                                     </a></td>

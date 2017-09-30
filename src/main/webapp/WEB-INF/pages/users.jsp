@@ -19,7 +19,7 @@
                     <li class="active"><a href="${pageContext.request.contextPath}/users">Users</a></li>
                     <li> <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
                     <li> <a href="${pageContext.request.contextPath}/privileges">Privileges</a></li>
-                    <li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>
+                    <%--<li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>--%>
                 </ul>
             </div>
             <br/>
@@ -130,13 +130,14 @@
                         <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Full name</th>
                             <th>Email</th>
-                            <th>Password</th>
                             <th>Role</th>
                             <th>Enabled</th>
+                            <th>Last visit</th>
                             <th>Edit</th>
                             <th>Clone</th>
-                            <th>Delete</th>
+                            <%--<th>Delete</th>--%>
 
                         </tr>
                         </thead>
@@ -147,19 +148,33 @@
                                 <c:forEach var="listValue" items="${users}">
                                     <tr>
                                         <td>${listValue.id}</td>
+                                        <td>Full name</td>
                                         <td>${listValue.username}</td>
+                                        <td>${listValue.role.description}</td>
+                                        <c:if test="${listValue.enabled=='true'}">
+                                            <td>
+                                                <div class="checkbox" >
+                                                    <label><input type="checkbox" value="" checked disabled></label>
+                                                </div>
+                                            </td>
+                                        </c:if>
+                                        <c:if test="${listValue.enabled=='false'}">
+                                            <td>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" value="" disabled></label>
+                                                </div>
+                                            </td>
+                                        </c:if>
                                         <td>${listValue.password}</td>
-                                        <td>${listValue.role.name}</td>
-                                        <td>${listValue.enabled}</td>
                                         <td ><a href="${pageContext.request.contextPath}/userEdit?uid=${listValue.id}">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a></td>
                                         <td ><a href="#">
                                             <span class="glyphicon glyphicon-copy"></span>
                                         </a></td>
-                                        <td ><a href="#">
+                                        <%--<td ><a href="#">
                                             <span class="glyphicon glyphicon-remove"></span>
-                                        </a></td>
+                                        </a></td>--%>
                                     </tr>
                                 </c:forEach>
                             </ul>

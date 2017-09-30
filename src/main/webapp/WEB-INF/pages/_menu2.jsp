@@ -22,12 +22,12 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/lookup">Look up</a></li>
-                <li><a href="${pageContext.request.contextPath}/users">Users</a></li>
                 <li><a href="${pageContext.request.contextPath}/resources">Resources</a></li>
-                <%--<li><a href="CommunityView.html">Community</a></li>--%>
+                <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+                    <li><a href="${pageContext.request.contextPath}/users">Administration</a></li>
+                </c:if>
                 <li><a href="${pageContext.request.contextPath}/about">About</a></li>
-                <%--<li><a href="${pageContext.request.contextPath}/userInfo">User Info</a></li>--%>
-                <%--<li><a href="${pageContext.request.contextPath}/admin">Admin Page</a></li>--%>
+                <li><a href="${pageContext.request.contextPath}/endPoints">ENDPOINTS !</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                     <li><li/>
