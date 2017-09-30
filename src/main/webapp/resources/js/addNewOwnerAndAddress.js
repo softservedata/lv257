@@ -1,5 +1,8 @@
 $(document).ready(function(){
 
+    $deletedAddress.hide();
+    $updatedAddress.hide();
+
     /* Generate owner form depending on owner type */
     $('#owner_type').on('change', function () {
         const ownerType = this.value;
@@ -172,10 +175,9 @@ $(document).ready(function(){
     /**
      * Renders resource address form in the popUp window
      */
-    $('#add_resource_address_btn').on('click', function () {
+    $addResourceAddressBtn.on('click', function () {
         addAddressForm($resourceAddressFormPlaceholder, fieldsMetadata.rowsForAddress);
         validateFormAndSaveResult($resourceAddressFormPlaceholder, addressFormId, customButtonId);
-
     });
 
     /**
@@ -188,13 +190,21 @@ $(document).ready(function(){
      *              second element - id of submit button
      */
     function addAddressForm($formPlaceholder, rows) {
+        updateAddress = false;
         // clears div element
         $formPlaceholder.empty();
 
-        var $form = $('<form/>', {
+        const $form = $('<form/>', {
             class: 'form',
             id: addressFormId
         });
+
+        $idAddressInput = $('<input/>',{
+            type: 'hidden',
+            id: 'id',
+            name: 'addressId'
+        });
+        $form.append($idAddressInput);
 
         $formPlaceholder.append($form);
         appendRows($form, rows);
@@ -208,44 +218,45 @@ $(document).ready(function(){
      * and to the given form.
      */
     function appendRows($form, rows) {
-        for (var i = 0; i < rows.length; i++) {
-            var $row = $('<div/>', {
+        for (let i = 0; i < rows.length; i++) {
+            let $row = $('<div/>', {
                 class: 'row'
             });
             $form.append($row);
 
-            for (var j = 0; j < rows[i].length; j++) {
-                var $col = $('<div/>', {
+            for (let j = 0; j < rows[i].length; j++) {
+                let $col = $('<div/>', {
                     class: 'col-sm-' + rows[i][j].size
                 });
                 $row.append($col);
 
-                var $formGroup = $('<div/>', {
+                let $formGroup = $('<div/>', {
                     class: 'form-group'
                 });
                 $col.append($formGroup);
 
-                var $label = $('<label/>', {
+                let $label = $('<label/>', {
                     for: rows[i][j].userFriendlyName.toLowerCase().replace(" ", "_"),
                     text: rows[i][j].userFriendlyName
                 });
                 $formGroup.append($label);
 
-                var $input = $('<input/>', {
+                let $input = $('<input/>', {
                     type: 'text',
                     class: 'form-control',
-                    name : rows[i][j].userFriendlyName.toLowerCase().replace(" ", "_"),
+                    name: rows[i][j].userFriendlyName.toLowerCase().replace(" ", "_"),
                     id: rows[i][j].userFriendlyName.toLowerCase().replace(" ", "_"),
                     placeholder: rows[i][j].placeholder
                 });
                 $formGroup.append($input);
 
-                var $error = $('<div/>', {
+                let $error = $('<div/>', {
                     class: 'my_error_class'
                 });
                 $formGroup.append($error);
             }
         }
+
     }
 
     /** Appending submit button to the form.
@@ -280,8 +291,8 @@ $(document).ready(function(){
      * @param customButtonId
      */
     function validateFormAndSaveResult($placeholder, formId, customButtonId){
-        var $form = $('#' + formId);
-        var $submitButton = $('#' + customButtonId);
+        const $form = $('#' + formId);
+        const $submitButton = $('#' + customButtonId);
 
         validateAddress($form);
 
@@ -289,37 +300,136 @@ $(document).ready(function(){
             e.preventDefault();
             if($form.valid()){
                 console.log(formId + ' is valid');
-
-                var json = JSON.stringify(toJSONString(formId));
+                let json = JSON.stringify(toJSONString(formId));
                 console.log('json from form ' + formId + ' : ' + json);
 
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: "/resources/address",
-                    accept: "application/json",
-                    data: json,
-                    // if success, show select for address and append option with saved address
-                    success: function (result) {
-                        console.log('result from the server: ' + result.objectId + " " + result.message);
-
-                        showOptionsForSelect($resourceAddressSelect, result);
-                        closePopUp($placeholder, 'Resource Address was saved', $resourceAddressPopUp);
-                    },
-                    // on errors, show messages with explanations
-                    error: function (result) {
-                        var parse = JSON.parse(result.responseText);
-                        console.log('errors in fields: ' + parse);
-                        $('.my_error_class').empty();
-
-                        appendHibernateErrors(parse);
-                    }
-                });
-                alert("form valid");
+                let url = '/resources/address';
+                if (updateAddress){
+                    url = '/resources/address/update';
+                }
+                saveAddressAjax(json, url);
             } else {
                 alert("form invalid");
             }
         })
+    }
+
+    /**
+     * Saves new address or updates existing.
+     * @param json - address json
+     * @param url - save new address or update existing
+     */
+    function saveAddressAjax(json, url){
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: url,
+            accept: "application/json",
+            data: json,
+            // if success, show select for address and append option with saved address
+            success: function (result) {
+                console.log('result from the server: ' + result.addressId + " " + result.country);
+                $idAddressInput.val(result.addressId);
+                console.log('result length: ' + result.length);
+
+                if (updateAddress){
+                    console.log('showing message');
+                    $updatedAddress.fadeIn(300).delay(3500).hide(300);
+                }
+                showAddressTable(result);
+
+                // showOptionsForSelect($resourceAddressSelect, result);
+                // closePopUp($placeholder, 'Resource Address was saved', $resourceAddressPopUp);
+            },
+            // on errors, show messages with explanations
+            error: function (result) {
+                var parse = JSON.parse(result.responseText);
+                console.log('errors in fields: ' + parse);
+                $('.my_error_class').empty();
+
+                appendHibernateErrors(parse);
+            }
+        });
+    }
+
+    /**
+     * Builds one row in the address table
+     * @param result - address receiver from the server
+     */
+    function showAddressTable(result){
+        updateAddress = false;
+        $addResourceAddressBtn.hide(1500);
+        $resourceAddressTbl.removeClass('display_none');
+        $trSucces.empty();
+        let $td;
+        for (let attributeValue in result) {
+            if (result.hasOwnProperty(attributeValue) && attributeValue != 'addressId') {
+                $td = $('<td/>', {
+                    text: result[attributeValue]
+                });
+                $trSucces.append($td);
+            }
+        }
+
+        $resourceAddressPopUp.modal('hide');
+        let editDelete = appendEditDeleteOptions();
+
+        editDelete[0].on('click', function(e) {
+            e.preventDefault();
+            updateAddress = true;
+            $resourceAddressPopUp.modal('show');
+        });
+
+        editDelete[1].on('click', function (e) {
+            e.preventDefault();
+            $resourceAddressTbl.addClass('display_none');
+            $.ajax({
+                type: "DELETE",
+                contentType: "application/json",
+                url: "/resources/address/delete",
+                accept: "application/json",
+                data: JSON.stringify(toJSONString(addressFormId)),
+                success: function (result) {
+                    console.log('resource address was deleted');
+
+                    $deletedAddress.fadeIn(300).delay(3500).fadeOut(300);
+
+                },
+                // on errors, show messages with explanations
+                error: function (result) {
+                    console.log('some error during deleting resource address');
+                }
+            });
+            $addResourceAddressBtn.show(1500);
+            $trSucces.empty();
+        })
+    }
+
+    /**
+     * Appends edit and delete Options to the table and returns that elements.
+     */
+    function appendEditDeleteOptions(){
+        $tdEdit = $('<td/>');
+        $aEdit = $('<a/>');
+        $iEdit = $('<i/>', {
+            class: 'glyphicon glyphicon-edit',
+            'aria-hidden': "true"
+        });
+        $tdEdit.append($aEdit);
+        $aEdit.append($iEdit);
+
+        $tdDelete = $('<td/>');
+        $aDelete = $('<a/>');
+        $iDelete = $('<i/>', {
+            class: 'glyphicon glyphicon-remove',
+            'aria-hidden': "true"
+        });
+        $tdDelete.append($aDelete);
+        $aDelete.append($iDelete);
+
+        $trSucces.append($tdEdit);
+        $trSucces.append($tdDelete);
+        return [$tdEdit, $tdDelete];
     }
 
     //show select for address and append option with saved address
@@ -371,10 +481,15 @@ $(document).ready(function(){
         }
     }
 
-
-
 });
 
+var updateAddress = false;
+var $idAddressInput;
+const $deletedAddress = $('#deleted_address');
+const $updatedAddress = $('#updated_address');
+const $addResourceAddressBtn = $('#add_resource_address_btn');
+const $trSucces = $('.success');
+const $resourceAddressTbl = $('.resource_address_table');
 const $resourceAddressFormPlaceholder = $('#resource_address_form_placeholder');
 const $resourceAddressPopUp = $('#resourseAdressPopUp');
 const $resourceAddressSelect = $('#resource_address');

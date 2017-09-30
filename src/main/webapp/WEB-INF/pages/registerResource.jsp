@@ -154,17 +154,50 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="resource_address" class="display_none">Resource Address</label>
-                        <select type="address" id="resource_address" class="form-control display_none">
+                    <%--<div class="form-group">--%>
+                        <%--<label for="resource_address" class="display_none">Resource Address</label>--%>
+                        <%--<select type="address" id="resource_address" class="form-control display_none">--%>
 
-                            <%--Concrete address typed by user will be placed here like <option>--%>
+                            <%--&lt;%&ndash;Concrete address typed by user will be placed here like <option>&ndash;%&gt;--%>
 
-                        </select>
+                        <%--</select>--%>
+                    <%--</div>--%>
+
+                    <div id="deleted_address" class="my_error_class">
+                        <h4> Address was deleted. </h4>
+                    </div>
+
+                    <div id="updated_address" class="my_success_class">
+                        <h4> Address was updated. </h4>
+                    </div>
+
+                    <div class="resource_address_table display_none">
+                        <label for="address_table">Resource Address</label>
+                        <table id="address_table" class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>Country</th>
+                                <th>Region</th>
+                                <th>District</th>
+                                <th>Postas Index</th>
+                                <th>Locality</th>
+                                <th>Street</th>
+                                <th>Building</th>
+                                <th>Block</th>
+                                <th>Apartment</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="success">
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
 
 
-                    <div class="padding_bottom_15">
+                        <div class="padding_bottom_15">
                         <button id="add_resource_address_btn"
                                 class="btn btn-primary"
                                 type="button" data-toggle="modal"
@@ -218,9 +251,6 @@
         </div>
     </div>
 </div>
-
-<a href="/resources/companies" >Companies</a>
-<a href="/resources/persons" >Persons</a>
 
 <footer class="footer">
     <div class="container">
