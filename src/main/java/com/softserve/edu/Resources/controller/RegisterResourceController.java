@@ -7,7 +7,6 @@ import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Owner;
-import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.AddressService;
 import com.softserve.edu.Resources.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,24 +43,50 @@ public class RegisterResourceController {
     @RequestMapping(value = "/address", method = RequestMethod.POST)
     public ResponseEntity<?> saveResourceAddress(@RequestBody @Valid Address address,
                                                  BindingResult result) {
-        System.out.println("Address obtained from client: " + address);
-
-        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
+        System.out.println("Saving address: " + address);
 
         if (result.hasErrors()){
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            fieldErrors.forEach(error -> validationErrorDTO.addFieldError(error.getField(), error.getDefaultMessage()));
+            ValidationErrorDTO validationErrorDTO = addressService.validationDTO(result);
 
-            fieldErrors.forEach(System.out::println);
-
-            System.out.println("has errors");
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
         }
-        addressService.addAddress(address);
+        Address savedAddress = addressService.addAddress(address);
+//        SelectInfoDTO infoDTO = addressService.fromAddressToDto(address);
 
-        SelectInfoDTO infoDTO = addressService.fromAddressToDto(address);
+        return new ResponseEntity<>(savedAddress, HttpStatus.OK);
+    }
 
-        return new ResponseEntity<>(infoDTO, HttpStatus.OK);
+    @ResponseBody
+    @RequestMapping(value = "/address/update", method = RequestMethod.POST)
+    public ResponseEntity<?> updateResourceAddress(@RequestBody @Valid Address address,
+                                                   BindingResult result) {
+        System.out.println("Updating address: " + address);
+
+        if (result.hasErrors()){
+            ValidationErrorDTO validationErrorDTO = addressService.validationDTO(result);
+
+            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
+        }
+        Address savedAddress = addressService.updateAddress(address);
+//        SelectInfoDTO infoDTO = addressService.fromAddressToDto(address);
+
+        return new ResponseEntity<>(savedAddress, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/address/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteResourceAddress(@RequestBody @Valid Address address,
+                                                   BindingResult result) {
+        System.out.println("Deleting address: " + address);
+
+//        if (result.hasErrors()){
+//            ValidationErrorDTO validationErrorDTO = addressService.validationDTO(result);
+//
+//            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
+//        }
+        addressService.deleteAddress(address);
+
+        return new ResponseEntity<>(new Address(), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -106,15 +131,6 @@ public class RegisterResourceController {
         System.out.println(ownerSelects);
 
         return new ResponseEntity<>(ownerSelects, HttpStatus.OK);
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/persons", method = RequestMethod.GET)
-    public ResponseEntity<?> saveResourceOwner() throws JsonProcessingException {
-        System.out.println(ownerService.getAllPersons());
-
-
-        return new ResponseEntity<>(new Person(), HttpStatus.OK);
     }
 
 }
