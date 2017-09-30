@@ -22,6 +22,7 @@ public class Address {
 
     @Id()
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+    @JsonProperty("addressId")
     private long id;
 
     @NotEmpty
