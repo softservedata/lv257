@@ -1,7 +1,5 @@
 package com.softserve.edu.Resources.config;
 
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.MultipartConfigElement;
@@ -46,6 +44,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
         location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
         super.onStartup(servletContext);
 
+        servletContext.addListener(new SessionListener());
         //31.08.2017
         //TODO after first initialization to fulfill tables in DB with testing data(privileges, roles, users, resources etc )
 

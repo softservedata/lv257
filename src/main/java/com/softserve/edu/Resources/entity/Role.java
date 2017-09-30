@@ -22,6 +22,9 @@ public class Role {
 
     private String name;
 
+    @Column(name = "description", nullable = false)
+    private String description;
+
     public Role() {
         super();
     }
@@ -63,6 +66,14 @@ public class Role {
 
     public void setPrivileges(final Collection<Privilege> privileges) {
         this.privileges = privileges;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

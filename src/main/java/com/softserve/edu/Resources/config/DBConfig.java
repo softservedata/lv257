@@ -34,7 +34,7 @@ public class DBConfig {
         lcemfb.setDataSource(getDataSource());
         lcemfb.setJpaVendorAdapter(getJpaVendorAdapter());
         lcemfb.setJpaProperties(getJpaProperties());
-        lcemfb.setPackagesToScan("com.softserve.edu.Resources.entity");
+        lcemfb.setPackagesToScan("com.softserve.edu.Resources.entity", "com.softserve.edu.Resources/security");
         return lcemfb;
     }
     @Bean

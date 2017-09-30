@@ -18,7 +18,7 @@
                     <li> <a href="${pageContext.request.contextPath}/users">Users</a></li>
                     <li class="active"> <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
                     <li> <a href="${pageContext.request.contextPath}/privileges">Privileges</a></li>
-                    <li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>
+                    <%--<li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>--%>
                 </ul>
             </div>
             <br/>
@@ -65,6 +65,8 @@
                         </c:if>
                         </tbody>
                     </table>
+                </div>
+            </div>
                 </div>
 
                 <br />
