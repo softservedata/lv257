@@ -6,11 +6,15 @@ import com.softserve.edu.Resources.dao.impl.ResourceRequestDAOImpl;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+import java.lang.invoke.MethodHandles;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +23,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class RequestService {
+
+    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
+
+    private final Logger logger;
+
 
     @Autowired
     ResourceRequestDAOImpl resourceRequestDAO;
@@ -29,6 +38,11 @@ public class RequestService {
     MailSenderService mailSender;
     @Autowired
     RequestMessageHandler messageHandler;
+
+
+    public RequestService() {
+        logger = LOGGER;
+    }
 
     public void fillUpRequest(ResourceRequest requestService) {
 
@@ -75,7 +89,7 @@ public class RequestService {
             messageHandler.setMessage(message);
             mailSender.sendMessage(messageHandler);
         } else {
-            System.out.println("ResourseRequest instance is undefined.");
+            logger.error("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
         }
     }
 
@@ -92,6 +106,7 @@ public class RequestService {
 
     public List<ResourceRequest> getNewResourcesRequest() {
         return filterByStatus(getResourcesRequest(), ResourceRequest.Status.NEW);
+
     }
 
     public List<ResourceRequest> getHistoryResourcesRequest() {
@@ -107,19 +122,17 @@ public class RequestService {
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(requestId);
         System.out.println(requestOptional);
         User resourceAdmin = userDAO.findByEmail(resourceAdminEmail);
-        System.out.println();
         if (requestOptional.isPresent()) {
             if (requestOptional.get().getResourcesAdmin() == null) {
                 request = requestOptional.get();
                 request.setUpdate(new Date());
                 request.setResourcesAdmin(resourceAdmin);
-                System.out.println(request);
                 return resourceRequestDAO.makePersistent(request);
             } else {
-                System.out.println("ResourseRequest has already assigned to other resource admin.");
+                logger.error("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
             }
         } else {
-            System.out.println("ResourseRequest instance is undefined.");
+            logger.error("ResourseRequest instance with id:" + requestId + " is undefined.");
         }
         return request;
 
