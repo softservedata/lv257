@@ -223,8 +223,7 @@ public class Address {
     }
 
     public String customToString(){
-        return "Address: " +
-                country + ", " +
+        return  country + ", " +
                 region + ", " +
                 district + ", " +
                 postalIndex + ", " +

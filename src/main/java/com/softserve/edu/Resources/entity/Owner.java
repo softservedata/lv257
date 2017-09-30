@@ -3,9 +3,11 @@ package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Co
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -30,11 +32,13 @@ public abstract class Owner {
     @Column(name = "owner_id")
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")
     @Valid
+    @NotNull
     private Address address;
 
+    @NotEmpty
     @JsonProperty("phone")
     private String phone;
 
@@ -91,9 +95,13 @@ public abstract class Owner {
                 '}';
     }
 
-    public String customToString() {
-        return "Owner: " +
-                phone + " \n";
+    public String addressInfo(){
+        return address.customToString();
     }
 
+    public String customToString(){
+        return "";
+    }
+
+    public abstract String ownerType();
 }
