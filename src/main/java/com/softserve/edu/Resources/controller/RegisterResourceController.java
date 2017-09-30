@@ -2,11 +2,12 @@ package com.softserve.edu.Resources.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.softserve.edu.Resources.dto.FieldErrorDTO;
+import com.softserve.edu.Resources.dto.OwnerDTO;
 import com.softserve.edu.Resources.dto.SearchOwnerDTO;
-import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Owner;
+import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.AddressService;
 import com.softserve.edu.Resources.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -41,8 +38,7 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/address", method = RequestMethod.POST)
-    public ResponseEntity<?> saveResourceAddress(@RequestBody @Valid Address address,
-                                                 BindingResult result) {
+    public ResponseEntity<?> saveResourceAddress(@RequestBody @Valid Address address, BindingResult result) {
         System.out.println("Saving address: " + address);
 
         if (result.hasErrors()){
@@ -58,8 +54,7 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/address/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateResourceAddress(@RequestBody @Valid Address address,
-                                                   BindingResult result) {
+    public ResponseEntity<?> updateResourceAddress(@RequestBody @Valid Address address, BindingResult result) {
         System.out.println("Updating address: " + address);
 
         if (result.hasErrors()){
@@ -75,15 +70,9 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/address/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteResourceAddress(@RequestBody @Valid Address address,
-                                                   BindingResult result) {
+    public ResponseEntity<?> deleteResourceAddress(@RequestBody Address address) {
         System.out.println("Deleting address: " + address);
 
-//        if (result.hasErrors()){
-//            ValidationErrorDTO validationErrorDTO = addressService.validationDTO(result);
-//
-//            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
-//        }
         addressService.deleteAddress(address);
 
         return new ResponseEntity<>(new Address(), HttpStatus.OK);
@@ -92,27 +81,31 @@ public class RegisterResourceController {
     @ResponseBody
     @RequestMapping(value = "/owner", method = RequestMethod.POST)
     public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner,
-                                                          BindingResult result) throws JsonProcessingException {
-
-        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
-
+                                                          BindingResult result){
         if (result.hasErrors()){
-            List<FieldError> fieldErrors = result.getFieldErrors();
-            fieldErrors.forEach(error -> validationErrorDTO.addFieldError(error.getField(), error.getDefaultMessage()));
+            ValidationErrorDTO validationErrorDTO = ownerService.validationDTO(result);
 
-            fieldErrors.forEach(System.out::println);
-
-            System.out.println("has errors!!!");
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
         }
-        ownerService.addOwner(owner);
+        Owner savedOwner = ownerService.addOwner(owner);
 
-        System.out.println(owner);
-        System.out.println(owner.getAddress());
+        System.out.println("Saved owner: " + savedOwner);
+        System.out.println("Saved owner id: " + savedOwner.getId());
+        System.out.println("Saved owner's address: " + savedOwner.getAddress());
 
-        SelectInfoDTO infoDTO = ownerService.fromOwnerToDto(owner);
+        List<OwnerDTO> ownerDTOS = ownerService.fromOwnerToOwnerDto(Collections.singletonList(savedOwner));
 
-        return new ResponseEntity<>(infoDTO, HttpStatus.OK);
+        return new ResponseEntity<>(ownerDTOS.get(0), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/owner/{id}/delete", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteOwner(@PathVariable long id) throws JsonProcessingException {
+        System.out.println("Deleting owner with id:" + id);
+
+        ownerService.deleteOwnerById(id);
+
+        return new ResponseEntity<>(new Person(), HttpStatus.OK);
     }
 
     @ResponseBody
@@ -120,17 +113,15 @@ public class RegisterResourceController {
     public ResponseEntity<?> searchOwner(@RequestBody SearchOwnerDTO searchOwnerDTO){
 
         List<Owner> owners = ownerService.findOwners(searchOwnerDTO);
-        List<SelectInfoDTO> ownerSelects = new ArrayList<>();
 
         if (owners.isEmpty()){
             System.out.println("Owner was not found");
             return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found."), HttpStatus.BAD_REQUEST);
         }
 
-        owners.forEach(owner -> ownerSelects.add(new SelectInfoDTO(owner.getId(), owner.customToString())));
-        System.out.println(ownerSelects);
+        List<OwnerDTO> ownerDTOS = ownerService.fromOwnerToOwnerDto(owners);
 
-        return new ResponseEntity<>(ownerSelects, HttpStatus.OK);
+        return new ResponseEntity<>(ownerDTOS, HttpStatus.OK);
     }
 
 }
