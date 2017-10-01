@@ -78,9 +78,10 @@ public class ResourceCategory {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("Resource Category [name=").append(categoryName).append("]").append("[id=").append(id).append("]");
-        return builder.toString();
+        return "ResourceCategory{" +
+                "id=" + id +
+                ", categoryName='" + categoryName + '\'' +
+                '}';
     }
 
     @Override
@@ -88,14 +89,17 @@ public class ResourceCategory {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ResourceCategory that = (ResourceCategory) o;
+        ResourceCategory category = (ResourceCategory) o;
 
-        return categoryName.equals(that.categoryName);
+        if (id != null ? !id.equals(category.id) : category.id != null) return false;
+        return categoryName.equals(category.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return categoryName.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + categoryName.hashCode();
+        return result;
     }
 
     public ResourceCategory(String categoryName, ResourceCategory parentCategory) {

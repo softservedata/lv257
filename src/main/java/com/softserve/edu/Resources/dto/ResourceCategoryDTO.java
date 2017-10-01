@@ -100,7 +100,6 @@ public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
         return "ResourceCategoryDTO{" +
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
-                ", parentCategory=" + parentCategory +
                 '}';
     }
 
@@ -111,12 +110,15 @@ public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
 
         ResourceCategoryDTO that = (ResourceCategoryDTO) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         return categoryName.equals(that.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return categoryName.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + categoryName.hashCode();
+        return result;
     }
 
     @Override
