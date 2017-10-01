@@ -80,14 +80,14 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/owner", method = RequestMethod.POST)
-    public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner,
-                                                          BindingResult result){
+    public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner, BindingResult result){
         if (result.hasErrors()){
-            ValidationErrorDTO validationErrorDTO = ownerService.validationDTO(result);
-
-            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ownerService.validationDTO(result), HttpStatus.BAD_REQUEST);
         }
+
         Owner savedOwner = ownerService.addOwner(owner);
+        savedOwner.getAddress().setOwner(savedOwner);
+        addressService.updateAddress(savedOwner.getAddress());
 
         System.out.println("Saved owner: " + savedOwner);
         System.out.println("Saved owner id: " + savedOwner.getId());
