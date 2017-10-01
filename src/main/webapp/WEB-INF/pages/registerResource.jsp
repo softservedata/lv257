@@ -70,14 +70,15 @@
 
 
                     <div class="resource_owner_table display_none">
+                        <hr class="my_hr">
                         <label for="owner_table">Resource Owners</label>
                         <table id="owner_table" class="table table-bordered">
                             <thead>
                             <tr>
                                 <th>Owner Type</th>
+                                <th>Owner Info</th>
                                 <th>Phone</th>
                                 <th>Address</th>
-                                <th>Owner Info</th>
                                 <th>Delete</th>
                             </tr>
                             </thead>
@@ -194,6 +195,7 @@
                     </div>
 
                     <div class="resource_address_table display_none">
+                        <hr class="my_hr">
                         <label for="address_table">Resource Address</label>
                         <table id="address_table" class="table table-bordered">
                             <thead>
@@ -280,8 +282,8 @@
     </div>
 </footer>
 
-<script src="../../resources/js/addNewOwnerAndAddress.js"></script>
-<script src="../../resources/js/searchOwner.js"></script>
+<script src="../../resources/js/OwnerAndAddressManagment.js"></script>
+<%--<script src="../../resources/js/searchOwner.js"></script>--%>
 <script src="../../resources/js/jquery.validate.js"></script>
 <script>
 
