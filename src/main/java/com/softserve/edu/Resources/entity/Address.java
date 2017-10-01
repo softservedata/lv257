@@ -22,6 +22,7 @@ public class Address {
 
     @Id()
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+    @JsonProperty("addressId")
     private long id;
 
     @NotEmpty
@@ -222,8 +223,7 @@ public class Address {
     }
 
     public String customToString(){
-        return "Address: " +
-                country + ", " +
+        return  country + ", " +
                 region + ", " +
                 district + ", " +
                 postalIndex + ", " +

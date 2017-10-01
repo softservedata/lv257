@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface OwnerDAO {
 
-    void addOwner(Owner owner);
+    Owner addOwner(Owner owner);
 
     void updateOwner(Owner owner);
+
+    void deleteOwnerById(Long id);
 
     List<Owner> getAllCompanies();
 
@@ -17,5 +19,7 @@ public interface OwnerDAO {
     List<Owner> getAllOwners();
 
     Owner getOwnerById(long id);
+
+    List<Owner> findOwners(String query);
 
 }

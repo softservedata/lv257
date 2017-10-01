@@ -4,24 +4,24 @@ import java.util.Map;
 
 public class GenericResourceDTO {
 
-    private int id;
+    private long id;
     private Map<String, String> resourcePropertyValue;
 
     public GenericResourceDTO() {
         // TODO Auto-generated constructor stub
     }
 
-    public GenericResourceDTO(int id, Map<String, String> resourcePropertyValue) {
+    public GenericResourceDTO(long id, Map<String, String> resourcePropertyValue) {
 
         this.id = id;
         this.resourcePropertyValue = resourcePropertyValue;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

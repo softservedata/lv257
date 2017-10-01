@@ -16,16 +16,17 @@
 
 <div class="container">
 
-    <h4>Requested category: ${theme}</h4>
+    <h4>Requested resource type: ${theme}</h4>
 
-    <h4>Additional information: ${info}</h4>
+    <h4>Description: ${info}</h4>
     <h4>Uploaded Document</h4>
     <hr>
     <div>
-        <img class="documentImg-view" src="/resources/upload/${code}.jpg"></div>
-    <%--<div>--%>
-        <%--<embed class="documentPdf-view" src="/resources/upload/${code}.pdf">--%>
-    <%--</div>--%>
+        <img class="documentImg-view" src="/resources/upload/${code}.jpg">
+    </div>
+    <div>
+        <embed class="documentPdf-view" src="/resources/upload/${code}.pdf">
+    </div>
 
 
     <hr>

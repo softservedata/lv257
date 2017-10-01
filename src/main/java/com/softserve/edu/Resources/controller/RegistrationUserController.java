@@ -29,7 +29,7 @@ public class RegistrationUserController {
     @RequestMapping(value = "/signup", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("newUser", new UserDTO());
-        return "signup"; //назва JSP
+        return "signup";
     }
 
     @RequestMapping(value = "/signup", method = RequestMethod.POST)

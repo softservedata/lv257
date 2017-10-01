@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleDAO roleDAO;
 
-
     @Transactional
     public User getUserForSpring (String email){
         User user = userDAO.findByEmail(email);
@@ -37,7 +36,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public User getUserById (Long id){
         User user = userDAO.findById(id);
-
         return user;
     }
 
@@ -52,6 +50,7 @@ public class UserServiceImpl implements UserService {
         return userDAO.getAllUsers();
     }
 
+    @Transactional
     public User registerNewUserAccount(final UserDTO userDTO) throws UserAlreadyExistException {
 
         if (emailExist(userDTO.getEmail())) {
@@ -65,9 +64,8 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDTO.getEmail());
         user.setEnabled(true);
         user.setRole(roleDAO.findByName("ROLE_USER"));
-        UserDetails userDetails = new UserDetails();
-        user.setUserDetails(userDetails);
-        return userDAO.addUser(user);
+        user.setUserDetails(new UserDetails());
+        return userDAO.makePersistent(user);
     }
 
     private boolean emailExist(final String email) {

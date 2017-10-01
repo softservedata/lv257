@@ -6,11 +6,13 @@ import java.util.List;
 
 public interface AddressDAO {
 
-    void addAddress(Address address);
+    Address addAddress(Address address);
 
     Address getById(long id);
 
-    void updateAddress(Address address);
+    Address updateAddress(Address address);
 
     List<Address> getAllAddresses();
+
+    void deleteAddress(Address address);
 }

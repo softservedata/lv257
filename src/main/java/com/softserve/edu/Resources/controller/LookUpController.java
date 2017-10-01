@@ -17,30 +17,34 @@ import java.util.List;
 public class LookUpController {
     
     @Autowired
-    ResourceTypeService resTypeService;
+    ResourceTypeService resourceTypeService;
     
     @Autowired
     ResourceService resourceService;
 
 
-    @RequestMapping(value = "/resourceTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookUpByResourceType/resourceTypes", method = RequestMethod.GET)
     public List<ResourceTypeDTO> loadResourceTypes(){
 
-        return DtoUtilMapper.resTypesToResTypesDTO(resTypeService.getInstances());
+
+        return DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
+
 
     }
+    
+    @RequestMapping(value = "/lookUpByResourceType/resourceProperties/getEssentials/{resourceTypeId}", method = RequestMethod.GET)
 
-
-    @RequestMapping(value = "/resourceProperties/getEssentials/{resourceTypeId}", method = RequestMethod.GET)
     public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId){
         
-        ResourceType resourceType = resTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
 
-        return resTypeService.getSearchableProperties(resourceType);
+        ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
+
+        return resourceTypeService.getSearchableProperties(resourceType);
+
     }
     
     
-    @RequestMapping(value = "/lookUpByInputValues", method = RequestMethod.POST)
+    @RequestMapping(value = "/lookUpByResourceType/inputValues", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO){
 
         return resourceService.findResourcesByResourceType(resourceDTO);
