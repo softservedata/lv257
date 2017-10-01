@@ -22,17 +22,17 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public Address addAddress(Address address) {
-        return addressDAO.addAddress(address);
+        return addressDAO.makePersistent(address);
     }
 
     @Override
     public Address getById(long id) {
-        return addressDAO.getById(id);
+        return addressDAO.findById(id).orElse(new Address());
     }
 
     @Override
     public Address updateAddress(Address address) {
-        return addressDAO.updateAddress(address);
+        return addressDAO.makePersistent(address);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<Address> getAllAddresses() {
-        return addressDAO.getAllAddresses();
+        return addressDAO.findAll();
     }
 
     @Override
