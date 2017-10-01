@@ -69,6 +69,17 @@ font-weight: normal;
 }
 
 /* Oleh */
+
+.table tbody > tr > td{
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table thead > tr > th{
+    vertical-align: middle;
+    text-align: center;
+}
+
 .table-bordered{
     font-size: 15px;
 }
@@ -87,6 +98,12 @@ font-weight: normal;
 
 .width_12em{
     width: 12em;
+}
+
+.my_hr{
+    margin-bottom: 5px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(51, 122, 183, 0.53);
 }
 
 .my_error_class {

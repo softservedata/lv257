@@ -4,9 +4,9 @@ public class OwnerDTO {
 
     private long ownerId;
     private String ownerType;
+    private String personalInfo;
     private String phone;
     private String addressInfo;
-    private String personalInfo;
 
     public OwnerDTO() {
     }
