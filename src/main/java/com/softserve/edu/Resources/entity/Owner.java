@@ -32,10 +32,10 @@ public abstract class Owner {
     @Column(name = "owner_id")
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
+//    @JoinColumn(name = "address_id")
     @Valid
     @NotNull
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "owner")
     private Address address;
 
     @NotEmpty
