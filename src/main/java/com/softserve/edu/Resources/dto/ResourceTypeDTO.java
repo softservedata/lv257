@@ -2,7 +2,7 @@ package com.softserve.edu.Resources.dto;
 
 public class ResourceTypeDTO {
 
-    private long id;
+    private Long id;
     private String typeName;
     private String tableName;
     

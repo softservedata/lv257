@@ -35,46 +35,47 @@ public class ResourceDaoImpl implements ResourceDao {
             List<ResourceProperty> resourceProperties) {
 
         List<GenericResource> genResList = new ArrayList<GenericResource>();
+        List<Map<String, Object>> genResRows = new ArrayList<>();
 
-        Object[] args = new Object[valuesToSearch.size()];
+        if (!valuesToSearch.isEmpty()) {
 
-//        int i = 0;
-//
-//        for (Map.Entry<String, String> entry : valuesToSearch.entrySet()) {
-//            args[i++] = entry.getValue();
-//        }
-        
-        args = valuesToSearch.values().toArray();
-        
+            Object[] args = new Object[valuesToSearch.size()];
 
-        int[] argsTypes = new int[valuesToSearch.size()];
-        int i = 0;
-        for (String keyValue : valuesToSearch.keySet()) {
-            for (ResourceProperty property : resourceProperties) {
-                if (property.getColumnName().equals(keyValue)) {
-                    argsTypes[i++] = property.getValueType().getSqlType(); 
-                    break;
+            args = valuesToSearch.values().toArray();
+
+            int[] argsTypes = new int[valuesToSearch.size()];
+            int i = 0;
+            for (String keyValue : valuesToSearch.keySet()) {
+                for (ResourceProperty property : resourceProperties) {
+                    if (property.getColumnName().equals(keyValue)) {
+                        argsTypes[i++] = property.getValueType().getSqlType();
+                        break;
+                    }
                 }
+
             }
+            i = 0;
 
+            genResRows = jdbcTemplate.queryForList(sqlQuery, args, argsTypes);
+
+        } else {
+            genResRows = jdbcTemplate.queryForList(sqlQuery);
         }
-        i = 0;
 
-        List<Map<String, Object>> genResRows = jdbcTemplate.queryForList(sqlQuery, args, argsTypes);
-       // it also possible to make with named parameters jdbcTemplate
+        // it also possible to make with named parameters jdbcTemplate
 
         for (Map<String, Object> mapRow : genResRows) {
             GenericResource genResource = new GenericResource();
 
             genResource.setId(Integer.parseInt(String.valueOf(mapRow.get("id"))));
-            genResource.setId_Address(Integer.parseInt(String.valueOf(mapRow.get("id_Address"))));
+            genResource.setId_Address(Integer.parseInt(String.valueOf(mapRow.get("id_address"))));
 
             Set<PropertyValue> propertyValues = new TreeSet<>();
 
             for (ResourceProperty property : resourceProperties) {
                 PropertyValue propertyValue = new PropertyValue(property,
                         String.valueOf(mapRow.get(property.getColumnName())));
-                
+
                 propertyValues.add(propertyValue);
             }
 

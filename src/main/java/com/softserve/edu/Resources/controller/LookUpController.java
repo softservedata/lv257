@@ -23,30 +23,32 @@ public class LookUpController {
     ResourceService resourceService;
 
 
-    @RequestMapping(value = "/lookUpByResourceType/resourceTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookUp/resourceTypes", method = RequestMethod.GET)
     public List<ResourceTypeDTO> loadResourceTypes(){
 
 
         return DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
 
-
     }
     
-    @RequestMapping(value = "/lookUpByResourceType/resourceProperties/getEssentials/{resourceTypeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
 
     public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId){
         
 
         ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
 
+        // if the list is empty, send an error/message
+        
         return resourceTypeService.getSearchableProperties(resourceType);
 
     }
     
     
-    @RequestMapping(value = "/lookUpByResourceType/inputValues", method = RequestMethod.POST)
+    @RequestMapping(value = "/lookUp/inputValues", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO){
 
+        // if the list is empty, send a message that no info hasn't been found
         return resourceService.findResourcesByResourceType(resourceDTO);
     }
     
