@@ -5,6 +5,7 @@ import com.softserve.edu.Resources.dto.OwnerDTO;
 import com.softserve.edu.Resources.dto.SearchOwnerDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Owner;
+import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,11 +26,11 @@ public class OwnerServiceImpl implements OwnerService {
     private OwnerDAO ownerDAO;
 
     @Override
-    public Owner addOwner(Owner owner) { return ownerDAO.addOwner(owner); }
+    public Owner addOwner(Owner owner) { return ownerDAO.makePersistent(owner); }
 
     @Override
     public void updateOwner(Owner owner) {
-        ownerDAO.updateOwner(owner);
+        ownerDAO.makePersistent(owner);
     }
 
     @Override
@@ -49,12 +50,12 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public List<Owner> getAllOwners() {
-        return ownerDAO.getAllOwners();
+        return ownerDAO.findAll();
     }
 
     @Override
     public Owner getOwnerById(long id) {
-        return ownerDAO.getOwnerById(id);
+        return ownerDAO.findById(id).orElse(new Person());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.AddressDAO;
-import com.softserve.edu.Resources.dto.SelectInfoDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.service.AddressService;
@@ -43,15 +42,6 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Address> getAllAddresses() {
         return addressDAO.findAll();
-    }
-
-    @Override
-    public SelectInfoDTO fromAddressToDto(Address address) {
-        SelectInfoDTO infoDTO = new SelectInfoDTO();
-        infoDTO.setObjectId(address.getId());
-        infoDTO.setMessage(address.customToString());
-
-        return infoDTO;
     }
 
     @Override
