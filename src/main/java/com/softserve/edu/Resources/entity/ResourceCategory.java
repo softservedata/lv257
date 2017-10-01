@@ -2,16 +2,12 @@ package com.softserve.edu.Resources.entity;
 
 import com.softserve.edu.Resources.Constants;
 
-import com.fasterxml.jackson.annotation.*;
-
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "RESOURCE_CATEGORIES")
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-//@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
 public class ResourceCategory {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
@@ -19,35 +15,17 @@ public class ResourceCategory {
     @Column(name = "Id")
     private Long id;
 
-    @Column(name = "Category_Name"/*, unique = true*/)
-    @JsonProperty("catname")
+    @Column(name = "Category_Name", unique = true, nullable = false)
     private String categoryName;
 
     @ManyToOne
-    @JsonBackReference
-//    @JsonProperty("parent_id")
-//    @JsonIdentityReference(alwaysAsId = true)
     @JoinColumn(name = "Id_Parent")
     private ResourceCategory parentCategory;
 
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    @JsonProperty("children")
     private Set<ResourceCategory> childrenCategories = new HashSet<>();
 
-    @Column(name = "Hierarchy_Level")
-//    @JsonProperty("level")
-    @JsonIgnore
-    private Integer hierarchyLevel;
-
-    @Column(name = "Path_To_Root")
-//    @JsonProperty("rootpath")
-    @JsonIgnore
-    private String pathToRoot;
-
-    @OneToMany(mappedBy = "category")
-    @JsonManagedReference
-    @JsonProperty("restypes")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<ResourceType> resourceTypes = new HashSet<>();
 
     public ResourceCategory(String categoryName) {
@@ -90,22 +68,6 @@ public class ResourceCategory {
         this.childrenCategories = childrenCategories;
     }
 
-    public Integer getHierarchyLevel() {
-        return hierarchyLevel;
-    }
-
-    public void setHierarchyLevel(Integer hierarchyLevel) {
-        this.hierarchyLevel = hierarchyLevel;
-    }
-
-    public String getPathToRoot() {
-        return pathToRoot;
-    }
-
-    public void setPathToRoot(String pathToRoot) {
-        this.pathToRoot = pathToRoot;
-    }
-
     public Set<ResourceType> getResourceTypes() {
         return resourceTypes;
     }
@@ -136,9 +98,8 @@ public class ResourceCategory {
         return categoryName.hashCode();
     }
 
-    public ResourceCategory(String categoryName, ResourceCategory parentCategory, Set<ResourceType> resourceTypes) {
+    public ResourceCategory(String categoryName, ResourceCategory parentCategory) {
         this.categoryName = categoryName;
         this.parentCategory = parentCategory;
-        this.resourceTypes = resourceTypes;
     }
 }

@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.dto.ResourceCategoryDTO;
+import com.softserve.edu.Resources.dto.ResourceTypeDTO;
+import com.softserve.edu.Resources.dto.Views;
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import com.softserve.edu.Resources.entity.ResourceType;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.CycleDetector;
 import org.jgrapht.graph.DefaultEdge;
@@ -38,14 +41,11 @@ public class ResourceCategoryService {
     @Transactional
     public List<ResourceCategory> findAllResourceCategories() {
         List<ResourceCategory> result = resourceCategoryDAO.findAll();
-//        Comparator<ResourceCategory> categoryComparator = Comparator.comparing(ResourceCategory::getPathToRoot);
-//        result.sort(categoryComparator);
         return result;
     }
 
     @Transactional
     public void saveResourceCategory(ResourceCategory resourceCategory) {
-        setRootPath(resourceCategory);
 //        List<ResourceCategory> existingCategories = this.findAllResourceCategories();
 //        if (existingCategories.stream().noneMatch(c -> c.getCategoryName().equalsIgnoreCase(resourceCategory.getCategoryName())))
         {
@@ -58,85 +58,12 @@ public class ResourceCategoryService {
         resourceCategoryDAO.makeTransient(resourceCategory);
     }
 
-    private void setRootPath(ResourceCategory resourceCategory) {
-        ResourceCategory parentCategory = resourceCategory
-                .getParentCategory();
-        if (parentCategory != null) {
-            resourceCategory.setPathToRoot(
-                    parentCategory.getPathToRoot() + "/"
-                            + resourceCategory.getCategoryName());
-            resourceCategory.setHierarchyLevel(
-                    parentCategory.getHierarchyLevel() + 1);
-        } else {
-            resourceCategory
-                    .setPathToRoot("/" + resourceCategory.getCategoryName());
-            resourceCategory.setHierarchyLevel(0);
-        }
-    }
-
     @Transactional
-    public List<ResourceCategory> getRootsFromDB() {
-        List<ResourceCategory> rootsFromDB = new ArrayList<>();
-        for (ResourceCategory rc : findAllResourceCategories()) {
-            if (rc.getParentCategory() == null) {
-                rootsFromDB.add(rc);
-            }
-        }
+    public List<ResourceCategory> findRootCategories() {
+        List<ResourceCategory> rootsFromDB = findAllResourceCategories().stream()
+                .filter(c -> c.getParentCategory() == null)
+                .collect(Collectors.toList());
         return rootsFromDB;
-    }
-
-    @Transactional
-    public List<ResourceCategory> getChildrenFromDB(ResourceCategory resourceCategory) {
-        List<ResourceCategory> childrenFromDB = new ArrayList<>();
-        for (ResourceCategory rc : findAllResourceCategories()) {
-            if (resourceCategory.equals(rc.getParentCategory())) {
-                childrenFromDB.add(rc);
-            }
-        }
-        return childrenFromDB;
-    }
-
-    @Transactional
-    public List<ResourceCategory> getDescendantsFromDB(ResourceCategory resourceCategory) {
-        List<ResourceCategory> descendantsFromDB = new ArrayList<>();
-        for (ResourceCategory rc : findAllResourceCategories()) {
-            if (resourceCategory.equals(rc.getParentCategory())) {
-                descendantsFromDB.add(rc);
-                descendantsFromDB.addAll(getDescendantsFromDB(rc));
-            }
-        }
-        return descendantsFromDB;
-    }
-
-    @Transactional
-    public Optional<ResourceCategory> getParentFromDB(ResourceCategory resourceCategory) {
-        for (ResourceCategory rc : findAllResourceCategories()) {
-            if (rc.equals(resourceCategory)) {
-                return Optional.ofNullable(rc.getParentCategory());
-            }
-        }
-        return null;
-    }
-
-    @Transactional
-    public List<ResourceCategory> getAncestorsFromDB(ResourceCategory resourceCategory) {
-        List<ResourceCategory> ancestorsFromDB = new ArrayList<>();
-        for (ResourceCategory rc : findAllResourceCategories()) {
-            if (rc.equals(resourceCategory) && rc.getParentCategory() != null) {
-                ancestorsFromDB.add(rc.getParentCategory());
-                ancestorsFromDB.addAll(getAncestorsFromDB(rc.getParentCategory()));
-            }
-        }
-        return ancestorsFromDB;
-    }
-
-    public void fillParents(List<ResourceCategory> categoryList) {
-        for (ResourceCategory rc : categoryList) {
-            Collection<ResourceCategory> children = rc.getChildrenCategories();
-            for (ResourceCategory ch : children) {
-                ch.setParentCategory(rc);
-            }
-        }
     }
 
     public List<ResourceCategory> getDescendants(ResourceCategory resourceCategory) {
@@ -153,8 +80,8 @@ public class ResourceCategoryService {
     public List<ResourceCategory> getAncestors(ResourceCategory resourceCategory) {
         List<ResourceCategory> ancestors = new ArrayList<>();
         if (resourceCategory != null && resourceCategory.getParentCategory() != null) {
-            ancestors.add(resourceCategory.getParentCategory());
             ancestors.addAll(getAncestors(resourceCategory.getParentCategory()));
+            ancestors.add(resourceCategory.getParentCategory());
         }
         return ancestors;
     }
@@ -164,14 +91,14 @@ public class ResourceCategoryService {
         findAllResourceCategories().stream().forEach(this::deleteResourceCategory);
         resourceCategoryDAO.flush();
 
-        ResourceCategory root = new ResourceCategory("root", null, null);
-        ResourceCategory branch1 = new ResourceCategory("branch1", root, null);
-        ResourceCategory branch2 = new ResourceCategory("branch2", root, null);
-        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1, null);
-        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1, null);
-        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2, null);
-        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2, null);
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1, null);
+        ResourceCategory root = new ResourceCategory("root", null);
+        ResourceCategory branch1 = new ResourceCategory("branch1", root);
+        ResourceCategory branch2 = new ResourceCategory("branch2", root);
+        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1);
+        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1);
+        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2);
+        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2);
+        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1);
 
         root.getChildrenCategories().add(branch1);
         root.getChildrenCategories().add(branch2);
@@ -180,6 +107,11 @@ public class ResourceCategoryService {
         branch1.getChildrenCategories().add(leaf1_3);
         branch2.getChildrenCategories().add(leaf2_1);
         branch2.getChildrenCategories().add(leaf2_2);
+
+        ResourceType type1 = new ResourceType("type1");
+        type1.setTableName("AAA");
+        type1.setCategory(leaf2_2);
+        leaf2_2.getResourceTypes().add(type1);
 
         saveResourceCategory(root);
 /*        saveResourceCategory(branch1);
@@ -193,57 +125,10 @@ public class ResourceCategoryService {
         return root;
     }
 
-    @Transactional
-    public String serializeCategoriesIntoJson(List<ResourceCategory> categories) {
-        ObjectMapper mapper = new ObjectMapper();
-        String json = new String();
-        try {
-//            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootCategories);
-            json = mapper.writeValueAsString(categories);
-        } catch (JsonProcessingException e) {
-            System.out.println("Can not serialize list of root Resource Categories into JSON");
-            e.printStackTrace();
-        }
-        return json;
-    }
-
-    @Transactional
-    public List<ResourceCategory> deserializeCategoriesFromJson(String json) {
-        ObjectMapper mapper = new ObjectMapper();
-        List<ResourceCategory> rootCategories = new ArrayList<>();
-        try {
-            JavaType listType = mapper.getTypeFactory().constructCollectionType(List.class, ResourceCategory.class);
-            rootCategories = mapper.readValue(json, listType);
-        } catch (IOException e) {
-            System.out.println("Can not deserialize JSON into list of root Resource Categories");
-            e.printStackTrace();
-        }
-        return rootCategories;
-    }
-
     public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories) {
         List<ResourceCategory> allCategories = new ArrayList<>(rootCategories);
         rootCategories.forEach(c -> allCategories.addAll(getDescendants(c)));
-        allCategories.forEach(c -> System.out.println(c + " Parent: " + c.getParentCategory() + " Children: " + Arrays.toString(c.getChildrenCategories().toArray()) + " end;"));
         return allCategories;
-    }
-
-    @Transactional
-    public void updateChangedCategories(List<ResourceCategory> categoriesFromWeb) {
-        List<ResourceCategory> categoriesFromDB = findAllResourceCategories();
-        List<ResourceCategory> changedCategories = new ArrayList<>();
-        for (ResourceCategory c : categoriesFromWeb) {
-            if (!categoriesFromDB.contains(c)
-                    || (categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory() != null && c.getParentCategory() == null)
-                    || (categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory() == null && c.getParentCategory() != null)
-                    || !categoriesFromDB.get(categoriesFromDB.indexOf(c)).getParentCategory().getCategoryName().equals(c.getParentCategory().getCategoryName())) {
-                changedCategories.add(c);
-                System.out.println("Cahnged categories: " + Arrays.toString(changedCategories.toArray()));
-            }
-            if (!changedCategories.isEmpty()) {
-                changedCategories.forEach(this::saveResourceCategory);
-            }
-        }
     }
 
     @Transactional
@@ -259,15 +144,6 @@ public class ResourceCategoryService {
     }
 
     public boolean hasCycleDependencies(List<ResourceCategory> categories) {
-        for (ResourceCategory resourceCategory : categories) {
-            for (ResourceCategory descendant : getDescendants(resourceCategory)) {
-                if (getAncestors(resourceCategory).contains(descendant)) return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasCycleDependencies1(List<ResourceCategory> categories) {
         DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
         for (ResourceCategory category : categories) {
             categoriesGraph.addVertex(category);
@@ -283,6 +159,9 @@ public class ResourceCategoryService {
         ResourceCategoryDTO dto = new ResourceCategoryDTO();
         if (category != null) {
             created.add(category);
+            if (category.getId() != null) {
+                dto.setId(category.getId());
+            }
             dto.setCategoryName(category.getCategoryName());
             if (!created.contains(category.getParentCategory()) && category.getParentCategory() != null) {
                 dto.setParentCategory(createCategoryDTO(category.getParentCategory(), created));
@@ -292,7 +171,14 @@ public class ResourceCategoryService {
                         ResourceCategoryDTO childDTO = createCategoryDTO(c, created);
                         childDTO.setParentCategory(dto);
                         return childDTO;
-                    }).collect(Collectors.toSet()));
+                    }).collect(Collectors.toCollection(TreeSet::new)));
+            dto.setResourceTypes(category.getResourceTypes().stream()
+                    .map(ResourceTypeDTO::new).collect(Collectors.toSet()));
+            List<ResourceCategory> ancestors = getAncestors(category);
+            dto.setDepth(ancestors.size());
+            ancestors.add(category);
+            dto.setTreePath(ancestors.stream()
+                    .map(ResourceCategory::getCategoryName).collect(Collectors.joining("/", "/", "")));
         }
         return dto;
     }
@@ -301,17 +187,24 @@ public class ResourceCategoryService {
         return createCategoryDTO(category, new HashSet<>());
     }
 
-    private ResourceCategory transferFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO, Set<ResourceCategoryDTO> transferred, ResourceCategory targetCategory) {
+    private ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO, Set<ResourceCategoryDTO> mapped) {
+        ResourceCategory targetCategory = new ResourceCategory();
         if (categoryDTO != null) {
-            transferred.add(categoryDTO);
-            targetCategory.setCategoryName(categoryDTO.getCategoryName());
-            if (!transferred.contains(categoryDTO.getParentCategory()) && categoryDTO.getParentCategory() != null) {
-                targetCategory.setParentCategory(transferFromDtoToResourceCategory(categoryDTO.getParentCategory(), transferred, targetCategory));
+            if (categoryDTO.getId() != null) {
+                targetCategory = findCategoryById(categoryDTO.getId()).orElse(targetCategory);
             }
+            mapped.add(categoryDTO);
+            targetCategory.setCategoryName(categoryDTO.getCategoryName());
+            if (!mapped.contains(categoryDTO.getParentCategory())) {
+                if (categoryDTO.getParentCategory() != null) {
+                    targetCategory.setParentCategory(mapFromDtoToResourceCategory(categoryDTO.getParentCategory(), mapped));
+                } else targetCategory.setParentCategory(null);
+            }
+            ResourceCategory finalTargetCategory = targetCategory;
             targetCategory.setChildrenCategories(categoryDTO.getChildrenCategories().stream()
                     .map(c -> {
-                        ResourceCategory child = transferFromDtoToResourceCategory(c, transferred, targetCategory);
-                        child.setParentCategory(targetCategory);
+                        ResourceCategory child = mapFromDtoToResourceCategory(c, mapped);
+                        child.setParentCategory(finalTargetCategory);
                         return child;
                     }).collect(Collectors.toSet()));
         }
@@ -319,12 +212,7 @@ public class ResourceCategoryService {
     }
 
     @Transactional
-    public ResourceCategory transferFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO) {
-        if (categoryDTO.getId() != null) {
-            ResourceCategory categoryFromDB = findCategoryById(categoryDTO.getId()).orElse(new ResourceCategory());
-            return transferFromDtoToResourceCategory(categoryDTO, new HashSet<>(), categoryFromDB);
-        } else {
-            return transferFromDtoToResourceCategory(categoryDTO, new HashSet<>(), new ResourceCategory());
-        }
+    public ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO) {
+        return mapFromDtoToResourceCategory(categoryDTO, new HashSet<>());
     }
 }

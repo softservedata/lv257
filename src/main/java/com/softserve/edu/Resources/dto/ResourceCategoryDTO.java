@@ -1,26 +1,43 @@
 package com.softserve.edu.Resources.dto;
 
 import com.fasterxml.jackson.annotation.*;
+import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 //@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
-public class ResourceCategoryDTO {
+public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
+
+    @JsonView(Views.CategoryManaging.class)
     private Long id;
 
-    @JsonProperty("catname")
+    @JsonProperty("categoryname")
+    @JsonView(Views.CategoryManaging.class)
     private String categoryName;
 
     @JsonBackReference
 //    @JsonProperty("parent_id")
 //    @JsonIdentityReference(alwaysAsId = true)
+    @JsonView(Views.CategoryManaging.class)
     private ResourceCategoryDTO parentCategory;
 
     @JsonManagedReference
     @JsonProperty("children")
-    private Set<ResourceCategoryDTO> childrenCategories = new HashSet<>();
+    @JsonView(Views.CategoryManaging.class)
+    private Set<ResourceCategoryDTO> childrenCategories = new TreeSet<>();
+
+    @JsonView(Views.CategorySelecting.class)
+    private Integer depth;
+
+    @JsonView(Views.CategorySelecting.class)
+    private String treePath;
+
+    @JsonManagedReference
+    @JsonView(Views.CategorySelectingWithTypes.class)
+    private Set<ResourceTypeDTO> resourceTypes = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -54,6 +71,30 @@ public class ResourceCategoryDTO {
         this.childrenCategories = childrenCategories;
     }
 
+    public Integer getDepth() {
+        return depth;
+    }
+
+    public void setDepth(Integer depth) {
+        this.depth = depth;
+    }
+
+    public String getTreePath() {
+        return treePath;
+    }
+
+    public void setTreePath(String treePath) {
+        this.treePath = treePath;
+    }
+
+    public Set<ResourceTypeDTO> getResourceTypes() {
+        return resourceTypes;
+    }
+
+    public void setResourceTypes(Set<ResourceTypeDTO> resourceTypes) {
+        this.resourceTypes = resourceTypes;
+    }
+
     @Override
     public String toString() {
         return "ResourceCategoryDTO{" +
@@ -76,6 +117,11 @@ public class ResourceCategoryDTO {
     @Override
     public int hashCode() {
         return categoryName.hashCode();
+    }
+
+    @Override
+    public int compareTo(ResourceCategoryDTO other) {
+        return this.categoryName.compareTo(other.categoryName);
     }
 }
 
