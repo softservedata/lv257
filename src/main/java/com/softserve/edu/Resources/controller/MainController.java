@@ -2,9 +2,9 @@ package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserService;
+import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,7 +22,7 @@ import java.util.Map;
 public class MainController {
 
     @Autowired
-    private HttpServletRequest request;
+    ResourceCategoryService categoryService;
 
     @Autowired
     UserService userService;
@@ -33,15 +33,10 @@ public class MainController {
     @Autowired
     PrivilegeService privilegeService;
 
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
-
     @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
     public String welcomePage(Model model, HttpServletRequest request) {
         System.out.println("Checking if ADMIN");
-        System.out.println(request.isUserInRole("ROLE_ADMIN"));
         if (request.isUserInRole("ROLE_ADMIN")) {
-            System.out.println(request.isUserInRole("ROLE_ADMIN"));
             System.out.println("Yes I am ADMIN");
         }
         System.out.println("Your IP is " + request.getRemoteAddr());
@@ -68,13 +63,6 @@ public class MainController {
         else
             return "lookupByOwner";
     }
-
-/*
-    @RequestMapping(value = "/lookup", method = RequestMethod.GET)
-    public String lookupPage(Model model) {
-        return "lookup";
-    }
-*/
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     public String resourcesPage(Model model, HttpServletRequest request) {
@@ -148,30 +136,6 @@ public class MainController {
         model.addAttribute("title", "Logout");
         return "logoutSuccessful";
     }
-/*
-    Profile is moved to UserController.java
-	
-    @RequestMapping(value = "/profile", params = {"id"}, method = RequestMethod.GET)
-    public ModelAndView profile (@RequestParam Map<String,String> queryUser) {
-        String roleName = queryUser.get("id");
-        ModelAndView model = new ModelAndView("profile");
-        User user = userService.getUserById(Long.parseLong(queryUser.get("id")));
-        model.addObject("user", user);
-        System.out.println(user);
-        System.out.println(user.getUserDetails());
-        model.addObject("userDetails", user.getUserDetails());
-        return model;
-    }
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String userInfo(Model model, Principal principal) {
-
-        // After user login successfully.
-        String userName = principal.getName();
-
-        return "profile";
-    }
-	
-	*/
 
     @RequestMapping(value = {"/account"}, method = RequestMethod.GET)
     public String accountPage(Model model) {

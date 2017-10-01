@@ -120,7 +120,7 @@
         $('#addition-btn, #definition-form').toggleClass('hidden');
     });
 
-    inputJson = ${inputJson};
+    <%--inputJson = ${inputJson};--%>
 </script>
 <script src="${contextPath}/resources/js/categoriesManagement.js"></script>
 </body>

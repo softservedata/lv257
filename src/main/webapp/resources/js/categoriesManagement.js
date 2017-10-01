@@ -13,20 +13,29 @@
 
     var lastId;
 
-    // activate Nestable for list 1
-    $('#nestable').nestable({
-        json: inputJson,
-        contentCallback: function(item) {
-            var content = item.catname || '' ? item.catname : item.id;
-            content += ' <i>(id = ' + item.id + ')</i>';
-            lastId = item.id;
+    $('#categories-manager').on('click', function (e) {
+        e.preventDefault();
 
-            return content;
-        }
-    }).on('change', updateOutput);
+        var jqxhr = $.getJSON("/resources/manageCategories")
+            .success(function(data) {
+                var json = JSON.stringify(data);
+                // activate Nestable for list
+                $('#nestable').nestable({
+                    json: json,
+                    contentCallback: function(item) {
+                        var content = item.categoryname || '' ? item.categoryname : item.id;
+                        content += ' <i>(id = ' + item.id + ')</i>';
+                        lastId = item.id;
 
-    // output initial serialised data
-    updateOutput($('#nestable').data('output', $('#nestable-output')));
+                        return content;
+                    }
+                }).on('change', updateOutput);
+
+                // output initial serialised data
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+            .error(function() { alert("Error " + jqxhr.status ); });
+    });
 
     $('#nestable-menu').on('click', function (e) {
         var target = $(e.target),
@@ -40,7 +49,7 @@
         if(action === 'add-item') {
             var newItem = {
 //                    "id": ++lastId,
-                "catname": "new category",
+                "categoryname": "new category",
 //                    "parent_id" : 1516,
                 "content": "Item " + lastId
             };
@@ -48,11 +57,15 @@
             updateOutput($('#nestable').data('output', $('#nestable-output')));
         }
         if(action === 'remove-item') {
-            var branch2_id = $("[data-catname='branch2']").attr("data-id");
+            var branch2_id = $("[data-categoryname='branch2']").attr("data-id");
             $('#nestable').nestable('remove', branch2_id);
             updateOutput($('#nestable').data('output', $('#nestable-output')));
         }
     });
+
+    $('#cancel-managing, #close-managing').on('click', function (e) {
+        $('#nestable').nestable('destroy');
+    })
 })();
 
 $('#save-json').on('click', function (e) {
@@ -60,15 +73,17 @@ $('#save-json').on('click', function (e) {
     var json = $('#nestable-output').val();
     $.ajax({
         type: "POST",
-        contentType: "text/plain",
-        url: "/resources/manageTypes",
-        accept: "text/plain",
+        contentType: "application/json",
+        url: "/resources/manageCategories",
+        accept: "application/json",
         data: json,
         success: function (result) {
             alert("JSON has been uploaded!")
+            $('#close-managing').click();
         },
         error: function(jqXHR, textStatus, errorThrown) {
             alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
         }
     })
 });
+

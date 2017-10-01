@@ -1,12 +1,14 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.AddressDAO;
-import com.softserve.edu.Resources.dto.SelectInfoDTO;
+import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.util.List;
 
@@ -18,31 +20,40 @@ public class AddressServiceImpl implements AddressService {
     AddressDAO addressDAO;
 
     @Override
-    public void addAddress(Address address) {
-        addressDAO.addAddress(address);
+    public Address addAddress(Address address) {
+        return addressDAO.makePersistent(address);
     }
 
     @Override
     public Address getById(long id) {
-        return addressDAO.getById(id);
+        return addressDAO.findById(id).orElse(new Address());
     }
 
     @Override
-    public void updateAddress(Address address) {
-        addressDAO.updateAddress(address);
+    public Address updateAddress(Address address) {
+        return addressDAO.makePersistent(address);
+    }
+
+    @Override
+    public void deleteAddress(Address address) {
+        addressDAO.deleteAddress(address);
     }
 
     @Override
     public List<Address> getAllAddresses() {
-        return addressDAO.getAllAddresses();
+        return addressDAO.findAll();
     }
 
     @Override
-    public SelectInfoDTO fromAddressToDto(Address address) {
-        SelectInfoDTO infoDTO = new SelectInfoDTO();
-        infoDTO.setObjectId(address.getId());
-        infoDTO.setMessage(address.customToString());
+    public ValidationErrorDTO validationDTO(BindingResult result) {
+        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
 
-        return infoDTO;
+        List<FieldError> fieldErrors = result.getFieldErrors();
+        fieldErrors.forEach(error -> validationErrorDTO.addFieldError(error.getField(), error.getDefaultMessage()));
+
+        fieldErrors.forEach(System.out::println);
+        System.out.println("has errors");
+
+        return validationErrorDTO;
     }
 }

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public abstract class GenericDAOImpl<T, ID extends Serializable>
     implements GenericDAO<T, ID> {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().getClass().getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
     private final Logger logger;
 

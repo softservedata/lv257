@@ -12,58 +12,31 @@ import javax.persistence.Query;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class OwnerDAOImpl extends GenericDAOImpl<Owner, Long> implements OwnerDAO {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     public OwnerDAOImpl() {
         super(Owner.class);
     }
 
     @Override
-    public void addOwner(Owner owner) {
-        this.makePersistent(owner);
-    }
-
-    @Override
-    public void updateOwner(Owner owner) {
-        this.makePersistent(owner);
+    public void deleteOwnerById(Long id) {
+        Owner ownerToDelete = findById(id).get();
+        em.remove(em.contains(ownerToDelete) ? ownerToDelete : em.merge(ownerToDelete));
     }
 
     @Override
     public List<Owner> getAllCompanies() {
-        Query query = entityManager.createQuery("SELECT c FROM Company c");
+        Query query = em.createQuery("SELECT c FROM Company c");
         return (List<Owner>) query.getResultList();
-
-//        return this.findAll().stream()
-//                            .filter(x -> x.getClass().equals(Company.class))
-//                            .collect(Collectors.toList());
     }
 
     @Override
     public List<Owner> getAllPersons() {
-        Query query = entityManager.createQuery("SELECT p FROM Person p");
+        Query query = em.createQuery("SELECT p FROM Person p");
         return (List<Owner>) query.getResultList();
-
-//        return this.findAll().stream()
-//                .filter(x -> x.getClass().equals(Person.class))
-//                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<Owner> getAllOwners() {
-        return this.findAll();
-    }
-
-    @Override
-    public Owner getOwnerById(long id) {
-//        Query query = entityManager.createQuery("SELECT o FROM Owner o WHERE id = :id");
-//        query.setParameter("id", id);
-//        return (Owner) query.getSingleResult();
-        return this.findById(id).orElse(new Person());
     }
 
     @Override

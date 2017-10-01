@@ -1,10 +1,13 @@
 package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Represents legal document issued by authorities
@@ -17,20 +20,18 @@ public class Document {
 
     private long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "code", nullable = false)
+    private String code;
 
-    @Column(name = "series")
-    private String series;
-
-    @Column(name = "number")
-    private String number;
+    @Column(name = "extension", nullable = false)
+    private String fileExtension;
 
     @Transient
-    private Set<URL> copies = new HashSet<>();
-
+    private MultipartFile file;
 
     public Document() {
+        this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
+
     }
 
     public long getId() {
@@ -42,39 +43,27 @@ public class Document {
         return this;
     }
 
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    public Document setName(String name) {
-        this.name = name;
-        return this;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getSeries() {
-        return series;
+    public String getFileExtension() {
+        return fileExtension;
     }
 
-    public Document setSeries(String series) {
-        this.series = series;
-        return this;
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
-    public String getNumber() {
-        return number;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public Document setNumber(String number) {
-        this.number = number;
-        return this;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
-
-//    public Set<URL> getCopies() {
-//        return new HashSet<>();
-//    }
-
-//    public Document setCopies(Set<URL> copies) {
-//       // this.copies = copies;
-//        return this;
-//    }
 }

@@ -1,6 +1,4 @@
-package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
+package com.softserve.edu.Resources.entity;import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -127,9 +125,13 @@ public class Person extends Owner {
     }
 
     @Override
+    public String ownerType() {
+        return "Person";
+    }
+
+    @Override
     public String customToString() {
-        return super.customToString() + " " +
-                firstName + " " +
+        return  firstName + " " +
                 lastName + " " +
                 middleName + ", " +
                 passportSeries + " " +

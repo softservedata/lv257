@@ -18,7 +18,7 @@ import java.util.Optional;
 @Repository("propertyDAO")
 public class ResourcePropertyDAOImpl extends GenericDAOImpl<ResourceProperty, Long> implements ResourcePropertyDAO {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().getClass().getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
     protected ResourcePropertyDAOImpl() {
         super(ResourceProperty.class);

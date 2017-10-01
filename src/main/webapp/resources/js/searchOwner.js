@@ -1,5 +1,7 @@
 $(document).ready(function () {
 
+    $deletedOwner.hide();
+
     $ownerSearchSelect.on('change', function () {
         const ownerType = this.value;
 
@@ -143,7 +145,7 @@ function makeAjaxCall($findOwnerButton, ownerType, $resultDiv){
 
         let jsonString = toJSONString(searchOwnerFormId);
         searchQuery["ownerType"] = capitalizeFirstLetter(ownerType);
-        searchQuery["fieldsAndValues"] = jsonString
+        searchQuery["fieldsAndValues"] = jsonString;
         console.log(JSON.stringify(searchQuery));
 
         $.ajax({
@@ -297,20 +299,55 @@ function showResults(success, $resultDiv){
     $chooseOwnerBtn.on('click', function (e) {
         e.preventDefault();
 
-        let $searchedOwner = $('<option/>', {
-            value: choosenOwnerId,
-            text: choosenOwnerInfo
-        });
-
         if (choosenOwnerId != 'none'){
-            $resourceOwnersMultySelect.removeClass('display_none');
-            $resourceOwnersMultySelect.prev().removeClass('display_none');
-            console.log($searchedOwner);
-            $resourceOwnersMultySelect.append($searchedOwner);
+
+            appendOwnerToTable(success, choosenOwnerId);
+
+            // $resourceOwnersMultySelect.append($searchedOwner);
             showSuccessMessage($resultDiv);
         }
     })
 }
+
+function appendOwnerToTable(result, choosenOwnerId){
+    let concreteOwner;
+    for(let i = 0; i < result.length; i++){
+        if (result[i]['ownerId'] == choosenOwnerId){
+            console.log(result[i]);
+            concreteOwner = result[i];
+            break;
+        }
+    }
+    $resourceOwnerTable.removeClass('display_none');
+    let $tr = $('<tr/>', {
+        class: 'existing_owner',
+        id: concreteOwner['ownerId']
+    });
+
+    $ownersTbody.append($tr);
+    for (let attributeValue in concreteOwner) {
+        if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
+            console.log(concreteOwner[attributeValue]);
+            let $td = $('<td/>', {
+                text: concreteOwner[attributeValue]
+            });
+            $tr.append($td);
+        }
+    }
+
+    let $deleteOption = appendDeleteOptionVersionTwo($tr);
+
+    $deleteOption.on('click', function (e) {
+        e.preventDefault();
+        if ( $(this).parent().attr('class') == 'existing_owner'){
+            console.log($(this).parent().attr('id'));
+            $tr.remove();
+            $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
+            checkIfOneOwnerVersionTwo();
+        }
+    })
+}
+
 
 function buildOptions(success, $select) {
     let $choose = $('<option\>', {
@@ -320,8 +357,8 @@ function buildOptions(success, $select) {
     $select.append($choose);
     for (let i = 0; i < success.length; i++) {
         let $option = $('<option\>', {
-            value: success[i].objectId,
-            text: success[i].message
+            value: success[i].ownerId,
+            text: success[i].personalInfo
         });
         $select.append($option);
     }
@@ -332,9 +369,31 @@ function SearchByOwnerType(value, text) {
     this.text = text;
 }
 
+function appendDeleteOptionVersionTwo($tr){
+    $tdDelete = $('<td/>');
+    $aDelete = $('<a/>');
+    $iDelete = $('<i/>', {
+        class: 'glyphicon glyphicon-remove',
+        'aria-hidden': "true"
+    });
+    $tdDelete.append($aDelete);
+    $aDelete.append($iDelete);
+    $tr.append($tdDelete);
+    return $tdDelete;
+}
+
+
+function checkIfOneOwnerVersionTwo(){
+    if ($('.owners_tbody tr').length == 0){
+        console.log($('.owners_tbody tr').length);
+        $resourceOwnerTable.addClass('display_none');
+    }
+}
+
 const concreteOwnerOption = 'concrete_owner_select';
 const searchOwnerFormId = 'owner_search_form';
 
+const $deletedOwner = $('#deleted_owner');
 const $ownerSearchSelect = $('#owner_search');
 const $resourceOwnersMultySelect = $('#resource_owners');
 const $searchOwnerFormPlaceholder = $('#search_owner_form');

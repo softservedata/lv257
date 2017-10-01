@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class FileUploadUtility {
-
+   // private static final String ABS_PATH_2 = System.getenv( "PICTURES_PATH");
     private static final String ABS_PATH = "C:\\Users\\lenovo\\IdeaProjects\\trunk\\lv257\\src\\main\\webapp\\resources\\upload\\";
     private static String REAL_PATH = "";
     private static final Logger logger = LoggerFactory.getLogger(FileUploadUtility.class);
@@ -21,12 +21,11 @@ public class FileUploadUtility {
 
         logger.info(REAL_PATH);
 
-        // to make sure all the directory exists. if not exists
-        // please create the directories
-        if (!new File(ABS_PATH).exists()) {
-            // create the directories
-            new File(ABS_PATH).mkdirs();
-        }
+        // to make sure all the directory exists.
+       if (!new File(ABS_PATH).exists()) {
+           // create the directories
+           new File(ABS_PATH).mkdirs();
+       }
 
         if (!new File(REAL_PATH).exists()) {
             // create the directories
@@ -36,7 +35,7 @@ public class FileUploadUtility {
         try {
             if(file.getContentType().equals("application/pdf")){
                 file.transferTo(new File(REAL_PATH + code + ".pdf"));
-                // project directory upload
+                 //project directory upload
                 file.transferTo(new File(ABS_PATH + code + ".pdf"));
             } else {
                 // server upload

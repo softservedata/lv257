@@ -1,17 +1,14 @@
 package com.softserve.edu.Resources.entity;
 
-import com.softserve.edu.Resources.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softserve.edu.Resources.Constants;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 /**
@@ -22,6 +19,7 @@ public class Address {
 
     @Id()
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+    @JsonProperty("addressId")
     private long id;
 
     @NotEmpty
@@ -63,11 +61,10 @@ public class Address {
     private int apartment;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Owner> owners;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Owner owner;
 
     public Address() {
-        owners = new ArrayList<>();
     }
 
     public long getId() {
@@ -155,17 +152,12 @@ public class Address {
         return this;
     }
 
-    public List<Owner> getOwners() {
-        return owners;
+    public Owner getOwner() {
+        return owner;
     }
 
-    public Address setOwners(List<Owner> owners) {
-        this.owners = owners;
-        return this;
-    }
-
-    public Address addOwner(Owner owner){
-        this.owners.add(owner);
+    public Address setOwner(Owner owner) {
+        this.owner = owner;
         return this;
     }
 
@@ -179,29 +171,29 @@ public class Address {
         if (id != address.id) return false;
         if (building != address.building) return false;
         if (apartment != address.apartment) return false;
-        if (country != null ? !country.equals(address.country) : address.country != null) return false;
-        if (region != null ? !region.equals(address.region) : address.region != null) return false;
+        if (!country.equals(address.country)) return false;
+        if (!region.equals(address.region)) return false;
         if (district != null ? !district.equals(address.district) : address.district != null) return false;
-        if (postalIndex != null ? !postalIndex.equals(address.postalIndex) : address.postalIndex != null) return false;
-        if (locality != null ? !locality.equals(address.locality) : address.locality != null) return false;
-        if (street != null ? !street.equals(address.street) : address.street != null) return false;
+        if (!postalIndex.equals(address.postalIndex)) return false;
+        if (!locality.equals(address.locality)) return false;
+        if (!street.equals(address.street)) return false;
         if (block != null ? !block.equals(address.block) : address.block != null) return false;
-        return owners != null ? owners.equals(address.owners) : address.owners == null;
+        return owner != null ? owner.equals(address.owner) : address.owner == null;
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + country.hashCode();
+        result = 31 * result + region.hashCode();
         result = 31 * result + (district != null ? district.hashCode() : 0);
-        result = 31 * result + (postalIndex != null ? postalIndex.hashCode() : 0);
-        result = 31 * result + (locality != null ? locality.hashCode() : 0);
-        result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + postalIndex.hashCode();
+        result = 31 * result + locality.hashCode();
+        result = 31 * result + street.hashCode();
         result = 31 * result + building;
         result = 31 * result + (block != null ? block.hashCode() : 0);
         result = 31 * result + apartment;
-        result = 31 * result + (owners != null ? owners.hashCode() : 0);
+        result = 31 * result + (owner != null ? owner.hashCode() : 0);
         return result;
     }
 
@@ -222,15 +214,13 @@ public class Address {
     }
 
     public String customToString(){
-        return "Address: " +
-                country + ", " +
+        return  country + ", " +
                 region + ", " +
                 district + ", " +
                 postalIndex + ", " +
                 locality + ", " +
                 street + ", " +
-                building + ", " +
-                block + ", " +
+                building + (block.isEmpty()? ", " : " " + block + " " ) +
                 apartment + ".";
     }
 }

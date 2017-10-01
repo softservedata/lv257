@@ -10,10 +10,11 @@ public class Privilege {
 
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-
     private Long id;
 
     private String name;
+
+    private PrivilegeType privilegeType;
 
     @ManyToMany(mappedBy = "privileges")
     private Collection<Role> roles;
@@ -25,6 +26,11 @@ public class Privilege {
     public Privilege(final String name) {
         super();
         this.name = name;
+    }
+    public Privilege(final String name, final PrivilegeType privilegeType) {
+        super();
+        this.name = name;
+        this.privilegeType = privilegeType;
     }
 
     //
@@ -51,6 +57,15 @@ public class Privilege {
 
     public void setRoles(final Collection<Role> roles) {
         this.roles = roles;
+    }
+
+    @Enumerated(EnumType.STRING)
+    public PrivilegeType getPrivilegeType() {
+        return privilegeType;
+    }
+
+    public void setPrivilegeType(PrivilegeType privilegeType) {
+        this.privilegeType = privilegeType;
     }
 
     @Override

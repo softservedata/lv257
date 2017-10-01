@@ -1,6 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.softserve.edu.Resources.dto.ResourceCategoryDTO;
+import com.softserve.edu.Resources.dto.Views;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.service.PropertyService;
@@ -10,9 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -42,41 +46,40 @@ public class ResourceTypeManagementController {
 
     @RequestMapping(value = "/addType", method = RequestMethod.GET)
     public String addResource(Model model) {
-        if(!alreadyExecuted) {
-            categoryService.insertCategoriesTEMPORARY();
-            alreadyExecuted = true;
-        }
-        List<ResourceCategory> rootCategories = categoryService.getRootsFromDB();
-        model.addAttribute("inputJson", categoryService.serializeCategoriesIntoJson(rootCategories));
         List<ResourceProperty> properties = propertyService.getProperties();
         model.addAttribute("properties", properties);
         return "editType";
     }
 
-    @RequestMapping(value = "/manageTypes", method = RequestMethod.GET)
-    public ModelAndView manageTypes() {
-        ModelAndView model = new ModelAndView("manageTypes");
+    @ResponseBody
+    @JsonView(Views.CategoryManaging.class)
+    @RequestMapping(value = "/manageCategories", method = RequestMethod.GET)
+    public Set<ResourceCategoryDTO> manageCategories() {
         ResourceCategory root = new ResourceCategory();
-        if(!alreadyExecuted) {
+        if (!alreadyExecuted) {
             root = categoryService.insertCategoriesTEMPORARY();
             alreadyExecuted = true;
         }
-        List<ResourceCategory> rootCategories = categoryService.getRootsFromDB();
-        model.addObject("inputJson", categoryService.serializeCategoriesIntoJson(rootCategories));
+        List<ResourceCategory> rootCategories = categoryService.findRootCategories();
+        Set<ResourceCategoryDTO> categoryDTOS = rootCategories.stream()
+                .map(categoryService::createCategoryDTO)
+                .collect(Collectors.toCollection(TreeSet::new));
 
-        ResourceCategoryDTO dto = categoryService.createCategoryDTO(root);
+/*        ResourceCategoryDTO dto = categoryService.createCategoryDTO((ResourceCategory) ((ResourceCategory) rootCategories.get(0).getChildrenCategories().toArray()[0]).getChildrenCategories().toArray()[0]);
         System.out.println(dto);
-        ResourceCategory trans = categoryService.transferFromDtoToResourceCategory(dto);
-        System.out.println(trans);
+        ResourceCategory trans = categoryService.mapFromDtoToResourceCategory(dto);
+        System.out.println(trans);*/
 
-        return model;
+        return categoryDTOS;
     }
 
     @ResponseBody
-    @RequestMapping(value = "/manageTypes", method = RequestMethod.POST)
-    public void saveResultsOfManagingTypes(@RequestBody String outputJson) {
-        List<ResourceCategory> rootCategoriesFromWeb = categoryService.deserializeCategoriesFromJson(outputJson);
-        if (!categoryService.hasCycleDependencies1(rootCategoriesFromWeb)) {
+    @RequestMapping(value = "/manageCategories", method = RequestMethod.POST)
+    public void saveResultsOfManagingCategories(@RequestBody List<ResourceCategoryDTO> categoryDTOList ) {
+        List<ResourceCategory> rootCategoriesFromWeb = categoryDTOList.stream()
+                .map(categoryService::mapFromDtoToResourceCategory)
+                .collect(Collectors.toList());
+        if (!categoryService.hasCycleDependencies(categoryService.deployAllCategoriesFromRoots(rootCategoriesFromWeb))) {
             categoryService.deleteMissingCategoriesInDB(rootCategoriesFromWeb);
             rootCategoriesFromWeb.forEach(categoryService::saveResourceCategory);
         } else {
