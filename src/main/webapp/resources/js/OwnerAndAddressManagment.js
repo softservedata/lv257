@@ -62,6 +62,7 @@ const $resourceAddressFormPlaceholder = $('#resource_address_form_placeholder');
 const $resourceAddressPopUp = $('#resourseAdressPopUp');
 const $resourceAddressSelect = $('#resource_address');
 const addressFormId = 'address_form';
+const ownerAddressFormId = 'owner_address_form';
 const customButtonId = 'custom_button';
 
 const $deletedOwnerVersionTwo = $('#deleted_owner');
@@ -153,7 +154,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
 
         if ($addressForm.valid()){
             $registerOwnerBtn.prop('disabled', false);
-            ownerAddressJson = toJSONString(addressFormId);
+            ownerAddressJson = toJSONString(ownerAddressFormId);
             console.log('owner address form: ' + JSON.stringify(ownerAddressJson));
             $ownerAddressForm.hide(1500);
             $resourceNewOwnerForm.append($clearfix);
@@ -186,7 +187,6 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                 accept: "application/json",
                 data: ownerWithAddress,
                 success: function (result) {
-                    console.log('result from the server: ' + result.objectId + " " + result.message);
                     $ownerAddressForm.empty();
                     $ownerAddressForm.show();
 
@@ -287,7 +287,7 @@ function addAddressFormWithoutBtn($placeholder, rows) {
 
     var $addressForm = $('<form/>', {
         class: 'form',
-        id: addressFormId
+        id: ownerAddressFormId
     });
     $placeholder.append($addressForm);
     appendRows($addressForm, rows);

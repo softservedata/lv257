@@ -56,7 +56,7 @@
 
                     <%--<div class="form-group">--%>
                     <%--<label for="resource_owners" class="display_none">Resource Owners</label>--%>
-                    <%--<select type="owners" id="resource_owners" class="form-control display_none" multiple>--%>
+                    <%--<select type="owner" id="resource_owners" class="form-control display_none" multiple>--%>
 
                     <%--</select>--%>
                     <%--</div>--%>
@@ -69,7 +69,7 @@
                         <hr class="my_hr">
                         <label for="owner_table">Resource Owners</label>
                         <div class="owner_table_message">
-                            Created owners are marked <span>green</span>, already existing - <span>blue</span>.
+                            Created owner are marked <span>green</span>, already existing - <span>blue</span>.
                         </div>
                         <table id="owner_table" class="table table-bordered">
                             <thead>
