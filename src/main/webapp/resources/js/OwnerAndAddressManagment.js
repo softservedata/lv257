@@ -56,7 +56,7 @@ var $idAddressInput;
 const $deletedAddress = $('#deleted_address');
 const $updatedAddress = $('#updated_address');
 const $addResourceAddressBtn = $('#add_resource_address_btn');
-const $trSuccess = $('.success');
+const $resourceAddressRow = $('#resource_address_row');
 const $resourceAddressTbl = $('.resource_address_table');
 const $resourceAddressFormPlaceholder = $('#resource_address_form_placeholder');
 const $resourceAddressPopUp = $('#resourseAdressPopUp');
@@ -215,7 +215,8 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
 function showOwnersTable(result){
     $resourceOwnerTable.removeClass('display_none');
     let $tr = $('<tr/>', {
-        class: 'new_owner',
+        ['owner_type']: 'new_owner',
+        class: 'my_success',
         id: result['ownerId']
     });
     $ownersTbody.append($tr);
@@ -233,7 +234,7 @@ function showOwnersTable(result){
 
     $deleteOption.on('click', function (e) {
         e.preventDefault();
-        if ( $(this).parent().attr('class') == 'new_owner'){
+        if ( $(this).parent().attr('owner_type') == 'new_owner'){
             console.log($(this).parent().attr('id'));
             deleteOwner($(this).parent().attr('id'));
             $tr.remove();
@@ -372,14 +373,14 @@ function showAddressTable(result){
     updateAddress = false;
     $addResourceAddressBtn.hide(1500);
     $resourceAddressTbl.removeClass('display_none');
-    $trSuccess.empty();
+    $resourceAddressRow.empty();
     let $td;
     for (let attributeValue in result) {
         if (result.hasOwnProperty(attributeValue) && attributeValue != 'addressId') {
             $td = $('<td/>', {
                 text: result[attributeValue]
             });
-            $trSuccess.append($td);
+            $resourceAddressRow.append($td);
         }
     }
 
@@ -413,7 +414,7 @@ function showAddressTable(result){
             }
         });
         $addResourceAddressBtn.show(1500);
-        $trSuccess.empty();
+        $resourceAddressRow.empty();
     })
 }
 
@@ -439,8 +440,8 @@ function appendEditDeleteOptions(){
     $tdDelete.append($aDelete);
     $aDelete.append($iDelete);
 
-    $trSuccess.append($tdEdit);
-    $trSuccess.append($tdDelete);
+    $resourceAddressRow.append($tdEdit);
+    $resourceAddressRow.append($tdDelete);
     return [$tdEdit, $tdDelete];
 }
 
@@ -779,11 +780,6 @@ var fieldsMetadata = {
 
 //  ----------------------------------- Search owner part -----------------------------------
 
-$(document).ready(function () {
-
-
-});
-
 /**
  * Appends to the placeholder select with concrete options
  * for chosen owner
@@ -1062,12 +1058,28 @@ function showResults(success, $resultDiv){
 
         if (choosenOwnerId != 'none'){
 
-            appendOwnerToTable(success, choosenOwnerId);
-
+            if(!checkIfOwnerAlreadyInTable(success)){
+                appendOwnerToTable(success, choosenOwnerId);
+                showSuccessMessage($resultDiv);
+            } else {
+             alert("Owner already added in the table!!!")
+            }
             // $resourceOwnersMultySelect.append($searchedOwner);
-            showSuccessMessage($resultDiv);
         }
     })
+}
+
+function checkIfOwnerAlreadyInTable(owners){
+    // let t = $ownersTbody.find('tr');
+    for(let i = 0; i < owners.length; i++) {
+        let children = $ownersTbody.children("[id='" + owners[i]['ownerId'] + "']");
+        console.log('finded owner with id in the table: ' + children.attr('id'));
+        if (children.attr('id') == owners[i]['ownerId']){
+            console.log('there already is such an owner!!! ');
+            return true;
+        }
+    }
+    return false;
 }
 
 function appendOwnerToTable(result, choosenOwnerId){
@@ -1081,7 +1093,8 @@ function appendOwnerToTable(result, choosenOwnerId){
     }
     $resourceOwnerTable.removeClass('display_none');
     let $tr = $('<tr/>', {
-        class: 'existing_owner',
+        ['owner_type']: 'existing_owner',
+        class: 'my_info',
         id: concreteOwner['ownerId']
     });
 
@@ -1100,7 +1113,7 @@ function appendOwnerToTable(result, choosenOwnerId){
 
     $deleteOption.on('click', function (e) {
         e.preventDefault();
-        if ( $(this).parent().attr('class') == 'existing_owner'){
+        if ( $(this).parent().attr('owner_type') == 'existing_owner'){
             console.log($(this).parent().attr('id'));
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
@@ -1108,7 +1121,6 @@ function appendOwnerToTable(result, choosenOwnerId){
         }
     })
 }
-
 
 function buildOptions(success, $select) {
     let $choose = $('<option\>', {

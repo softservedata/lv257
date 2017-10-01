@@ -106,6 +106,33 @@ font-weight: normal;
     border-top: 1px solid rgba(51, 122, 183, 0.53);
 }
 
+.owner_table_message{
+    font-size: 13.5px;
+    font-style: italic;
+}
+
+.owner_table_message span{
+    font-weight: bold;
+}
+
+.owner_table_message span:first-child{
+    color: rgba(0, 255, 0, 0.48);
+}
+
+.owner_table_message span:last-child{
+    color: rgba(84, 190, 243, 0.55);
+}
+
+.my_success{
+    background: rgba(0, 255, 0, 0.48);
+
+}
+
+.my_info{
+    background: rgba(84, 190, 243, 0.55);
+
+}
+
 .my_error_class {
     color:#ad241a;  /* red */
 }

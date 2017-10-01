@@ -229,7 +229,7 @@ public class Address {
                 postalIndex + ", " +
                 locality + ", " +
                 street + ", " +
-                building + (block.isEmpty()? ", " : block ) +
+                building + (block.isEmpty()? ", " : " " + block + " " ) +
                 apartment + ".";
     }
 }
