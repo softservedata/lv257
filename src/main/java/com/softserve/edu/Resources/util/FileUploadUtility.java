@@ -34,14 +34,19 @@ public class FileUploadUtility {
 
         try {
             if(file.getContentType().equals("application/pdf")){
+
                 file.transferTo(new File(REAL_PATH + code + ".pdf"));
-                 //project directory upload
                 file.transferTo(new File(ABS_PATH + code + ".pdf"));
-            } else {
-                // server upload
+
+            } else if(file.getContentType().equals("image/jpeg")){
+
                 file.transferTo(new File(REAL_PATH + code + ".jpg"));
-                // project directory upload
                 file.transferTo(new File(ABS_PATH + code + ".jpg"));
+
+            }else{
+
+                file.transferTo(new File(REAL_PATH + code + ".png"));
+                file.transferTo(new File(ABS_PATH + code + ".png"));
             }
         } catch (IOException e) {
 

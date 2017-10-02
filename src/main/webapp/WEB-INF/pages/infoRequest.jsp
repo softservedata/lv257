@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<jsp:include page="_menu2.jsp"/>
+
 <jsp:include page="resources.jsp" />
 <br>
 
@@ -21,14 +21,21 @@
     <h4>Description: ${info}</h4>
     <h4>Uploaded Document</h4>
     <hr>
+    <c:if test = "${extension == 'jpeg'}">
     <div>
         <img class="documentImg-view" src="/resources/upload/${code}.jpg">
     </div>
+    </c:if>
+    <c:if test = "${extension == 'pdf'}">
     <div>
         <embed class="documentPdf-view" src="/resources/upload/${code}.pdf">
     </div>
-
-
+    </c:if>
+    <c:if test = "${extension == 'png'}">
+        <div>
+            <img class="documentImg-view" src="/resources/upload/${code}.png">
+        </div>
+    </c:if>
     <hr>
     <br>
     <button class="btn btn-primary" name="back" onclick="history.back()">Back</button>

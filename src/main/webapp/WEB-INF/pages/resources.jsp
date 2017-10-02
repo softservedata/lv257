@@ -1,5 +1,5 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@page session="true"%>
+<%--<%@page session="true"%>--%>
 
 <html>
 <head>
@@ -21,12 +21,10 @@
                     <li id="sendRequest"><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
                     <li ><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
                 </ul>
+
             </div>
         </div>
     </div>
-
-
-
 </div>
 
                 <br>
