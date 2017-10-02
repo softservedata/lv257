@@ -86,9 +86,9 @@
                 <tr name="simpleRequest" style="visibility: visible">
 
                     <td>${request.resourceType}</td>
-                    <td>${request.register.username}</td>
+                    <td>${request.requesterName}</td>
                     <td>${request.update}</td>
-                    <td>${request.resourcesAdmin.username}</td>
+                    <td>${request.assignerName}</td>
                     <td>${request.status}</td>
 
                 </tr>

@@ -1,6 +1,5 @@
 package com.softserve.edu.Resources.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.ResourceRequest;
@@ -12,9 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.filechooser.FileSystemView;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @Transactional
@@ -52,13 +50,17 @@ public class ResourceRequestAdmController {
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userSpring.getUsername());
         model.addAttribute("resourceAdmin", userSpring.getUsername());
-        model.addAttribute("resourceRequest", requestService.getNewResourcesRequest());
+        List<RequestDTO> requestsDTO= requestService.getNewResourcesRequest()
+                .stream().map(request->new RequestDTO(request)).collect(Collectors.toList());
+        model.addAttribute("resourceRequest",requestsDTO);
         return "resourceRequest";
     }
 
     @RequestMapping(value = {"/history"}, method = RequestMethod.GET)
     public String requestsHistory(Model model) {
-        model.addAttribute("resourceRequest", requestService.getHistoryResourcesRequest());
+        List<RequestDTO> requestsDTO= requestService.getHistoryResourcesRequest()
+                .stream().map(request->new RequestDTO(request)).collect(Collectors.toList());
+        model.addAttribute("resourceRequest",requestsDTO);
         return "resourceRequestHistory";
     }
 
@@ -67,7 +69,7 @@ public class ResourceRequestAdmController {
     public String requestsDetails(@PathVariable int id, Model model) {
 
         ResourceRequest request = requestService.getRequestById(id);
-        model.addAttribute("request", request);
+        model.addAttribute("request", new RequestDTO(request));
         return "resourceRequestDetails";
     }
 }

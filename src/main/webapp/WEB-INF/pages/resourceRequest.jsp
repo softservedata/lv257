@@ -81,16 +81,16 @@
 
                 <tr>
                     <td>${request.resourceType}</td>
-                    <td>${request.register.username}</td>
+                    <td>${request.requesterName}</td>
                     <td><a href="/resources/details/${request.id}">details</a></td>
                     <td>${request.update}</td>
-                    <td>${request.resourcesAdmin.username}</td>
+                    <td>${request.assignerName}</td>
 
                     <c:choose>
-                        <c:when test="${request.resourcesAdmin!=null}">
+                        <c:when test="${request.assignerName!=null}">
                             <td data-order="1" data-id=${request.id}>
                                 <c:choose>
-                                    <c:when test="${request.resourcesAdmin.username==resourceAdmin}">
+                                    <c:when test="${request.assignerName==resourceAdmin}">
                                         <a href="${pageContext.request.contextPath}/resources/addType">
                                             <button class="btn btn-primary">Process</button>
                                         </a>
