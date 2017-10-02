@@ -13,7 +13,6 @@ public class AddressDAOImpl extends GenericDAOImpl<Address, Long> implements Add
 
     @Override
     public void deleteAddress(Address address) {
-
         em.remove(em.contains(address) ? address : em.merge(address));
     }
 }
