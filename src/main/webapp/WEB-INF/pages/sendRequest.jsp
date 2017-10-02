@@ -1,18 +1,25 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<spring:url var="js" value="/resources/js"></spring:url>
+<spring:url var="js" value="/resources/js"/>
 <html>
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
+
 </head>
 <body>
 
 <jsp:include page="resources.jsp" />
 
+<style>
+    .red    {
+        color: red;
+    }
+</style>
 
 <div class="container-fluid">
     <div class="row">
@@ -31,47 +38,58 @@
 
                 </c:if>
                 <%--@elvariable id="request" type=""--%>
-                <sf:form id="requestForm" modelAttribute="request" action="${pageContext.request.contextPath}/resources/request"
+                <form id="requestForm" action="${pageContext.request.contextPath}/resources/request"
                          method="POST" enctype="multipart/form-data">
 
                     <div class="form-group">
-                        <label>Requested resource type</label>
-                        <sf:input type="text" path="resourceType" class="form-control" placeholder="Enter new kind of resource"/>
-                        <sf:errors path="resourceType" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
-                    </div>
+                    <spring:bind path="mRequest.resourceType">
 
+                        <label>Requested resource type</label>
+                        <input type="text" path="mRequest.resourceType" name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
+                        <c:if test="${status.error}">
+                            <c:forEach items="${status.errorMessages}" var="error">
+
+                                <span class="red"> ${error} </span>
+
+                        </c:forEach>
+                        </c:if>
+
+                    </spring:bind>
+                    </div>
 
                     <div class="form-group">
+                    <spring:bind path="mRequest.description">
+
                         <label>Description</label>
-                        <sf:input type="text" path="description" class="form-control" placeholder="Enter details"/>
-                        <sf:errors path="description" cssClass="help-block" element="em" cssStyle="color: #ff0000;"></sf:errors>
-                        <%--<label class="control-label col-md-4" for="theme">Details about new resource</label>--%>
-                        <%--<sf:textarea class="form-control" path="details" id="details"--%>
-                                     <%--placeholder="Enter details about new resource" rows="3"/>--%>
+                        <input type="text" path="mRequest.description" name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter details"/>
+
+                        <c:if test="${status.error}">
+                            <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                            </c:forEach>
+                        </c:if>
+
+                    </spring:bind>
                     </div>
 
-
+                    <div class="form-group">
                         <label for="file">Upload document</label>
 
-                        <sf:input type="file" path="file" id="file" class="form-control"/>
-                        <sf:errors path="file" cssClass="help-block errHighlight"
-                                   element="em" cssStyle="color: #ff0000;"/>
+                    <spring:bind path="document.file">
 
+                        <input type="file" path="document.file" name="${status.expression}" value="${status.value}" id="file"/>
+                        <c:if test="${status.error}">
+                            <c:forEach items="${status.errorMessages}" var="error" >
+                                <span class="red"> ${error} </span>
+                            </c:forEach>
+                        </c:if>
 
+                    </spring:bind>
+                    </div>
                     <br>
-                    <br>
-                    <%--<sf:hidden path="id"/>--%>
-                    <%--<sf:hidden path="register"/>--%>
-                    <%--<sf:hidden path="resourcesAdmin"/>--%>
-                    <%--<sf:hidden path="document"/>--%>
-                    <%--<sf:hidden path="status"/>--%>
-                    <%--<sf:hidden path="update"/>--%>
-                    <%--<sf:hidden path="message"/>--%>
-                    <%--<sf:hidden path="notifyExecutor"/>--%>
-
 
                 <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>
-                </sf:form>
+                </form>
             </div>
         </div>
     </div>
