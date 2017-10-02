@@ -92,15 +92,14 @@ public class RequestResourceController {
     }
 
 
-    @RequestMapping(value={"/info/{id}/{id_document}"}, method= RequestMethod.GET)
-    public String infoResourcesRequests( @PathVariable int id, @PathVariable int id_document, Model model) {
+    @RequestMapping(value={"/info/{id}"}, method= RequestMethod.GET)
+    public String infoResourcesRequests(@PathVariable int id, Model model) {
 
         ResourceRequest request = requestService.getRequestById(id);
-        Document document = documentService.getDocumentById(id_document);
         model.addAttribute("theme", request.getResourceType());
         model.addAttribute("info", request.getDescription());
-        model.addAttribute("code", document.getCode());
-        model.addAttribute("extension", document.getFileExtension());
+        model.addAttribute("code", request.getDocument().getCode());
+        model.addAttribute("extension", request.getDocument().getFileExtension());
         model.addAttribute("title", "Info about Request");
 
         return "infoRequest";
