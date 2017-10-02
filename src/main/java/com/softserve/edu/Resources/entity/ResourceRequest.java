@@ -161,8 +161,8 @@ public class ResourceRequest {
         if (!document.equals(that.document)) return false;
         if (!resourceType.equals(that.resourceType)) return false;
         if (!description.equals(that.description)) return false;
-        if (!register.equals(that.register)) return false;
-        if (!resourcesAdmin.equals(that.resourcesAdmin)) return false;
+        if (!register.getUsername().equals(that.register.getUsername())) return false;
+        if (!resourcesAdmin.getUsername().equals(that.resourcesAdmin.getUsername())) return false;
         if (status != that.status) return false;
         return update.equals(that.update);
     }

@@ -82,7 +82,7 @@
                 <tr>
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
-                    <td><a href="/resources/details/${request.id}">details</a></td>
+                    <td><a href="/resources/info/${request.id}">details</a></td>
                     <td>${request.update}</td>
                     <td>${request.assignerName}</td>
 

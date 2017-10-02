@@ -26,9 +26,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class RequestService {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
-
-    private final Logger logger;
+    private static final Logger  logger= LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
 
     @Autowired
@@ -45,7 +43,6 @@ public class RequestService {
 
 
     public RequestService() {
-        logger = LOGGER;
     }
 
 
@@ -95,7 +92,7 @@ public class RequestService {
             messageHandler.setMessage(message);
             mailSender.sendMessage(messageHandler);
         } else {
-            logger.error("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
+            logger.warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
         }
     }
 
@@ -135,10 +132,10 @@ public class RequestService {
                 request.setResourcesAdmin(resourceAdmin);
                 return resourceRequestDAO.makePersistent(request);
             } else {
-                logger.error("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
+                logger.warn("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
             }
         } else {
-            logger.error("ResourseRequest instance with id:" + requestId + " is undefined.");
+            logger.warn("ResourseRequest instance with id:" + requestId + " is undefined.");
         }
         return request;
 

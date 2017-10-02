@@ -11,15 +11,16 @@
 <body>
 
 
-<jsp:include page="resources.jsp" />
+<jsp:include page="_menu2.jsp"/>
 <br>
 
 <div class="container">
+    <h2>Details</h2>
 
-    <h4>Requested resource type: ${theme}</h4>
+    <h3>Requested resource type:<span> ${theme}</span></h3>
 
-    <h4>Description: ${info}</h4>
-    <h4>Uploaded Document</h4>
+    <h3>Description:<span> ${info}</span> </h3>
+    <h3>Uploaded Document:</h3>
     <hr>
     <c:if test = "${extension == 'jpeg'}">
     <div>
