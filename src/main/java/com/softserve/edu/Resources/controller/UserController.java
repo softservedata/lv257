@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.controller;
 
+import com.softserve.edu.Resources.dto.UserProfileDTO;
 import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.entity.UserDetails;
 import com.softserve.edu.Resources.service.PrivilegeService;
@@ -43,6 +44,32 @@ public class UserController {
 /**
 @version v.01+
  */
+
+@RequestMapping(value = "/profile", method = RequestMethod.GET)
+public ModelAndView profilePOST(Model model, Principal principal) {
+    String userName = principal.getName();
+    User user = userService.findByEmail(userName);
+    ModelAndView profile = new ModelAndView("profile");
+    Optional<UserProfileDTO> details = userDetailsService.getUserProfileByUserId(user.getId());
+    System.out.println(details.get());
+    profile.addObject("details", details.isPresent() ? details.get() : new UserDetails());
+    return profile;
+}
+
+    @RequestMapping(value="/profile", method=RequestMethod.POST)
+    public String profileGET(@ModelAttribute ("details") UserDetails userDetails, BindingResult result, Model model) throws Exception {
+
+        System.out.println("=======userDetails==============");
+        System.out.println(userDetails);
+
+
+//        Optional<UserDetails> details = userDetailsService.setUserDetailsByUserId(user.getId());
+
+        userDetailsService.setUserProfile(userDetails);
+
+        return "redirect:/profile";
+    }
+
 /*
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ModelAndView profile(Model model, Principal principal) {
@@ -107,30 +134,4 @@ public class UserController {
 //        return "redirect:/profile?operation=userDetails";
     }
 */
-
-
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView profilePOST(Model model, Principal principal) {
-        String userName = principal.getName();
-        User user = userService.findByEmail(userName);
-        ModelAndView profile = new ModelAndView("profile");
-        Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
-        System.out.println(details.get());
-        profile.addObject("details", details.isPresent() ? details.get() : new UserDetails());
-        return profile;
-    }
-
-    @RequestMapping(value="/profile", method=RequestMethod.POST)
-    public String profileGET(@ModelAttribute ("details") UserDetails userDetails, BindingResult result, Model model) throws Exception {
-
-        System.out.println("=======userDetails==============");
-        System.out.println(userDetails);
-
-
-//        Optional<UserDetails> details = userDetailsService.setUserDetailsByUserId(user.getId());
-
-        userDetailsService.saveOrUpdate(userDetails);
-
-        return "redirect:/profile";
-    }
 }

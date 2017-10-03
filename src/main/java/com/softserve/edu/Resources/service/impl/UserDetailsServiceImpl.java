@@ -5,10 +5,12 @@ import com.softserve.edu.Resources.dao.RoleDAO;
 import com.softserve.edu.Resources.dao.UserDAO;
 import com.softserve.edu.Resources.dao.UserDetailsDAO;
 import com.softserve.edu.Resources.dao.impl.GenericDAOImpl;
+import com.softserve.edu.Resources.dto.UserProfileDTO;
 import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.entity.UserDetails;
 import com.softserve.edu.Resources.service.UserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -39,21 +41,23 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     }
 
     @Transactional
-    public Optional<UserDetails> setUserDetailsByUserId(Long id){
-        Optional<UserDetails> userDetails = userDetailsDAO.findById(id);
+    public Optional<UserProfileDTO> getUserProfilesByUserId(Long id){
+        Optional<UserProfileDTO> userProfileDTO = userProfile  .findById(id);
 
-        return userDetails;
+        return userProfileDTO;
     }
 
+//    @Transactional
+//    public Optional<UserProfileDTO> getUserProfileByUserId(Long id){
+//        Optional<UserProfileDTO> userProfile = userDetailsDAO.findById(id);
+//
+//        return userProfile;
+//    }
+
 //    @Override
-    public void saveOrUpdate(UserDetails userDetails) {
+    public void setUserProfile(UserProfileDTO userProfileDTO) {
 
-//        if (GenericDAO.findById(userDetails.getId())==null) {
-            userDetailsDAO.save(userDetails);
-//        } else {
-//            userDetailsDAO.update(userDetails);
-//        }
-
+        userProfileDTO.  .saveUserProfile(userProfileDTO);
     }
 
 }

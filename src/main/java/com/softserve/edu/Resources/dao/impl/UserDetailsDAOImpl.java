@@ -39,12 +39,11 @@ public class UserDetailsDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
         return querySingleResult(queryUserDetails, "username", email);
     }*/
 
-//    @Override
-    public void save(UserProfileDTO userProfileDTO) {
-//        final UserDetails userDetailsToEntity1 = makePersistent(userProfileDTO);
-        final UserProfileDTO userDetailsToEntity2 = makePersistent(userProfileDTO);
-
-    }
+////    @Override
+//    public void saveUserProfile(UserProfileDTO userProfileDTO) {
+////        final UserDetails userDetailsToEntity1 = makePersistent(userProfileDTO);
+//        final UserProfileDTO userDetailsToEntity2 = makePersistent(userProfileDTO);
+//    }
 
 /*    @Override
     public User addUser(User user) {
