@@ -7,6 +7,7 @@ import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Owner;
 import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.OwnerService;
+import com.softserve.edu.Resources.util.QueryBuilder;
 import com.softserve.edu.Resources.util.ValidationDTOUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,9 +18,7 @@ import org.springframework.validation.BindingResult;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -32,6 +31,9 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Autowired
     private ValidationDTOUtility validationUtility;
+
+    @Autowired
+    private QueryBuilder queryBuilder;
 
     @Override
     public Owner addOwner(Owner owner) {
@@ -104,32 +106,7 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Override
     public List<Owner> findOwners(SearchOwnerDTO searchOwnerDTO) {
-        logger.info("Building query to search owners");
-
-        StringBuilder stringBuilder = new StringBuilder();
-        String ownerType = searchOwnerDTO.getOwnerType();
-
-        logger.info("Searching this type og owner: " + ownerType);
-
-        String ownerTypeFirstChar = String.valueOf(ownerType.charAt(0)).toLowerCase();
-
-        Map<String, String> fieldsAndValues = searchOwnerDTO.getFieldsAndValues();
-
-        stringBuilder.append("SELECT " + ownerTypeFirstChar + " FROM " + ownerType + " " + ownerTypeFirstChar);
-        stringBuilder.append(" WHERE ");
-
-        Iterator<Map.Entry<String, String>> entries = fieldsAndValues.entrySet().iterator();
-        while (entries.hasNext()) {
-            Map.Entry<String, String> entry = entries.next();
-            stringBuilder.append(entry.getKey() + "=\'" + entry.getValue() + "\' ");
-            if (entries.hasNext()) {
-                stringBuilder.append("AND ");
-            }
-        }
-
-        String readyQuery = stringBuilder.toString();
-
-        logger.info("Query to send to the DAO layer: " + readyQuery);
+        String readyQuery = queryBuilder.findOwnerQuery(searchOwnerDTO);
 
         return ownerDAO.findOwners(readyQuery);
     }

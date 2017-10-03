@@ -8,6 +8,7 @@ import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Company;
 import com.softserve.edu.Resources.entity.Owner;
 import com.softserve.edu.Resources.entity.Person;
+import com.softserve.edu.Resources.util.QueryBuilder;
 import com.softserve.edu.Resources.util.ValidationDTOUtility;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -36,13 +37,18 @@ public class OwnerServiceImplTest {
     private static Optional findByIdOwner;
     private static ValidationErrorDTO validationErrorDTO;
     private static SearchOwnerDTO searchOwnerDTO;
+    private static SearchOwnerDTO searchNonExistingOwnerDTO;
     private static String expectedQuery;
+    private static String expectedQueryWithEmptyValues;
 
     @Mock
     private OwnerDAO ownerDAO;
 
     @Mock
     private ValidationDTOUtility utility;
+
+    @Mock
+    private QueryBuilder queryBuilder;
 
     @InjectMocks
     private OwnerServiceImpl ownerService;
@@ -77,6 +83,17 @@ public class OwnerServiceImplTest {
         expectedQuery = "SELECT p FROM Person p WHERE " +
                 "first_name=\'Oleh\' AND " +
                 "last_name=\'Tsebak\' ";
+
+        Map<String, String> fieldsANdValues_2 = new TreeMap<>();
+        fieldsANdValues.put("first_name", "");
+        fieldsANdValues.put("last_name", "");
+        searchNonExistingOwnerDTO = new SearchOwnerDTO();
+        searchOwnerDTO.setOwnerType("Person");
+        searchOwnerDTO.setFieldsAndValues(fieldsANdValues);
+
+        expectedQueryWithEmptyValues = "SELECT p FROM Person p WHERE " +
+                "first_name=\'\' AND " +
+                "last_name=\'\' ";
     }
 
     @Test
@@ -156,6 +173,7 @@ public class OwnerServiceImplTest {
 
     @Test
     public void findOwnersCustomQuery(){
+        when(queryBuilder.findOwnerQuery(searchOwnerDTO)).thenReturn(expectedQuery);
         when(ownerDAO.findOwners(expectedQuery)).thenReturn(Arrays.asList(persistentOwner));
 
         List<Owner> owners = ownerService.findOwners(searchOwnerDTO);
@@ -164,6 +182,16 @@ public class OwnerServiceImplTest {
         verify(ownerDAO, times(1)).findOwners(expectedQuery);
     }
 
+    @Test
+    public void findNonExistingOwnersCustomQuery(){
+        when(queryBuilder.findOwnerQuery(searchNonExistingOwnerDTO)).thenReturn(expectedQueryWithEmptyValues);
+        when(ownerDAO.findOwners(expectedQueryWithEmptyValues)).thenReturn(mock(List.class));
+
+        List<Owner> emptyList = ownerService.findOwners(searchNonExistingOwnerDTO);
+
+        assertEquals(emptyList.size(), 0);
+        verify(ownerDAO, times(1)).findOwners(expectedQueryWithEmptyValues);
+    }
 
     @Test
     public void fromOwnerToDTOTest(){
