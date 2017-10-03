@@ -12,7 +12,7 @@ public interface UserDAO {
 
     User findById(long id);
 
-//    void delete(User user);
+    void makeTransient(User user);
 
     List<User> getAllUsers();
 }
