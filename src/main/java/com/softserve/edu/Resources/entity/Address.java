@@ -71,6 +71,10 @@ public class Address {
         return id;
     }
 
+    public Address setId(long id) {
+        this.id = id;
+        return this;
+    }
     public String getCountry() {
         return country;
     }

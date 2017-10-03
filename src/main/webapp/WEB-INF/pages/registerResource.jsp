@@ -4,7 +4,7 @@
 
 <html>
 <head>
-    <title>${title}</title>
+    <title>Register Resource</title>
 
     <jsp:include page="metadata.jsp"/>
 </head>
@@ -14,7 +14,7 @@
 <jsp:include page="_menu2.jsp"/>
 <br/>
 
-<div class="wrapper">
+<div id="bootstrap-overrides" class="wrapper">
     <div class="container-fluid">
         <div class="col-sm-12 col-md-12">
 

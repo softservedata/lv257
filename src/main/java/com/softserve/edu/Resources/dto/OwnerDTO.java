@@ -15,39 +15,44 @@ public class OwnerDTO {
         return ownerId;
     }
 
-    public void setOwnerId(long ownerId) {
+    public OwnerDTO setOwnerId(long ownerId) {
         this.ownerId = ownerId;
+        return this;
     }
 
     public String getOwnerType() {
         return ownerType;
     }
 
-    public void setOwnerType(String ownerType) {
+    public OwnerDTO setOwnerType(String ownerType) {
         this.ownerType = ownerType;
+        return this;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public OwnerDTO setPhone(String phone) {
         this.phone = phone;
+        return this;
     }
 
     public String getAddressInfo() {
         return addressInfo;
     }
 
-    public void setAddressInfo(String addressInfo) {
+    public OwnerDTO setAddressInfo(String addressInfo) {
         this.addressInfo = addressInfo;
+        return this;
     }
 
     public String getPersonalInfo() {
         return personalInfo;
     }
 
-    public void setPersonalInfo(String personalInfo) {
+    public OwnerDTO setPersonalInfo(String personalInfo) {
         this.personalInfo = personalInfo;
+        return this;
     }
 }

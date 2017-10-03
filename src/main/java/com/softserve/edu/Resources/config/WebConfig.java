@@ -14,7 +14,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-//@PropertySource("classpath:html.properties")
+@PropertySource("classpath:html.properties")
 @ComponentScan({"com.softserve.edu.Resources.controller", "com.softserve.edu.Resources.rest"})
 @EnableTransactionManagement
 public class WebConfig extends WebMvcConfigurerAdapter {

@@ -2,8 +2,10 @@ package com.softserve.edu.Resources.service.impl;
 
 
 import com.softserve.edu.Resources.dao.UserDAO;
+import com.softserve.edu.Resources.dao.impl.DocumentDAOImpl;
 import com.softserve.edu.Resources.dao.impl.ResourceRequestDAOImpl;
 import com.softserve.edu.Resources.dto.Message;
+import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
 import org.slf4j.Logger;
@@ -32,10 +34,13 @@ public class RequestService {
     @Autowired
     ResourceRequestDAOImpl resourceRequestDAO;
     @Autowired
+    DocumentDAOImpl documentDAO;
+    @Autowired
     UserDAO userDAO;
 
     @Autowired
     MailSenderService mailSender;
+
     @Autowired
     RequestMessageHandler messageHandler;
 
@@ -44,21 +49,23 @@ public class RequestService {
         logger = LOGGER;
     }
 
-    public void fillUpRequest(ResourceRequest requestService) {
+
+    public void fillUpRequest(ResourceRequest resourceRequest, Document document) {
 
         org.springframework.security.core.userdetails.User userSpring =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        requestService.setStatus(ResourceRequest.Status.NEW);
+        resourceRequest.setStatus(ResourceRequest.Status.NEW);
 
-        requestService.setUpdate(new Date());
+        resourceRequest.setDocument(document);
+
+        resourceRequest.setUpdate(new Date());
 
         User user = userDAO.findByEmail(userSpring.getUsername());
 
-        requestService.setRegister(user);
+        resourceRequest.setRegister(user);
 
-
-        resourceRequestDAO.makePersistent(requestService);
+        resourceRequestDAO.makePersistent(resourceRequest);
 
     }
 

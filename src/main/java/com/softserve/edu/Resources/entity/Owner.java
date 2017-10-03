@@ -45,6 +45,11 @@ public abstract class Owner {
     public Owner() {
     }
 
+    public Owner setId(long id) {
+        this.id = id;
+        return this;
+    }
+
     public long getId() {
         return id;
     }
