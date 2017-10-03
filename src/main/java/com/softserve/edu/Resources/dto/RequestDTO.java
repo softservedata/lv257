@@ -16,7 +16,7 @@ public class RequestDTO {
             (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+3")
     private Date update;
     private ResourceRequest.Status status;
-    private String code;
+    //private String code;
 
     public long getId() {
         return id;
@@ -74,13 +74,13 @@ public class RequestDTO {
         this.status = status;
     }
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+//    public String getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(String code) {
+//        this.code = code;
+//    }
 
 
     public RequestDTO(){
@@ -95,6 +95,6 @@ public class RequestDTO {
         this.description = request.getDescription();
         this.update = request.getUpdate();
         this.status = request.getStatus();
-        this.code = request.getCode();
+//        this.code = request.getCode();
     }
 }

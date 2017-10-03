@@ -8,4 +8,6 @@ public interface VerificationTokenDAO {
     VerificationToken makePersistent (VerificationToken verificationToken);
 
     VerificationToken findByToken(String token);
+
+    void makeTransient(VerificationToken verificationToken);
 }

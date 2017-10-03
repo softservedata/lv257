@@ -17,13 +17,12 @@ import java.util.UUID;
 public class Document {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+    private long id_document;
 
-    private long id;
-
-    @Column(name = "code", nullable = false)
+    @Column(name = "code")
     private String code;
 
-    @Column(name = "extension", nullable = false)
+    @Column(name = "extension")
     private String fileExtension;
 
     @Transient
@@ -35,12 +34,11 @@ public class Document {
     }
 
     public long getId() {
-        return id;
+        return id_document;
     }
 
-    public Document setId(long id) {
-        this.id = id;
-        return this;
+    public void setId(long id_document) {
+        this.id_document = id_document;
     }
 
     public String getCode() {

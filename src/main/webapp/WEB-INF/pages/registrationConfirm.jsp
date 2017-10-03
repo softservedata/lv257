@@ -6,16 +6,16 @@
 <body>
 <jsp:include page="_menu2.jsp"/>
 
+<br/>
 
-<div>
-
-    <%--<h1 class="alert alert-info" th:text="#{message.regSucc}">success</h1>--%>
-    <%--<br/>--%>
-    <%--<span th:if="${param.token != null}" th:text="#{token.message}">token</span>--%>
-    <%--<span th:text="${param.token}">token</span>--%>
-    <%--<br/>--%>
-    <a class="btn btn-primary" th:href="@{/login}" th:text="#{label.login}">login</a>
-    <h1>Your registration confirmed</h1>
+<br><br><br><br>
+<div class="container-fluid">
+    <center>
+        <div style="border: 1px groove gray; border-radius: 5px; padding: 5px; width: 400px;">
+            <h3>${message}</h3>
+        </div>
+    </center>
 </div>
+
 </body>
 </html>
