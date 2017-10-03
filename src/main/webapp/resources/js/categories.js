@@ -49,7 +49,7 @@
         if(action === 'add-item') {
             var newItem = {
 //                    "id": ++lastId,
-                "categoryname": "new category",
+                "categoryname"  : "new category",
 //                    "parent_id" : 1516,
                 "content": "Item " + lastId
             };

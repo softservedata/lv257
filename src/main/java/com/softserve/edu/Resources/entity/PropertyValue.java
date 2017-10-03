@@ -32,21 +32,20 @@ public class PropertyValue implements Comparable<PropertyValue> {
         return value;
     }
 
-    public PropertyValue setValue(String value) {
-        if (!type.isRequired() && value == null) {
-            throw new NullPointerException("NOT NULL constraint violation.");
+  public PropertyValue setValue(String value) {
+    if (!type.isRequired() && value == null) {
+      throw new NullPointerException("NOT NULL constraint violation.");
 
-        }
+    }if (!validate(value)) {
 
-        if (!validate(value)) {
-            System.out.println(value);
-            throw new IllegalArgumentException("Invalid value format. Should match " + type.getPattern());
-        }
-        this.value = value;
-        return this;
+      throw new IllegalArgumentException("Invalid value format. Should match "
+                                             + type.getPattern());
     }
+    this.value = value;
+    return this;
+  }
 
-    @Override
+  @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -81,9 +80,10 @@ public class PropertyValue implements Comparable<PropertyValue> {
     }
 
     private boolean validate(String value) {
-        System.out.println(type.getPattern());
-        return ((type.getPattern() != null) && (value != null)) && value.matches(type.getPattern());
-    }
+
+    return ((type.getPattern() != null) && (value != null))
+               && value.matches(type.getPattern());
+  }
 
     @Override
     public String toString() {

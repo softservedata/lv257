@@ -18,6 +18,7 @@ import java.util.Properties;
 @ComponentScan(basePackages={"com.softserve.edu.Resources"})
 @PropertySource("classpath:mail.properties")
 public class ApplicationConfig {
+
     @Bean
     public MessageSource messageSource(){
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -38,10 +39,9 @@ public class ApplicationConfig {
     @Bean
     public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
         mailSender.setHost(env.getProperty("mail.host"));
-
         mailSender.setPort(env.getProperty("mail.port",Integer.class));
-
         mailSender.setUsername(env.getProperty("mail.username"));
         mailSender.setPassword(env.getProperty("mail.password"));
 

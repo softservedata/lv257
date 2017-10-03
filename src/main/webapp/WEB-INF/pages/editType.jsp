@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
@@ -41,11 +42,11 @@
             </div>
             <div id="definition-form" class="container hidden"<%-- style="display: none;"--%>>
                 <br>
-                <form action="ResourcesView.html">
+                <form action="${contextPath}/resources" method="post">
                     <div class="row">
                         <div id="categories" class="col-sm-6 col-xs-8 form-group">
                             <label for="rCategory">Resource Category</label>
-                            <select type="resource type" id="rCategory" class="form-control selectpicker"
+                            <select id="rCategory" class="form-control selectpicker"
                                     data-live-search="true" title="Select desired category">
                                 <option style="text-indent: 0px;">Capital</option>
                                 <option style="text-indent: 10px;">Real Estate</option>
@@ -62,10 +63,19 @@
                     </div>
 
                     <div class="row">
-                        <div id="categoryTypes" class="col-sm-6 col-xs-8 form-group">
-                            <label for="resourceType">Resource Type Name</label>
-                            <input id="resourceType" type="text" class="form-control"
+                        <div class="col-sm-6 col-xs-8 form-group">
+                            <label for="resource-type">Type Name</label>
+                            <input id="resource-type" type="text" class="form-control" pattern="${typeNamePattern}"
                                    placeholder="Enter the name of new resource type">
+                                   <%--placeholder="Enter the name of new resource type">--%>
+                        </div>
+                    </div>
+
+									<div class="row">
+                        <div class="col-sm-6 col-xs-8 form-group">
+                            <label for="resource-table-name">Type's Table Name</label>
+                            <input id="resource-table-name" type="text" class="form-control" pattern="${tableNamePattern}"
+                                   placeholder="Enter the name of resource's table">
                         </div>
                     </div>
                     <div class="container-fluid">
@@ -74,54 +84,51 @@
                         <hr>
                         <div class="container">
                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#existent-props">Add existing
+                                    data-target="#available-props-modal">Add existing
                             </button>
                             <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#new-property">Add new
+                                    data-target="#new-property-modal">Add new
                             </button>
                         </div>
-
-                        <jsp:include page="dialogs/existentProperties.jsp"/>
-                        <jsp:include page="dialogs/newProperty.jsp"/>
-                        <jsp:include page="dialogs/categories.jsp"/>
-
                         <div class="container col-md-8">
-                            <table class="table table-hover">
+                            <table id="assigned-props" class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th>Characteristic Name</th>
-                                    <th>Details</th>
-                                    <th>Edit</th>
-                                    <th>Delete</th>
+                                    <th><%--Remove--%></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Char 1</td>
-                                    <td>Det 1</td>
-                                    <td><a href="#"><i class="glyphicon glyphicon-edit"></i></a></td>
-                                    <td><a href="#"><i class="glyphicon glyphicon-remove"></i></a></td>
+                                <tr class="assigned-template hidden">
+                                    <td>.</td>
+                                    <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-default">Save</button>
+                    <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
+                    <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
 
                 </form>
+                <jsp:include page="dialogs/availableProperties.jsp"/>
+                <jsp:include page="dialogs/newProperty.jsp"/>
+                <jsp:include page="dialogs/categories.jsp"/>
             </div>
         </div>
     </div>
 </div>
 
 <jsp:include page="${contextPath}footer.jsp"/>
+<script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script>
-    $("#addition-btn").on('click', function (e) {
+    $("#addition-btn").click(function (e) {
         $('#addition-btn, #definition-form').toggleClass('hidden');
     });
-
-    <%--inputJson = ${inputJson};--%>
+    var existentProperties;
 </script>
-<script src="${contextPath}/resources/js/categoriesManagement.js"></script>
+<script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
+<script src="${contextPath}/resources/js/categories.js"></script>
+<script src="${contextPath}/resources/js/properties.js"></script>
 </body>
 </html>
