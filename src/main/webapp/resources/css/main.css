@@ -1,0 +1,143 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  padding-top: 50px;
+  margin-bottom: 60px;
+}
+
+.font-bold {
+font-weight: bold;
+}
+
+.font-normal {
+font-weight: normal;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+.container .text-muted {
+  margin: 20px 0;
+}
+
+/* Temporarily disabled, because kills responsivity of table. */
+/*.scrollable-tbody {
+    display:block;
+    height:200px;
+    overflow-y:scroll;
+}
+.fixed-head, .scrollable-tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+.fixed-head {
+    width: calc( 100% - 1.2em );
+}  */
+
+/* Igor */
+.selected {
+  font-weight: bold;
+}
+
+.menu-link {
+    text-decoration: none;
+    color: black;
+}
+
+/* Ira */
+.left-align {
+  text-align: left;
+}
+
+.documentImg-view{
+ max-width: 500px; max-height: 600px;
+}
+
+.documentPdf-view{
+  width:650px; height:900px;
+  min-height: 0px; min-width:0px;
+}
+
+/* Oleh */
+
+.table tbody > tr > td{
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table thead > tr > th{
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-bordered{
+    font-size: 15px;
+}
+
+.padding_bottom_15{
+    padding-bottom: 15px;
+}
+
+.padding_top_40{
+    padding-top: 40px;
+}
+
+.display_none{
+    display: none;
+}
+
+.width_12em{
+    width: 12em;
+}
+
+.my_hr{
+    margin-bottom: 5px;
+    margin-top: 10px;
+    border-top: 1px solid rgba(51, 122, 183, 0.53);
+}
+
+.owner_table_message{
+    font-size: 13.5px;
+    font-style: italic;
+}
+
+.owner_table_message span{
+    font-weight: bold;
+}
+
+.owner_table_message span:first-child{
+    color: rgba(0, 255, 0, 0.48);
+}
+
+.owner_table_message span:last-child{
+    color: rgba(84, 190, 243, 0.55);
+}
+
+.my_success{
+    background: rgba(0, 255, 0, 0.33);
+
+}
+
+.my_info{
+    background: rgba(84, 190, 243, 0.55);
+
+}
+
+.my_error_class {
+    color:#ad241a;  /* red */
+}
+
+.my_success_class {
+    color: #405bad;  /* blue */
+}
+

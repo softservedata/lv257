@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Managing Resource Types</title>
+    <link rel="icon" href="../image/resources-logo.png">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"
+            rel="stylesheet"/>
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/nestable.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.js"></script>
+    <script src="../js/jquery.nestable.js"></script>
+    <script>
+        $(document).ready(function () {
+            var updateOutput = function(e) {
+                var list = e.length ? e : $(e.target),
+                    output = list.data('output');
+                if(window.JSON) {
+                    output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
+                }
+                else {
+                    output.val('JSON browser support required for this demo.');
+                }
+                console.log(window.JSON.stringify(list.nestable('serialize')));
+            };
+
+            var json = [{
+                "id" : 773,
+                "catname" : "root",
+                "children" : [ {
+                    "id" : 774,
+                    "catname" : "branch1",
+                    "children" : [ {
+                        "id" : 776,
+                        "catname" : "leaf1_1",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch1/leaf1_1",
+                        "restypes" : null
+                    }, {
+                        "id" : 777,
+                        "catname" : "leaf1_2",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch1/leaf1_2",
+                        "restypes" : null
+                    }, {
+                        "id" : 780,
+                        "catname" : "leaf1_3",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch1/leaf1_3",
+                        "restypes" : null
+                    } ],
+                    "level" : 1,
+                    "rootpath" : "/root/branch1",
+                    "restypes" : null
+                }, {
+                    "id" : 775,
+                    "catname" : "branch2",
+                    "children" : [ {
+                        "id" : 779,
+                        "catname" : "leaf2_2",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch2/leaf2_2",
+                        "restypes" : null
+                    }, {
+                        "id" : 778,
+                        "catname" : "leaf2_1",
+                        "children" : [ ],
+                        "level" : 2,
+                        "rootpath" : "/root/branch2/leaf2_1",
+                        "restypes" : null
+                    } ],
+                    "level" : 1,
+                    "rootpath" : "/root/branch2",
+                    "restypes" : null
+                } ],
+                "level" : 0,
+                "rootpath" : "/root",
+                "restypes" : null
+            }];
+
+            // activate Nestable for list 1
+/*            $('#nestable').nestable({
+                json: json,
+                contentCallback: function(item) {
+                    var content = item.catname || '' ? item.catname : item.id;
+                    content += ' <i>(id = ' + item.id + ')</i>';
+
+                    return content;
+                }
+            }).on('change', updateOutput);*/
+
+            // output initial serialised data
+            updateOutput($('#nestable').data('output', $('#nestable-output')));
+
+            $('#nestable-menu').on('click', function (e) {
+                var target = $(e.target),
+                    action = target.data('action');
+                if (action === 'expand-all') {
+                    $('.dd').nestable('expandAll');
+                }
+                if (action === 'collapse-all') {
+                    $('.dd').nestable('collapseAll');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" rel="home" href="Main.html"
+               title="Project Resources"> <img
+                    style="max-width: 100px; margin-top: -10px;"
+                    src="../image/resources-logo.png">
+            </a> <a class="navbar-brand" rel="home" href="#"
+                    title="Project Resources"> <img style="max-width: 100px"
+                                                    src="../image/text.png"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="LookUpResources.html">Look up</a></li>
+                <li><a href="ManageUsersAndRoles.html">Users</a></li>
+                <li class="active"><a href="ResourcesRequest.html">Resources</a></li>
+                <li><a href="#">Community</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="language-panel"><a href="" class="dropdown-toggle"
+                                              data-toggle="dropdown" role="button" aria-haspopup="true"
+                                              aria-expanded="false"><span class="glyphicon glyphicon-globe"></span>
+                    Language<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="">English</a></li>
+                        <li><a href="">Ukrainian</a></li>
+                        <li><a href="">Russian</a></li>
+                    </ul>
+                </li>
+                <li class="Account"><a href="" class="dropdown-toggle"
+                                       data-toggle="dropdown" role="button" aria-haspopup="true"
+                                       aria-expanded="false"><span class="glyphicon glyphicon-user"></span>
+                    Profile (Resource Admin)<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="">Signed in as Resource Admin</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="Account.html">Your profile</a></li>
+                        <li><a href="Profile.html">Settings</a></li>
+                        <li><a href="">Help</a></li>
+                        <li><a href="">Sign out</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">Debug information</li>
+                        <li><a href="">A.10</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/>
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li><a href="ResourcesView.html">View</a></li>
+        <li><a href="#">Add</a></li>
+        <li class="active"><a href="#">Edit</a></li>
+        <li><a href="ResourcesRequest.html">Requests <span class="badge">3</span></a></li>
+    </ul>
+    <br>
+    <h3>Manage resource types and its properties</h3>
+    <br>
+    <div id="nestable-menu">
+        <button type="button" class="btn btn-primary" data-action="expand-all">Expand All</button>
+        <button type="button" class="btn btn-primary" data-action="collapse-all">Collapse All</button>
+    </div>
+    <div class="dd scrollable" id="nestable">
+        <ol class="dd-list">
+            <li class="dd-item rcategory" data-id="1">
+                <div>
+                <div class="dd-handle">Item 1<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div></div>
+            </li>
+            <li class="dd-item rcategory" data-id="2">
+                <div class="dd-handle">Item 2<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                <ol class="dd-list">
+                    <li class="dd-item rcategory" data-id="3">
+                        <div class="dd-handle">Item 3<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                    </li>
+                    <li class="dd-item rcategory" data-id="4">
+                        <div class="dd-handle">Item 4<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                    </li>
+                    <li class="dd-item rcategory" data-id="5">
+                        <div class="dd-handle">Item 5<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                        <ol class="dd-list">
+                            <li class="dd-item rtype" data-id="6">
+                                <div class="dd-handle">Item 6<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-list-alt"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                            </li>
+                            <li class="dd-item rtype" data-id="7">
+                                <div class="dd-handle">Item 7<span class="pull-right"><button type="button" class="btn btn-link props" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-list-alt"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                            </li>
+                            <li class="dd-item rtype" data-id="8">
+                                <div class="dd-handle">Item 8<span class="pull-right"><button type="button" class="btn btn-link props" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-list-alt"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                            </li>
+                        </ol>
+                    </li>
+                    <li class="dd-item rcategory" data-id="9">
+                        <div class="dd-handle">Item 9<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                    </li>
+                    <li class="dd-item rcategory" data-id="10">
+                        <div class="dd-handle">Item 10<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                    </li>
+                </ol>
+            </li>
+            <li class="dd-item" data-id="11">
+                <div class="dd-handle">Item 11<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+            </li>
+            <li class="dd-item" data-id="12">
+                <div class="dd-handle">Item 12<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+            </li>
+        </ol>
+    </div>
+
+    <!--<div class="dd scrollable" id="nestable"></div>-->
+
+    <div id="proptable">
+        <br>
+        <h4>Properties of the selected resource type</h4>
+        <hr>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Characteristic Name</th>
+                <th>Details</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Char 1</td>
+                <td>Det 1</td>
+                <td>
+                    <button type="button" class="btn btn-link" data-toggle="modal"
+                            data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link"><span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Char2</td>
+                <td>Det 2</td>
+                <td>
+                    <button type="button" class="btn btn-link" data-toggle="modal"
+                            data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link"><span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Char3</td>
+                <td>Det 3</td>
+                <td>
+                    <button type="button" class="btn btn-link" data-toggle="modal"
+                            data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-link"><span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div id="editProp" class="modal fade" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                        <h4>Edit Property</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <form class="form">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="title">Property title</label>
+                                            <input type="text" class="form-control" id="title" placeholder="Title"
+                                                   value="Capacity of engine">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="name">Property name</label>
+                                            <input type="text" class="form-control" id="name" placeholder="Name"
+                                                   value="Capacity">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <label for="units">Measuring units</label>
+                                            <input type="text" class="form-control" id="units"
+                                                   placeholder="e.g. cc (cubical centimeters)" value="cc">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="valueType">Value type</label>
+                                            <select class="form-control" id="valueType" placeholder="Select value type">
+                                                <option value="0">Select value type</option>
+                                                <option value="1">integer</option>
+                                                <option value="2" selected>decimal</option>
+                                                <option value="3">string</option>
+                                                <option value="4">boolean</option>
+                                                <option value="5">timestamp</option>
+                                                <option value="6">resource property</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label for="default">Default value</label>
+                                            <input type="text" class="form-control" id="default" placeholder="0"
+                                                   value="100">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                    <label for="pattern">Validation pattern</label>
+                                    <input type="text" class="form-control" id="pattern"
+                                           placeholder="pattern string, e.g. [0-9]+\.[0-9]*[1-9] for decimal with non-zero last digit"
+                                           value="[0-9]+\.[0-9]*[1-9]">
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="searchable"><span
+                                            class="font-bold">Essential</span></label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="multi"><span class="font-bold">Multivalued</span></label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="req"><span
+                                            class="font-bold">Required</span></label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" id="secured"><span
+                                            class="font-bold">Secured</span></label>
+                                </div>
+                                <div class="container-fluid pull-right">
+                                    <button type="reset" class="btn btn-primary" data-dismiss="modal">Save</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pull-right">
+        <button class="btn btn-primary">Save</button>
+        <button class="btn">Cancel</button>
+    </div>
+</div>
+<br>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; Lv257_Java</p>
+    </div>
+</footer>
+<script>
+    function props() {
+        var x = document.getElementById('proptable');
+        x.style.display = 'block';
+    }
+</script>
+<script>$("#props").on('click', function () {
+    $("#proptable").hide();
+})</script>
+</body>
+</html>
