@@ -8,6 +8,7 @@ import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.service.PropertyService;
 import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -32,10 +33,14 @@ public class ResourceTypeManagementController {
     @Autowired
     ResourceCategoryService categoryService;
 
+    @Autowired
+    private Environment env;
+
     private static boolean alreadyExecuted = false;
 
     @RequestMapping(value = "/editType", method = RequestMethod.GET)
-    public String editResource(@RequestParam(value = "id", defaultValue = "0") long id) {
+    public String editResource(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
+        model.addAttribute("env", env);
         if (id == 0) {
             return "editType";
         } else {
@@ -87,4 +92,5 @@ public class ResourceTypeManagementController {
 //            throw new RuntimeException("Can not save hierarchy of Resource Categories with cycle dependencies");
         }
     }
+
 }

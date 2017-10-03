@@ -36,6 +36,7 @@ public class RequestService {
 
     @Autowired
     MailSenderService mailSender;
+
     @Autowired
     RequestMessageHandler messageHandler;
 

@@ -1,6 +1,8 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softserve.edu.Resources.Constants;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Optional;
@@ -11,31 +13,36 @@ import java.util.Optional;
  * can have a collection (a set in general) of different properties.
  */
 @Entity
-@Table(name = "RESOURCE_PROPERTIES")
+@Table(
+        name = "RESOURCE_PROPERTIES",
+        uniqueConstraints = @UniqueConstraint(name = "unq_title_units",columnNames = {"Title", "Units"}))
 public class ResourceProperty {
 
-    @Transient
-    static long idgen = 0;
+//    @Transient
+    @JsonIgnore
+    transient static long idgen = 0;
+
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-
     private Long id;
 
-    @Column(name="Column_Name")
+    @Column(name="Column_Name", unique = true, nullable = false)
+    @NotEmpty
     private String columnName;
 
-    @Column(name="Title")
+    @Column(name="Title", nullable = false)
+    @NotEmpty
     private String title;
 
     @Column(name = "Units")
     private String units;
 
-    @Column(name = "Regex")
+    @Column(name = "Regex", nullable = false)
     private String pattern = ".+";
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Value_Type")
-    private ValueType valueType;
+    private ValueType valueType = ValueType.STRING;
 
     @Column(name = "Multivalued")
     private boolean multivalued = false;
@@ -117,10 +124,6 @@ public class ResourceProperty {
         return this;
     }
 
-    public String getValueTypeName() {
-        return valueType.typeName;
-    }
-
     public ResourceProperty setId(Long id) {
         this.id = id;
         return this;
@@ -177,6 +180,8 @@ public class ResourceProperty {
     }
 
     public String getDescription() {
-        return units == null ? columnName : String.join(", ", columnName, units);
+        return units == null || units.isEmpty()
+                       ? title
+                       : String.join(", ", title, units);
     }
 }

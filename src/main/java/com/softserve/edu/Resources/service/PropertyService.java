@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.service;
 
+import com.softserve.edu.Resources.dto.ResourcePropertyDescription;
+import com.softserve.edu.Resources.dto.ValueTypeDTO;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 
 import java.util.List;
@@ -19,8 +21,9 @@ public interface PropertyService {
 
     List<ResourceProperty> getProperties(String propertyName);
 
-    int propertiesCount();
+    Long propertiesCount();
 
-    List<String> getPropertyDescriptions();
+    List<ResourcePropertyDescription> getPropertyDescriptions();
 
+    List<ValueTypeDTO> getValueTypes();
 }
