@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 //@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
-public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
+public class ResourceCategoryDTO{
 
     @JsonView(Views.CategoryManaging.class)
     private Long id;
@@ -27,7 +27,7 @@ public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
     @JsonManagedReference
     @JsonProperty("children")
     @JsonView(Views.CategoryManaging.class)
-    private Set<ResourceCategoryDTO> childrenCategories = new TreeSet<>();
+    private Set<ResourceCategoryDTO> childrenCategories = new HashSet<>();
 
     @JsonView(Views.CategorySelecting.class)
     private Integer depth;
@@ -119,11 +119,6 @@ public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + categoryName.hashCode();
         return result;
-    }
-
-    @Override
-    public int compareTo(ResourceCategoryDTO other) {
-        return this.categoryName.compareTo(other.categoryName);
     }
 }
 
