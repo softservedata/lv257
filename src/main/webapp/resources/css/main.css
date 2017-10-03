@@ -74,13 +74,13 @@ h3 span{
 
 /* Oleh */
 
-.table tbody > tr > td{
-    vertical-align: middle;
+#bootstrap-overrides th{
+    vertical-align: middle; !important;
     text-align: center;
 }
 
-.table thead > tr > th{
-    vertical-align: middle;
+#bootstrap-overrides td{
+    vertical-align: middle; !important;
     text-align: center;
 }
 
