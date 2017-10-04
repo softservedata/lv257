@@ -67,11 +67,11 @@
                             <label for="resource-type">Type Name</label>
                             <input id="resource-type" type="text" class="form-control" pattern="${typeNamePattern}"
                                    placeholder="Enter the name of new resource type">
-                                   <%--placeholder="Enter the name of new resource type">--%>
+                            <%--placeholder="Enter the name of new resource type">--%>
                         </div>
                     </div>
 
-									<div class="row">
+                    <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="resource-table-name">Type's Table Name</label>
                             <input id="resource-table-name" type="text" class="form-control" pattern="${tableNamePattern}"
@@ -122,13 +122,16 @@
 <jsp:include page="${contextPath}footer.jsp"/>
 <script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script>
-    $("#addition-btn").click(function (e) {
-        $('#addition-btn, #definition-form').toggleClass('hidden');
-    });
-    var existentProperties;
+	$("#addition-btn").click(function (e) {
+		$('#addition-btn, #definition-form').toggleClass('hidden');
+	});
+	var existentProperties;
+	<c:set var="idVal" value="${id}"></c:set>
+  var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
 </script>
 <script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
 <script src="${contextPath}/resources/js/categories.js"></script>
+<script src="${contextPath}/resources/js/resourceTypes.js"></script>
 <script src="${contextPath}/resources/js/properties.js"></script>
 </body>
 </html>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="se" uri="http://www.springframework.org/tags" %>
 <div id="new-property-modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -63,7 +64,7 @@
                 <label for="pattern">Value validation pattern</label>
                 <input type="text" class="form-control" id="pattern" name="pattern"
                        placeholder="pattern string, e.g. [0-9]+\\.[0-9]*[1-9] for decimal with non-zero last digit">
-                <%--placeholder="<se:eval expression="env.getProperty('resourceProperty.valuePattern.placeholder')" />">--%>
+                <%--placeholder="<se:eval expression="${env}.getProperty('resourceProperty.valuePattern.placeholder')" />">--%>
               </div>
             </div>
           </div>

@@ -41,21 +41,24 @@ function resetNewPropertyForm() {
 	$('#new-property select option[value=""]').removeClass('hidden');
 }
 
-// configure existent properties dialog
-(function () {
+/**
+ * load existent ResourceProperties
+ */
+function loadExistentProperties() {
+	$.get("/api/resources/properties", function (properties) {
+		existentProperties = properties;
+		updateAvailablePropertiesList();
+	}, "json");
+}
+
+// configure available properties dialog
+(function initAvailablePropertiesDialog() {
 
 	let $addBtn = $('#add-props-btn');
 
-	function getExistentProperties() {
-		$.get("/resources/properties", function (properties) {
-			existentProperties = properties;
-		}, "json");
-	}
+	loadExistentProperties();
 
-// load available ResourceProperties
-	getExistentProperties();
-
-	// prevent invoking Add button handler
+	// prevent invoking Add button without select being made
 	$('#available-properties').change(function (e) {
 		if ($('[value]:checked', '#available-properties').length > 0)
 			$addBtn.removeClass('disabled');
@@ -64,8 +67,7 @@ function resetNewPropertyForm() {
 	});
 
 	// set Remove button template handler
-	$('.glyphicon-remove', '#assigned-props tbody>tr:first')
-			.click(function (e) {
+	$('.glyphicon-remove', '#assigned-props tbody>tr:first').click(function (e) {
 				let $rowToRemove = $(e.target).closest('tr');
 				let propertyToRemove = $rowToRemove.data('property');
 				assignedProperties = $.grep(assignedProperties, function (property) {
@@ -75,13 +77,17 @@ function resetNewPropertyForm() {
 				$rowToRemove.remove();
 			});
 
-	// handle Add button click
-	$('#add-props-btn').click(function (e) {
+	/**
+	 * handle Add button click
+ 	 */
+	$addBtn.click(function (e) {
 		$addBtn.addClass('disabled');
+
 		let $selected = $('[value]:checked', '#available-properties')
 				.map(function (i, option) {
 					return $(option).data('property')
 				});
+
 		$.merge(assignedProperties, $selected);
 		addAssignedProperties($selected);
 		$(':selected', '#available-properties').remove();
@@ -95,12 +101,13 @@ function resetNewPropertyForm() {
 	});
 
 })();
+// end init
 
 // configure new property dialog
-(function () {
+(function initNewPropertyDialog() {
 
 	// load availaple property value types
-	$.get("/resources/properties/valueTypes", function (valueTypes) {
+	$.get("/api/resources/properties/valueTypes", function (valueTypes) {
 		$.each(valueTypes, function (i, type) {
 			$('#value-type').append($('<option>', {
 				value: type.valueType,
@@ -109,8 +116,8 @@ function resetNewPropertyForm() {
 			}));
 		});
 
-		$('#new-property-modal').on('hide', resetNewPropertyForm());
-		$('#existent-props').on('show', updateAvailablePropertiesList());
+		// $('#new-property-modal').on('hide', resetNewPropertyForm());
+		// $('#existent-props').on('show', updateAvailablePropertiesList());
 
 		/**
 		 * value type select change handler
@@ -157,7 +164,7 @@ function resetNewPropertyForm() {
 		$.ajax({
 			type: "POST",
 			contentType: "application/json",
-			url: "/resources/property",
+			url: "/api/resources/property",
 			accept: "application/json",
 			data: JSON.stringify(property),
 			success: function (response) {
