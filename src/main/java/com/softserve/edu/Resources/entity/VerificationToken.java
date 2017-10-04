@@ -18,8 +18,10 @@ public class VerificationToken {
 
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))
+//    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @OneToOne
+//    @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Date expiryDate;
