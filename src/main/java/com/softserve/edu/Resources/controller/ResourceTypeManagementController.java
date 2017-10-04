@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -57,18 +58,18 @@ public class ResourceTypeManagementController {
     }
 
     @ResponseBody
-    @JsonView(Views.CategoryManaging.class)
-    @RequestMapping(value = "/manageCategories", method = RequestMethod.GET)
-    public Set<ResourceCategoryDTO> manageCategories() {
+    @JsonView(Views.CategorySelectingWithTypes.class)
+    @RequestMapping(value = "/selectCategories", method = RequestMethod.GET)
+    public List<ResourceCategoryDTO> selectCategoriesWithTypes() {
         ResourceCategory root = new ResourceCategory();
         if (!alreadyExecuted) {
             root = categoryService.insertCategoriesTEMPORARY();
             alreadyExecuted = true;
         }
         List<ResourceCategory> rootCategories = categoryService.findRootCategories();
-        Set<ResourceCategoryDTO> categoryDTOS = rootCategories.stream()
+        List<ResourceCategoryDTO> categoryDTOS = rootCategories.stream()
                 .map(categoryService::createCategoryDTO)
-                .collect(Collectors.toCollection(TreeSet::new));
+                .collect(Collectors.toList());
 
 /*        ResourceCategoryDTO dto = categoryService.createCategoryDTO((ResourceCategory) ((ResourceCategory) rootCategories.get(0).getChildrenCategories().toArray()[0]).getChildrenCategories().toArray()[0]);
         System.out.println(dto);
@@ -76,6 +77,13 @@ public class ResourceTypeManagementController {
         System.out.println(trans);*/
 
         return categoryDTOS;
+    }
+
+    @ResponseBody
+    @JsonView(Views.CategoryManaging.class)
+    @RequestMapping(value = "/manageCategories", method = RequestMethod.GET)
+    public List<ResourceCategoryDTO> manageCategories() {
+        return selectCategoriesWithTypes();
     }
 
     @ResponseBody

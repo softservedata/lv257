@@ -185,14 +185,9 @@ public class ResourceCategoryService {
                         ResourceCategoryDTO childDTO = createCategoryDTO(c, created);
                         childDTO.setParentCategory(dto);
                         return childDTO;
-                    }).collect(Collectors.toCollection(TreeSet::new)));
+                    }).collect(Collectors.toSet()));
             dto.setResourceTypes(category.getResourceTypes().stream()
                     .map(ResourceTypeDTO::new).collect(Collectors.toSet()));
-            List<ResourceCategory> ancestors = getAncestors(category);
-            dto.setDepth(ancestors.size());
-            ancestors.add(category);
-            dto.setTreePath(ancestors.stream()
-                    .map(ResourceCategory::getCategoryName).collect(Collectors.joining("/", "/", "")));
         }
         return dto;
     }

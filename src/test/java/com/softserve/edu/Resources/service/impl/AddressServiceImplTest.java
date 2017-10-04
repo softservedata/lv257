@@ -36,6 +36,9 @@ public class AddressServiceImplTest {
     @Mock
     private ValidationDTOUtility utility;
 
+    @Mock
+    private BindingResult bindingResult;
+
     @InjectMocks
     private AddressServiceImpl addressServiceImpl;
 
@@ -107,12 +110,13 @@ public class AddressServiceImplTest {
 
     @Test
     public void validationDTOTest(){
-        when(utility.getErrorDTO(any(BindingResult.class))).thenReturn(validationErrorDTO);
+        when(bindingResult.getFieldErrors()).thenReturn(mock(List.class));
+        when(utility.getErrorDTO(bindingResult)).thenReturn(validationErrorDTO);
 
-        ValidationErrorDTO resultValidationErrorDTO = addressServiceImpl.validationDTO(any(BindingResult.class));
+        ValidationErrorDTO resultValidationErrorDTO = addressServiceImpl.validationDTO(bindingResult);
 
         assertEquals(resultValidationErrorDTO, validationErrorDTO);
-        verify(utility, times(1)).getErrorDTO(any(BindingResult.class));
+        verify(utility, times(1)).getErrorDTO(bindingResult);
     }
 
 }
