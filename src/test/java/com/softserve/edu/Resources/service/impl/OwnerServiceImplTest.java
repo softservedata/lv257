@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.util.*;
 
@@ -49,6 +50,9 @@ public class OwnerServiceImplTest {
 
     @Mock
     private QueryBuilder queryBuilder;
+
+    @Mock
+    private BindingResult bindingResult;
 
     @InjectMocks
     private OwnerServiceImpl ownerService;
@@ -202,12 +206,14 @@ public class OwnerServiceImplTest {
 
     @Test
     public void validationDTOTest(){
-        when(utility.getErrorDTO(any(BindingResult.class))).thenReturn(validationErrorDTO);
+        ArrayList<FieldError> fieldErrors = new ArrayList<>();
+        when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
+        when(utility.getErrorDTO(bindingResult)).thenReturn(validationErrorDTO);
 
-        ValidationErrorDTO resultValidationErrorDTO = ownerService.validationDTO(any(BindingResult.class));
+        ValidationErrorDTO resultValidationErrorDTO = ownerService.validationDTO(bindingResult);
 
         assertEquals(resultValidationErrorDTO, validationErrorDTO);
-        verify(utility, times(1)).getErrorDTO(any(BindingResult.class));
+        verify(utility, times(1)).getErrorDTO(bindingResult);
     }
 
 }
