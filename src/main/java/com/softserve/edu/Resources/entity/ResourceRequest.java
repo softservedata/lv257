@@ -78,8 +78,9 @@ public class ResourceRequest {
         return document;
     }
 
-    public void setDocument(Document document) {
+    public ResourceRequest setDocument(Document document) {
         this.document = document;
+        return this;
     }
 
     public String getResourceType() {
