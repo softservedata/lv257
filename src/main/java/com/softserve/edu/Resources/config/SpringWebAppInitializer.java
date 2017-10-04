@@ -11,7 +11,7 @@ import java.io.File;
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     public static String location = "/resources/upload";
-    private static final int maxFileSize = 5 * 1024 * 1024; // 5 MB
+    private static final int maxFileSize = 2 * 1024 * 1024; // 2 MB
 
 
     @Override
@@ -33,7 +33,7 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
 
-                new MultipartConfigElement(location, maxFileSize, maxFileSize * 2, maxFileSize / 2)
+                new MultipartConfigElement(location, maxFileSize, maxFileSize * 5, maxFileSize / 2)
         );
     }
 

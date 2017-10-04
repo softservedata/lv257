@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +55,7 @@ public class RequestResourceController {
     @RequestMapping(value="/request", method=RequestMethod.POST)
     public String handleRequestSubmission(@Valid @ModelAttribute("mRequest") ResourceRequest mRequest,
                                           BindingResult requestResults, @ModelAttribute("document") Document document,
-                                          BindingResult documentResults, Model model, HttpServletRequest httpRequest)
+                                          BindingResult documentResults, Model model, RedirectAttributes redirectAttributes)
                                           throws Exception {
 
         //check if there are any errors
@@ -69,15 +70,16 @@ public class RequestResourceController {
             return "sendRequest";
         }
 
-        documentService.fillUpDocument(document);
-        requestService.fillUpRequest(mRequest, document);
-
-
         logger.info(mRequest.toString());
 
         if(!document.getFile().getOriginalFilename().equals("")){
-            FileUploadUtility.uploadFile(httpRequest, document.getFile(),document.getCode());
+            FileUploadUtility fileUploadUtility = new FileUploadUtility();
+
+       document.setDocumentsURL(fileUploadUtility.uploadFile(redirectAttributes, document.getFile(),document.getCode()));
         }
+
+        documentService.fillUpDocument(document);
+        requestService.fillUpRequest(mRequest, document);
 
         return "redirect:/resources/request?operation=request";
     }
@@ -98,8 +100,9 @@ public class RequestResourceController {
         ResourceRequest request = requestService.getRequestById(id);
         model.addAttribute("theme", request.getResourceType());
         model.addAttribute("info", request.getDescription());
-        model.addAttribute("code", request.getDocument().getCode());
+       // model.addAttribute("code", request.getDocument().getCode());
         model.addAttribute("extension", request.getDocument().getFileExtension());
+        model.addAttribute("documentURL", request.getDocument().getDocumentsURL());
         model.addAttribute("title", "Info about Request");
 
         return "infoRequest";
