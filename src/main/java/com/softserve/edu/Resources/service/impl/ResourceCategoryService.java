@@ -104,29 +104,29 @@ public class ResourceCategoryService {
         findAllResourceCategories().forEach(this::deleteResourceCategory);
         resourceCategoryDAO.flush();
 
-        ResourceCategory root = new ResourceCategory("root", null);
-        ResourceCategory branch1 = new ResourceCategory("branch1", root);
-        ResourceCategory branch2 = new ResourceCategory("branch2", root);
-        ResourceCategory leaf1_1 = new ResourceCategory("leaf1_1", branch1);
-        ResourceCategory leaf1_2 = new ResourceCategory("leaf1_2", branch1);
-        ResourceCategory leaf2_1 = new ResourceCategory("leaf2_1", branch2);
-        ResourceCategory leaf2_2 = new ResourceCategory("leaf2_2", branch2);
-        ResourceCategory leaf1_3 = new ResourceCategory("leaf1_3", branch1);
+        ResourceCategory category = new ResourceCategory("category", null);
+        ResourceCategory subcategory1 = new ResourceCategory("subcategory1", category);
+        ResourceCategory subcategory2 = new ResourceCategory("subcategory2", category);
+        ResourceCategory typecategory1_1 = new ResourceCategory("typecategory1_1", subcategory1);
+        ResourceCategory typecategory1_2 = new ResourceCategory("typecategory1_2", subcategory1);
+        ResourceCategory typecategory2_1 = new ResourceCategory("typecategory2_1", subcategory2);
+        ResourceCategory typecategory2_2 = new ResourceCategory("typecategory2_2", subcategory2);
+        ResourceCategory typecategory1_3 = new ResourceCategory("typecategory1_3", subcategory1);
 
-        root.getChildrenCategories().add(branch1);
-        root.getChildrenCategories().add(branch2);
-        branch1.getChildrenCategories().add(leaf1_1);
-        branch1.getChildrenCategories().add(leaf1_2);
-        branch1.getChildrenCategories().add(leaf1_3);
-        branch2.getChildrenCategories().add(leaf2_1);
-        branch2.getChildrenCategories().add(leaf2_2);
+        category.getChildrenCategories().add(subcategory1);
+        category.getChildrenCategories().add(subcategory2);
+        subcategory1.getChildrenCategories().add(typecategory1_1);
+        subcategory1.getChildrenCategories().add(typecategory1_2);
+        subcategory1.getChildrenCategories().add(typecategory1_3);
+        subcategory2.getChildrenCategories().add(typecategory2_1);
+        subcategory2.getChildrenCategories().add(typecategory2_2);
 
         ResourceType type1 = new ResourceType("type1");
         type1.setTableName("AAA");
-        type1.setCategory(leaf2_2);
-        leaf2_2.getResourceTypes().add(type1);
+        type1.setCategory(typecategory2_2);
+        typecategory2_2.getResourceTypes().add(type1);
 
-        saveResourceCategory(root);
+        saveResourceCategory(category);
 /*        saveResourceCategory(branch1);
         saveResourceCategory(branch2);
         saveResourceCategory(leaf1_1);
@@ -135,7 +135,7 @@ public class ResourceCategoryService {
         saveResourceCategory(leaf2_2);
         saveResourceCategory(leaf1_3);*/
 
-        return root;
+        return category;
     }
 
     public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories) {

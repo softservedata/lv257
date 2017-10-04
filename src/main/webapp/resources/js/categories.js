@@ -1,27 +1,33 @@
+/**
+ * Calling JSP should define variable {showTypesInCategoryHierarchy = true}
+ * to allow displaying resource types in select
+ * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
+ */
+
 (function () {
     var lastId;
+    var jsonForSelect;
 
-    $('#categories-manager').on('click', function (e) {
+    //Enable categories selectlist
+    loadCategories();
+
+    $('#manage-categories').on('click', function (e) {
         e.preventDefault();
         buildCategoriesTree();
     });
 
     $('#save-changes').on('click', function (e) {
         e.preventDefault();
-        saveChanges();
+        saveChangesAfterManaging();
     });
 
-    /**
-     * Discard changes and close modal window with categories managing
-     */
+     //Discard changes and close modal window with categories managing
     $('#cancel-managing, #close-managing').on('click', function (e) {
         e.preventDefault();
         $('#nestable').nestable('destroy');
     });
 
-    /**
-     * Actions of menu buttons
-     */
+     //Actions of menu buttons
     $('#nestable-menu').on('click', function (e) {
         var target = $(e.target),
             action = target.data('action');
@@ -35,7 +41,7 @@
             var newItem = {
 //                    "id": ++lastId,
                 "categoryname"  : "new category",
-//                    "parent_id" : 1516,
+//                    "`nt_id" : 1516,
                 "content": "Item " + lastId
             };
             $('#nestable').nestable('add', newItem);
@@ -49,10 +55,31 @@
     });
 
     /**
+     * Enable categories selectlist
+     */
+    function loadCategories() {
+        var includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
+        var suppressParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
+        let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
+        $.get("/resources/" + urlSuffix, function (data) {
+            jsonForSelect = sortNestedComponents(data, 'categoryname', 'asc');
+            console.log(JSON.stringify(jsonForSelect));
+            BuildCategoriesSelect(jsonForSelect, includeTypes, suppressParents);
+            addHandlers();
+            $('#categories-select').hierarchySelect({
+                width: '100%',
+                height: '208px',
+                hierarchy: includeTypes,
+                search: true
+            });
+        }, "json");
+    }
+
+    /**
      * Activate Nestable and build categories tree
      */
     function buildCategoriesTree() {
-        var jqxhr = $.getJSON("/resources/manageCategories")
+        var jqxhr = $.getJSON("/resources/categories")
             .success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', 'asc');
                 var json = JSON.stringify(data);
@@ -93,7 +120,7 @@
     /**
      * Save changes after managing categories
      */
-    function saveChanges() {
+    function saveChangesAfterManaging() {
         var json = $('#nestable-output').val();
         $.ajax({
             type: "POST",
@@ -102,7 +129,8 @@
             accept: "application/json",
             data: json,
             success: function (result) {
-                alert("Changes are saved!")
+                alert("Changes are saved!");
+                jsonForSelect = json;
                 $('#close-managing').click();
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -160,35 +188,51 @@
     /**
      *
      * @param categories - JSON with categories and types
+     * @param showTypes - include resource types in select
+     * @param suppressParentCategories - allow only leaf categories in select
      * @param level - depth of hierarchy
      * @constructor
      */
-    function ParseCategoriesWithTypes(categories, level = 1) {
+    function BuildCategoriesSelect(categories, showTypes, suppressParentCategories, level = 1) {
         for (var i = 0; i < categories.length; i++) {
             categories = sortComponents(categories, 'categoryname', 'asc');
-            $('<li/>', {
-                'data-value': categories[i].categoryname,
+            let classPrefix = (showTypes || (suppressParentCategories && categories[i].children)) ? 'disabled' : '';
+            let s = $('<li/>', {
+                'data-value': categories[i].id,
                 'data-level': level,
-                'class': 'disabled category',
-                text: categories[i].categoryname + " Level: " + level,
-                appendTo: $('#categories_and_types')
-            });
-            var restypes = eval(categories[i].restypes);
-            if (restypes) {
-                restypes = sortComponents(restypes, 'typename', 'asc');
-                for (var j = 0; j < restypes.length; j++) {
-                    $('<li/>', {
-                        'data-value': restypes[j].typename,
-                        'data-level': level,
-                        text: restypes[j].typename + " Level: " + (level + 1),
-                        appendTo: $('#categories_and_types')
-                    });
+                class: classPrefix + ' category ' + 'level-' + level,
+            }).appendTo($('#categories_and_types'));
+            $('<a/>',{ href:"#", text: categories[i].categoryname}).appendTo(s);
+            if (showTypes) {
+                var restypes = eval(categories[i].restypes);
+                if (restypes) {
+                    restypes = sortComponents(restypes, 'typeName', 'asc');
+                    for (var j = 0; j < restypes.length; j++) {
+                        let s1 =  $('<li/>', {
+                            'data-value': restypes[j].id,
+                            'data-level': level+1,
+                            class: 'level-' + level+1,
+                        }).appendTo($('#categories_and_types'));
+                        $('<a/>',{ href:"#", text: restypes[j].typeName}).appendTo(s1);
+
+                    }
                 }
             }
             if (categories[i].children && categories[i].children.length > 0)
-                ParseCategoriesWithTypes(categories[i].children, level + 1);
+                BuildCategoriesSelect(categories[i].children, showTypes, suppressParentCategories, level + 1);
         }
     }
+
+    /**
+     * Add event handler for clicking on selected item
+     */
+    function addHandlers() {
+        let list = $('#categories_and_types li a');
+        $.each(list, function (i, item) {
+            $(item).click(function (e) {
+                $('#categories_and_types').data('categoryID', $(e.target).closest('li').data('value'));
+                console.log($('#categories_and_types').data('categoryID'));
+            })
+        })
+    }
 })();
-
-

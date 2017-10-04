@@ -44,19 +44,12 @@
                 <br>
                 <form action="${contextPath}/resources" method="post">
                     <div class="row">
+                        <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
                         <div id="categories" class="col-sm-6 col-xs-8 form-group">
-                            <label for="rCategory">Resource Category</label>
-                            <select id="rCategory" class="form-control selectpicker"
-                                    data-live-search="true" title="Select desired category">
-                                <option style="text-indent: 0px;">Capital</option>
-                                <option style="text-indent: 10px;">Real Estate</option>
-                                <option style="text-indent: 20px;">Cottages</option>
-                                <option style="text-indent: 20px;">Apartment Buildings</option>
-                                <option style="text-indent: 10px;">Transport</option>
-                                <option style="text-indent: 20px;">Vehicles</option>
-                                <option style="text-indent: 20px;">Trucks</option>
-                            </select></div>
-                        <button id="categories-manager" type="button" class="btn btn-primary" data-toggle="modal"
+                            <jsp:include page="components/resourceTypeSelect.jsp"/>
+                        </div>
+                        <button id="manage-categories" type="button" class="btn btn-primary"
+                                data-toggle="modal"
                                 style="margin-top: 25px"
                                 data-target="#categories-view">Manage
                         </button>
@@ -74,7 +67,8 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="resource-table-name">Type's Table Name</label>
-                            <input id="resource-table-name" type="text" class="form-control" pattern="${tableNamePattern}"
+                            <input id="resource-table-name" type="text" class="form-control"
+                                   pattern="${tableNamePattern}"
                                    placeholder="Enter the name of resource's table">
                         </div>
                     </div>
@@ -122,12 +116,12 @@
 <jsp:include page="${contextPath}footer.jsp"/>
 <script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script>
-	$("#addition-btn").click(function (e) {
-		$('#addition-btn, #definition-form').toggleClass('hidden');
-	});
-	var existentProperties;
-	<c:set var="idVal" value="${id}"></c:set>
-  var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+    $("#addition-btn").click(function (e) {
+        $('#addition-btn, #definition-form').toggleClass('hidden');
+    });
+    var existentProperties;
+    <c:set var="idVal" value="${id}"></c:set>
+    var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
 </script>
 <script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
 <script src="${contextPath}/resources/js/categories.js"></script>

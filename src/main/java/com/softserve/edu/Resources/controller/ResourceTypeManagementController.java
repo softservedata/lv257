@@ -54,9 +54,9 @@ public class ResourceTypeManagementController {
     }
 
     @ResponseBody
-    @JsonView(Views.CategorySelectingWithTypes.class)
-    @RequestMapping(value = "/selectCategories", method = RequestMethod.GET)
-    public List<ResourceCategoryDTO> selectCategoriesWithTypes() {
+    @JsonView(Views.CategoriesWithTypes.class)
+    @RequestMapping(value = "/categorizedTypes", method = RequestMethod.GET)
+    public List<ResourceCategoryDTO> categorizedTypes() {
         ResourceCategory root = new ResourceCategory();
         if (!alreadyExecuted) {
             root = categoryService.insertCategoriesTEMPORARY();
@@ -76,15 +76,15 @@ public class ResourceTypeManagementController {
     }
 
     @ResponseBody
-    @JsonView(Views.CategoryManaging.class)
-    @RequestMapping(value = "/manageCategories", method = RequestMethod.GET)
-    public List<ResourceCategoryDTO> manageCategories() {
-        return selectCategoriesWithTypes();
+    @JsonView(Views.Categories.class)
+    @RequestMapping(value = "/categories", method = RequestMethod.GET)
+    public List<ResourceCategoryDTO> categories() {
+        return categorizedTypes();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/manageCategories", method = RequestMethod.POST)
-    public void saveResultsOfManagingCategories(@RequestBody List<ResourceCategoryDTO> categoryDTOList ) {
+    @RequestMapping(value = "/categories", method = RequestMethod.POST)
+    public void updateCategoriesHierarchy(@RequestBody List<ResourceCategoryDTO> categoryDTOList ) {
         List<ResourceCategory> rootCategoriesFromWeb = categoryDTOList.stream()
                 .map(categoryService::mapFromDtoToResourceCategory)
                 .collect(Collectors.toList());
