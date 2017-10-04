@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/resources", method = RequestMethod.GET)
+@RequestMapping(value = "/api/resources", method = RequestMethod.GET)
 public class PropertiesRestController {
 
     @Autowired
