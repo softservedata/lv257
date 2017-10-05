@@ -58,10 +58,11 @@ public class MainController {
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
     public String lookupPage(@RequestParam Map<String, String> lookupby) {
-        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
-            return "lookupByType";
-        else
-            return "lookupByOwner";
+//        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
+//            return "lookupByType";
+//        else
+//            return "lookupByOwner";
+        return "lookup";
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
