@@ -1,5 +1,13 @@
 (function ($) {
 
+	$.fn.mapToObject = function () {
+		let object = {};
+		$.map(this, function (element, i) {
+			object[element['name']] = element['value'];
+		});
+		return object;
+	}
+
 	$.fn.serialize = function (options) {
 		return $.param(this.serializeArray(options));
 	};

@@ -143,20 +143,18 @@ function loadExistentProperties() {
 	var updateAvailableProperties = function (response, doAssign) {
 		let $property = $(response);
 		$.merge(existentProperties, $property);
-		$.merge(assignedProperties, $property);
 		existentProperties.sort(propertyCmp);
-		if (doAssign)
+		if (doAssign) {
+			$.merge(assignedProperties, $property);
 			addAssignedProperties($property);
+		}
 		updateAvailablePropertiesList();
 	};
 
 	function composeProperty() {
 		let $inputs = $('input, select', '#new-property-modal');
 		let entries = $inputs.serializeArray({checkboxesAsBools: true});
-		let property = {};
-		$.map(entries, function (entry, i) {
-			property[entry['name']] = entry['value'];
-		});
+		let property = $(entries).mapToObject();
 		return property;
 	}
 
@@ -194,6 +192,5 @@ function loadExistentProperties() {
 		let property = composeProperty();
 		requestSaveProperty(property, true);
 	});
-
 
 })();

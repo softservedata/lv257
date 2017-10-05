@@ -1,29 +1,48 @@
 var resourceType;
+var isModeCloning;
 
 function getResourceType(isCloning) {
-	$.get("/api/resource/" + resourceTypeID, function (response) {
-		resourceType = response;
-		if (isCloning)
-			delete resourceType['id'];
-	}, "json");
+	$.ajax({
+		type: "POST",
+		contentType: "application/json",
+		accept: "application/json",
+		url: "/api/resource/" + resourceTypeID,
+		success: function (response) {
+			resourceType = response;
+			if (isCloning)
+				delete resourceType['id'];
+		},
+		error: function (jqxhr, status, exception) {
+			console.log(status + ' ' + exception);
+		}
+	});
+}
+
+function composeResourceType() {
+	let $inputs = $('input, select', '#new-property-modal');
+	let entries = $inputs.serializeArray({checkboxesAsBools: true});
+	let resourceType = entries.mapToObject();
+	return resourceType;
 }
 
 (function () {
 
-	if (resourceTypeID < 0) {
+	isModeCloning = resourceTypeID < 0;
+	if (isModeCloning) {
 		resourceTypeID *= -1;
-		getResourceType(true);
+		getResourceType(isModeCloning);
 	} else if (resourceTypeID > 0) {
-		getResourceType(false);
+		getResourceType(isModeCloning);
 	}
 
 })();
 
 (function () {
 	$('save-type-btn').click(function (e) {
-		$.ajax("/resources", {
+		let restourceType = composeResourceType();
+		$.ajax("/api/resources", {
 			method: 'POST',
-			data: {},
+			data: JSON.stringify(restourceType),
 			dataType: 'json',
 			contentType: 'application/json',
 			success: function (response, status, jqxhr) {

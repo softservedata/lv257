@@ -42,7 +42,7 @@
             </div>
             <div id="definition-form" class="container hidden"<%-- style="display: none;"--%>>
                 <br>
-                <form action="${contextPath}/resources" method="post">
+                <form id="resource-type" method="post">
                     <div class="row">
                         <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
                         <div id="categories" class="col-sm-6 col-xs-8 form-group">
@@ -57,8 +57,8 @@
 
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
-                            <label for="resource-type">Type Name</label>
-                            <input id="resource-type" type="text" class="form-control" pattern="${typeNamePattern}"
+                            <label for="type-name">Type Name</label>
+                            <input id="type-name" name="typeName" type="text" class="form-control" pattern="${typeNamePattern}"
                                    placeholder="Enter the name of new resource type">
                             <%--placeholder="Enter the name of new resource type">--%>
                         </div>
@@ -66,8 +66,8 @@
 
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
-                            <label for="resource-table-name">Type's Table Name</label>
-                            <input id="resource-table-name" type="text" class="form-control"
+                            <label for="table-name">Type's Table Name</label>
+                            <input id="table-name" name="tableName" type="text" class="form-control"
                                    pattern="${tableNamePattern}"
                                    placeholder="Enter the name of resource's table">
                         </div>
