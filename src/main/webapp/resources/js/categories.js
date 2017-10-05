@@ -4,7 +4,7 @@
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-(function () {
+$(document).ready(function() {
     const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
     const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
     const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
@@ -40,7 +40,7 @@
             $('.dd').nestable('collapseAll');
         }
         if (action === 'add-item') {
-            let newItem = {
+            var newItem = {
 //                    "id": ++lastId,
                 "categoryname": "new category",
 //                    "`nt_id" : 1516,
@@ -259,4 +259,4 @@
             })
         })
     }
-})();
+});
