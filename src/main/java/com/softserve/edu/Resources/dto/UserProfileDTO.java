@@ -2,69 +2,28 @@ package com.softserve.edu.Resources.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.Constants;
-import com.softserve.edu.Resources.entity.User;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "user_details")
 public class UserProfileDTO {
 
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
 
     private Long id;
-
-    @Column(name = "first_name")
-    @JsonProperty("first_name")
     private String firstName;
-
-    @Column(name = "second_name")
-    @JsonProperty("second_name")
     private String secondName;
-
-    @Column(name = "middle_name")
-    @JsonProperty("middle_name")
     private String middleName;
-
-    @Column(name = "passport_series")
-    @JsonProperty("passport_series")
-//    @NotEmpty
-//    @Length(max = 2, min = 2, message = "This is invalid passport series.")
     private String passportSeries;
-
-    @Column(name = "passport_number")
-    @JsonProperty("passport_number")
-    @Length(max = 6, min = 6, message = "This is invalid passport number.")
     private String passportNumber;
-
-    @Column(name = "issued_by")
-    @JsonProperty("issued_by")
     private String issuedBy;
-
-    @Column(name = "date_of_issue")
-    @JsonProperty("date_of_issue")
     private Date dateOfIssue;
-
-    @Column(name = "id_address")
-    @JsonProperty("id_address")
     private String idAddress;
-
-    @Column(name = "phone")
-    @JsonProperty("phone")
-    @Length(max = 18, min = 18, message = "This is invalid phone number.") // +12(345)-678-90-12
     private String phone;
-
-    @Column(name = "bank_id")
-    @JsonProperty("bank_id")
-//    @Length(max = 6, min = 6, message = "This is invalid bank Id.")
     private String bankId;
-
-    @OneToOne
-    @JoinColumn(name = "id_user")
-    private User user;
+    private Long user;
 
     public UserProfileDTO() {
     }
@@ -157,11 +116,11 @@ public class UserProfileDTO {
         this.bankId = bankId;
     }
 
-    public User getUser() {
+    public Long getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Long user) {
         this.user = user;
     }
 
@@ -172,7 +131,7 @@ public class UserProfileDTO {
 
         UserProfileDTO that = (UserProfileDTO) o;
 
-        if (!id.equals(that.id)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (secondName != null ? !secondName.equals(that.secondName) : that.secondName != null) return false;
         if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) return false;
@@ -185,12 +144,12 @@ public class UserProfileDTO {
         if (idAddress != null ? !idAddress.equals(that.idAddress) : that.idAddress != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (bankId != null ? !bankId.equals(that.bankId) : that.bankId != null) return false;
-        return user.equals(that.user);
+        return user != null ? user.equals(that.user) : that.user == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (secondName != null ? secondName.hashCode() : 0);
         result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
@@ -201,13 +160,13 @@ public class UserProfileDTO {
         result = 31 * result + (idAddress != null ? idAddress.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (bankId != null ? bankId.hashCode() : 0);
-        result = 31 * result + user.hashCode();
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "UserDetails{" +
+        return "UserProfileDTO{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", secondName='" + secondName + '\'' +
