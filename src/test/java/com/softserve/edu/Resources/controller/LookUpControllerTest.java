@@ -52,7 +52,7 @@ public class LookUpControllerTest {
         resourceTypes.add(resType2);
        
         when(resourceTypeService.getInstances()).thenReturn(resourceTypes);
-        mockMvc.perform(get("/lookUp/resourceTypes"))
+        mockMvc.perform(get("/lookup/resourceTypes"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$", hasSize(2)))
