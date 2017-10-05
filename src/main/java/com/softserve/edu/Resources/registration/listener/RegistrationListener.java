@@ -69,11 +69,9 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
        velocityMailService.sendConfirmationMail(constructRegistrationConfirmMail(user,token));
     }
-
-
-    private final RegistrationConfirmMail constructRegistrationConfirmMail(final User user, final String token ){
-        RegistrationConfirmMail mail=new RegistrationConfirmMail(user.getUsername());
-        mail.setHost("http://localhost:8080");
+    private final RegistrationConfirmMail constructRegistrationConfirmMail(final User user, final String token ) {
+        RegistrationConfirmMail mail = new RegistrationConfirmMail(user.getUsername());
+        mail.setHost(env.getProperty("host.appUrl"));
         mail.setToken(token);
         return mail;
     }

@@ -73,7 +73,6 @@ public class RegistrationUserController {
         model.addAttribute("message", message);
 
         try {
-//            String appUrl = request.getContextPath();
             String appUrl = env.getProperty("host.appUrl");
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent
                     (registered, request.getLocale(), appUrl));
@@ -86,12 +85,11 @@ public class RegistrationUserController {
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
     public String confirmRegistration
-            (UserDTO  userDTO, WebRequest request, Model model, @RequestParam("token") String token) {
+            (WebRequest request, Model model, @RequestParam("token") String token) {
 
         Locale locale = request.getLocale();
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
-
 
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
@@ -104,6 +102,8 @@ public class RegistrationUserController {
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String message = messages.getMessage("auth.message.expired", null, locale);
             model.addAttribute("message", message);
+            userService.deleteVerificationToken(verificationToken);
+            userService.delete(user);
             return "badUser";
         }
 

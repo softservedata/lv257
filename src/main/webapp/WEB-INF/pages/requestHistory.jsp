@@ -58,7 +58,7 @@
                                     <td>${request.status}</td>
                                     <td>${request.resourceType}</td>
                                     <td>Not yet reviewed</td>
-                                    <td><a href="/resources/info/${request.id}">documentLink1</a></td>
+                                    <td><a href="/resources/info/${request.id}">Info about request</a></td>
                                     <td>${request.update}</td>
                                 </tr>
                                  </c:forEach>

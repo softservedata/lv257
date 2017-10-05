@@ -1,42 +1,41 @@
 package com.softserve.edu.Resources.dto;
 
 import com.fasterxml.jackson.annotation.*;
-import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 //@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
 public class ResourceCategoryDTO{
 
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private Long id;
 
     @JsonProperty("categoryname")
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private String categoryName;
 
     @JsonBackReference
 //    @JsonProperty("parent_id")
 //    @JsonIdentityReference(alwaysAsId = true)
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private ResourceCategoryDTO parentCategory;
 
     @JsonManagedReference
     @JsonProperty("children")
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private Set<ResourceCategoryDTO> childrenCategories = new HashSet<>();
 
-    @JsonView(Views.CategorySelecting.class)
+//    @JsonView(Views.CategorySelecting.class)
     private Integer depth;
 
-    @JsonView(Views.CategorySelecting.class)
+//    @JsonView(Views.CategorySelecting.class)
     private String treePath;
 
     @JsonManagedReference
-    @JsonView(Views.CategorySelectingWithTypes.class)
+    @JsonProperty("restypes")
+    @JsonView(Views.CategoriesWithTypes.class)
     private Set<ResourceTypeDTO> resourceTypes = new HashSet<>();
 
     public Long getId() {

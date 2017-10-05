@@ -53,7 +53,7 @@
               <div class="form-group">
                 <label for="value-type">Value type</label>
                 <select id="value-type" name="valueType" class="form-control">
-                  <option value="">Select value type</option>
+                  <option disabled selected hidden>Select value type</option>
                 </select>
               </div>
             </div>

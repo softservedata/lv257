@@ -24,17 +24,18 @@
     <hr>
     <c:if test = "${extension == 'jpeg'}">
     <div>
-        <img class="documentImg-view" src="/resources/upload/${code}.jpg">
+        <img class="documentImg-view" src="${documentURL}">
     </div>
     </c:if>
     <c:if test = "${extension == 'pdf'}">
     <div>
-        <embed class="documentPdf-view" src="/resources/upload/${code}.pdf">
+        <iframe style="width: 100%; height: 600px; border: none;" src="${documentURL}"></iframe>
+        <%--<embed class="documentPdf-view" src="${documentURL}">--%>
     </div>
     </c:if>
     <c:if test = "${extension == 'png'}">
         <div>
-            <img class="documentImg-view" src="/resources/upload/${code}.png">
+            <img class="documentImg-view" src="${documentURL}">
         </div>
     </c:if>
     <hr>
