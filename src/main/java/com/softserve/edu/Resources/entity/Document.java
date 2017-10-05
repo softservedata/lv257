@@ -25,11 +25,14 @@ public class Document {
     @Column(name = "extension")
     private String fileExtension;
 
+    @Column(name = "URL")
+    private String documentsURL;
+
     @Transient
     private MultipartFile file;
 
     public Document() {
-        this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
+        this.code = "file" + UUID.randomUUID().toString().substring(26).toUpperCase();
 
     }
 
@@ -84,5 +87,13 @@ public class Document {
         result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
         result = 31 * result + (getFileExtension() != null ? getFileExtension().hashCode() : 0);
         return result;
+    }
+
+    public String getDocumentsURL() {
+        return documentsURL;
+    }
+
+    public void setDocumentsURL(String documentsURL) {
+        this.documentsURL = documentsURL;
     }
 }

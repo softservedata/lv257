@@ -3,6 +3,7 @@ import com.softserve.edu.Resources.Constants;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+
 import javax.persistence.*;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class ResourceRequest {
     @JoinColumn(name = "id_document")
     private Document document;
 
-    @Column(name = "resourceType", nullable = false)
+    @Column(name = "resourceType")
     @NotBlank(message = "Please, enter new type of resource!")
     private String resourceType;
 
@@ -154,7 +155,7 @@ public class ResourceRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ResourceRequest)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         ResourceRequest that = (ResourceRequest) o;
 
@@ -162,22 +163,24 @@ public class ResourceRequest {
         if (!document.equals(that.document)) return false;
         if (!resourceType.equals(that.resourceType)) return false;
         if (!description.equals(that.description)) return false;
-        if (!register.getUsername().equals(that.register.getUsername())) return false;
-        if (!resourcesAdmin.getUsername().equals(that.resourcesAdmin.getUsername())) return false;
+        if (!register.equals(that.register)) return false;
+        if (resourcesAdmin != null ? !resourcesAdmin.equals(that.resourcesAdmin) : that.resourcesAdmin != null)
+            return false;
         if (status != that.status) return false;
         return update.equals(that.update);
     }
 
     @Override
     public int hashCode() {
+
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + document.hashCode();
-        result = 31 * result + resourceType.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + register.hashCode();
-        result = 31 * result + resourcesAdmin.hashCode();
-        result = 31 * result + status.hashCode();
-        result = 31 * result + update.hashCode();
+        result = 31 * result + (document == null ? 0 : document.hashCode());
+        result = 31 * result + (resourceType == null ? 0 : resourceType.hashCode());
+        result = 31 * result + (description == null  ? 0 : description.hashCode());
+        result = 31 * result + (register == null ? 0 : register.hashCode());
+        result = 31 * result + (resourcesAdmin != null ? resourcesAdmin.hashCode() : 0);
+        result = 31 * result + (status == null ? 0 : status.hashCode());
+        result = 31 * result + (update == null ? 0 : update.hashCode());
         return result;
     }
 }
