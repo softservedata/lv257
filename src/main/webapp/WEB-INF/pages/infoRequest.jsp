@@ -10,25 +10,34 @@
 </head>
 <body>
 
+
 <jsp:include page="_menu2.jsp"/>
-<jsp:include page="resources.jsp" />
 <br>
 
 <div class="container">
+    <h2>Details</h2>
 
-    <h4>Requested resource type: ${theme}</h4>
+    <h3>Requested resource type:<span> ${theme}</span></h3>
 
-    <h4>Description: ${info}</h4>
-    <h4>Uploaded Document</h4>
+    <h3>Description:<span> ${info}</span> </h3>
+    <h3>Uploaded Document:</h3>
     <hr>
+    <c:if test = "${extension == 'jpeg'}">
     <div>
-        <img class="documentImg-view" src="/resources/upload/${code}.jpg">
+        <img class="documentImg-view" src="${documentURL}">
     </div>
+    </c:if>
+    <c:if test = "${extension == 'pdf'}">
     <div>
-        <embed class="documentPdf-view" src="/resources/upload/${code}.pdf">
+        <iframe style="width: 100%; height: 600px; border: none;" src="${documentURL}"></iframe>
+        <%--<embed class="documentPdf-view" src="${documentURL}">--%>
     </div>
-
-
+    </c:if>
+    <c:if test = "${extension == 'png'}">
+        <div>
+            <img class="documentImg-view" src="${documentURL}">
+        </div>
+    </c:if>
     <hr>
     <br>
     <button class="btn btn-primary" name="back" onclick="history.back()">Back</button>

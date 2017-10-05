@@ -73,6 +73,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void delete(User user) {
+        userDAO.makeTransient(user);
+    }
+
+    @Override
     @Transactional
     public void createVerificationTokenForUser(User user, String token) {
         final VerificationToken myToken = new VerificationToken(token, user);
@@ -90,6 +95,12 @@ public class UserServiceImpl implements UserService {
     public void saveRegisteredUser(User user) {
         userDAO.makePersistent(user);
     }
+
+    @Override
+    public void deleteVerificationToken(VerificationToken verificationToken) {
+        verificationTokenDAO.makeTransient(verificationToken);
+    }
+
 
     private boolean emailExist(final String email) {
 

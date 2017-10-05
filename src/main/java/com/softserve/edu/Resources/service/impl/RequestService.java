@@ -2,10 +2,13 @@ package com.softserve.edu.Resources.service.impl;
 
 
 import com.softserve.edu.Resources.dao.UserDAO;
+import com.softserve.edu.Resources.dao.impl.DocumentDAOImpl;
 import com.softserve.edu.Resources.dao.impl.ResourceRequestDAOImpl;
 import com.softserve.edu.Resources.dto.Message;
+import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.util.ResponceMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,41 +27,40 @@ import java.util.stream.Collectors;
 @Transactional
 public class RequestService {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
-
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
 
     @Autowired
     ResourceRequestDAOImpl resourceRequestDAO;
     @Autowired
+    DocumentDAOImpl documentDAO;
+    @Autowired
     UserDAO userDAO;
 
-    @Autowired
-    MailSenderService mailSender;
-    @Autowired
-    RequestMessageHandler messageHandler;
 
+    @Autowired
+    VelocityMailService mailService;
 
     public RequestService() {
-        logger = LOGGER;
     }
 
-    public void fillUpRequest(ResourceRequest requestService) {
+
+    public void fillUpRequest(ResourceRequest resourceRequest, Document document) {
 
         org.springframework.security.core.userdetails.User userSpring =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        requestService.setStatus(ResourceRequest.Status.NEW);
+        resourceRequest.setStatus(ResourceRequest.Status.NEW);
 
-        requestService.setUpdate(new Date());
+        resourceRequest.setDocument(document);
+
+        resourceRequest.setUpdate(new Date());
 
         User user = userDAO.findByEmail(userSpring.getUsername());
 
-        requestService.setRegister(user);
+        resourceRequest.setRegister(user);
 
-
-        resourceRequestDAO.makePersistent(requestService);
+        resourceRequestDAO.makePersistent(resourceRequest);
 
     }
 
@@ -77,6 +79,7 @@ public class RequestService {
         return requests;
     }
 
+
     public void response(Message message) {
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(message.getId_request());
 
@@ -86,10 +89,10 @@ public class RequestService {
             request.setUpdate(new Date());
             request.setStatus(message.getRequestStatus());
             resourceRequestDAO.makePersistent(request);
-            messageHandler.setMessage(message);
-            mailSender.sendMessage(messageHandler);
+            ResponceMail mail = new ResponceMail(message, request);
+            mailService.sendResponceMail(mail);
         } else {
-            logger.error("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
+            logger.warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
         }
     }
 
@@ -129,10 +132,10 @@ public class RequestService {
                 request.setResourcesAdmin(resourceAdmin);
                 return resourceRequestDAO.makePersistent(request);
             } else {
-                logger.error("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
+                logger.warn("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
             }
         } else {
-            logger.error("ResourseRequest instance with id:" + requestId + " is undefined.");
+            logger.warn("ResourseRequest instance with id:" + requestId + " is undefined.");
         }
         return request;
 

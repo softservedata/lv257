@@ -7,9 +7,15 @@
 <body>
 <jsp:include page="_menu2.jsp" />
 
+<br/>
 
-<h3><spring:message code="auth.message.expired"/></h3>
-<h3><spring:message code="auth.message.invalidToken"/></h3>
-<h1>badUser</h1>
+<br><br><br><br>
+    <div class="container-fluid">
+        <center>
+            <div style="border: 1px groove gray; border-radius: 5px; padding: 5px; width: 400px;">
+                <h3>${message}</h3>
+            </div>
+        </center>
+    </div>
 </body>
 </html>

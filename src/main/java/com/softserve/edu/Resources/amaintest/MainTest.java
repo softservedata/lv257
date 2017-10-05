@@ -1,15 +1,6 @@
 package com.softserve.edu.Resources.amaintest;
 
 import com.softserve.edu.Resources.config.ApplicationConfig;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.service.ResourceService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.softserve.edu.Resources.config.ApplicationConfig;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
@@ -83,7 +74,7 @@ public class MainTest {
                 " c) third parameter is a List of all resource Properties of special resource, which we querrying");
         for (ResourceProperty resourceProperty : resourceProperties) {
             System.out.println("ColumnName: " + resourceProperty.getColumnName() + ", ValueType: "
-                    + resourceProperty.getValueTypeName());
+                    + resourceProperty.getValueType().typeName);
         }
         List<GenericResource> genResList = resourceDao.findResourcesByResourceType(sqlQuery, valuesToSearch,
                 resourceProperties);

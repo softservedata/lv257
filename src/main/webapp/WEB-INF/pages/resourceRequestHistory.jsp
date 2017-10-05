@@ -4,7 +4,7 @@
   User: User
   Date: 01.09.2017
   Time: 18:10
-  To change this template use File | Settings | File Templates.
+  To change this templates use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
@@ -86,9 +86,9 @@
                 <tr name="simpleRequest" style="visibility: visible">
 
                     <td>${request.resourceType}</td>
-                    <td>${request.register.username}</td>
+                    <td>${request.requesterName}</td>
                     <td>${request.update}</td>
-                    <td>${request.resourcesAdmin.username}</td>
+                    <td>${request.assignerName}</td>
                     <td>${request.status}</td>
 
                 </tr>
