@@ -4,16 +4,12 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -29,19 +25,22 @@ public class FileUploadUtility {
         s3Client.createBucket(bucketName);
 
         String url = "";
-        if(file.getContentType().equals("application/pdf")){
-            code = code + ".pdf";
-        } else if(file.getContentType().equals("image/jpeg")){
-            code = code + ".jpg";
-        }else{
-            code = code + ".png";
-        }
 
         try{
             InputStream is = file.getInputStream();
 
-            //save on s3 with public read access
-            s3Client.putObject(new PutObjectRequest(bucketName,code,is, new ObjectMetadata())
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            if(file.getContentType().equals("application/pdf")){
+                objectMetadata.setContentType("application/pdf");
+                objectMetadata.setContentDisposition("inline");
+                code = code + ".pdf";
+            } else if(file.getContentType().equals("image/jpeg")){
+                code = code + ".jpg";
+            }else{
+                code = code + ".png";
+            }
+
+            s3Client.putObject(new PutObjectRequest(bucketName,code,is, objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead));
             //get a reference to the image object
             S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName,code));
