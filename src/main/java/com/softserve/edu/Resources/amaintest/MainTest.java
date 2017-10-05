@@ -1,6 +1,8 @@
 package com.softserve.edu.Resources.amaintest;
 
 import com.softserve.edu.Resources.config.ApplicationConfig;
+import com.softserve.edu.Resources.config.DBConfig;
+import com.softserve.edu.Resources.config.WebConfig;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
@@ -24,6 +26,8 @@ public class MainTest {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(ApplicationConfig.class);
+//        ctx.register(WebConfig.class);
+//        ctx.register(DBConfig.class);
         ctx.refresh();
 
         TestService testService = ctx.getBean(TestService.class);

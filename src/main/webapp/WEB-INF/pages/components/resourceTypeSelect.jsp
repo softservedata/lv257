@@ -20,3 +20,5 @@
     <input class="hidden hidden-field" name="search_form[category]" readonly
            aria-hidden="true" type="text"/>
 </div>
+<script src="${contextPath}/resources/js/categories.js"></script>
+<script src="${contextPath}/resources/js/hierarchy-select.js"></script>

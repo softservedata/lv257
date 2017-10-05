@@ -251,8 +251,9 @@
         let list = $('#categories_and_types').find('li a');
         $.each(list, function (i, item) {
             $(item).click(function (e) {
-                $('#categories_and_types').data('categoryID', $(e.target).closest('li').data('value'));
-                console.log($('#categories_and_types').data('categoryID'));
+                $('#categories-select').data('categoryID', $(e.target).closest('li').data('value'));
+                console.log($('#categories-select').data('categoryID'));
+                $('#categories_and_types')[0].dispatchEvent(new Event('change'));
             })
         })
     }
