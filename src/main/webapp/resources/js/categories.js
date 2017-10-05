@@ -77,10 +77,10 @@
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
-            let isLastSelectedItemExists = $('[data-value="'+lastSelectedId+'"] > a').length;
-            if(isLastSelectedItemExists) {
-                $('[data-value="'+lastSelectedId+'"] > a').click();
-            }  else {
+            let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a').length;
+            if (isLastSelectedItemExists) {
+                $('[data-value="' + lastSelectedId + '"] > a').click();
+            } else {
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }
         }, "json");
@@ -142,7 +142,7 @@
             success: function (result) {
                 alert("Changes are saved!");
                 $('#close-managing').click();
-                let lastSelectedId = $('#categories_and_types').data('categoryID');
+                let lastSelectedId = $('#categories-select').data('selectedID');
                 $('#categories_and_types').empty();
                 reloadCategories(lastSelectedId);
             },
@@ -254,8 +254,8 @@
         let list = $('#categories_and_types').find('li a');
         $.each(list, function (i, item) {
             $(item).click(function (e) {
-                $('#categories_and_types').data('selectedID', $(e.target).closest('li').data('value'));
-                console.log($('#categories_and_types').data('selectedID'));
+                $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
+                console.log($('#categories-select').data('selectedID'));
             })
         })
     }
