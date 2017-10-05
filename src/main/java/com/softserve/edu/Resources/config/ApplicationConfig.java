@@ -1,5 +1,8 @@
 package com.softserve.edu.Resources.config;
 
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.app.VelocityEngine;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
@@ -8,8 +11,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.ui.velocity.VelocityEngineFactory;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
+
+import java.io.IOException;
 import java.util.Properties;
 
 @EnableTransactionManagement
@@ -37,7 +43,7 @@ public class ApplicationConfig {
     private Environment env;
 
     @Bean
-    public JavaMailSender getJavaMailSender() {
+    public JavaMailSenderImpl getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 
         mailSender.setHost(env.getProperty("mail.host"));
@@ -53,6 +59,27 @@ public class ApplicationConfig {
         props.put("mail.debug", env.getProperty("mail.debug"));
 
         return mailSender;
+    }
+
+    @Bean
+    public VelocityEngine getVelocityEngine()throws IOException{
+//
+//        Properties properties=new Properties();
+//        properties.setProperty(VelocityEngine.RESOURCE_LOADER, env.getProperty("resource.loader"));
+//        properties.setProperty("classpath." + VelocityEngine.RESOURCE_LOADER + ".class",env.getProperty("class.resource.loader.class"));
+//        Velocity.init(properties);
+//        VelocityEngine velocityEngine=new VelocityEngine();
+        // return velocityEngine;
+
+        VelocityEngineFactory factory = new VelocityEngineFactory();
+        Properties props = new Properties();
+        props.put("resource.loader",  env.getProperty("velocity.resource.loader"));
+        props.put("class.resource.loader.class", env.getProperty("velocity.class.resource.loader.class"));
+        factory.setVelocityProperties(props);
+        return factory.createVelocityEngine();
+
+
+
     }
 
 }
