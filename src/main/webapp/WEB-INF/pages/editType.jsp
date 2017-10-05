@@ -124,7 +124,6 @@
     var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
 </script>
 <script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
-<script src="${contextPath}/resources/js/categories.js"></script>
 <script src="${contextPath}/resources/js/resourceTypes.js"></script>
 <script src="${contextPath}/resources/js/properties.js"></script>
 </body>
