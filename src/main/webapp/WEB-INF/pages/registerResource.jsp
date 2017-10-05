@@ -33,26 +33,14 @@
 
                 <form role="form-horizontal" enctype="multipart/form-data">
 
-                    <div class="form-group">
-                        <label for="resource_type">Resource type</label>
-                        <%--<select name="resource type" id="resource type">--%>
-                        <select type="resource_type" id="resource_type" class="form-control selectpicker"
-                                data-live-search="true"
-                                title="Choose one of the following">
-                            <%--<c:forEach items="${resourceTypes}" var="resource">--%>
-                            <%--<option>${resource.typeName}</option>--%>
-                            <%--</c:forEach>--%>
-
-                            <option disabled style="background-color: lightgray; text-indent: 0px;">Capital</option>
-                            <option disabled style="background-color: lightgray; text-indent: 10px;">Real Estate
-                            </option>
-                            <option style="text-indent: 20px;">Cottages</option>
-                            <option style="text-indent: 20px;">Apartment Buildings</option>
-                            <option disabled style="background-color: lightgray; text-indent: 10px;">Transport</option>
-                            <option style="text-indent: 20px;">Vehicles</option>
-                            <option style="text-indent: 20px;">Trucks</option>
-                        </select>
+                    <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
+                    <div class="row">
+                        <div id="categories" class="col-sm-12 col-xs-8 form-group">
+                            <jsp:include page="components/resourceTypeSelect.jsp"/>
+                        </div>
                     </div>
+
+
 
                     <%--<div class="form-group">--%>
                     <%--<label for="resource_owners" class="display_none">Resource Owners</label>--%>
@@ -214,7 +202,7 @@
                             </thead>
                             <tbody>
                             <tr id="resource_address_row"
-                                    class="my_success">
+                                class="my_success">
                             </tr>
                             </tbody>
                         </table>
@@ -283,10 +271,12 @@
 </footer>
 
 <script src="../../resources/js/OwnerAndAddressManagment.js"></script>
-<%--<script src="../../resources/js/searchOwner.js"></script>--%>
+<script src="../../resources/js/categories.js"></script>
+<script src="../../resources/js/hierarchy-select.js"></script>
 <script src="../../resources/js/jquery.validate.js"></script>
 <script>
 
+    var typeSelectLabel = true;
 
 </script>
 

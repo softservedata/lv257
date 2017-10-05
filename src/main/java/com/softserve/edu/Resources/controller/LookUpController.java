@@ -23,7 +23,7 @@ public class LookUpController {
     ResourceService resourceService;
 
 
-    @RequestMapping(value = "/lookUp/resourceTypes", method = RequestMethod.GET)
+    @RequestMapping(value = "/lookup/resourceTypes", method = RequestMethod.GET)
     public List<ResourceTypeDTO> loadResourceTypes(){
 
 

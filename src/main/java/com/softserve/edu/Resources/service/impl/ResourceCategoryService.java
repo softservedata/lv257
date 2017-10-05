@@ -122,9 +122,17 @@ public class ResourceCategoryService {
         subcategory2.getChildrenCategories().add(typecategory2_2);
 
         ResourceType type1 = new ResourceType("type1");
-        type1.setTableName("AAA");
         type1.setCategory(typecategory2_2);
+        type1.setTableName("type1");
         typecategory2_2.getResourceTypes().add(type1);
+        ResourceType type3 = new ResourceType("type3");
+        type3.setCategory(typecategory2_2);
+        type3.setTableName("type3");
+        typecategory2_2.getResourceTypes().add(type3);
+        ResourceType type2 = new ResourceType("type2");
+        type2.setCategory(typecategory2_2);
+        type2.setTableName("type2");
+        typecategory2_2.getResourceTypes().add(type2);
 
         saveResourceCategory(category);
 /*        saveResourceCategory(branch1);

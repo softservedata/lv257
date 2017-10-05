@@ -58,11 +58,11 @@ public class RequestServiceTest {
     @Mock
     Message message;
 
-    @Mock
-    RequestMessageHandler messageHandler;
-
-    @Mock
-    MailSenderService mailSender;
+//    @Mock
+//    RequestMessageHandler messageHandler;
+//
+//    @Mock
+//    MailSenderService mailSender;
 
     static Logger logger;
 
@@ -157,37 +157,37 @@ public class RequestServiceTest {
         verify(logger).warn("ResourseRequest instance " + request.get() + " has already assigned.");
     }
 
-    @Test
-    public void responceTest() throws Exception {
-        Mockito.when(message.getId_request()).thenReturn(ID);
-        Mockito.when(resourceRequestDAO.findById(ID))
-                .thenReturn(Optional.of(request.get().setResourcesAdmin(resourceAdmin)));
-        Mockito.when(message.getRequestStatus()).thenReturn(ResourceRequest.Status.ACCEPTED);
-
-        whenNew(Date.class).withAnyArguments().thenReturn(date);
-        requestService.response(message);
-        verify(resourceRequestDAO, times(1))
-                .makePersistent(request.get()
-                        .setResourcesAdmin(resourceAdmin).setUpdate(date).setStatus(ResourceRequest.Status.ACCEPTED));
-        verify(messageHandler, times(1)).setMessage(message);
-        verify(mailSender, times(1)).sendMessage(messageHandler);
-    }
-
-    @Test
-    public void responceNegativeTest() throws Exception {
-        Mockito.when(message.getId_request()).thenReturn(ID);
-        Mockito.when(resourceRequestDAO.findById(ID))
-                .thenReturn(Optional.empty());
-        requestService.response(message);
-        verify(resourceRequestDAO, times(0))
-                .makePersistent(request.get()
-                        .setResourcesAdmin(resourceAdmin).setUpdate(date).setStatus(ResourceRequest.Status.ACCEPTED));
-        verify(messageHandler, times(0)).setMessage(message);
-        verify(mailSender, times(0)).sendMessage(messageHandler);
-
-        verify(logger).warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
-
-    }
+//    @Test
+//    public void responceTest() throws Exception {
+//        Mockito.when(message.getId_request()).thenReturn(ID);
+//        Mockito.when(resourceRequestDAO.findById(ID))
+//                .thenReturn(Optional.of(request.get().setResourcesAdmin(resourceAdmin)));
+//        Mockito.when(message.getRequestStatus()).thenReturn(ResourceRequest.Status.ACCEPTED);
+//
+//        whenNew(Date.class).withAnyArguments().thenReturn(date);
+//        requestService.response(message);
+//        verify(resourceRequestDAO, times(1))
+//                .makePersistent(request.get()
+//                        .setResourcesAdmin(resourceAdmin).setUpdate(date).setStatus(ResourceRequest.Status.ACCEPTED));
+//        verify(messageHandler, times(1)).setMessage(message);
+//        verify(mailSender, times(1)).sendMessage(messageHandler);
+//    }
+//
+//    @Test
+//    public void responceNegativeTest() throws Exception {
+//        Mockito.when(message.getId_request()).thenReturn(ID);
+//        Mockito.when(resourceRequestDAO.findById(ID))
+//                .thenReturn(Optional.empty());
+//        requestService.response(message);
+//        verify(resourceRequestDAO, times(0))
+//                .makePersistent(request.get()
+//                        .setResourcesAdmin(resourceAdmin).setUpdate(date).setStatus(ResourceRequest.Status.ACCEPTED));
+//        verify(messageHandler, times(0)).setMessage(message);
+//        verify(mailSender, times(0)).sendMessage(messageHandler);
+//
+//        verify(logger).warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
+//
+//    }
 
 
 }
