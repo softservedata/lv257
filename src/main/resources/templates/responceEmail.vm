@@ -1,0 +1,7 @@
+Dear ${register},
+Request for a new resource type ${resourceType} was processed by ${resourceAdmin}.
+Status:${status}.
+${comment}
+
+Thanks.
+

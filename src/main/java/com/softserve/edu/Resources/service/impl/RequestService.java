@@ -8,6 +8,7 @@ import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.util.ResponceMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class RequestService {
 
-    private static final Logger  logger= LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
 
     @Autowired
@@ -36,12 +37,9 @@ public class RequestService {
     @Autowired
     UserDAO userDAO;
 
-    @Autowired
-    MailSenderService mailSender;
 
     @Autowired
-    RequestMessageHandler messageHandler;
-
+    VelocityMailService mailService;
 
     public RequestService() {
     }
@@ -81,6 +79,7 @@ public class RequestService {
         return requests;
     }
 
+
     public void response(Message message) {
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(message.getId_request());
 
@@ -90,8 +89,8 @@ public class RequestService {
             request.setUpdate(new Date());
             request.setStatus(message.getRequestStatus());
             resourceRequestDAO.makePersistent(request);
-            messageHandler.setMessage(message);
-            mailSender.sendMessage(messageHandler);
+            ResponceMail mail = new ResponceMail(message, request);
+            mailService.sendResponceMail(mail);
         } else {
             logger.warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
         }
