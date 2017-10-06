@@ -66,7 +66,7 @@
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
                     <td><a href="/resources/info/${request.id}">details</a></td>
-                    <td>${request.update}</td>
+                    <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
 
                     <c:choose>
