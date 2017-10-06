@@ -3,7 +3,7 @@ package com.softserve.edu.Resources.util;
 public class RegistrationConfirmMail extends Mail {
     String host;
     String token;
-    String from;//add 7/10
+    String from;
 
     public RegistrationConfirmMail(String receiver){
         super(receiver,
