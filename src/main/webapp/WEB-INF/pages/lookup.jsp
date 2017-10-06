@@ -34,7 +34,7 @@
                 <div class="row">
                     <div class="container-fluid col-md-4">
                     	<div class="form-group"  id="div-for-types">
-                    	<script> var showTypesInCategoryHierarchy = true;</script>
+                    	<script> var showTypesInCategoryHierarchy = true</script>
                     	 <jsp:include page="components/resourceTypeSelect.jsp"/>
                        <!--  <div class="form-group"  id="div-for-types">
                             <label for="sel1">Select type of resources:</label>

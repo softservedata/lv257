@@ -7,7 +7,7 @@ $(document).ready(function(){
 	$('#lookup_type').on('change',function(){    
 	    var lookUpType = $('#lookup_type').val();    
 	    if (lookUpType == 'by-type'){
-		    $.ajax({    
+		  /*  $.ajax({    
 		        type: 'GET',
 		        url: '/lookup/resourceTypes',
 		        contentType: 'application/json; charset=UTF-8',
@@ -18,15 +18,15 @@ $(document).ready(function(){
 		            for (var j = 0; j < result.length; j++){                 
 		                console.log(result[j].tableName + "--" + result[j].id);
 		                select.append("<option value='" + result[j].id + "'>" +result[j].typeName+ "</option>");    
-		            }
+		            }*/
 		            $('#div-for-types').show();
-		        },
+		      /*  },
 		        error: function (result) {
 	                
 	                console.log('error');
 	              
 	            }
-		    });    
+		    });   */ 
 	    } else if (lookUpType == 'by-owner') {
 	    	$('#div-for-types').hide();
 	    	
@@ -39,11 +39,11 @@ $(document).ready(function(){
 	
 	// populating form with properties to fill in depends on resourceType chosen
 	$('#div-for-types').on('change',function(e){    
-	    var resourceTypeID = $(e.target).data('categoryID');
-	    if (typeof resourceTypeID != 'undefined')
+	    var resourceTypeId = $(e.target).data('selectedID');
+	    if (typeof resourceTypeId != 'undefined')
 		    $.ajax({    
 		        type: 'GET',
-		        url: '/lookUp/resourceProperties/'+ resourceTypeID,
+		        url: '/lookUp/resourceProperties/'+ resourceTypeId,
 		        contentType: 'application/json; charset=UTF-8',
 		        dataType: 'json',
 		        success: function(result){    

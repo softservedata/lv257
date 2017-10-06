@@ -22,4 +22,3 @@
 
 <script src="${contextPath}/resources/js/categories.js"></script>
 <script src="${contextPath}/resources/js/hierarchy-select.js"></script>
-
