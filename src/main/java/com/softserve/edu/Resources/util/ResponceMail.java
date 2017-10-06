@@ -4,7 +4,6 @@ import com.softserve.edu.Resources.dao.impl.ResourceRequestDAOImpl;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import sun.misc.Resource;
 
 public class ResponceMail extends Mail {
     @Autowired

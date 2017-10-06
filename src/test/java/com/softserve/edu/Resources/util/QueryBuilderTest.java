@@ -1,6 +1,7 @@
 package com.softserve.edu.Resources.util;
 
 import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -28,8 +29,10 @@ public class QueryBuilderTest {
     
     @Test
     @Parameters(method = "test1")
-    public void testLookUpByResouceType(String tablename, Map<String, String> inputValues1,
-            List<ResourceProperty> allResProperties, String result1)  throws Exception{
+    public void testLookUpByResouceType(String tablename,
+                                        Map<String, String> inputValues1,
+                                        List<ConstrainedProperty> allResProperties,
+                                        String result1)  throws Exception{
         QueryBuilder qb = new QueryBuilder();
         assertThat(qb.lookUpByResouceType(tablename, inputValues1, allResProperties), is(result1));
     }
@@ -45,12 +48,12 @@ public class QueryBuilderTest {
         
         Map<String, String> inputValues3 = new TreeMap<>();
         
-        List<ResourceProperty> allResProperties1 = new ArrayList<>();
-        allResProperties1.add(new ResourceProperty("Model"));
-        allResProperties1.add(new ResourceProperty("Year"));
+        List<ConstrainedProperty> allResProperties1 = new ArrayList<>();
+        allResProperties1.add(new ConstrainedProperty(new ResourceProperty("Model")));
+        allResProperties1.add(new ConstrainedProperty(new ResourceProperty("Year")));
         
-        List<ResourceProperty> allResProperties2 = new ArrayList<>();
-        allResProperties2.add(new ResourceProperty("Model"));
+        List<ConstrainedProperty> allResProperties2 = new ArrayList<>();
+        allResProperties2.add(new ConstrainedProperty(new ResourceProperty("Model")));
       
         String result1 = "SELECT gr.id, gr.id_address, gr.Model, gr.Year FROM Cars gr WHERE gr.Model = ? AND gr.Year = ?";
         String result2 = "SELECT gr.id, gr.id_address, gr.Model, gr.Year FROM Cars gr WHERE gr.Model = ?";

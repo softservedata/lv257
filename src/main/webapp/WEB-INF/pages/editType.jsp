@@ -105,8 +105,7 @@
                     <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
 
                 </form>
-                <jsp:include page="dialogs/availableProperties.jsp"/>
-                <jsp:include page="dialogs/newProperty.jsp"/>
+                <jsp:include page="dialogs/properties.jsp"/>
                 <jsp:include page="dialogs/categories.jsp"/>
             </div>
         </div>
@@ -114,17 +113,11 @@
 </div>
 
 <jsp:include page="${contextPath}footer.jsp"/>
-<script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script>
     $("#addition-btn").click(function (e) {
         $('#addition-btn, #definition-form').toggleClass('hidden');
     });
-    var existentProperties;
-    <c:set var="idVal" value="${id}"></c:set>
-    var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
 </script>
-<script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
 <script src="${contextPath}/resources/js/resourceTypes.js"></script>
-<script src="${contextPath}/resources/js/properties.js"></script>
 </body>
 </html>

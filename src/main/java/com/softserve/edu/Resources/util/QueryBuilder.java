@@ -1,7 +1,7 @@
 package com.softserve.edu.Resources.util;
 
 import com.softserve.edu.Resources.dto.SearchOwnerDTO;
-import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -17,16 +17,16 @@ public class QueryBuilder {
     static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
     public String lookUpByResouceType(String tableName, Map<String, String> valuesToSearch,
-            List<ResourceProperty> allResourceProperties) {
+            List<ConstrainedProperty> allResourceProperties) {
 
         StringBuilder createQuery = new StringBuilder();
         createQuery.append("SELECT gr.id, gr.id_address");
 
         createQuery.append(allResourceProperties.isEmpty() ? " " : ", ");
 
-        Iterator<ResourceProperty> iter = allResourceProperties.iterator();
+        Iterator<ConstrainedProperty> iter = allResourceProperties.iterator();
         while (iter.hasNext()) {
-            createQuery.append("gr." + iter.next().getColumnName() + "");
+            createQuery.append("gr." + iter.next().getProperty().getColumnName() + "");
             if (iter.hasNext()) {
                 createQuery.append(", ");
             } else {

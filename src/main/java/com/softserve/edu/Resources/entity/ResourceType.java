@@ -1,15 +1,13 @@
-package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
+package com.softserve.edu.Resources.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /*
 *  ResourceType represents entity containing a set of
@@ -22,36 +20,34 @@ public class ResourceType {
 
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-
     @Column(name = "Id")
     private Long id;
 
+    @JsonProperty("typename")
     @NotNull
     @Column(name = "Type_Name", unique = true, nullable = false)
-    @JsonProperty("typename")
     private String typeName;
 
+    @JsonIgnore
     @NotNull
     @Column(name = "Table_Name", unique = true, nullable = false)
-    @JsonIgnore
     private String tableName;
 
-    @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "Id_Category")
+    @ManyToOne
+    @JoinColumn(name = "Id_Category", nullable = false)
     private ResourceCategory category;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
     @JsonIgnore
-    @JoinTable(
-            name = "RESOURCE_TYPES_PROPERTIES",
-            joinColumns = @JoinColumn(name = "Resource_Type_Id"),
-            inverseJoinColumns = @JoinColumn(name = "Property_Id")
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(
+            name = "Type_Properties",
+            joinColumns = @JoinColumn(name = "Type_Id")
     )
-    private Set<ResourceProperty> properties = new HashSet<>();
+    private Set<ConstrainedProperty> properties = new HashSet<>();
 
-    @Column(name = "Instantiated")
     @JsonIgnore
+    @Column(name = "Instantiated")
     private boolean instantiated;
 
 
@@ -107,28 +103,25 @@ public class ResourceType {
         return this;
     }
 
-    public ResourceType setProperties(Set<ResourceProperty> properties) {
-        this.properties = properties;
-        return this;
-    }public String getName() {
+    public String getName() {
         return typeName;
     }
 
-    public Set<ResourceProperty> getProperties() {
+    public Set<ConstrainedProperty> getProperties() {
         return Collections.unmodifiableSet(properties);
     }
 
-    public boolean addProperty(ResourceProperty resourceProperty) {
-        return properties.add(resourceProperty);
+    public void addProperty(ConstrainedProperty constrainedProperty) {
+        properties.add(constrainedProperty);
     }
 
-    public boolean removeProperty(ResourceProperty resourceProperty) {
-        return properties.remove(resourceProperty);
+    public void removeProperty(ConstrainedProperty constrainedProperty) {
+        properties.remove(constrainedProperty);
     }
 
-    public Optional<ResourceProperty> getProperty(String propertyName) {
+    public Optional<ConstrainedProperty> getProperty(String propertyName) {
         return properties.stream()
-                       .filter(rp -> rp.getTitle().equalsIgnoreCase(propertyName))
+                       .filter(rp -> rp.getProperty().getTitle().equalsIgnoreCase(propertyName))
                        .findFirst();
     }
 
