@@ -4,7 +4,7 @@
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-$(document).ready(function() {
+$(document).ready(function () {
     const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
     const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
     const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
@@ -40,10 +40,10 @@ $(document).ready(function() {
             $('.dd').nestable('collapseAll');
         }
         if (action === 'add-item') {
-            var newItem = {
+            let newItem = {
 //                    "id": ++lastId,
                 "categoryname": "new category",
-//                    "`nt_id" : 1516,
+//                    "parent_id" : 1516,
                 "content": "Item " + lastId
             };
             $('#nestable').nestable('add', newItem);
@@ -55,6 +55,31 @@ $(document).ready(function() {
             updateOutput($('#nestable').data('output', $('#nestable-output')));
         }
     });
+
+    function addNestableButtonsHandlers() {
+        let allButtons = $('.btn-add, .btn-edit, .btn-remove');
+        $.each(allButtons, function (i, item) {
+            $(item).on('mousedown', function (e) {
+                e.stopPropagation();
+                return false;
+            });
+        });
+
+        let addButtons = $('.btn-add');
+        $.each(addButtons, function (i, item) {
+            $(item).click(function (e) {
+                let ownerCategoryId = $(item).attr('data-owner-id');
+                let newItem = {
+//                    "id": ++lastId,
+                    "categoryname": "new category",
+                    "parent_id": ownerCategoryId,
+                    "content": "Item " + lastId
+                };
+                $('#nestable').nestable('add', newItem);
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+        });
+    }
 
     /**
      * Load data and build categories selectlist
@@ -104,6 +129,9 @@ $(document).ready(function() {
                         return content;
                     }
                 }).on('change', updateOutput);
+
+                //initialize handlers for buttons on components
+                addNestableButtonsHandlers();
 
                 // output initial serialised data
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -256,6 +284,7 @@ $(document).ready(function() {
             $(item).click(function (e) {
                 $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
                 console.log($('#categories-select').data('selectedID'));
+                $('#categories-select')[0].dispatchEvent(new Event('change'));
             })
         })
     }

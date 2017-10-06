@@ -43,7 +43,6 @@
         emptyClass: 'dd-empty',
         expandBtnHTML: '<button class="dd-expand" data-action="expand" type="button">Expand</button>',
         collapseBtnHTML: '<button class="dd-collapse" data-action="collapse" type="button">Collapse</button>',
-        addBtnHTML: '<button class="dd-add" data-action="add-item" type="button">Add Item</button>',
         group: 0,
         maxDepth: 5,
         threshold: 20,
@@ -73,12 +72,18 @@
             var item_attrs_string = $.map(item_attrs, function(value, key) {
                 return ' ' + key + '="' + value + '"';
             }).join(' ');
+            var ownerId = JSON.stringify(item_attrs['data-id']);
 
             var html = '<' + options.itemNodeName + item_attrs_string + '>';
             html += '<' + options.handleNodeName + ' class="' + options.handleClass + '">';
             html += '<' + options.contentNodeName + ' class="' + options.contentClass + '">';
             html += content;
             html += '</' + options.contentNodeName + '>';
+            html += '<div class="pull-right">';
+            html += '<button class="btn btn-default btn-xs btn-primary-outline btn-add" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-plus"></span></button>';
+            html += '<button class="btn btn-default btn-xs btn-primary-outline btn-edit" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-edit"></span></button>';
+            html += '<button class="btn btn-default btn-xs btn-primary-outline btn-remove" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-remove"></span></button>';
+            html += '</div>';
             html += '</' + options.handleNodeName + '>';
             html += children;
             html += '</' + options.itemNodeName + '>';
