@@ -87,7 +87,7 @@
 
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
-                    <td>${request.update}</td>
+                    <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
                     <td>${request.status}</td>
 

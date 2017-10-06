@@ -3,7 +3,7 @@ package com.softserve.edu.Resources.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.softserve.edu.Resources.dto.FieldErrorDTO;
 import com.softserve.edu.Resources.dto.OwnerDTO;
-import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Owner;
 import com.softserve.edu.Resources.entity.Person;
@@ -122,20 +122,37 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/owner/search", method = RequestMethod.POST)
-    public ResponseEntity<?> searchOwner(@RequestBody SearchOwnerDTO searchOwnerDTO){
-        logger.debug("Searching owner with values: " + searchOwnerDTO.getFieldsAndValues().values());
+    public ResponseEntity<?> searchOwner(@RequestBody SearchDTO searchDTO){
+        logger.debug("Searching owner with values: " + searchDTO.getFieldsAndValues().values());
 
-        List<Owner> owners = ownerService.findOwners(searchOwnerDTO);
+        List<Owner> owners = ownerService.findOwners(searchDTO);
 
         if (owners.isEmpty()){
             logger.warn("Owner was not found!");
 
-            return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found."), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found. Please, try again."), HttpStatus.BAD_REQUEST);
         }
 
         List<OwnerDTO> ownerDTOS = ownerService.fromOwnerToOwnerDto(owners);
 
         return new ResponseEntity<>(ownerDTOS, HttpStatus.OK);
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/address/search", method = RequestMethod.POST)
+    public ResponseEntity<?> searchAddress(@RequestBody SearchDTO searchDTO){
+        logger.debug("Searching address with values: " + searchDTO.getFieldsAndValues().values());
+
+        List<Address> addresses = addressService.findAddresses(searchDTO);
+
+        if (addresses.isEmpty()){
+            logger.warn("Address was not found!");
+
+            return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found. Please, try again."), HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
 
 }

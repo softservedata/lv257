@@ -4,10 +4,12 @@
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-$(document).ready(function () {
+
+$(document).ready(function() {
     const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
     const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
     const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
+
     let lastId;
 
     //Enable categories selectlist
@@ -284,7 +286,8 @@ $(document).ready(function () {
             $(item).click(function (e) {
                 $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
                 console.log($('#categories-select').data('selectedID'));
-                $('#categories-select')[0].dispatchEvent(new Event('change'));
+                $('#categories_and_types')[0].dispatchEvent(new Event('change'));
+
             })
         })
     }

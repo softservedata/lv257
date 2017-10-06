@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.service;
 
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,8 @@ public interface AddressService {
     void deleteAddress(Address address);
 
     List<Address> getAllAddresses();
+
+    List<Address> findAddresses(SearchDTO searchDTO);
 
     ValidationErrorDTO validationDTO(BindingResult result);
 }

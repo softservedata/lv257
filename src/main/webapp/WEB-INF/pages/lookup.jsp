@@ -30,14 +30,19 @@
 	               </div>
 				</div>
                 <br />
+                <c:set var="typeSelectLabel" value="Resource Type" scope="request"/>
                 <div class="row">
                     <div class="container-fluid col-md-4">
-                        <div class="form-group"  id="div-for-types">
+                    	<div class="form-group"  id="div-for-types">
+                    	<script> var showTypesInCategoryHierarchy = true</script>
+                    	 <jsp:include page="components/resourceTypeSelect.jsp"/>
+                       <!--  <div class="form-group"  id="div-for-types">
                             <label for="sel1">Select type of resources:</label>
                             <select class="form-control" id="sel1-resource-types">
                                 <option>select type</option>
-                               	<!-- here will be data inserted by ajax request -->
+                               	here will be data inserted by ajax request
                             </select>
+                        </div> -->
                         </div>
                     </div>
                 </div>
@@ -68,6 +73,7 @@
 </div>
 
 <script src="../../resources/js/lookUpResource.js"></script>
+
 
 
 </body>

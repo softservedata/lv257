@@ -2,25 +2,25 @@ package com.softserve.edu.Resources.dto;
 
 import java.util.Map;
 
-public class SearchOwnerDTO {
+public class SearchDTO {
 
-    private String ownerType;
+    private String entityType;
     private Map<String, String> fieldsAndValues;
 
-    public SearchOwnerDTO(String ownerType, Map<String, String> fieldsAndValues) {
-        this.ownerType = ownerType;
+    public SearchDTO(String entityType, Map<String, String> fieldsAndValues) {
+        this.entityType = entityType;
         this.fieldsAndValues = fieldsAndValues;
     }
 
-    public SearchOwnerDTO() {
+    public SearchDTO() {
     }
 
-    public String getOwnerType() {
-        return ownerType;
+    public String getEntityType() {
+        return entityType;
     }
 
-    public void setOwnerType(String ownerType) {
-        this.ownerType = ownerType;
+    public void setEntityType(String entityType) {
+        this.entityType = entityType;
     }
 
     public Map<String, String> getFieldsAndValues() {
@@ -33,8 +33,8 @@ public class SearchOwnerDTO {
 
     @Override
     public String toString() {
-        return "SearchOwnerDTO{" +
-                "ownerType='" + ownerType + '\'' +
+        return "SearchDTO{" +
+                "entityType='" + entityType + '\'' +
                 ", fieldsAndValues=" + fieldsAndValues +
                 '}';
     }

@@ -100,8 +100,8 @@ h3 span{
     display: none;
 }
 
-.width_12em{
-    width: 12em;
+.width_13em{
+    width: 13em;
 }
 
 .my_hr{
@@ -110,20 +110,20 @@ h3 span{
     border-top: 1px solid rgba(51, 122, 183, 0.53);
 }
 
-.owner_table_message{
+.table_message{
     font-size: 13.5px;
     font-style: italic;
 }
 
-.owner_table_message span{
+.table_message span{
     font-weight: bold;
 }
 
-.owner_table_message span:first-child{
+.table_message span:first-child{
     color: rgba(0, 255, 0, 0.48);
 }
 
-.owner_table_message span:last-child{
+.table_message span:last-child{
     color: rgba(84, 190, 243, 0.55);
 }
 
