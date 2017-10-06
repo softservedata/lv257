@@ -9,8 +9,15 @@
 <br>
 <br>
 <br>
-<div class="container-fluid">
-    <h1>${message}</h1>
+<div class="container">
+
+        <div align="center"><h1>${message}</h1></div>
+    <div  >
+        <img width="100%" height="auto" src="/resources/img/welcome3.png">
+    </div>
+
+
+
 </div>
 </body>
 </html>

@@ -1,21 +1,18 @@
 package com.softserve.edu.Resources.config;
 
-import org.apache.velocity.app.Velocity;
+
 import org.apache.velocity.app.VelocityEngine;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.ui.velocity.VelocityEngineFactory;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 
-import java.io.IOException;
+
 import java.util.Properties;
 
 @EnableTransactionManagement

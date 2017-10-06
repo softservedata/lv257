@@ -191,7 +191,6 @@
 		$('.assign').on('click', function () {
 			var cell = $(this).parents('td');
 			var id = cell.attr('data-id');
-			alert(id)
 			$.ajax(
 					{
 						type: "POST",
@@ -199,7 +198,6 @@
 						accept: "application/json",
 						data: {id: id},
 						success: function (responceRequest) {
-							alert(responceRequest.update);
 							table.cell(cell.closest('tr'), 3).data(responceRequest.update);
 							table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
 //
@@ -219,8 +217,12 @@
 							});
 
 							table.order([[5, 'asc'], [3, 'desc']]).draw();
-						}
+						},
+                        error: function (result) {
+                            alert("This request has already assigned.\n" +
+                                "Please, reload page.");}
 					})
+
 		})
 
 
