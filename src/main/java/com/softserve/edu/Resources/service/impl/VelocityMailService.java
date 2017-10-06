@@ -13,18 +13,16 @@ import java.io.StringWriter;
 
 @Service
 public class VelocityMailService {
+
     @Autowired
     JavaMailSenderImpl mailSender;
 
     @Autowired
     VelocityEngine velocityEngine;
 
-
-
-
     public void sendResponceMail(ResponceMail mail){
-        SimpleMailMessage message = new SimpleMailMessage();
 
+        SimpleMailMessage message = new SimpleMailMessage();
 
         message.setTo(mail.getReceiver());
         message.setSubject(mail.getSubject());
@@ -45,16 +43,15 @@ public class VelocityMailService {
         message.setText(stringWriter.toString());
 
         mailSender.send(message);
-
     }
 
     public void sendConfirmationMail(RegistrationConfirmMail mail){
-        SimpleMailMessage message = new SimpleMailMessage();
 
+        SimpleMailMessage message = new SimpleMailMessage();
 
         message.setTo(mail.getReceiver());
         message.setSubject(mail.getSubject());
-        message.setFrom(mail.getFrom());//add 7/10
+        message.setFrom(mail.getFrom());
 
         Template template = velocityEngine.getTemplate("./templates/" + mail.getTemplateName());
 
@@ -69,6 +66,5 @@ public class VelocityMailService {
         message.setText(stringWriter.toString());
 
         mailSender.send(message);
-
     }
 }

@@ -102,7 +102,6 @@ public class RegistrationUserController {
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String message = messages.getMessage("auth.message.expired", null, locale);
             model.addAttribute("message", message);
-            userService.deleteVerificationToken(verificationToken);
             userService.delete(user);
             return "badUser";
         }
