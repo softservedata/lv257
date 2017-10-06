@@ -2,7 +2,7 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.OwnerDAO;
 import com.softserve.edu.Resources.dto.OwnerDTO;
-import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Owner;
 import com.softserve.edu.Resources.entity.Person;
@@ -105,8 +105,12 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public List<Owner> findOwners(SearchOwnerDTO searchOwnerDTO) {
-        String readyQuery = queryBuilder.findOwnerQuery(searchOwnerDTO);
+    public List<Owner> findOwners(SearchDTO searchDTO) {
+        String readyQuery = queryBuilder.buildQuery(searchDTO);
+
+        if (readyQuery.isEmpty()){
+            return new ArrayList<>();
+        }
 
         return ownerDAO.findOwners(readyQuery);
     }
