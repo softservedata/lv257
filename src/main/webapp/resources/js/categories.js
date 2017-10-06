@@ -6,9 +6,9 @@
 
 
 $(document).ready(function() {
-    var includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
-    var suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
-    var defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
+    const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
+    const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
+    const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
 
     let lastId;
 
