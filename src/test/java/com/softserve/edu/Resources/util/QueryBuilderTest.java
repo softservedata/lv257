@@ -1,6 +1,6 @@
 package com.softserve.edu.Resources.util;
 
-import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -70,55 +70,55 @@ public class QueryBuilderTest {
 
     @Test
     @Parameters(method = "searchOwnerDTOTestData")
-    public void testBuildSearchOwnerQuery(SearchOwnerDTO searchOwnerDTO, String expectedQuery)  throws Exception{
+    public void testBuildSearchOwnerQuery(SearchDTO searchDTO, String expectedQuery)  throws Exception{
         QueryBuilder qb = new QueryBuilder();
-        System.out.println(qb.findOwnerQuery(searchOwnerDTO));
-        assertEquals(expectedQuery, qb.findOwnerQuery(searchOwnerDTO));
+        System.out.println(qb.buildQuery(searchDTO));
+        assertEquals(expectedQuery, qb.buildQuery(searchDTO));
     }
 
     private Object[] searchOwnerDTOTestData() {
 
-        SearchOwnerDTO searchOwnerDTO_1 = new SearchOwnerDTO();
+        SearchDTO searchDTO_1 = new SearchDTO();
         Map<String, String> fieldsANdValues = new TreeMap<>();
 
         fieldsANdValues.put("first_name", "Oleh");
         fieldsANdValues.put("last_name", "Tsebak");
-        searchOwnerDTO_1.setOwnerType("Person");
-        searchOwnerDTO_1.setFieldsAndValues(fieldsANdValues);
+        searchDTO_1.setEntityType("Person");
+        searchDTO_1.setFieldsAndValues(fieldsANdValues);
 
-        SearchOwnerDTO searchOwnerDTO_2 = new SearchOwnerDTO();
+        SearchDTO searchDTO_2 = new SearchDTO();
         Map<String, String> fieldsANdValues_2 = new TreeMap<>();
 
         fieldsANdValues_2.put("passport_series", "KC");
         fieldsANdValues_2.put("passport_number", "163498");
-        searchOwnerDTO_2.setOwnerType("Person");
-        searchOwnerDTO_2.setFieldsAndValues(fieldsANdValues_2);
+        searchDTO_2.setEntityType("Person");
+        searchDTO_2.setFieldsAndValues(fieldsANdValues_2);
 
-        SearchOwnerDTO searchOwnerDTO_3 = new SearchOwnerDTO();
+        SearchDTO searchDTO_3 = new SearchDTO();
         Map<String, String> fieldsANdValues_3 = new TreeMap<>();
 
         fieldsANdValues_3.put("organization_form", "TzOV");
         fieldsANdValues_3.put("full_name", "Sunshine");
         fieldsANdValues_3.put("short_name", "Sunny");
-        searchOwnerDTO_3.setOwnerType("Company");
-        searchOwnerDTO_3.setFieldsAndValues(fieldsANdValues_3);
+        searchDTO_3.setEntityType("Company");
+        searchDTO_3.setFieldsAndValues(fieldsANdValues_3);
 
-        SearchOwnerDTO searchOwnerDTO_4 = new SearchOwnerDTO();
+        SearchDTO searchDTO_4 = new SearchDTO();
         Map<String, String> fieldsANdValues_4 = new TreeMap<>();
 
         fieldsANdValues_4.put("organization_form", "");
         fieldsANdValues_4.put("full_name", "");
         fieldsANdValues_4.put("short_name", "Sunny");
-        searchOwnerDTO_4.setOwnerType("Company");
-        searchOwnerDTO_4.setFieldsAndValues(fieldsANdValues_4);
+        searchDTO_4.setEntityType("Company");
+        searchDTO_4.setFieldsAndValues(fieldsANdValues_4);
 
-        SearchOwnerDTO searchOwnerDTO_5 = new SearchOwnerDTO();
+        SearchDTO searchDTO_5 = new SearchDTO();
         Map<String, String> fieldsANdValues_5 = new TreeMap<>();
 
         fieldsANdValues_5.put("passport_series", "");
         fieldsANdValues_5.put("passport_number", "");
-        searchOwnerDTO_5.setOwnerType("Person");
-        searchOwnerDTO_5.setFieldsAndValues(fieldsANdValues_5);
+        searchDTO_5.setEntityType("Person");
+        searchDTO_5.setFieldsAndValues(fieldsANdValues_5);
 
 
 
@@ -132,11 +132,11 @@ public class QueryBuilderTest {
 
 
         return new Object[]{
-                new Object[]{searchOwnerDTO_1, result1},
-                new Object[]{searchOwnerDTO_2, result2},
-                new Object[]{searchOwnerDTO_3, result3},
-                new Object[]{searchOwnerDTO_4, result4},
-                new Object[]{searchOwnerDTO_5, result5}
+                new Object[]{searchDTO_1, result1},
+                new Object[]{searchDTO_2, result2},
+                new Object[]{searchDTO_3, result3},
+                new Object[]{searchDTO_4, result4},
+                new Object[]{searchDTO_5, result5}
         };
     }
 
