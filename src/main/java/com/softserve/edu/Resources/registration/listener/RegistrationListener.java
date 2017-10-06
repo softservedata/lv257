@@ -7,10 +7,7 @@ import com.softserve.edu.Resources.service.impl.VelocityMailService;
 import com.softserve.edu.Resources.util.RegistrationConfirmMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -71,6 +68,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     }
     private final RegistrationConfirmMail constructRegistrationConfirmMail(final User user, final String token ) {
         RegistrationConfirmMail mail = new RegistrationConfirmMail(user.getUsername());
+        mail.setFrom(env.getProperty("mail.username"));//add 7/10
         mail.setHost(env.getProperty("host.appUrl"));
         mail.setToken(token);
         return mail;

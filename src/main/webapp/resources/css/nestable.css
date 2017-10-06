@@ -133,3 +133,8 @@
 ::-webkit-scrollbar {
     display: none;
 }
+
+.btn-primary-outline {
+    background-color: transparent;
+    border: none;
+}

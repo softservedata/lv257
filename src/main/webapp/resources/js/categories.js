@@ -4,10 +4,13 @@
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-(function () {
-    var includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
-    var suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
-    var lastId;
+
+$(document).ready(function() {
+    const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
+    const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
+    const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
+
+    let lastId;
 
     //Enable categories selectlist
     loadCategories(includeTypes, suppressChoosingParents);
@@ -30,7 +33,7 @@
 
     //Actions of menu buttons
     $('#nestable-menu').on('click', function (e) {
-        var target = $(e.target),
+        let target = $(e.target),
             action = target.data('action');
         if (action === 'expand-all') {
             $('.dd').nestable('expandAll');
@@ -39,21 +42,46 @@
             $('.dd').nestable('collapseAll');
         }
         if (action === 'add-item') {
-            var newItem = {
+            let newItem = {
 //                    "id": ++lastId,
                 "categoryname": "new category",
-//                    "`nt_id" : 1516,
+//                    "parent_id" : 1516,
                 "content": "Item " + lastId
             };
             $('#nestable').nestable('add', newItem);
             updateOutput($('#nestable').data('output', $('#nestable-output')));
         }
         if (action === 'remove-item') {
-            var branch2_id = $("[data-categoryname='branch2']").attr("data-id");
+            let branch2_id = $("[data-categoryname='branch2']").attr("data-id");
             $('#nestable').nestable('remove', branch2_id);
             updateOutput($('#nestable').data('output', $('#nestable-output')));
         }
     });
+
+    function addNestableButtonsHandlers() {
+        let allButtons = $('.btn-add, .btn-edit, .btn-remove');
+        $.each(allButtons, function (i, item) {
+            $(item).on('mousedown', function (e) {
+                e.stopPropagation();
+                return false;
+            });
+        });
+
+        let addButtons = $('.btn-add');
+        $.each(addButtons, function (i, item) {
+            $(item).click(function (e) {
+                let ownerCategoryId = $(item).attr('data-owner-id');
+                let newItem = {
+//                    "id": ++lastId,
+                    "categoryname": "new category",
+                    "parent_id": ownerCategoryId,
+                    "content": "Item " + lastId
+                };
+                $('#nestable').nestable('add', newItem);
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+        });
+    }
 
     /**
      * Load data and build categories selectlist
@@ -62,6 +90,8 @@
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
+            $('#selected-label').text('Select ' + defaultSelectedLabel);
+            $('#categories_and_types li:first').removeClass('active');
         }, "json");
     }
 
@@ -74,10 +104,12 @@
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
-            var isLastSelectedItemExists = $('[data-value="'+lastSelectedId+'"] > a').length;
-            if(isLastSelectedItemExists) {
-                $('[data-value="'+lastSelectedId+'"] > a').click();
-            } //else TODO
+            let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a').length;
+            if (isLastSelectedItemExists) {
+                $('[data-value="' + lastSelectedId + '"] > a').click();
+            } else {
+                $('#selected-label').text('Select ' + defaultSelectedLabel);
+            }
         }, "json");
     }
 
@@ -85,20 +117,23 @@
      * Activate Nestable and build categories tree
      */
     function buildCategoriesNestableTree() {
-        var jqxhr = $.getJSON("/resources/categories")
+        let jqxhr = $.getJSON("/resources/categories")
             .success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
-                var json = JSON.stringify(data);
+                let json = JSON.stringify(data);
                 // activate Nestable
                 $('#nestable').nestable({
                     json: json,
                     contentCallback: function (item) {
-                        var content = item.categoryname || '' ? item.categoryname : item.id;
+                        let content = item.categoryname || '' ? item.categoryname : item.id;
                         content += ' <i>(id = ' + item.id + ')</i>';
                         lastId = item.id;
                         return content;
                     }
                 }).on('change', updateOutput);
+
+                //initialize handlers for buttons on components
+                addNestableButtonsHandlers();
 
                 // output initial serialised data
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -111,8 +146,8 @@
     /**
      * Update output data which produces Nestable plugin after each change
      */
-    var updateOutput = function (e) {
-        var list = e.length ? e : $(e.target),
+    let updateOutput = function (e) {
+        let list = e.length ? e : $(e.target),
             output = list.data('output');
         if (window.JSON) {
             output.val(window.JSON.stringify(list.nestable('serialize')));
@@ -127,7 +162,7 @@
      * Save changes after managing categories
      */
     function saveChangesAfterManaging() {
-        var json = $('#nestable-output').val();
+        let json = $('#nestable-output').val();
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -137,7 +172,7 @@
             success: function (result) {
                 alert("Changes are saved!");
                 $('#close-managing').click();
-                let lastSelectedId = $('#categories_and_types').data('categoryID');
+                let lastSelectedId = $('#categories-select').data('selectedID');
                 $('#categories_and_types').empty();
                 reloadCategories(lastSelectedId);
             },
@@ -145,7 +180,7 @@
                 alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
             }
         })
-    };
+    }
 
     /**
      * Sort array of objects by some object key
@@ -156,8 +191,8 @@
      */
     function sortComponents(data, key, way) {
         return data.sort(function (a, b) {
-            var x = a[key];
-            var y = b[key];
+            let x = a[key];
+            let y = b[key];
             if (way === 'asc') {
                 return ((x < y) ? -1 : ((x > y) ? 1 : 0));
             }
@@ -177,11 +212,11 @@
      */
     function sortNestedComponents(data, categoryKey, typeKey, way) {
         data = sortComponents(data, categoryKey, way);
-        for (var i = 0; i < data.length; i++) {
+        for (let i = 0; i < data.length; i++) {
             if (data[i].children && data[i].children.length > 0) {
                 sortNestedComponents(data[i].children, categoryKey, typeKey, way);
             }
-            var restypes = eval(data[i].restypes);
+            let restypes = eval(data[i].restypes);
             if (restypes && restypes.length > 0) {
                 restypes = sortComponents(restypes, typeKey, way);
             }
@@ -198,18 +233,18 @@
      * @constructor
      */
     function BuildCategoriesSelect(categories, showTypes, suppressChoosingParents, level = 1) {
-        for (var i = 0; i < categories.length; i++) {
-            let classPrefix = (showTypes || (suppressChoosingParents && categories[i].children)) ? 'disabled' : '';
+        for (let i = 0; i < categories.length; i++) {
+            let classPrefix = (showTypes || (suppressChoosingParents && categories[i].children)) ? 'disabled category ' : '';
             let s = $('<li/>', {
                 'data-value': categories[i].id,
                 'data-level': level,
-                class: classPrefix + ' category ' + 'level-' + level,
+                class: classPrefix + 'level-' + level,
             }).appendTo($('#categories_and_types'));
             $('<a/>', {href: "#", text: categories[i].categoryname}).appendTo(s);
             if (showTypes) {
-                var restypes = eval(categories[i].restypes);
+                let restypes = eval(categories[i].restypes);
                 if (restypes) {
-                    for (var j = 0; j < restypes.length; j++) {
+                    for (let j = 0; j < restypes.length; j++) {
                         let s1 = $('<li/>', {
                             'data-value': restypes[j].id,
                             'data-level': level + 1,
@@ -228,8 +263,6 @@
     /**
      * Show/repaint categories select on the page
      * @param data - JSON with categories and types
-     * @param includeTypes - include resource types in select
-     * @param suppressChoosingParents - allow choosing only leaf categories in select
      */
     function showCategoriesSelect(data) {
         data = sortNestedComponents(data, 'categoryname', 'typeName', 'asc');
@@ -251,9 +284,11 @@
         let list = $('#categories_and_types').find('li a');
         $.each(list, function (i, item) {
             $(item).click(function (e) {
-                $('#categories_and_types').data('categoryID', $(e.target).closest('li').data('value'));
-                console.log($('#categories_and_types').data('categoryID'));
+                $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
+                console.log($('#categories-select').data('selectedID'));
+                $('#categories_and_types')[0].dispatchEvent(new Event('change'));
+
             })
         })
     }
-})();
+});
