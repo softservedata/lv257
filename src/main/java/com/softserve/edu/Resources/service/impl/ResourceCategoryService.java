@@ -41,11 +41,7 @@ public class ResourceCategoryService {
 
     @Transactional
     public void saveResourceCategory(ResourceCategory resourceCategory) {
-//        List<ResourceCategory> existingCategories = this.findAllResourceCategories();
-//        if (existingCategories.stream().noneMatch(c -> c.getCategoryName().equalsIgnoreCase(resourceCategory.getCategoryName())))
-        {
-            resourceCategoryDAO.makePersistent(resourceCategory);
-        }
+        resourceCategoryDAO.makePersistent(resourceCategory);
     }
 
     @Transactional
