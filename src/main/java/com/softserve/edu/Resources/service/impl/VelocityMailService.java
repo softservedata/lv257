@@ -54,6 +54,7 @@ public class VelocityMailService {
 
         message.setTo(mail.getReceiver());
         message.setSubject(mail.getSubject());
+        message.setFrom(mail.getFrom());//add 7/10
 
         Template template = velocityEngine.getTemplate("./templates/" + mail.getTemplateName());
 
