@@ -196,6 +196,7 @@ public class ResourceCategoryService {
             dto.setInstantiatedResourceTypes(category.getResourceTypes().stream()
                     .filter(ResourceType::isInstantiated)
                     .map(ResourceTypeDTO::new).collect(Collectors.toSet()));
+            dto.setWithResourceTypes(category.getResourceTypes().size() > 0);
         }
         return dto;
     }

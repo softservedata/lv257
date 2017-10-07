@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
 public class ResourceCategoryDTO{
 
     @JsonView(Views.Categories.class)
@@ -17,8 +16,6 @@ public class ResourceCategoryDTO{
     private String categoryName;
 
     @JsonBackReference
-//    @JsonProperty("parent_id")
-//    @JsonIdentityReference(alwaysAsId = true)
     @JsonView(Views.Categories.class)
     private ResourceCategoryDTO parentCategory;
 
@@ -27,16 +24,14 @@ public class ResourceCategoryDTO{
     @JsonView(Views.Categories.class)
     private Set<ResourceCategoryDTO> childrenCategories = new HashSet<>();
 
-//    @JsonView(Views.CategorySelecting.class)
-    private Integer depth;
-
-//    @JsonView(Views.CategorySelecting.class)
-    private String treePath;
-
     @JsonManagedReference
     @JsonProperty("restypes")
     @JsonView(Views.CategoriesWithTypes.class)
     private Set<ResourceTypeDTO> instantiatedResourceTypes = new HashSet<>();
+
+    @JsonProperty("hasTypes")
+    @JsonView(Views.Categories.class)
+    private boolean withResourceTypes;
 
     public Long getId() {
         return id;
@@ -70,28 +65,20 @@ public class ResourceCategoryDTO{
         this.childrenCategories = childrenCategories;
     }
 
-    public Integer getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Integer depth) {
-        this.depth = depth;
-    }
-
-    public String getTreePath() {
-        return treePath;
-    }
-
-    public void setTreePath(String treePath) {
-        this.treePath = treePath;
-    }
-
     public Set<ResourceTypeDTO> getInstantiatedResourceTypes() {
         return instantiatedResourceTypes;
     }
 
     public void setInstantiatedResourceTypes(Set<ResourceTypeDTO> instantiatedResourceTypes) {
         this.instantiatedResourceTypes = instantiatedResourceTypes;
+    }
+
+    public boolean isWithResourceTypes() {
+        return withResourceTypes;
+    }
+
+    public void setWithResourceTypes(boolean withResourceTypes) {
+        this.withResourceTypes = withResourceTypes;
     }
 
     @Override

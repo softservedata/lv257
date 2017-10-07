@@ -4,7 +4,6 @@
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-
 $(document).ready(function () {
     const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
     const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
@@ -13,7 +12,7 @@ $(document).ready(function () {
     let lastTemporaryId;
 
     //Enable categories selectlist
-    loadCategories(includeTypes, suppressChoosingParents);
+    loadCategories();
 
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
@@ -41,26 +40,11 @@ $(document).ready(function () {
         if (action === 'collapse-all') {
             $('.dd').nestable('collapseAll');
         }
-        if (action === 'add-item') {
-            let newItem = {
-//                    "id": ++lastId,
-                "categoryname": "new category",
-//                    "parent_id" : 1516,
-                "content": "Item " + lastId
-            };
-            $('#nestable').nestable('add', newItem);
-            updateOutput($('#nestable').data('output', $('#nestable-output')));
-        }
-        if (action === 'remove-item') {
-            let branch2_id = $("[data-categoryname='branch2']").attr("data-id");
-            $('#nestable').nestable('remove', branch2_id);
-            updateOutput($('#nestable').data('output', $('#nestable-output')));
-        }
     });
 
     /**
      * Add event handlers for each functional button of Nestable items
-     * @param scope - selector, determines for which buttons are setted event handlers:
+     * @param scope - selector, determines for which buttons are set event handlers:
      * for all buttons of container - after building of Nestable;
      * for buttons of particular item - after appending it to hierarchy
      */
@@ -73,6 +57,7 @@ $(document).ready(function () {
             });
         });
 
+        //Event handlers for add-buttons
         let addButtons = $(scope).find('.btn-add');
         $.each(addButtons, function (i, item) {
             $(item).click(function (e) {
@@ -89,48 +74,47 @@ $(document).ready(function () {
             })
         });
 
+        //Event handlers for edit-buttons
         let editButtons = $(scope).find('.btn-edit');
         $.each(editButtons, function (i, item) {
             $(item).click(function (e) {
+                let ownerId = $(item).attr('data-owner-id');
                 //TODO
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
             })
         });
 
+        //Event handlers for remove-buttons
         let removeButtons = $(scope).find('.btn-remove');
         $.each(removeButtons, function (i, item) {
             $(item).click(function (e) {
                 let ownerId = $(item).attr('data-owner-id');
-                $('#nestable').nestable('remove', ownerId);
-                updateOutput($('#nestable').data('output', $('#nestable-output')));
+                let categoriesWithResourceTypes = getResourceTypes(ownerId);
+                if (categoriesWithResourceTypes.length > 0) {
+                    alert('You can not delete this element, because category(-ies) '
+                        + categoriesWithResourceTypes.join(', ') + ' have resource types');
+                } else {
+                    $('#nestable').nestable('remove', ownerId);
+                    updateOutput($('#nestable').data('output', $('#nestable-output')));
+                }
             })
         });
     }
 
     /**
-     * Load data and build categories selectlist
-     */
-    function loadCategories() {
-        let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
-        $.get("/resources/" + urlSuffix, function (data) {
-            showCategoriesSelect(data);
-            $('#selected-label').text('Select ' + defaultSelectedLabel);
-        }, "json");
-    }
-
-    /**
-     * Reload data, rebuild categories selectlist and reselect item
-     * which was selected before reloading (if it still exists)
+     * Load data from server, build categories selectlist and reselect item,
+     * if it was selected before and still exist
      * @param lastSelectedId - ID of last selected item
      */
-    function reloadCategories(lastSelectedId) {
+    function loadCategories(lastSelectedId) {
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
-            let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a').length;
-            if (isLastSelectedItemExists) {
-                $('[data-value="' + lastSelectedId + '"] > a').click();
-            } else {
+            let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a');
+            if (lastSelectedId && isLastSelectedItemExists) {
+                isLastSelectedItemExists.click();
+            }
+            else {
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }
         }, "json");
@@ -145,6 +129,7 @@ $(document).ready(function () {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
                 lastTemporaryId = findLastDatabaseId(data);
                 let json = JSON.stringify(data);
+
                 // activate Nestable
                 $('#nestable').nestable({
                     json: json,
@@ -154,7 +139,6 @@ $(document).ready(function () {
                         return content;
                     }
                 }).on('change', updateOutput);
-                // alert(lastId);
 
                 //initialize handlers for buttons on components
                 addNestableButtonsHandlers('#nestable');
@@ -198,7 +182,7 @@ $(document).ready(function () {
                 $('#close-managing').click();
                 let lastSelectedId = $('#categories-select').data('selectedID');
                 $('#categories_and_types').empty();
-                reloadCategories(lastSelectedId);
+                loadCategories(lastSelectedId);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
@@ -211,7 +195,7 @@ $(document).ready(function () {
      * @param data - array of objects
      * @param key - object key for sorting
      * @param way - ascending or descending order
-     * @returns {Array.<T>} - array of sorted objects
+     * @returns {Array.<T>} array of sorted objects
      */
     function sortComponents(data, key, way) {
         return data.sort(function (a, b) {
@@ -232,7 +216,7 @@ $(document).ready(function () {
      * @param categoryKey - object key for sorting categories
      * @param typeKey - object key for sorting types
      * @param way - ascending or descending order
-     * @returns {Array.<T>} - array of sorted objects
+     * @returns {Array.<T>} array of sorted objects
      */
     function sortNestedComponents(data, categoryKey, typeKey, way) {
         data = sortComponents(data, categoryKey, way);
@@ -254,7 +238,6 @@ $(document).ready(function () {
      * @param showTypes - include resource types in select
      * @param suppressChoosingParents - allow choosing only leaf categories in select
      * @param level - depth of hierarchy
-     * @constructor
      */
     function BuildCategoriesSelect(categories, showTypes, suppressChoosingParents, level = 1) {
         for (let i = 0; i < categories.length; i++) {
@@ -302,7 +285,7 @@ $(document).ready(function () {
     }
 
     /**
-     * Add event handler for clicking on selected item
+     * Add event handler for clicking on item in selectlist
      */
     function addHandlers() {
         let list = $('#categories_and_types').find('li a');
@@ -317,10 +300,10 @@ $(document).ready(function () {
     }
 
     /**
-     * Find maximal category ID which is stored in Database
+     * Find last category ID, which is stored in Database
      * @param data - JSON with categories
      * @param level - level of recursion
-     * @returns {*} - maximal category ID
+     * @returns {*} last category ID in Database
      */
     function findLastDatabaseId(data, level = 0) {
         $.each(data, function (i, item) {
@@ -330,10 +313,37 @@ $(document).ready(function () {
             if (item.id > lastDatabaseId) {
                 lastDatabaseId = item.id;
             }
-            if (data[i].children && data[i].children.length > 0) {
-                findLastDatabaseId(data[i].children, level + 1);
+            if (item.children && item.children.length > 0) {
+                findLastDatabaseId(item.children, level + 1);
             }
         });
         return lastDatabaseId;
     }
+
+    /**
+     * Check whether category and all its descendants has resource types
+     * @param idCategory - ID of checked element
+     * @returns {Array} array of strings with names of all categories, which have resource types
+     * or empty array if neither of categories have resource types
+     */
+    function getResourceTypes(idCategory) {
+        let tree = $('[data-id=' + idCategory + '], [data-id=' + idCategory + '] li');
+        let result = [];
+        tree.each(function (i, item) {
+            if ($(item).attr('data-hastypes') === 'true') {
+                result.push($(item).attr('data-categoryname'));
+            }
+        });
+        return result;
+    }
+
+    /*    function findById(data, id) {
+            $.each(data, function (i, item) {
+                if (item['id'] === id) {
+                    return item;
+                } else if (item.children && item.children.length > 0) {
+                    return findById(item.children, id);
+                }
+            });
+        }*/
 });
