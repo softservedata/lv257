@@ -27,7 +27,7 @@
 <div class="container">
 
     <div class="table-responsive">
-        <h2>List of Resource Type requests</h2>
+        <h3>Requests for resource type</h3>
         <div align="right">
             <label for="search">Search by resource Admin:</label>
             <input type="text" class="form-control" id="search" placeholder="Resource Administrator"
