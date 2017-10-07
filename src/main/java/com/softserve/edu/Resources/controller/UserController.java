@@ -71,12 +71,15 @@ public ModelAndView profilePOSTuseUserDetails(Model model, Principal principal) 
 
         UserProfileDTO userProfileDTO = new UserProfileDTO();
 //        userProfileDTO.setFirstName(details.getFirstName());
+        userProfileDTO.setFirstName(details.get ().getFirstName());
 
         /*UserDetails details1 = new UserDetails();
         details1.setFirstName("all right");*/
 
         System.out.println(details);
-        profile.addObject("details", details.isPresent() ? details.get() : new UserDetails());
+//        don`t erase
+//        profile.addObject("details", userProfileDTO.isPresent() ? details.get() : new UserDetails());
+        profile.addObject("details", userProfileDTO);
         return profile;
     }
 
