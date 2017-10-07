@@ -9,7 +9,9 @@ public interface UserDetailsDAO extends GenericDAO<UserDetails, Long>{
     Optional<UserDetails> findByEmail(String email);
 
     void save(UserDetails userDetails);
-};
+
+//    void save(UserProfileDTO userProfileDTO);
+}
 
 
 

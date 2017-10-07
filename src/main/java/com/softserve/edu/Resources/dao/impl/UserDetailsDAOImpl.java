@@ -46,7 +46,6 @@ public class UserDetailsDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
         System.out.println("===================save(UserProfileDTO userProfileDTO)========================");
         System.out.println(userDetails);
 //        final UserProfileDTO userDetailsToEntity2 = makePersistent(userProfileDTO);
-
     }
 
 /*    @Override
