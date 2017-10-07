@@ -58,6 +58,7 @@ public class VelocityMailService {
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("host",mail.getHost());
         velocityContext.put("token",mail.getToken());
+        velocityContext.put("userId",mail.getUserId());
 
         StringWriter stringWriter = new StringWriter();
 

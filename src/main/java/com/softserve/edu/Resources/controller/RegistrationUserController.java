@@ -85,15 +85,17 @@ public class RegistrationUserController {
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
     public String confirmRegistration
-            (WebRequest request, Model model, @RequestParam("token") String token) {
+            (WebRequest request, Model model, @RequestParam("token") String token, @RequestParam("userId") String userId) {
 
         Locale locale = request.getLocale();
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
+        User userById = userService.getUserById(Long.parseLong(userId));
 
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
+            userService.delete(userById);
             return "badUser";
         }
 
