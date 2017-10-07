@@ -13,7 +13,7 @@
             <input type="text" class="form-control" autocomplete="off">
         </div>
         <ul class="dropdown-menu inner" role="menu" id="categories_and_types">
-
+            <li data-level="1" hidden class="disabled active"><a href="#"></a></li>
         </ul>
     </div>
     <input class="hidden hidden-field" name="search_form[category]" readonly

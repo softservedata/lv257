@@ -81,7 +81,7 @@
             html += '</' + options.contentNodeName + '>';
             html += '<div class="pull-right">';
             html += '<button class="btn btn-default btn-xs btn-primary-outline btn-add" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-plus"></span></button>';
-            html += '<button class="btn btn-default btn-xs btn-primary-outline btn-edit" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-edit"></span></button>';
+            html += '<button class="btn btn-default btn-xs btn-primary-outline btn-edit" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-pencil"></span></button>';
             html += '<button class="btn btn-default btn-xs btn-primary-outline btn-remove" data-owner-id=' + ownerId +'><span class="glyphicon glyphicon-remove"></span></button>';
             html += '</div>';
             html += '</' + options.handleNodeName + '>';
@@ -247,7 +247,7 @@
                     tree = tree.append(this.options.listRenderer('', this.options));
                 }
 
-                tree = tree.find(listClassSelector);
+                tree = tree.find(listClassSelector + ':first');
                 this.setParent(tree.parent());
             }
 

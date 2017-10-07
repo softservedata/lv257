@@ -4,16 +4,15 @@
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-
-$(document).ready(function() {
+$(document).ready(function () {
     const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
     const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
     const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
-
-    let lastId;
+    let lastDatabaseId;
+    let lastTemporaryId;
 
     //Enable categories selectlist
-    loadCategories(includeTypes, suppressChoosingParents);
+    loadCategories();
 
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
@@ -41,25 +40,16 @@ $(document).ready(function() {
         if (action === 'collapse-all') {
             $('.dd').nestable('collapseAll');
         }
-        if (action === 'add-item') {
-            let newItem = {
-//                    "id": ++lastId,
-                "categoryname": "new category",
-//                    "parent_id" : 1516,
-                "content": "Item " + lastId
-            };
-            $('#nestable').nestable('add', newItem);
-            updateOutput($('#nestable').data('output', $('#nestable-output')));
-        }
-        if (action === 'remove-item') {
-            let branch2_id = $("[data-categoryname='branch2']").attr("data-id");
-            $('#nestable').nestable('remove', branch2_id);
-            updateOutput($('#nestable').data('output', $('#nestable-output')));
-        }
     });
 
-    function addNestableButtonsHandlers() {
-        let allButtons = $('.btn-add, .btn-edit, .btn-remove');
+    /**
+     * Add event handlers for each functional button of Nestable items
+     * @param scope - selector, determines for which buttons are set event handlers:
+     * for all buttons of container - after building of Nestable;
+     * for buttons of particular item - after appending it to hierarchy
+     */
+    function addNestableButtonsHandlers(scope) {
+        let allButtons = $(scope).find('.btn-add, .btn-edit, .btn-remove');
         $.each(allButtons, function (i, item) {
             $(item).on('mousedown', function (e) {
                 e.stopPropagation();
@@ -67,47 +57,64 @@ $(document).ready(function() {
             });
         });
 
-        let addButtons = $('.btn-add');
+        //Event handlers for add-buttons
+        let addButtons = $(scope).find('.btn-add');
         $.each(addButtons, function (i, item) {
             $(item).click(function (e) {
                 let ownerCategoryId = $(item).attr('data-owner-id');
                 let newItem = {
-//                    "id": ++lastId,
+                    "id": ++lastTemporaryId,
                     "categoryname": "new category",
                     "parent_id": ownerCategoryId,
-                    "content": "Item " + lastId
+                    "content": "Item " + lastTemporaryId
                 };
                 $('#nestable').nestable('add', newItem);
+                addNestableButtonsHandlers('[data-id=' + lastTemporaryId + ']');
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+        });
+
+        //Event handlers for edit-buttons
+        let editButtons = $(scope).find('.btn-edit');
+        $.each(editButtons, function (i, item) {
+            $(item).click(function (e) {
+                let ownerId = $(item).attr('data-owner-id');
+                //TODO
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+        });
+
+        //Event handlers for remove-buttons
+        let removeButtons = $(scope).find('.btn-remove');
+        $.each(removeButtons, function (i, item) {
+            $(item).click(function (e) {
+                let ownerId = $(item).attr('data-owner-id');
+                let categoriesWithResourceTypes = getResourceTypes(ownerId);
+                if (categoriesWithResourceTypes.length > 0) {
+                    alert('You can not delete this element, because category(-ies) '
+                        + categoriesWithResourceTypes.join(', ') + ' have resource types');
+                } else {
+                    $('#nestable').nestable('remove', ownerId);
+                    updateOutput($('#nestable').data('output', $('#nestable-output')));
+                }
             })
         });
     }
 
     /**
-     * Load data and build categories selectlist
-     */
-    function loadCategories() {
-        let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
-        $.get("/resources/" + urlSuffix, function (data) {
-            showCategoriesSelect(data);
-            $('#selected-label').text('Select ' + defaultSelectedLabel);
-            $('#categories_and_types li:first').removeClass('active');
-        }, "json");
-    }
-
-    /**
-     * Reload data, rebuild categories selectlist and reselect item
-     * which was selected before reloading (if it still exists)
+     * Load data from server, build categories selectlist and reselect item,
+     * if it was selected before and still exist
      * @param lastSelectedId - ID of last selected item
      */
-    function reloadCategories(lastSelectedId) {
+    function loadCategories(lastSelectedId) {
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
-            let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a').length;
-            if (isLastSelectedItemExists) {
-                $('[data-value="' + lastSelectedId + '"] > a').click();
-            } else {
+            let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a');
+            if (lastSelectedId && isLastSelectedItemExists) {
+                isLastSelectedItemExists.click();
+            }
+            else {
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }
         }, "json");
@@ -120,20 +127,21 @@ $(document).ready(function() {
         let jqxhr = $.getJSON("/resources/categories")
             .success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
+                lastTemporaryId = findLastDatabaseId(data);
                 let json = JSON.stringify(data);
+
                 // activate Nestable
                 $('#nestable').nestable({
                     json: json,
                     contentCallback: function (item) {
                         let content = item.categoryname || '' ? item.categoryname : item.id;
                         content += ' <i>(id = ' + item.id + ')</i>';
-                        lastId = item.id;
                         return content;
                     }
                 }).on('change', updateOutput);
 
                 //initialize handlers for buttons on components
-                addNestableButtonsHandlers();
+                addNestableButtonsHandlers('#nestable');
 
                 // output initial serialised data
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -174,7 +182,7 @@ $(document).ready(function() {
                 $('#close-managing').click();
                 let lastSelectedId = $('#categories-select').data('selectedID');
                 $('#categories_and_types').empty();
-                reloadCategories(lastSelectedId);
+                loadCategories(lastSelectedId);
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
@@ -187,7 +195,7 @@ $(document).ready(function() {
      * @param data - array of objects
      * @param key - object key for sorting
      * @param way - ascending or descending order
-     * @returns {Array.<T>} - array of sorted objects
+     * @returns {Array.<T>} array of sorted objects
      */
     function sortComponents(data, key, way) {
         return data.sort(function (a, b) {
@@ -208,7 +216,7 @@ $(document).ready(function() {
      * @param categoryKey - object key for sorting categories
      * @param typeKey - object key for sorting types
      * @param way - ascending or descending order
-     * @returns {Array.<T>} - array of sorted objects
+     * @returns {Array.<T>} array of sorted objects
      */
     function sortNestedComponents(data, categoryKey, typeKey, way) {
         data = sortComponents(data, categoryKey, way);
@@ -230,7 +238,6 @@ $(document).ready(function() {
      * @param showTypes - include resource types in select
      * @param suppressChoosingParents - allow choosing only leaf categories in select
      * @param level - depth of hierarchy
-     * @constructor
      */
     function BuildCategoriesSelect(categories, showTypes, suppressChoosingParents, level = 1) {
         for (let i = 0; i < categories.length; i++) {
@@ -248,7 +255,7 @@ $(document).ready(function() {
                         let s1 = $('<li/>', {
                             'data-value': restypes[j].id,
                             'data-level': level + 1,
-                            class: 'level-' + level + 1,
+                            class: 'level-' + (level + 1),
                         }).appendTo($('#categories_and_types'));
                         $('<a/>', {href: "#", text: restypes[j].typeName}).appendTo(s1);
 
@@ -278,7 +285,7 @@ $(document).ready(function() {
     }
 
     /**
-     * Add event handler for clicking on selected item
+     * Add event handler for clicking on item in selectlist
      */
     function addHandlers() {
         let list = $('#categories_and_types').find('li a');
@@ -286,9 +293,57 @@ $(document).ready(function() {
             $(item).click(function (e) {
                 $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
                 console.log($('#categories-select').data('selectedID'));
-                $('#categories_and_types')[0].dispatchEvent(new Event('change'));
+                $('#categories-select')[0].dispatchEvent(new Event('change'));
 
             })
         })
     }
+
+    /**
+     * Find last category ID, which is stored in Database
+     * @param data - JSON with categories
+     * @param level - level of recursion
+     * @returns {*} last category ID in Database
+     */
+    function findLastDatabaseId(data, level = 0) {
+        $.each(data, function (i, item) {
+            if (level === 0 && i === 0) {
+                lastDatabaseId = data[0].id;
+            }
+            if (item.id > lastDatabaseId) {
+                lastDatabaseId = item.id;
+            }
+            if (item.children && item.children.length > 0) {
+                findLastDatabaseId(item.children, level + 1);
+            }
+        });
+        return lastDatabaseId;
+    }
+
+    /**
+     * Check whether category and all its descendants has resource types
+     * @param idCategory - ID of checked element
+     * @returns {Array} array of strings with names of all categories, which have resource types
+     * or empty array if neither of categories have resource types
+     */
+    function getResourceTypes(idCategory) {
+        let tree = $('[data-id=' + idCategory + '], [data-id=' + idCategory + '] li');
+        let result = [];
+        tree.each(function (i, item) {
+            if ($(item).attr('data-hastypes') === 'true') {
+                result.push($(item).attr('data-categoryname'));
+            }
+        });
+        return result;
+    }
+
+    /*    function findById(data, id) {
+            $.each(data, function (i, item) {
+                if (item['id'] === id) {
+                    return item;
+                } else if (item.children && item.children.length > 0) {
+                    return findById(item.children, id);
+                }
+            });
+        }*/
 });
