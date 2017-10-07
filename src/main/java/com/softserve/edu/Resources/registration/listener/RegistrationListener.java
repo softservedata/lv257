@@ -31,15 +31,18 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     private void confirmRegistration(final OnRegistrationCompleteEvent event) {
         final User user = event.getUser();
+        final String userId = "" + user.getId();
         final String token = UUID.randomUUID().toString();
         userService.createVerificationTokenForUser(user, token);
-        velocityMailService.sendConfirmationMail(constructRegistrationConfirmMail(user,token));
+        velocityMailService.sendConfirmationMail(constructRegistrationConfirmMail(user, token, userId));
     }
-    private final RegistrationConfirmMail constructRegistrationConfirmMail(final User user, final String token ) {
+    private final RegistrationConfirmMail constructRegistrationConfirmMail(final User user, final String token, final String userId) {
+
         RegistrationConfirmMail mail = new RegistrationConfirmMail(user.getUsername());
         mail.setFrom(env.getProperty("mail.username"));
         mail.setHost(env.getProperty("host.appUrl"));
         mail.setToken(token);
+        mail.setUserId(userId);
         return mail;
     }
 }
