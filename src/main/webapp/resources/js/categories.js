@@ -89,7 +89,7 @@ $(document).ready(function () {
         $.each(removeButtons, function (i, item) {
             $(item).click(function (e) {
                 let ownerId = $(item).attr('data-owner-id');
-                let categoriesWithResourceTypes = getResourceTypes(ownerId);
+                let categoriesWithResourceTypes = hasResourceTypes(ownerId);
                 if (categoriesWithResourceTypes.length > 0) {
                     alert('You can not delete this element, because category(-ies) '
                         + categoriesWithResourceTypes.join(', ') + ' have resource types');
@@ -326,7 +326,7 @@ $(document).ready(function () {
      * @returns {Array} array of strings with names of all categories, which have resource types
      * or empty array if neither of categories have resource types
      */
-    function getResourceTypes(idCategory) {
+    function hasResourceTypes(idCategory) {
         let tree = $('[data-id=' + idCategory + '], [data-id=' + idCategory + '] li');
         let result = [];
         tree.each(function (i, item) {
