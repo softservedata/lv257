@@ -5,12 +5,12 @@
  */
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
     const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
     const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
-
-    let lastId;
+    let lastDatabaseId;
+    let lastTemporaryId;
 
     //Enable categories selectlist
     loadCategories(includeTypes, suppressChoosingParents);
@@ -58,8 +58,14 @@ $(document).ready(function() {
         }
     });
 
-    function addNestableButtonsHandlers() {
-        let allButtons = $('.btn-add, .btn-edit, .btn-remove');
+    /**
+     * Add event handlers for each functional button of Nestable items
+     * @param scope - selector, determines for which buttons are setted event handlers:
+     * for all buttons of container - after building of Nestable;
+     * for buttons of particular item - after appending it to hierarchy
+     */
+    function addNestableButtonsHandlers(scope) {
+        let allButtons = $(scope).find('.btn-add, .btn-edit, .btn-remove');
         $.each(allButtons, function (i, item) {
             $(item).on('mousedown', function (e) {
                 e.stopPropagation();
@@ -67,17 +73,35 @@ $(document).ready(function() {
             });
         });
 
-        let addButtons = $('.btn-add');
+        let addButtons = $(scope).find('.btn-add');
         $.each(addButtons, function (i, item) {
             $(item).click(function (e) {
                 let ownerCategoryId = $(item).attr('data-owner-id');
                 let newItem = {
-//                    "id": ++lastId,
+                    "id": ++lastTemporaryId,
                     "categoryname": "new category",
                     "parent_id": ownerCategoryId,
-                    "content": "Item " + lastId
+                    "content": "Item " + lastTemporaryId
                 };
                 $('#nestable').nestable('add', newItem);
+                addNestableButtonsHandlers('[data-id=' + lastTemporaryId + ']');
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+        });
+
+        let editButtons = $(scope).find('.btn-edit');
+        $.each(editButtons, function (i, item) {
+            $(item).click(function (e) {
+                //TODO
+                updateOutput($('#nestable').data('output', $('#nestable-output')));
+            })
+        });
+
+        let removeButtons = $(scope).find('.btn-remove');
+        $.each(removeButtons, function (i, item) {
+            $(item).click(function (e) {
+                let ownerId = $(item).attr('data-owner-id');
+                $('#nestable').nestable('remove', ownerId);
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
             })
         });
@@ -91,7 +115,6 @@ $(document).ready(function() {
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             $('#selected-label').text('Select ' + defaultSelectedLabel);
-            $('#categories_and_types li:first').removeClass('active');
         }, "json");
     }
 
@@ -120,6 +143,7 @@ $(document).ready(function() {
         let jqxhr = $.getJSON("/resources/categories")
             .success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
+                lastTemporaryId = findLastDatabaseId(data);
                 let json = JSON.stringify(data);
                 // activate Nestable
                 $('#nestable').nestable({
@@ -127,13 +151,13 @@ $(document).ready(function() {
                     contentCallback: function (item) {
                         let content = item.categoryname || '' ? item.categoryname : item.id;
                         content += ' <i>(id = ' + item.id + ')</i>';
-                        lastId = item.id;
                         return content;
                     }
                 }).on('change', updateOutput);
+                // alert(lastId);
 
                 //initialize handlers for buttons on components
-                addNestableButtonsHandlers();
+                addNestableButtonsHandlers('#nestable');
 
                 // output initial serialised data
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -248,7 +272,7 @@ $(document).ready(function() {
                         let s1 = $('<li/>', {
                             'data-value': restypes[j].id,
                             'data-level': level + 1,
-                            class: 'level-' + level + 1,
+                            class: 'level-' + (level + 1),
                         }).appendTo($('#categories_and_types'));
                         $('<a/>', {href: "#", text: restypes[j].typeName}).appendTo(s1);
 
@@ -286,9 +310,30 @@ $(document).ready(function() {
             $(item).click(function (e) {
                 $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
                 console.log($('#categories-select').data('selectedID'));
-                $('#categories_and_types')[0].dispatchEvent(new Event('change'));
+                $('#categories-select')[0].dispatchEvent(new Event('change'));
 
             })
         })
+    }
+
+    /**
+     * Find maximal category ID which is stored in Database
+     * @param data - JSON with categories
+     * @param level - level of recursion
+     * @returns {*} - maximal category ID
+     */
+    function findLastDatabaseId(data, level = 0) {
+        $.each(data, function (i, item) {
+            if (level === 0 && i === 0) {
+                lastDatabaseId = data[0].id;
+            }
+            if (item.id > lastDatabaseId) {
+                lastDatabaseId = item.id;
+            }
+            if (data[i].children && data[i].children.length > 0) {
+                findLastDatabaseId(data[i].children, level + 1);
+            }
+        });
+        return lastDatabaseId;
     }
 });

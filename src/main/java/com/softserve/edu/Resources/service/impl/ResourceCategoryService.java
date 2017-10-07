@@ -120,14 +120,17 @@ public class ResourceCategoryService {
         ResourceType type1 = new ResourceType("type1");
         type1.setCategory(typecategory2_2);
         type1.setTableName("type1");
+        type1.setInstantiated(true);
         typecategory2_2.getResourceTypes().add(type1);
         ResourceType type3 = new ResourceType("type3");
         type3.setCategory(typecategory2_2);
         type3.setTableName("type3");
+        type3.setInstantiated(true);
         typecategory2_2.getResourceTypes().add(type3);
         ResourceType type2 = new ResourceType("type2");
         type2.setCategory(typecategory2_2);
         type2.setTableName("type2");
+        type2.setInstantiated(true);
         typecategory2_2.getResourceTypes().add(type2);
 
         saveResourceCategory(category);
@@ -190,7 +193,8 @@ public class ResourceCategoryService {
                         childDTO.setParentCategory(dto);
                         return childDTO;
                     }).collect(Collectors.toSet()));
-            dto.setResourceTypes(category.getResourceTypes().stream()
+            dto.setInstantiatedResourceTypes(category.getResourceTypes().stream()
+                    .filter(ResourceType::isInstantiated)
                     .map(ResourceTypeDTO::new).collect(Collectors.toSet()));
         }
         return dto;

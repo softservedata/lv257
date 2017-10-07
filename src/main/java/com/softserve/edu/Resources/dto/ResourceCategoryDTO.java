@@ -36,7 +36,7 @@ public class ResourceCategoryDTO{
     @JsonManagedReference
     @JsonProperty("restypes")
     @JsonView(Views.CategoriesWithTypes.class)
-    private Set<ResourceTypeDTO> resourceTypes = new HashSet<>();
+    private Set<ResourceTypeDTO> instantiatedResourceTypes = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -86,12 +86,12 @@ public class ResourceCategoryDTO{
         this.treePath = treePath;
     }
 
-    public Set<ResourceTypeDTO> getResourceTypes() {
-        return resourceTypes;
+    public Set<ResourceTypeDTO> getInstantiatedResourceTypes() {
+        return instantiatedResourceTypes;
     }
 
-    public void setResourceTypes(Set<ResourceTypeDTO> resourceTypes) {
-        this.resourceTypes = resourceTypes;
+    public void setInstantiatedResourceTypes(Set<ResourceTypeDTO> instantiatedResourceTypes) {
+        this.instantiatedResourceTypes = instantiatedResourceTypes;
     }
 
     @Override

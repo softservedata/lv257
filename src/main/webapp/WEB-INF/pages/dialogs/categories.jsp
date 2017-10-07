@@ -32,3 +32,4 @@
 		</div>
 	</div>
 </div>
+<script src="${contextPath}/resources/js/jquery.nestable.js"></script>
