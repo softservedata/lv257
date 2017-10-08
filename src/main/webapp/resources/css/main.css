@@ -127,8 +127,15 @@ h3 span {
     display: none;
 }
 
-.width_13em {
+.display_inline_block{
+    display: inline-block;
+}
+
+.width_13em{
     width: 13em;
+}
+.left_margin_10{
+    margin-left: 10px;
 }
 
 .my_hr {
@@ -137,20 +144,20 @@ h3 span {
     border-top: 1px solid rgba(51, 122, 183, 0.53);
 }
 
-.table_message {
+.explanation_message{
     font-size: 13.5px;
     font-style: italic;
 }
 
-.table_message span {
+.explanation_message span{
     font-weight: bold;
 }
 
-.table_message span:first-child {
+.explanation_message span:first-child{
     color: rgba(0, 255, 0, 0.48);
 }
 
-.table_message span:last-child {
+.explanation_message span:last-child{
     color: rgba(84, 190, 243, 0.55);
 }
 

@@ -47,7 +47,7 @@
                 <div class="resource_owner_table display_none">
                     <hr class="my_hr">
                     <label for="owner_table">Resource Owners</label>
-                    <div class="table_message">
+                    <div class="explanation_message">
                         Created owner are marked <span>green</span>, already existing - <span>blue</span>.
                     </div>
                     <table id="owner_table" class="table table-bordered">
@@ -146,6 +146,12 @@
 
                                         </div>
 
+                                        <div id="search_owner_address_placeholder">
+
+                                            <%--Here owner search owner address form will be rendered--%>
+
+                                        </div>
+
                                     </div>
 
 
@@ -167,7 +173,7 @@
                 <div class="resource_address_table display_none">
                     <hr class="my_hr">
                     <label for="address_table">Resource Address</label>
-                    <div class="table_message">
+                    <div class="explanation_message">
                         Created address are marked <span>green</span>, already existing - <span>blue</span>.
                     </div>
                     <table id="address_table" class="table table-bordered">
@@ -182,7 +188,6 @@
                             <th>Building</th>
                             <th>Block</th>
                             <th>Apartment</th>
-                            <%--<th>Edit</th>--%>
                             <th>Delete</th>
                         </tr>
                         </thead>
@@ -192,6 +197,17 @@
                         </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <div class="picked_address_from_owner display_none">
+                    <hr class="my_hr">
+                    <b>Resource Address</b>
+                    <div class="explanation_message">
+                        You picked following resource address from owner.
+                    </div>
+                    <div id="concrete_picked_address" class="display_inline_block"></div>
+                    <button id="delete_picked_address" class="btn btn-default">Delete</button>
+                    <div class="clearfix"></div>
                 </div>
 
 
@@ -205,7 +221,7 @@
                     <button id="search_resource_address_btn"
                             class="btn btn-primary width_13em"
                             type="button" data-toggle="modal"
-                            data-target="#searchResourseAdressPopUp">
+                            data-target="#searchResourceAddressPopUp">
                         Add existing address
                     </button>
                     <button id="add_resource_address_from_owner_btn"
@@ -236,7 +252,7 @@
                     </div>
                 </div>
 
-                <div id="searchResourseAdressPopUp" class="modal fade">
+                <div id="searchResourceAddressPopUp" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -266,8 +282,9 @@
                             </div>
                             <div class="modal-body">
 
-                                TODO
-                                <%--<jsp:include page="components/searchResourceAddress.jsp"/>--%>
+                                <h4>Please, choose owner address you want to be as a resource address.</h4>
+                                <div class="radio_buttons"></div>
+
 
                             </div>
 
@@ -275,6 +292,7 @@
                     </div>
                 </div>
 
+                <hr class="my_hr">
                 <div class="rP_chars">
 
                     <%--CONCRETE RESOURCE TYPE CHARACTERISTICS--%>
