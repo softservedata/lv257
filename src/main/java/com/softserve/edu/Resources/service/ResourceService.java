@@ -14,7 +14,7 @@ public interface ResourceService {
 
 //    Collection<GenericResource> getResources();
 
-//    Collection<ResourceType> getResourceTypes();
+//    Collection<ResourceType> getInstantiatedResourceTypes();
 //
 //    GenericResource addResource(ResourceType resourceType, Set<PropertyValue> resourceValues);
     

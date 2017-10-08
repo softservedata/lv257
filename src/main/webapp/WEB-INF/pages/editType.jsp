@@ -48,10 +48,10 @@
                         <div id="categories" class="col-sm-6 col-xs-8 form-group">
                             <jsp:include page="components/resourceTypeSelect.jsp"/>
                         </div>
-                        <button id="manage-categories" type="button" class="btn btn-primary"
+                        <button id="manage-categories" type="button" class="btn btn-primary btn-md"
                                 data-toggle="modal"
                                 style="margin-top: 25px"
-                                data-target="#categories-view">Manage
+                                data-target="#categories-view"><span class="glyphicon glyphicon-cog"></span>
                         </button>
                     </div>
 
@@ -114,7 +114,6 @@
 </div>
 
 <jsp:include page="${contextPath}footer.jsp"/>
-<script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script>
     $("#addition-btn").click(function (e) {
         $('#addition-btn, #definition-form').toggleClass('hidden');

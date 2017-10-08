@@ -2,12 +2,19 @@ package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.springframework.stereotype.Repository;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @Repository
 public class ResourceRequestDAOImpl extends GenericDAOImpl<ResourceRequest, Long> {
+
+    @PersistenceContext
+    protected EntityManager em;
 
     public ResourceRequestDAOImpl() {
         super(ResourceRequest.class);
@@ -25,6 +32,12 @@ public class ResourceRequestDAOImpl extends GenericDAOImpl<ResourceRequest, Long
 
     @Override
     public List<ResourceRequest> findAll() {
-        return super.findAll();
+
+        TypedQuery<ResourceRequest> query =
+                em.createQuery("SELECT c FROM ResourceRequest c ORDER BY updated DESC ", ResourceRequest.class);
+        List<ResourceRequest> results = query.getResultList();
+
+        return results;
+        }
     }
-}
+

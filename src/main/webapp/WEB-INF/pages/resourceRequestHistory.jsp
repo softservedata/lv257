@@ -31,7 +31,7 @@
 <div class="container">
 
     <div class="table-responsive">
-        <h2>List of processed Resource Type requests</h2>
+        <h3>Processed requests for resource type</h3>
 
         <table class="table table-hover table-condensed text-center table-bordered" id="requests">
             <thead>
@@ -87,7 +87,7 @@
 
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
-                    <td>${request.update}</td>
+                    <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
                     <td>${request.status}</td>
 

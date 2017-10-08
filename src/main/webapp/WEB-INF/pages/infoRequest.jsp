@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"></jsp:include>
+    <jsp:include page="metadata.jsp"/>
 
 </head>
 <body>

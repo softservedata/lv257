@@ -27,7 +27,7 @@
 <div class="container">
 
     <div class="table-responsive">
-        <h2>List of Resource Type requests</h2>
+        <h3>Requests for resource type</h3>
         <div align="right">
             <label for="search">Search by resource Admin:</label>
             <input type="text" class="form-control" id="search" placeholder="Resource Administrator"
@@ -66,7 +66,7 @@
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
                     <td><a href="/resources/info/${request.id}">details</a></td>
-                    <td>${request.update}</td>
+                    <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
 
                     <c:choose>
@@ -191,7 +191,6 @@
 		$('.assign').on('click', function () {
 			var cell = $(this).parents('td');
 			var id = cell.attr('data-id');
-			alert(id)
 			$.ajax(
 					{
 						type: "POST",
@@ -199,7 +198,6 @@
 						accept: "application/json",
 						data: {id: id},
 						success: function (responceRequest) {
-							alert(responceRequest.update);
 							table.cell(cell.closest('tr'), 3).data(responceRequest.update);
 							table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
 //
@@ -219,8 +217,12 @@
 							});
 
 							table.order([[5, 'asc'], [3, 'desc']]).draw();
-						}
+						},
+                        error: function (result) {
+                            alert("This request has already assigned.\n" +
+                                "Please, reload page.");}
 					})
+
 		})
 
 

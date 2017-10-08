@@ -1,32 +1,33 @@
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  padding-top: 50px;
-  margin-bottom: 60px;
+    padding-top: 50px;
+    margin-bottom: 50px;
 }
 
 .font-bold {
-font-weight: bold;
+    font-weight: bold;
 }
 
 .font-normal {
-font-weight: normal;
+    font-weight: normal;
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 60px;
-  background-color: #f5f5f5;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    text-align: center;
+    height: 50px;
+    background-color: #f5f5f5;
 }
 
 .container .text-muted {
-  margin: 20px 0;
+    margin: 15px 0;
 }
 
 /* Temporarily disabled, because kills responsivity of table. */
@@ -46,7 +47,7 @@ font-weight: normal;
 
 /* Igor */
 .selected {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .menu-link {
@@ -56,96 +57,139 @@ font-weight: normal;
 
 /* Ira */
 .left-align {
-  text-align: left;
+    text-align: left;
 }
 
-.documentImg-view{
- max-width: 500px; max-height: 600px;
+.documentImg-view {
+    max-width: 500px;
+    max-height: 600px;
 }
 
-.documentPdf-view{
-  width:650px; height:900px;
-  min-height: 0px; min-width:0px;
+.documentPdf-view {
+    width: 650px;
+    height: 900px;
+    min-height: 0px;
+    min-width: 0px;
 }
 
-h3 span{
-    font-size:18px;
+h3 span {
+    font-size: 18px;
+}
+
+.log-out-message {
+    width: 600px;
+    height: auto;
+
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 120px;
+    margin-bottom: 140px;
+    display: inline-block;
+    text-align: center;
+    border: 1px groove gray;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 /* Oleh */
 
-#bootstrap-overrides th{
-    vertical-align: middle; !important;
+#bootstrap-overrides th {
+    vertical-align: middle;
+!important;
     text-align: center;
 }
 
-#bootstrap-overrides td{
-    vertical-align: middle; !important;
+#bootstrap-overrides td {
+    vertical-align: middle;
+!important;
     text-align: center;
 }
 
-.table-bordered{
+.table-bordered {
     font-size: 15px;
 }
 
-.padding_bottom_15{
+.padding_bottom_15 {
     padding-bottom: 15px;
 }
 
-.padding_top_40{
+.padding_top_40 {
     padding-top: 40px;
 }
 
-.display_none{
+.display_none {
     display: none;
 }
 
-.width_12em{
-    width: 12em;
+.display_inline_block{
+    display: inline-block;
 }
 
-.my_hr{
+.width_13em{
+    width: 13em;
+}
+.left_margin_10{
+    margin-left: 10px;
+}
+
+.my_hr {
     margin-bottom: 5px;
     margin-top: 10px;
     border-top: 1px solid rgba(51, 122, 183, 0.53);
 }
 
-.owner_table_message{
+.explanation_message{
     font-size: 13.5px;
     font-style: italic;
 }
 
-.owner_table_message span{
+.explanation_message span{
     font-weight: bold;
 }
 
-.owner_table_message span:first-child{
+.explanation_message span:first-child{
     color: rgba(0, 255, 0, 0.48);
 }
 
-.owner_table_message span:last-child{
+.explanation_message span:last-child{
     color: rgba(84, 190, 243, 0.55);
 }
 
-.my_success{
+.my_success {
     background: rgba(0, 255, 0, 0.33);
 
 }
 
-.my_info{
+.my_info {
     background: rgba(84, 190, 243, 0.55);
 
 }
 
 .my_error_class {
-    color:#ad241a;  /* red */
+    color: #ad241a; /* red */
 }
 
 .my_success_class {
-    color: #405bad;  /* blue */
+    color: #405bad; /* blue */
 }
 
 .category {
     background-color: lightgray;
 }
 
+#nestable-dialog-inner {
+    width: 500px;
+    margin-top: 15%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#nestable-dialog {
+    background-color: rgba(0, 0, 0, 0.5);
+}

@@ -2,7 +2,7 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.OwnerDAO;
 import com.softserve.edu.Resources.dto.OwnerDTO;
-import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Company;
@@ -37,8 +37,8 @@ public class OwnerServiceImplTest {
     private static List<Owner> allPersons;
     private static Optional findByIdOwner;
     private static ValidationErrorDTO validationErrorDTO;
-    private static SearchOwnerDTO searchOwnerDTO;
-    private static SearchOwnerDTO searchNonExistingOwnerDTO;
+    private static SearchDTO searchDTO;
+    private static SearchDTO searchNonExistingOwnerDTO;
     private static String expectedQuery;
     private static String expectedQueryWithEmptyValues;
 
@@ -80,9 +80,9 @@ public class OwnerServiceImplTest {
         Map<String, String> fieldsANdValues = new TreeMap<>();
         fieldsANdValues.put("first_name", "Oleh");
         fieldsANdValues.put("last_name", "Tsebak");
-        searchOwnerDTO = new SearchOwnerDTO();
-        searchOwnerDTO.setOwnerType("Person");
-        searchOwnerDTO.setFieldsAndValues(fieldsANdValues);
+        searchDTO = new SearchDTO();
+        searchDTO.setEntityType("Person");
+        searchDTO.setFieldsAndValues(fieldsANdValues);
 
         expectedQuery = "SELECT p FROM Person p WHERE " +
                 "first_name=\'Oleh\' AND " +
@@ -91,9 +91,9 @@ public class OwnerServiceImplTest {
         Map<String, String> fieldsANdValues_2 = new TreeMap<>();
         fieldsANdValues.put("first_name", "");
         fieldsANdValues.put("last_name", "");
-        searchNonExistingOwnerDTO = new SearchOwnerDTO();
-        searchOwnerDTO.setOwnerType("Person");
-        searchOwnerDTO.setFieldsAndValues(fieldsANdValues);
+        searchNonExistingOwnerDTO = new SearchDTO();
+        searchDTO.setEntityType("Person");
+        searchDTO.setFieldsAndValues(fieldsANdValues);
 
         expectedQueryWithEmptyValues = "SELECT p FROM Person p WHERE " +
                 "first_name=\'\' AND " +
@@ -177,10 +177,10 @@ public class OwnerServiceImplTest {
 
     @Test
     public void findOwnersCustomQuery(){
-        when(queryBuilder.findOwnerQuery(searchOwnerDTO)).thenReturn(expectedQuery);
+        when(queryBuilder.buildQuery(searchDTO)).thenReturn(expectedQuery);
         when(ownerDAO.findOwners(expectedQuery)).thenReturn(Arrays.asList(persistentOwner));
 
-        List<Owner> owners = ownerService.findOwners(searchOwnerDTO);
+        List<Owner> owners = ownerService.findOwners(searchDTO);
 
         assertEquals(owners.get(0), persistentOwner);
         verify(ownerDAO, times(1)).findOwners(expectedQuery);
@@ -188,7 +188,7 @@ public class OwnerServiceImplTest {
 
     @Test
     public void findNonExistingOwnersCustomQuery(){
-        when(queryBuilder.findOwnerQuery(searchNonExistingOwnerDTO)).thenReturn(expectedQueryWithEmptyValues);
+        when(queryBuilder.buildQuery(searchNonExistingOwnerDTO)).thenReturn(expectedQueryWithEmptyValues);
         when(ownerDAO.findOwners(expectedQueryWithEmptyValues)).thenReturn(mock(List.class));
 
         List<Owner> emptyList = ownerService.findOwners(searchNonExistingOwnerDTO);

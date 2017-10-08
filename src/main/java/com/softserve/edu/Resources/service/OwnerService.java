@@ -1,7 +1,7 @@
 package com.softserve.edu.Resources.service;
 
 import com.softserve.edu.Resources.dto.OwnerDTO;
-import com.softserve.edu.Resources.dto.SearchOwnerDTO;
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Owner;
 import org.springframework.validation.BindingResult;
@@ -26,7 +26,7 @@ public interface OwnerService {
 
     List<OwnerDTO> fromOwnerToOwnerDto(List<Owner> owners);
 
-    List<Owner> findOwners(SearchOwnerDTO searchOwnerDTO);
+    List<Owner> findOwners(SearchDTO searchDTO);
 
     ValidationErrorDTO validationDTO(BindingResult result);
 

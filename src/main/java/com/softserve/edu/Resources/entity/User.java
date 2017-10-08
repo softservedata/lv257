@@ -31,6 +31,9 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private UserDetails userDetails;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private VerificationToken verificationToken;
+
     @OneToMany(mappedBy = "resourcesAdmin")
     private Collection<ResourceRequest> requestsByAdmin;
 
@@ -39,7 +42,6 @@ public class User {
 
 
     public User() {
-        super();
         this.secret = Base32.random();
         this.enabled = false;
     }
@@ -51,6 +53,14 @@ public class User {
     public void setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
         userDetails.setUser(this);
+    }
+
+    public VerificationToken getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(VerificationToken verificationToken) {
+        this.verificationToken = verificationToken;
     }
 
     public String getUsername() {

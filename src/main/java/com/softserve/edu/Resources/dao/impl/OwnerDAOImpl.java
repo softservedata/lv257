@@ -1,18 +1,11 @@
 package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.OwnerDAO;
-import com.softserve.edu.Resources.dto.SearchOwnerDTO;
 import com.softserve.edu.Resources.entity.Owner;
-import com.softserve.edu.Resources.entity.Person;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @Repository
 public class OwnerDAOImpl extends GenericDAOImpl<Owner, Long> implements OwnerDAO {

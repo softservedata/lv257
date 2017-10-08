@@ -7,13 +7,21 @@
 
 </head>
 <body>
+<jsp:include page="_menu2.jsp"/>
 
-<jsp:include page="resources.jsp" />
 
 <div class="wrapper">
     <div class="container-fluid">
         <div class="col-sm-12 col-md-12">
             <div class="container">
+
+                <ul class="nav nav-tabs">
+                    <li><a href="${pageContext.request.contextPath}/resources/registration">Register
+                        resource</a></li>
+                    <li><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
+                </ul>
+                <br>
 
                 <ul class="nav nav-pills">
                     <li class="active"><a href="#NeedMoreDetails" data-toggle="pill">Not reviewed</a></li>
@@ -59,7 +67,7 @@
                                     <td>${request.resourceType}</td>
                                     <td>Not yet reviewed</td>
                                     <td><a href="/resources/info/${request.id}">Info about request</a></td>
-                                    <td>${request.update}</td>
+                                    <td>${request.update.toString().split('\\.')[0]}</td>
                                 </tr>
                                  </c:forEach>
                                 </tbody>

@@ -1,9 +1,11 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.AddressDAO;
+import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.service.AddressService;
+import com.softserve.edu.Resources.util.QueryBuilder;
 import com.softserve.edu.Resources.util.ValidationDTOUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +26,9 @@ public class AddressServiceImpl implements AddressService {
 
     @Autowired
     AddressDAO addressDAO;
+
+    @Autowired
+    private QueryBuilder queryBuilder;
 
     @Autowired
     private ValidationDTOUtility validationUtility;
@@ -60,6 +66,16 @@ public class AddressServiceImpl implements AddressService {
         logger.trace("Retrieving all addresses");
 
         return addressDAO.findAll();
+    }
+
+    @Override
+    public List<Address> findAddresses(SearchDTO searchDTO) {
+        String readyQuery = queryBuilder.buildQuery(searchDTO);
+
+        if (readyQuery.isEmpty()){
+            return new ArrayList<>();
+        }
+        return addressDAO.findAddresses(readyQuery);
     }
 
     @Override
