@@ -7,6 +7,8 @@
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
+    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
+			rel="stylesheet" >
 </head>
 <body>
 <jsp:include page="_menu2.jsp" />
@@ -51,12 +53,30 @@
                 </form>
                 <div id="no-inputs-error">
                 </div>
-
-
-
-
                 <br />
-                <button type="button" class="btn btn-primary">SEARCH</button>
+
+				<div id="lookup-result">
+				<p>Result</p>
+				
+				</div>
+				<table id="result-search">
+				  <!-- <thead>
+						<tr>
+			                <th>id</th>
+			                <th>Value1</th>
+			                <th>Value2</th>
+
+			            </tr>
+			        </thead>
+			        <tfoot>
+					  <tr>
+		                	<th>id</th>
+			                <th>Value1</th>
+			                <th>Value2</th>
+		            </tr>
+			        </tfoot> -->
+				</table>
+
 
 
             </div>
@@ -73,7 +93,8 @@
 </div>
 
 <script src="../../resources/js/lookUpResource.js"></script>
-
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
 
 </body>
