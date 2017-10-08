@@ -1,6 +1,3 @@
-/**
- * Suggest to employ this implementation as template for all DAOs
- */
 package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.GenericDAO;
@@ -13,8 +10,8 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.stream.Collectors;
-public abstract class GenericDAOImpl<T, ID extends Serializable>
-    implements GenericDAO<T, ID> {
+
+public abstract class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T, ID> {
 
     static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
@@ -26,8 +23,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
     protected final Class<T> entityClass;
 
     public GenericDAOImpl(Class<T> entityClass) {
-        this.entityClass = entityClass;
-        this.logger = LOGGER;
+        this(entityClass, LOGGER);
     }
 
     protected GenericDAOImpl(Class<T> entityClass, Logger logger) {
@@ -131,11 +127,10 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
     }
 
     public void checkVersion(T entity, boolean forceUpdate) {
-        em.lock(
-            entity,
-            forceUpdate
-                ? LockModeType.OPTIMISTIC_FORCE_INCREMENT
-                : LockModeType.OPTIMISTIC
+        em.lock(entity,
+                forceUpdate
+                        ? LockModeType.OPTIMISTIC_FORCE_INCREMENT
+                        : LockModeType.OPTIMISTIC
         );
     }
 

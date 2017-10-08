@@ -49,8 +49,7 @@
                             <jsp:include page="components/resourceTypeSelect.jsp"/>
                         </div>
                         <button id="manage-categories" type="button" class="btn btn-primary btn-md"
-                                data-toggle="modal"
-                                style="margin-top: 25px"
+                                data-toggle="modal" style="margin-top: 25px" title="Manage categories"
                                 data-target="#categories-view"><span class="glyphicon glyphicon-cog"></span>
                         </button>
                     </div>
@@ -85,28 +84,43 @@
                             </button>
                         </div>
                         <div class="container col-md-8">
-                            <table id="assigned-props" class="table table-hover">
+                            <style>
+                                .centered { text-align: center;}
+                            </style>
+                            <table id="assigned-props" class="table table-hover hidden">
                                 <thead>
                                 <tr>
-                                    <th>Characteristic Name</th>
+                                    <th>Property</th>
+                                    <th class="centered">Units</th>
+                                    <th class="centered">Searchable</th>
+                                    <th class="centered">Required</th>
                                     <th><%--Remove--%></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr class="assigned-template hidden">
-                                    <td>.</td>
+                                    <td class="title"></td>
+                                    <td class="units-short"></td>
+                                    <td class="centered"><input type="checkbox" class="searchable"/></td>
+                                    <td class="centered"><input type="checkbox" class="required"/></td>
                                     <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                    <br>
+                    <hr>
                     <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
                     <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
 
                 </form>
-                <jsp:include page="dialogs/availableProperties.jsp"/>
-                <jsp:include page="dialogs/newProperty.jsp"/>
+                <script title="Current ResourceType's variables declaration">
+                  var existentProperties;
+                  <c:set var="idVal" value="${id}"/>
+                  var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+                </script>
+                <jsp:include page="dialogs/properties.jsp"/>
                 <jsp:include page="dialogs/categories.jsp"/>
             </div>
         </div>
@@ -114,17 +128,12 @@
 </div>
 
 <jsp:include page="${contextPath}footer.jsp"/>
-<script src="${contextPath}/resources/js/jquery.nestable.js"></script>
+
 <script>
     $("#addition-btn").click(function (e) {
         $('#addition-btn, #definition-form').toggleClass('hidden');
     });
-    var existentProperties;
-    <c:set var="idVal" value="${id}"></c:set>
-    var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
 </script>
-<script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
 <script src="${contextPath}/resources/js/resourceTypes.js"></script>
-<script src="${contextPath}/resources/js/properties.js"></script>
 </body>
 </html>

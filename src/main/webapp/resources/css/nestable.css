@@ -125,14 +125,14 @@
 }
 
 .scrollable {
-    overflow: scroll;
+    overflow: auto;
     max-height: 300px;
     margin-top: 10px;
 }
 
-::-webkit-scrollbar {
-    display: none;
-}
+/*::-webkit-scrollbar {*/
+    /*display: none;*/
+/*}*/
 
 .btn-primary-outline {
     background-color: transparent;
