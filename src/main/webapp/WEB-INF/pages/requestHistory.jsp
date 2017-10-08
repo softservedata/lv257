@@ -31,7 +31,7 @@
                 <div class="tab-content" id="TabContent">
 
                     <div class="tab-pane fade in active" id="NeedMoreDetails">
-                        <div class="table-responsive">
+                        <div class="table-responsive" style="overflow: auto;border: none">
                             <h3>List of requests</h3>
                             <br>
                             <table data-toggle="table" id="refinementRequest"
