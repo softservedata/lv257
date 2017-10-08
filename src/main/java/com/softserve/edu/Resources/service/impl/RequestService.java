@@ -142,7 +142,7 @@ public class RequestService {
 
     }
 
-    private List<ResourceRequest> filterByStatus(List<ResourceRequest> requests, ResourceRequest.Status status) {
+    public List<ResourceRequest> filterByStatus(List<ResourceRequest> requests, ResourceRequest.Status status) {
         return requests.stream()
                 .filter(request -> request.getStatus().equals(status))
                 .collect(Collectors.toList());

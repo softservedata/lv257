@@ -59,11 +59,14 @@
     </div>
     </div>
 
+
     <%--<footer class="footer">--%>
         <%--<div class="container">--%>
             <%--<p class="text-muted">&copy; Lv257_Java</p>--%>
         <%--</div>--%>
     <%--</footer>--%>
 </div>
+<jsp:include page="${contextPath}footer.jsp"/>
+
 </body>
 </html>

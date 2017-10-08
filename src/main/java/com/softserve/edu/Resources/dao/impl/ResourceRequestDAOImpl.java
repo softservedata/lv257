@@ -39,5 +39,11 @@ public class ResourceRequestDAOImpl extends GenericDAOImpl<ResourceRequest, Long
 
         return results;
         }
+
+        ////public void findByStatus(Status status){
+        //final String findByTitle = "select distinct rp from ResourceRequest rp where rp.status like :status";
+
+       // return queryResultList(findByTitle, "status", Status status);
+    // }
     }
 

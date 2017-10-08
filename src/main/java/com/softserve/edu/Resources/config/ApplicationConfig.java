@@ -1,5 +1,9 @@
 package com.softserve.edu.Resources.config;
 
+import com.softserve.edu.Resources.util.FileUpload;
+import com.softserve.edu.Resources.util.FileUploadLocalUtility;
+import com.softserve.edu.Resources.util.FileUploadUtility;
+import org.apache.velocity.app.Velocity;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ import java.util.Properties;
 @Configuration
 @Import(DBConfig.class)
 @ComponentScan(basePackages = {"com.softserve.edu.Resources"})
-@PropertySource("classpath:mail.properties")
+@PropertySource({"classpath:mail.properties", "classpath:fileupload.properties"})
 public class ApplicationConfig {
 
     @Bean
@@ -68,4 +72,22 @@ public class ApplicationConfig {
         return velocityEngine;
     }
 
+    @Bean
+    public FileUploadUtility getFileUploadUtility(){
+        FileUploadUtility fileUploadUtility = new FileUploadUtility();
+
+        env.getProperty("fileupload.accessKey");
+        env.getProperty("fileupload.secretKey");
+
+        return fileUploadUtility;
+    }
+
+    @Bean
+    public FileUploadLocalUtility getFileUploadLocalUtility(){
+        FileUploadLocalUtility fileUploadLocalUtility = new FileUploadLocalUtility();
+
+        env.getProperty("ABS_PATH");
+
+        return fileUploadLocalUtility;
+    }
 }

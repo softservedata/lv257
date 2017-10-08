@@ -4,11 +4,20 @@ public class RegistrationConfirmMail extends Mail {
     String host;
     String token;
     String from;
+    String userId;
 
     public RegistrationConfirmMail(String receiver){
         super(receiver,
                 "Registration Confirmation",
                 "registrationConfirmation.vm");
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getFrom() {

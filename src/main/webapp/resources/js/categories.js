@@ -14,14 +14,39 @@ $(document).ready(function () {
     //Enable categories selectlist
     loadCategories();
 
+    //Build contents of modal window for managing categories
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
         buildCategoriesNestableTree();
     });
 
+    //Save cnanges of category managing in Nestable
     $('#save-changes').on('click', function (e) {
         e.preventDefault();
         saveChangesAfterManaging();
+    });
+
+    //Save changes and close modal window for adding/editing categories
+    $('#save-name').on('click', function (e) {
+        e.preventDefault();
+        let categoryName = $('#category-name-input').val();
+        let action = $('#category-name-input').data('action');
+        let ownerId = $('#category-name-input').data('ownerId');
+        if (action === 'add') {
+            addCategory(ownerId, categoryName);
+        }
+        if (action === 'edit') {
+            editCategory(ownerId, categoryName);
+        }
+        $('#category-name-input').removeData('action');
+        $('#category-name-input').removeData('ownerId');
+        $('.close-name-dialog')[0].click();
+    });
+
+    //Discard changes and close modal window for adding/editing categories
+    $('.close-name-dialog').on('click', function (e) {
+        e.preventDefault();
+        $('#category-name-input').val('');
     });
 
     //Discard changes and close modal window with categories managing
@@ -30,17 +55,14 @@ $(document).ready(function () {
         $('#nestable').nestable('destroy');
     });
 
-    //Actions of menu buttons
-    $('#nestable-menu').on('click', function (e) {
-        let target = $(e.target),
-            action = target.data('action');
-        if (action === 'expand-all') {
-            $('.dd').nestable('expandAll');
-        }
-        if (action === 'collapse-all') {
-            $('.dd').nestable('collapseAll');
-        }
-    });
+    //Expand/collapse Nestable tree
+    (function() {
+        var toggled = false;
+        $('#exp-col').click(function(e) {
+            toggled = !toggled;
+            $('.dd').nestable(toggled ? 'collapseAll' : 'expandAll');
+        });
+    })();
 
     /**
      * Add event handlers for each functional button of Nestable items
@@ -61,16 +83,7 @@ $(document).ready(function () {
         let addButtons = $(scope).find('.btn-add');
         $.each(addButtons, function (i, item) {
             $(item).click(function (e) {
-                let ownerCategoryId = $(item).attr('data-owner-id');
-                let newItem = {
-                    "id": ++lastTemporaryId,
-                    "categoryname": "new category",
-                    "parent_id": ownerCategoryId,
-                    "content": "Item " + lastTemporaryId
-                };
-                $('#nestable').nestable('add', newItem);
-                addNestableButtonsHandlers('[data-id=' + lastTemporaryId + ']');
-                updateOutput($('#nestable').data('output', $('#nestable-output')));
+                passDataToNameDialog(item, 'add');
             })
         });
 
@@ -78,9 +91,7 @@ $(document).ready(function () {
         let editButtons = $(scope).find('.btn-edit');
         $.each(editButtons, function (i, item) {
             $(item).click(function (e) {
-                let ownerId = $(item).attr('data-owner-id');
-                //TODO
-                updateOutput($('#nestable').data('output', $('#nestable-output')));
+                passDataToNameDialog(item, 'edit');
             })
         });
 
@@ -89,14 +100,7 @@ $(document).ready(function () {
         $.each(removeButtons, function (i, item) {
             $(item).click(function (e) {
                 let ownerId = $(item).attr('data-owner-id');
-                let categoriesWithResourceTypes = getResourceTypes(ownerId);
-                if (categoriesWithResourceTypes.length > 0) {
-                    alert('You can not delete this element, because category(-ies) '
-                        + categoriesWithResourceTypes.join(', ') + ' have resource types');
-                } else {
-                    $('#nestable').nestable('remove', ownerId);
-                    updateOutput($('#nestable').data('output', $('#nestable-output')));
-                }
+                removeCategory(ownerId);
             })
         });
     }
@@ -130,7 +134,7 @@ $(document).ready(function () {
                 lastTemporaryId = findLastDatabaseId(data);
                 let json = JSON.stringify(data);
 
-                // activate Nestable
+                //activate Nestable
                 $('#nestable').nestable({
                     json: json,
                     contentCallback: function (item) {
@@ -141,9 +145,9 @@ $(document).ready(function () {
                 }).on('change', updateOutput);
 
                 //initialize handlers for buttons on components
-                addNestableButtonsHandlers('#nestable');
+                addNestableButtonsHandlers('#categories-view');
 
-                // output initial serialised data
+                //output initial serialised data
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
             })
             .error(function () {
@@ -170,6 +174,13 @@ $(document).ready(function () {
      * Save changes after managing categories
      */
     function saveChangesAfterManaging() {
+        let allCategories = $('.dd-item');
+        allCategories.each(function (i, item) {
+            if ($(item).data('id') > lastDatabaseId) {
+                $(item).removeData('id');
+            }
+            updateOutput($('#nestable'));
+        });
         let json = $('#nestable-output').val();
         $.ajax({
             type: "POST",
@@ -275,7 +286,7 @@ $(document).ready(function () {
         data = sortNestedComponents(data, 'categoryname', 'typeName', 'asc');
         console.log(JSON.stringify(data));
         BuildCategoriesSelect(data, includeTypes, suppressChoosingParents);
-        addHandlers();
+        addHandlersInSelectlist();
         $('#categories-select').hierarchySelect({
             width: '100%',
             height: '208px',
@@ -287,7 +298,7 @@ $(document).ready(function () {
     /**
      * Add event handler for clicking on item in selectlist
      */
-    function addHandlers() {
+    function addHandlersInSelectlist() {
         let list = $('#categories_and_types').find('li a');
         $.each(list, function (i, item) {
             $(item).click(function (e) {
@@ -326,7 +337,7 @@ $(document).ready(function () {
      * @returns {Array} array of strings with names of all categories, which have resource types
      * or empty array if neither of categories have resource types
      */
-    function getResourceTypes(idCategory) {
+    function hasResourceTypes(idCategory) {
         let tree = $('[data-id=' + idCategory + '], [data-id=' + idCategory + '] li');
         let result = [];
         tree.each(function (i, item) {
@@ -335,6 +346,86 @@ $(document).ready(function () {
             }
         });
         return result;
+    }
+
+    /**
+     * Pass information about source category to modal dialog for editing current or adding new child category
+     * @param item - add/edit button on source category which was clicked
+     * @param action - action which will be performed ('add' or 'edit')
+     */
+    function passDataToNameDialog(item, action) {
+        let ownerCategoryId = $(item).attr('data-owner-id');
+        $('#category-name-input').data('ownerId', ownerCategoryId);
+        $('#category-name-input').data('action', action);
+        if (action === 'add') {
+            $('#nestable-dialog .modal-title').text('Add Resource Category');
+        }
+        if (action === 'edit') {
+            $('#nestable-dialog .modal-title').text('Edit Resource Category');
+            let owner = $('[data-id=' + ownerCategoryId + ']');
+            let currentCategoryName = owner.attr('data-categoryname');
+            $('#category-name-input').val(currentCategoryName);
+        }
+        $('#nestable-dialog').modal('show');
+        $('#nestable-dialog').on('shown.bs.modal', function() {
+            $('#category-name-input').focus();
+        });
+    }
+
+    /**
+     * Add category in Nestable as a child of selected category
+     * @param id - ID of selected category
+     * @param categoryName - name of category which will be created
+     */
+    function addCategory(id, categoryName) {
+        let newItem;
+        if(id) {
+            newItem = {
+                "id": ++lastTemporaryId,
+                "categoryname": categoryName,
+                "parent_id": id,
+                "content": "Item " + lastTemporaryId
+            };
+        } else {
+            newItem = {
+                "id": ++lastTemporaryId,
+                "categoryname": categoryName,
+                "content": "Item " + lastTemporaryId
+            };
+        }
+        $('#nestable').nestable('add', newItem);
+        addNestableButtonsHandlers('[data-id=' + lastTemporaryId + ']');
+        updateOutput($('#nestable'));
+    }
+
+    /**
+     * Edit name of selected category
+     * @param id - ID of selected category
+     * @param categoryName - new name of selected category
+     */
+    function editCategory(id, categoryName) {
+        let category = $('[data-id=' + id + ']');
+        category.attr('data-categoryname', categoryName);
+        category.data('categoryname', categoryName);
+        let label = category.find('.dd-content:first');
+        label.html(categoryName + ' <i>(id = ' + id + ')</i>');
+        // label.text(categoryName);
+        updateOutput($('#nestable'));
+    }
+
+    /**
+     * Remove category in Nestable
+     * @param id -
+     */
+    function removeCategory(id) {
+        let categoriesWithResourceTypes = hasResourceTypes(id);
+        if (categoriesWithResourceTypes.length > 0) {
+            alert('You can not delete this element, because category(-ies) '
+                + categoriesWithResourceTypes.join(', ') + ' have resource types');
+        } else {
+            $('#nestable').nestable('remove', id);
+            updateOutput($('#nestable'));
+        }
     }
 
     /*    function findById(data, id) {

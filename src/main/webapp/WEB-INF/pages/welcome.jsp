@@ -20,5 +20,7 @@
 
 
 </div>
+<jsp:include page="${contextPath}footer.jsp"/>
+
 </body>
 </html>

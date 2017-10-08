@@ -32,6 +32,7 @@ $(document).ready(function () {
         if (ownerType == 'absent') {
             $resourceNewOwnerForm.empty();
             $ownerAddressForm.empty();
+            $searchOwnerAddressDiv.empty();
         } else if (ownerType == 'company') {
             addOwnerFormAndSaveResult(fieldsMetadata.rowsForCompany, ownerType);
         } else if (ownerType == 'person') {
@@ -62,7 +63,29 @@ $(document).ready(function () {
         $('#' + searchResourceAddressFormId).trigger('reset');
         $resourceAddressSearchResultDiv.empty();
 
-        searchAddress();
+        searchAddress($resourceAddressSearchResultDiv, searchResourceAddressFormId);
+    })
+
+    // opens popup, where user can pick resource address from owner's address
+    $('#add_resource_address_from_owner_btn').on('click', function (e) {
+        $ownerRadios.empty();
+        let $errorDiv = $('<h5/>', {class: 'my_error_class', text: 'There are no owners added.'});
+        if ($('.owners_tbody tr').length == 0) {
+            $ownerRadios.append($errorDiv);
+        } else {
+            buildRadios();
+        }
+    })
+
+    // deletes picked address from owner
+    $('#delete_picked_address').on('click', function (e) {
+        e.preventDefault();
+
+        $idAddressHiddenInput.val(0);
+        $concretePickedAddress.empty();
+        $fromOwnerAddress.addClass('display_none');
+        $deletedAddress.fadeIn(300).delay(3500).fadeOut(300);
+        $addressButtons.show(1500);
     })
 
 });
@@ -84,8 +107,18 @@ const $idAddressHiddenInput = $('#resource_address_id');
 const $resourceAddressSearchResultDiv = $('.resource_address_search_result')
 // div contsining three address related buttons
 const $addressButtons = $('#address_buttons');
+// to reset validator errors
 var addressValidator;
+// check if owner address was searched
+// if not, than adds to owner json, address form json
+var ownerAddressSearched = false;
 
+// concrete picked address container with label
+const $fromOwnerAddress = $('.picked_address_from_owner');
+// div inside ot I'll put concrete picked address info
+const $concretePickedAddress = $('#concrete_picked_address');
+
+const $ownerRadios = $('.radio_buttons');
 
 var updateAddress = false;
 const $deletedAddress = $('#deleted_address');
@@ -93,7 +126,12 @@ const $updatedAddress = $('#updated_address');
 const $resourceAddressRow = $('#resource_address_row');
 const $resourceAddressTbl = $('.resource_address_table');
 const $resourceAddressPopUp = $('#resourseAdressPopUp');
+
+// here will be rendered owner address form
 const ownerAddressFormId = 'owner_address_form';
+// here will be rendered search owner address form
+const $searchOwnerAddressDiv = $('#search_owner_address_placeholder');
+const searchOwnerAddressFormId = 'search_owner_address_form';
 
 const $deletedOwnerVersionTwo = $('#deleted_owner');
 const $resourceOwnerTable = $('.resource_owner_table');
@@ -102,7 +140,53 @@ const $resourceNewOwnerForm = $('#resource_new_owner_form');
 const $ownerAddressForm = $('#owner_address_form');
 const $resourceOwnersSelect = $('#resource_owners');
 const $resourceNewOwnerPopUp = $('#createNewOwnerPopUp');
-const ownerFormId = 'owner_form';
+const newOwnerFormId = 'owner_form';
+
+
+// ----------------------------------- Choose resource address -----------------------------------
+
+function buildRadios() {
+    let trs = $('.owners_tbody').find('tr');
+
+    let $form = $('<form/>');
+    $ownerRadios.append($form);
+    for (let i = 0; i < trs.length; i++) {
+        let addressId = $(trs[i]).attr('id');
+        let addressText = $(trs[i]).find('.address_info').text();
+
+        let $radioDiv = $('<div/>', {class: 'radio'});
+        $form.append($radioDiv);
+        let $label = "<label><input" +
+            " type='radio' " +
+            "name='address_from_owner' " +
+            "value='" + addressId + "'>" +
+            addressText +
+            "</label>";
+        $radioDiv.append($label);
+    }
+    $form.on('change', function () {
+        let addressId = $('input[name=address_from_owner]:checked').val();
+        let addressText = $('input[name=address_from_owner]:checked').parent().text();
+        console.log('picked address id: ' + addressId);
+        console.log('picked address text: ' + addressText);
+
+        showPickedAddress(addressId, addressText);
+    })
+}
+
+function showPickedAddress(addressId, addressText) {
+    $addressButtons.hide(1500);
+    $concretePickedAddress.empty();
+    $fromOwnerAddress.removeClass('display_none');
+
+    $idAddressHiddenInput.val(addressId);
+    let $addressDiv = $('<div/>', {
+        text: addressText
+    });
+
+    $concretePickedAddress.append($addressDiv);
+    $('#chooseResourceAddressFromOwnerPopUp').delay(300).modal('hide');
+}
 
 
 // ----------------------------------- Add new resource address -----------------------------------
@@ -124,7 +208,7 @@ function validateResourceAddressFormAndSaveResult() {
         e.preventDefault();
 
         if ($form.valid()) {
-            let json = JSON.stringify(toJSONString(newResourceAddressFormId));
+            let json = JSON.stringify(toJSON(newResourceAddressFormId));
             console.log('json stringified from ' + newResourceAddressFormId + ' : ' + json);
 
             let url = '/resources/address';
@@ -191,11 +275,14 @@ function showAddressTable(result) {
     $resourceAddressTbl.removeClass('display_none');
     $resourceAddressRow.empty();
     let $td;
+    console.log(result);
+    console.log(JSON.stringify(result));
     for (let attributeValue in result) {
-        if (attributeValue == 'addressId') {
-            // $resourceAddressRow.attr('id', result[attributeValue]);
-        }
-        if (result.hasOwnProperty(attributeValue) && attributeValue != 'addressId') {
+        // if (attributeValue == 'addressId') {
+        // $resourceAddressRow.attr('id', result[attributeValue]);
+        // }
+        if (result.hasOwnProperty(attributeValue)
+            && attributeValue != 'addressId') {
             $td = $('<td/>', {
                 text: result[attributeValue]
             });
@@ -205,12 +292,6 @@ function showAddressTable(result) {
 
     $resourceAddressPopUp.modal('hide');
     let editDelete = appendEditDeleteOptions();
-
-    // editDelete[0].on('click', function(e) {
-    //     e.preventDefault();
-    //     updateAddress = true;
-    //     $resourceAddressPopUp.modal('show');
-    // });
 
     editDelete.on('click', function (e) {
         e.preventDefault();
@@ -224,11 +305,9 @@ function showAddressTable(result) {
                 contentType: "application/json",
                 url: "/resources/address/delete",
                 accept: "application/json",
-                data: JSON.stringify(toJSONString(newResourceAddressFormId)),
+                data: JSON.stringify(toJSON(newResourceAddressFormId)),
                 success: function (result) {
                     console.log('resource address was deleted');
-
-                    $deletedAddress.fadeIn(300).delay(3500).fadeOut(300);
 
                 },
                 // on errors, show messages with explanations
@@ -237,6 +316,7 @@ function showAddressTable(result) {
                 }
             });
         }
+        $deletedAddress.fadeIn(300).delay(3500).fadeOut(300);
         $idAddressHiddenInput.val(0);
         $addressButtons.show(1500);
         $resourceAddressRow.empty();
@@ -274,44 +354,75 @@ function clearHibernateErrorClasses(resourceAddressFormId) {
 /**
  * Builds search json and sends it ti the server.
  */
-function searchAddress() {
-    let searchJson = {};
+function searchAddress($resultDiv, searchAddressFormId) {
 
     $('#' + searchResourceAddressSubmitBtnId).on('click', function (e) {
         e.preventDefault();
 
-        let formJson = toJSONString(searchResourceAddressFormId);
-        console.log(formJson);
-        searchJson['entityType'] = 'Address';
-        searchJson['fieldsAndValues'] = formJson;
-
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/resources/address/search",
-            accept: "application/json",
-            data: JSON.stringify(searchJson),
-            success: function (result) {
-                console.log(result);
-                $resourceAddressSearchResultDiv.empty();
-                showSearchedAddress(result);
-            },
-            error: function (result) {
-                const error = JSON.parse(result.responseText);
-                console.log();
-                $resourceAddressSearchResultDiv.empty();
-                showErrorMessage(error, $resourceAddressSearchResultDiv);
-            }
-        });
+        searchAddressAjaxCall($resultDiv, searchAddressFormId);
 
     })
 }
 
-function showSearchedAddress(result) {
+function searchAddressAjaxCall($resultDiv, searchAddressFormId) {
+    let searchJson = {};
+    let formJson = toJSON(searchAddressFormId);
+    console.log(formJson);
+    searchJson['entityType'] = 'Address';
+    searchJson['fieldsAndValues'] = formJson;
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/resources/address/search",
+        accept: "application/json",
+        data: JSON.stringify(searchJson),
+        success: function (result) {
+            console.log(result);
+            $resultDiv.empty();
+            showSearchedAddress(result, $resultDiv);
+        },
+        error: function (result) {
+            const error = JSON.parse(result.responseText);
+            console.log();
+            $resultDiv.empty();
+            showErrorMessage(error, $resultDiv);
+        }
+    });
+}
+
+function showSearchedAddress(result, $resultDiv) {
+
+    let $select = buildSelectForRetrievedAddresses(result, $resultDiv);
+    let $chooseAddressBtn = buildChooseSearchedAddressBtn($resultDiv);
+
+    var chosenAddressId = 'none';
+    $select.on('change', function () {
+        chosenAddressId = this.value;
+    });
+
+    $chooseAddressBtn.on('click', function (e) {
+        e.preventDefault();
+
+        if (chosenAddressId != 'none') {
+            $resourceAddressRow.attr('class', 'my_info');
+            showAddressTable(result[chosenAddressId]);
+            // insert address id to the hidden input
+            $idAddressHiddenInput.val(result[chosenAddressId].addressId);
+            $resourceAddressSearchResultDiv.empty();
+            showSuccessMessage($resourceAddressSearchResultDiv, 'Resource address was chosen');
+            setTimeout(function () {
+                $('#searchResourceAddressPopUp').modal('hide');
+            }, 2000);
+        }
+    })
+}
+
+function buildSelectForRetrievedAddresses(result, $resultDiv) {
     let $formGroup = $('<div/>', {
         class: 'form-group'
     });
-    $resourceAddressSearchResultDiv.append($formGroup);
+    $resultDiv.append($formGroup);
 
     let $select = $('<select/>', {
         class: 'form-control'
@@ -342,7 +453,10 @@ function showSearchedAddress(result) {
         });
         $select.append($option);
     }
+    return $select;
+}
 
+function buildChooseSearchedAddressBtn($resultDiv) {
     let $chooseAddressBtn = $('<button/>', {
         // id: 'choose_owner',
         class: 'btn btn-success pull-right',
@@ -351,30 +465,13 @@ function showSearchedAddress(result) {
     let $clearfix = $('<div/>', {
         class: 'clearfix'
     });
-    $resourceAddressSearchResultDiv.append($chooseAddressBtn);
-    $resourceAddressSearchResultDiv.append($clearfix);
-
-    var chosenAddressId = 'none';
-    $select.on('change', function () {
-        chosenAddressId = this.value;
-    });
-
-    $chooseAddressBtn.on('click', function (e) {
-        e.preventDefault();
-
-        if (chosenAddressId != 'none') {
-            $resourceAddressRow.attr('class', 'my_info');
-            showAddressTable(result[chosenAddressId]);
-            // insert address id to the hidden input
-            $idAddressHiddenInput.val(result[chosenAddressId].addressId);
-            $resourceAddressSearchResultDiv.empty();
-            showSuccessMessage($resourceAddressSearchResultDiv, 'Resource address was chosen.');
-            setTimeout(function () {
-                $('#searchResourseAdressPopUp').modal('hide');
-            }, 2000);
-        }
-    })
+    $resultDiv.append($chooseAddressBtn);
+    $resultDiv.append($clearfix);
+    return $chooseAddressBtn;
 }
+
+
+// ----------------------------------- Add new resource owner -----------------------------------
 
 
 /**
@@ -382,15 +479,20 @@ function showSearchedAddress(result) {
  * Make ajax call to the server to save owner with address.
  */
 function addOwnerFormAndSaveResult(rows, ownerType) {
+    ownerAddressSearched = false;
+
     $resourceNewOwnerForm.empty();
     $ownerAddressForm.empty();
+    $searchOwnerAddressDiv.empty();
 
     let $form = $('<form/>', {
         class: 'form',
-        id: ownerFormId
+        id: newOwnerFormId
     });
+
     // append form for the owner and append all rows needed by this form
     $resourceNewOwnerForm.append($form);
+
     appendRows($form, rows);
 
     let $clearfix = $('<div/>', {
@@ -400,16 +502,40 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
         text: "Register owner",
         class: 'btn pull-right btn-success'
     });
-    let $addOwnerAddresBtn = $('<button/>', {
-        text: "Add owner address",
-        class: 'btn pull-left btn-primary'
+    let $addOwnerAddressBtn = $('<button/>', {
+        text: "Add address",
+        class: 'btn btn-primary'
     });
+    let $searchOwnerAddressBtn = $('<button/>', {
+        text: "Search address",
+        class: 'btn btn-primary left_margin_10'
+    });
+    // let $cancelBtn = $('<button/>', {
+    //     text: "Cancel",
+    //     class: 'btn btn-info left_margin_10'
+    // });
+    // $resourceNewOwnerForm.append($cancelBtn);
+    // $cancelBtn.append($clearfix);
+    // $cancelBtn.hide();
+    //
+    // $cancelBtn.on('click', function (e) {
+    //     e.preventDefault();
+    //     $addressDiv.empty();
+    //     $searchOwnerAddressDiv.empty();
+    //
+    //     $(this).hide(500);
+    //     $addOwnerAddressBtn.show(500);
+    //     $searchOwnerAddressBtn.show(500);
+    // });
 
     // append button to register owner
     $resourceNewOwnerForm.append($registerOwnerBtn);
+    $registerOwnerBtn.append($clearfix);
+    // append button to add owner's address
+    $resourceNewOwnerForm.append($addOwnerAddressBtn);
     $resourceNewOwnerForm.append($clearfix);
     // append button to add owner's address
-    $resourceNewOwnerForm.append($addOwnerAddresBtn);
+    $resourceNewOwnerForm.append($searchOwnerAddressBtn);
     $resourceNewOwnerForm.append($clearfix);
 
     // another div where I place form for the owner's address and button
@@ -421,7 +547,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
     });
 
     // add address form inside $addressDiv and returns form id
-    let $addressForm = addAddressFormWithoutBtn($addressDiv, fieldsMetadata.rowsForAddress);
+    let $addressForm = addAddressFormWithoutBtn($addressDiv, fieldsMetadata.rowsForAddress, ownerAddressFormId);
 
     // 'Register Address' button, I attach listener to it to retrieve all inputs filled by user
     let $registerOwnerAddressBtn = $('<button/>', {
@@ -430,14 +556,53 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
     });
     $addressDiv.append($registerOwnerAddressBtn);
 
+    let $searchAddressDiv = $('<div/>', {
+        id: 'searchGhostDiv',
+        class: 'padding_top_40'
+    });
+    let $messageTip = $('<h4/>', {
+        text: 'Please, enter address data you want to search.'
+    });
+    $searchAddressDiv.append($messageTip);
+
+    let $searchAddressForm = addAddressFormWithoutBtn($searchAddressDiv, searchOwnerAddressMetadata, searchOwnerAddressFormId);
+
+    let $findOwnerAddressBtn = $('<button/>', {
+        text: "Find address",
+        class: 'btn pull-left btn-primary'
+    });
+    $searchAddressDiv.append($findOwnerAddressBtn);
+
+    let $resultsOfAddressSearch = $('<div/>', {
+        class: 'padding_top_40'
+    });
+    $searchAddressDiv.append($resultsOfAddressSearch);
+
+
     // when press 'Add owner's address', $addressDiv with already appended form for address and button
     // is appended to ownerAddress div placeholder
-    $addOwnerAddresBtn.on('click', function (e) {
+    $addOwnerAddressBtn.on('click', function (e) {
         e.preventDefault();
+
+        // $cancelBtn.show(500);
         $registerOwnerBtn.prop('disabled', true);
-        $(this).remove();
+        $(this).hide(500);
+        $searchOwnerAddressBtn.hide(500);
+
         $ownerAddressForm.append($addressDiv);
         $ownerAddressForm.append($clearfix);
+    });
+
+    $searchOwnerAddressBtn.on('click', function (e) {
+        e.preventDefault();
+
+        // $cancelBtn.show(500);
+        $registerOwnerBtn.prop('disabled', true);
+        $(this).hide(500);
+        $addOwnerAddressBtn.hide(500);
+
+        $searchOwnerAddressDiv.append($searchAddressDiv);
+        $searchOwnerAddressDiv.append($clearfix);
     });
 
     //validating address form
@@ -449,7 +614,38 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
         validatePerson($form);
     }
 
+    let ownerJson = {};
     let ownerAddressJson;
+
+    $findOwnerAddressBtn.on('click', function (e) {
+        e.preventDefault();
+
+        let searchJson = {};
+        let formJson = toJSON(searchOwnerAddressFormId);
+        console.log(formJson);
+        searchJson['entityType'] = 'Address';
+        searchJson['fieldsAndValues'] = formJson;
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/resources/address/search",
+            accept: "application/json",
+            data: JSON.stringify(searchJson),
+            success: function (result) {
+                console.log(result);
+                $resultsOfAddressSearch.empty();
+                buildSearchedOwnerAddressSelect(result, $resultsOfAddressSearch, ownerJson, $registerOwnerBtn);
+            },
+            error: function (result) {
+                const error = JSON.parse(result.responseText);
+                $resultsOfAddressSearch.empty();
+                showErrorMessage(error, $resultsOfAddressSearch);
+            }
+        });
+
+    });
+
     // here I retrieve all inputs for the owner address form
     // add push this json into the array
     $registerOwnerAddressBtn.on('click', function (e) {
@@ -457,7 +653,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
 
         if ($addressForm.valid()) {
             $registerOwnerBtn.prop('disabled', false);
-            ownerAddressJson = toJSONString(ownerAddressFormId);
+            ownerAddressJson = toJSON(ownerAddressFormId);
             console.log('owner address form: ' + JSON.stringify(ownerAddressJson));
             $ownerAddressForm.hide(1500);
             $resourceNewOwnerForm.append($clearfix);
@@ -473,16 +669,27 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
         e.preventDefault();
 
         if ($form.valid()) {
-            console.log('owner form is valid!!');
 
-            let ownerFormJson = toJSONString(ownerFormId);
+            if (!ownerAddressSearched) {
+                ownerJson = toJSON(newOwnerFormId);
+                ownerJson["address"] = ownerAddressJson;
+            } else {
+                var temp = ownerJson["address"];
 
-            console.log('owner form: ' + JSON.stringify(ownerFormJson));
-            ownerFormJson["type"] = ownerType;
-            ownerFormJson["address"] = ownerAddressJson;
+                ownerJson = toJSON(newOwnerFormId);
+                ownerJson["address"] = temp;
 
-            let ownerWithAddress = JSON.stringify(ownerFormJson);
+                // console.log(searchedAddressJson);
+                // console.log(ownerJson["address"]);
+                // ownerJson["address"] = searchedAddressJson;
+                console.log(ownerJson["address"]);
+            }
 
+            ownerJson["type"] = ownerType;
+
+
+            let ownerWithAddress = JSON.stringify(ownerJson);
+            console.log('owner with address json: ' + ownerWithAddress);
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
@@ -491,7 +698,8 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                 data: ownerWithAddress,
                 success: function (result) {
                     $ownerAddressForm.empty();
-                    $ownerAddressForm.show();
+                    // $ownerAddressForm.show();
+                    $searchOwnerAddressDiv.empty();
 
                     showOwnersTable(result);
 
@@ -513,7 +721,41 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
             console.log('owner form is invalid!!');
         }
     });
+
 }
+
+function buildSearchedOwnerAddressSelect(result, $resultDiv, ownerJson, $registerOwnerBtn) {
+    let $select = buildSelectForRetrievedAddresses(result, $resultDiv);
+    let $chooseAddressBtn = buildChooseSearchedAddressBtn($resultDiv);
+
+    var chosenAddressId = 'none';
+    $select.on('change', function () {
+        chosenAddressId = this.value;
+    });
+
+    var $clearfix = $('<div>', {class: 'clearfix'});
+
+    $chooseAddressBtn.on('click', function (e) {
+        e.preventDefault();
+
+        if (chosenAddressId != 'none') {
+            ownerAddressSearched = true;
+            ownerJson["address"] = result[chosenAddressId];
+
+
+            showSuccessMessage($resultDiv, 'Owner address was chosen');
+            $registerOwnerBtn.attr('disabled', false);
+            $searchOwnerAddressDiv.delay(4500).hide(2500);
+            $resourceNewOwnerForm.append($clearfix);
+
+
+            // $searchOwnerAddressDiv.empty();
+        } else {
+            alert('Please, choose address');
+        }
+    })
+}
+
 
 function showOwnersTable(result) {
     $resourceOwnerTable.removeClass('display_none');
@@ -524,6 +766,14 @@ function showOwnersTable(result) {
     });
     $ownersTbody.append($tr);
     for (let attributeValue in result) {
+        if (result.hasOwnProperty(attributeValue) && attributeValue == 'addressInfo') {
+            let $td = $('<td/>', {
+                text: result[attributeValue],
+                class: 'address_info'
+            });
+            $tr.append($td);
+            continue;
+        }
         if (result.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
             console.log(result[attributeValue]);
             let $td = $('<td/>', {
@@ -541,14 +791,14 @@ function showOwnersTable(result) {
             console.log($(this).parent().attr('id'));
             deleteOwner($(this).parent().attr('id'));
             $tr.remove();
-            checkIfOneOwner();
+            checkIfEmptyOwnerTable();
             $deletedOwnerVersionTwo.fadeIn(300).delay(3500).fadeOut(300);
         }
     })
 
 }
 
-function checkIfOneOwner() {
+function checkIfEmptyOwnerTable() {
     if ($('.owners_tbody tr').length == 0) {
         console.log($('.owners_tbody tr').length);
         $resourceOwnerTable.addClass('display_none');
@@ -584,32 +834,23 @@ function appendDeleteOption($tr) {
  * Takes:
  * element  - formPlaceholder - div element, in which form will be placed
  */
-function addAddressFormWithoutBtn($placeholder, rows) {
+function addAddressFormWithoutBtn($placeholder, rows, formId) {
     // clears div element
-    $placeholder.empty();
+    // $placeholder.empty();
 
-    var $addressForm = $('<form/>', {
+    var $form = $('<form/>', {
         class: 'form',
-        id: ownerAddressFormId
+        id: formId
     });
-    $placeholder.append($addressForm);
-    appendRows($addressForm, rows);
-    return $addressForm;
+    $placeholder.append($form);
+    appendRows($form, rows);
+    return $form;
 }
 
 /**
- * Appends edit and delete Options to the table and returns that elements.
+ * Appends and delete Options to the table and returns that elements.
  */
 function appendEditDeleteOptions() {
-    // $tdEdit = $('<td/>');
-    // $aEdit = $('<a/>');
-    // $iEdit = $('<i/>', {
-    //     class: 'glyphicon glyphicon-edit',
-    //     'aria-hidden': "true"
-    // });
-    // $tdEdit.append($aEdit);
-    // $aEdit.append($iEdit);
-
     $tdDelete = $('<td/>');
     $aDelete = $('<a/>');
     $iDelete = $('<i/>', {
@@ -713,7 +954,7 @@ function closePopUp($placeholder, text, $modal) {
  * Takes as a parameter form id.
  * Returns string containing json representation ('field': 'value' ...).
  */
-function toJSONString(form) {
+function toJSON(form) {
     let obj = {};
     let elements = $('#' + form + ' input');
     for (let i = 0; i < elements.length; i++) {
@@ -1023,7 +1264,7 @@ function makeAjaxCall($findOwnerButton, ownerType, $resultDiv) {
     $findOwnerButton.on('click', function (e) {
         e.preventDefault();
 
-        let jsonString = toJSONString(searchOwnerFormId);
+        let jsonString = toJSON(searchOwnerFormId);
         searchQuery["entityType"] = capitalizeFirstLetter(ownerType);
         searchQuery["fieldsAndValues"] = jsonString;
         console.log(JSON.stringify(searchQuery));
@@ -1174,6 +1415,7 @@ function showResults(success, $resultDiv) {
         choosenOwnerId = this.value;
         choosenOwnerInfo = $(this).find('option:selected').text();
         console.log(choosenOwnerInfo);
+        console.log('choosen owner id: ' + choosenOwnerId);
     });
 
     $chooseOwnerBtn.on('click', function (e) {
@@ -1181,7 +1423,7 @@ function showResults(success, $resultDiv) {
 
         if (choosenOwnerId != 'none') {
 
-            if (!checkIfOwnerAlreadyInTable(success)) {
+            if (!checkIfOwnerAlreadyInTable(success, choosenOwnerId)) {
                 appendOwnerToTable(success, choosenOwnerId);
                 showSuccessMessage($resultDiv, 'Owner was chosen.');
             } else {
@@ -1192,13 +1434,11 @@ function showResults(success, $resultDiv) {
     })
 }
 
-function checkIfOwnerAlreadyInTable(owners) {
-    // let t = $ownersTbody.find('tr');
-    for (let i = 0; i < owners.length; i++) {
-        let children = $ownersTbody.children("[id='" + owners[i]['ownerId'] + "']");
-        console.log('finded owner with id in the table: ' + children.attr('id'));
-        if (children.attr('id') == owners[i]['ownerId']) {
-            console.log('there already is such an owner!!! ');
+function checkIfOwnerAlreadyInTable(owners, choosenOwnerId) {
+    let trs = $ownersTbody.find('tr');
+    console.log(trs);
+    for (let i = 0; i < trs.length; i++){
+        if ($(trs[i]).attr('id') == choosenOwnerId){
             return true;
         }
     }
@@ -1223,6 +1463,14 @@ function appendOwnerToTable(result, choosenOwnerId) {
 
     $ownersTbody.append($tr);
     for (let attributeValue in concreteOwner) {
+        if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue == 'addressInfo') {
+            let $td = $('<td/>', {
+                text: concreteOwner[attributeValue],
+                class: 'address_info'
+            });
+            $tr.append($td);
+            continue;
+        }
         if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
             console.log(concreteOwner[attributeValue]);
             let $td = $('<td/>', {
@@ -1240,7 +1488,7 @@ function appendOwnerToTable(result, choosenOwnerId) {
             console.log($(this).parent().attr('id'));
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
-            checkIfOneOwner();
+            checkIfEmptyOwnerTable();
         }
     })
 }
@@ -1303,3 +1551,9 @@ const searchByCompanyCharacteristicsMetadata = {
         new FieldAndSize('Short name', 4, 'Prosvita')
     ]
 };
+
+const searchOwnerAddressMetadata = [
+    [new FieldAndSize('Region', 6, 'Lvivskiy'), new FieldAndSize('District', 6, 'Drogobytskiy')],
+    [new FieldAndSize('Locality', 6, 'Boryslav'), new FieldAndSize('Street', 6, 'Kovaliva')],
+    [new FieldAndSize('Postal index', 4, '83200'), new FieldAndSize('Building', 4, '37'), new FieldAndSize('Apartment', 4, '17')]
+];

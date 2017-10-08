@@ -13,9 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class FileUploadUtility {
+public class FileUploadUtility extends FileUpload{
 
-    public String uploadFile(RedirectAttributes redirectAttributes, MultipartFile file, String code) {
+
+    public String uploadFile( MultipartFile file, String code) {
 
        BasicAWSCredentials credentials = new BasicAWSCredentials("AKIAIRSMVLMUF2W4ZSAA", "guZpt9C/VXOHpi1UwAOMHR0kKeDybkWEzPbELVc9");
        AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1)
@@ -45,7 +46,7 @@ public class FileUploadUtility {
             //get a reference to the image object
             S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName,code));
             //add to model
-            redirectAttributes.addAttribute("picUrl",s3Object.getObjectContent().getHttpRequest().getURI().toString());
+            //redirectAttributes.addAttribute("picUrl",s3Object.getObjectContent().getHttpRequest().getURI().toString());
             System.out.println(s3Object.getObjectContent().getHttpRequest().getURI().toString());
              url = s3Object.getObjectContent().getHttpRequest().getURI().toString();
         }catch(IOException e){

@@ -29,7 +29,7 @@
     </c:if>
     <c:if test = "${extension == 'pdf'}">
     <div>
-        <iframe style="width: 100%; height: 600px; border: none;" src="${documentURL}"></iframe>
+        <iframe style="width: 80%; height: 600px; border: none;" src="${documentURL}"></iframe>
         <%--<embed class="documentPdf-view" src="${documentURL}">--%>
     </div>
     </c:if>
