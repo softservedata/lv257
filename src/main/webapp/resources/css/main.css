@@ -149,3 +149,13 @@ h3 span{
     background-color: lightgray;
 }
 
+#nestable-dialog-inner {
+    width: 500px;
+    margin-top: 15%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+#nestable-dialog {
+    background-color: rgba(0, 0, 0, 0.5);
+}

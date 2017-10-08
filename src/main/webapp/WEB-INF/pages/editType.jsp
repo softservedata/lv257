@@ -114,7 +114,6 @@
 </div>
 
 <jsp:include page="${contextPath}footer.jsp"/>
-<script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script>
     $("#addition-btn").click(function (e) {
         $('#addition-btn, #definition-form').toggleClass('hidden');
