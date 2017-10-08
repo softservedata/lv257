@@ -100,7 +100,7 @@
                                 <tbody>
                                 <tr class="assigned-template hidden">
                                     <td class="title"></td>
-                                    <td class="units-short"></td>
+                                    <td class="units-short centered"></td>
                                     <td class="centered"><input type="checkbox" class="searchable"/></td>
                                     <td class="centered"><input type="checkbox" class="required"/></td>
                                     <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>

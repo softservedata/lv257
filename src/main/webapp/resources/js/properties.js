@@ -38,10 +38,20 @@ function updateAvailablePropertiesList() {
 
 	$('#available-properties').empty();
 
+	function composeDescription(property, short){
+		let description = property.title;
+		let unitsField = short ? 'unitsShort' : 'units';
+		if (property[unitsField])
+			description += ', ' + property[unitsField];
+		else if (!short) description = '';
+		return description;
+	}
+
 	$.each(availableProperties, function (i, property) {
 		$('#available-properties').append($('<option>', {
 			value: property.id,
-			text: property.description
+			text: composeDescription(property, true),
+			title: composeDescription(property, false)
 		}).data('property', property));
 	});
 }
@@ -68,9 +78,10 @@ function addAssignedProperties($properties) {
 	$.each(constrainedProperties, function (i, constrainedProperty) {
 		let $newPropertyRow = $rowTemplate.clone(true, true);
 		$newPropertyRow.data('property', constrainedProperty);
-		$newPropertyRow.find('td.title').text(constrainedProperty.property.description);
-		$newPropertyRow.find('td.units-short').text(constrainedProperty.property.shortUnits);
-		$newPropertyRow.find('td.units-short').attr('alt', constrainedProperty.property.units);
+		$newPropertyRow.find('td.title').text(constrainedProperty.property.title);
+		let $unitsCell = $newPropertyRow.find('td.units-short');
+		$unitsCell.text(constrainedProperty.property.unitsShort);
+		$unitsCell.attr('title', constrainedProperty.property.units);
 		$newPropertyRow.find('input.searchable').prop('checked', constrainedProperty.searchable);
 		$newPropertyRow.find('input.required').prop('checked', constrainedProperty.required);
 		// let $removeButton = $newPropertyRow.find('.glyphicon-remove');
@@ -201,12 +212,19 @@ function loadExistentProperties() {
 		})
 	}, "json");
 
-	let propertyCmp = function (prop1, prop2) {
-		let description1 = prop1.description.toUpperCase();
-		let description2 = prop2.description.toUpperCase();
-		return description1 > description2 ? 1
-				: description1 < description2 ? -1 : 0;
-	};
+	function strCmp(str1, str2) {
+		if (!str1 && !str2) return 0;
+		else if (!str1) return -1;
+		else if (!str2) return 1;
+		let val1 = str1.toUpperCase();
+		let val2 = str2.toUpperCase();
+		return val1 > val2 ? 1 : (val1 < val2 ? -1 : 0);
+	}
+
+	function propertyCmp(prop1, prop2) {
+		let titleCmp = strCmp(prop1.title, prop2.title);
+		return titleCmp != 0 ? titleCmp : strCmp(prop1.units, prop2.units);
+	}
 
 	var updateAvailableProperties = function (response, doAssign) {
 		let $properties = $(response);

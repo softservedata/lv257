@@ -10,7 +10,7 @@
         <div class="container-fluid">
           <div class="form-group">
             <select id="available-properties" name="available-properties" multiple
-                    class="form-control scrollable" title="Resource Properties" size="15">
+                    class="form-control scrollable" size="15">
             </select>
             <div class="pull-right">
               <button type="submit" id="add-props-btn" class="btn btn-primary disabled" data-dismiss="modal">Add</button>
@@ -77,7 +77,7 @@
             </div>
             <div class="col-sm-3">
               <div class="form-group">
-                <label for="units">Measuring units</label>
+                <label for="units">Units contraction</label>
                 <input type="text" class="form-control" id="units-short" name="unitsShort" placeholder="e.g. cc"
                 title="e.g. cc (cubical centimeters)" pattern="[a-zA-Z \.-]{10}">
               </div>
