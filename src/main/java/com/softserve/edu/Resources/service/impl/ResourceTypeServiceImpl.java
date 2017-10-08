@@ -1,7 +1,7 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
-import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,10 +89,10 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public List<ResourceProperty> getSearchableProperties(ResourceType resourceWithProperties) {
-        List<ResourceProperty> searchableProperties = new ArrayList<>();
+    public List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties) {
+        List<ConstrainedProperty> searchableProperties = new ArrayList<>();
 
-        for (ResourceProperty resourceProperty : resourceWithProperties.getProperties()) {
+        for (ConstrainedProperty resourceProperty : resourceWithProperties.getProperties()) {
             if (resourceProperty.isSearchable()) {
                 searchableProperties.add(resourceProperty);
             }

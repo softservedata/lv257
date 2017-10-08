@@ -134,14 +134,6 @@ public class ResourceCategoryService {
         typecategory2_2.getResourceTypes().add(type2);
 
         saveResourceCategory(category);
-/*        saveResourceCategory(branch1);
-        saveResourceCategory(branch2);
-        saveResourceCategory(leaf1_1);
-        saveResourceCategory(leaf1_2);
-        saveResourceCategory(leaf2_1);
-        saveResourceCategory(leaf2_2);
-        saveResourceCategory(leaf1_3);*/
-
         return category;
     }
 

@@ -3,8 +3,8 @@ package com.softserve.edu.Resources.controller;
 import com.softserve.edu.Resources.dto.DtoUtilMapper;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.ResourceTypeDTO;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.service.ResourceService;
 import com.softserve.edu.Resources.service.ResourceTypeService;
@@ -33,7 +33,7 @@ public class LookUpController {
     
     @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
 
-    public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId){
+    public List<ConstrainedProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId){
         
 
         ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));

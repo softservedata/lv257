@@ -1,6 +1,6 @@
 package com.softserve.edu.Resources.service;
 
-import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.Collection;
@@ -35,7 +35,7 @@ public interface ResourceTypeService {
     
     ResourceType findWithPropertiesByID(Long ID);
 
-    List<ResourceProperty> getSearchableProperties(ResourceType resourceWithProperties);
+    List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties);
     
     void testHello();
 
