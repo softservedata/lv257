@@ -43,7 +43,7 @@ public class ResourceServiceImpl implements ResourceService {
     // }
 
     // @Override
-    // public Collection<ResourceType> getResourceTypes() {
+    // public Collection<ResourceType> getInstantiatedResourceTypes() {
     // return
     // resources.stream().map(GenericResource::getType).collect(Collectors.toSet());
     // }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.softserve.edu.Resources.dto.FieldErrorDTO;
 import com.softserve.edu.Resources.dto.OwnerDTO;
 import com.softserve.edu.Resources.dto.SearchDTO;
+import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Owner;
 import com.softserve.edu.Resources.entity.Person;
@@ -58,23 +59,6 @@ public class RegisterResourceController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/address/update", method = RequestMethod.POST)
-    public ResponseEntity<?> updateResourceAddress(@RequestBody @Valid Address address, BindingResult result) {
-        logger.info("Updating address: " + address);
-
-        if (result.hasErrors()){
-            logger.warn("Errors in updated address object!");
-
-            return new ResponseEntity<>(addressService.validationDTO(result), HttpStatus.BAD_REQUEST);
-        }
-        Address savedAddress = addressService.updateAddress(address);
-
-        logger.debug("Address is updated");
-
-        return new ResponseEntity<>(savedAddress, HttpStatus.OK);
-    }
-
-    @ResponseBody
     @RequestMapping(value = "/address/delete", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteResourceAddress(@RequestBody Address address) {
         logger.debug("Deleting address: " + address);
@@ -90,15 +74,19 @@ public class RegisterResourceController {
     @RequestMapping(value = "/owner", method = RequestMethod.POST)
     public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner, BindingResult result){
         logger.info("Saving owner: " + owner);
+        System.out.println("Saving owner: " + owner);
+        System.out.println("Saving owner's address: " + owner.getAddress());
 
         if (result.hasErrors()){
             logger.warn("Errors in the owner object!");
+            ValidationErrorDTO validationErrorDTO = ownerService.validationDTO(result);
+            System.out.println(validationErrorDTO.getFieldErrors());
 
-            return new ResponseEntity<>(ownerService.validationDTO(result), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
         }
 
         Owner savedOwner = ownerService.addOwner(owner);
-        savedOwner.getAddress().setOwner(savedOwner);
+        savedOwner.getAddress().addOwner(savedOwner);
         addressService.updateAddress(savedOwner.getAddress());
 
         logger.debug("Saved owner: " + savedOwner);

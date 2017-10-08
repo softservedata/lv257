@@ -41,7 +41,7 @@ public class MainController {
         }
         System.out.println("Your IP is " + request.getRemoteAddr());
         model.addAttribute("title", "Resources");
-        model.addAttribute("message", "Welcome to Resources!");
+        model.addAttribute("message", "Welcome to Resources");
         return "welcome";
     }
 

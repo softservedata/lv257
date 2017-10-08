@@ -119,7 +119,7 @@ public class RequestService {
         return history;
     }
 
-    public ResourceRequest assignResourceAdmin(long requestId, String resourceAdminEmail) {
+    public ResourceRequest assignResourceAdmin(long requestId, String resourceAdminEmail) throws Exception {
 
         ResourceRequest request = new ResourceRequest();
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(requestId);
@@ -132,7 +132,8 @@ public class RequestService {
                 request.setResourcesAdmin(resourceAdmin);
                 return resourceRequestDAO.makePersistent(request);
             } else {
-                logger.warn("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
+
+                throw new Exception("ResourseRequest instance" + requestOptional.get() + " has already assigned.");
             }
         } else {
             logger.warn("ResourseRequest instance with id:" + requestId + " is undefined.");
