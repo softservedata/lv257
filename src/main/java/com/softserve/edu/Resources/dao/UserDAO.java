@@ -3,6 +3,7 @@ package com.softserve.edu.Resources.dao;
 import com.softserve.edu.Resources.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDAO {
 
@@ -10,9 +11,9 @@ public interface UserDAO {
 
     User findByEmail(String email);
 
-    User findById(long id);
+//    User findById(long id);
 
-//    Optional<User> findById(Long id);
+    Optional<User> findById(Long id);
 
     void makeTransient(User user);
 

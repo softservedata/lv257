@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private VerificationTokenDAO verificationTokenDAO;
 
-//    @Transactional
     public User getUserForSpring (String email){
         User user = userDAO.findByEmail(email);
         ArrayList<Privilege> privileges = new ArrayList<>(user.getRole().getPrivileges());
@@ -38,19 +37,21 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public User getUserById (Long id){
-        User user = userDAO.findById(id);
-        return user;
-    }
-
 //    public User getUserById (Long id){
-//
-//        Optional<User> userOptional = userDAO.findById(id);
-//        if (userOptional.isPresent()) {
-//            User user = userOptional.get();
-//        }
+//        User user = userDAO.findById(id);
 //        return user;
 //    }
+
+    public User getUserById (Long id){
+
+        Optional<User> userOptional = userDAO.findById(id);
+
+        User user = null;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+        }
+        return user;
+    }
 
     @Override
     public User findByEmail(String email) {
@@ -103,7 +104,6 @@ public class UserServiceImpl implements UserService {
     public void deleteVerificationToken(VerificationToken verificationToken) {
         verificationTokenDAO.makeTransient(verificationToken);
     }
-
 
     private boolean emailExist(final String email) {
 
