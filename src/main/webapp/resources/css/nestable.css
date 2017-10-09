@@ -2,8 +2,8 @@
     position: relative;
     display: block;
     margin: 0;
-    padding: 0;
-    max-width: 600px;
+    padding: 10px;
+    /*max-width: 600px;*/
     list-style: none;
     font-size: 13px;
     line-height: 20px;
@@ -28,6 +28,7 @@
     min-height: 20px;
     font-size: 13px;
     line-height: 20px;
+    width: 650px;
 }
 .dd-handle {
     display: block;
@@ -125,14 +126,14 @@
 }
 
 .scrollable {
-    overflow: scroll;
+    overflow-y: scroll;
     max-height: 300px;
     margin-top: 10px;
 }
 
-.dd::-webkit-scrollbar {
+/*.dd::-webkit-scrollbar {
     display: none;
-}
+}*/
 
 .btn-primary-outline {
     background-color: transparent;
