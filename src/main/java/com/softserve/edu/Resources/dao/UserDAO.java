@@ -12,6 +12,8 @@ public interface UserDAO {
 
     User findById(long id);
 
+//    Optional<User> findById(Long id);
+
     void makeTransient(User user);
 
     List<User> getAllUsers();

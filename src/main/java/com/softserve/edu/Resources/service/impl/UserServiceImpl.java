@@ -13,10 +13,10 @@ import com.softserve.edu.Resources.exception.UserAlreadyExistException;
 import com.softserve.edu.Resources.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private VerificationTokenDAO verificationTokenDAO;
 
-    @Transactional
+//    @Transactional
     public User getUserForSpring (String email){
         User user = userDAO.findByEmail(email);
         ArrayList<Privilege> privileges = new ArrayList<>(user.getRole().getPrivileges());
@@ -38,14 +38,21 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Transactional
     public User getUserById (Long id){
         User user = userDAO.findById(id);
         return user;
     }
 
+//    public User getUserById (Long id){
+//
+//        Optional<User> userOptional = userDAO.findById(id);
+//        if (userOptional.isPresent()) {
+//            User user = userOptional.get();
+//        }
+//        return user;
+//    }
+
     @Override
-    @Transactional
     public User findByEmail(String email) {
         return userDAO.findByEmail(email);
     }
@@ -55,7 +62,6 @@ public class UserServiceImpl implements UserService {
         return userDAO.getAllUsers();
     }
 
-    @Transactional
     public User registerNewUserAccount(final UserDTO userDTO) throws UserAlreadyExistException {
 
         if (emailExist(userDTO.getEmail())) {
@@ -78,20 +84,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
     public void createVerificationTokenForUser(User user, String token) {
         final VerificationToken myToken = new VerificationToken(token, user);
         verificationTokenDAO.makePersistent(myToken);
     }
 
     @Override
-    @Transactional
     public VerificationToken getVerificationToken(String token) {
         return verificationTokenDAO.findByToken(token);
     }
 
     @Override
-    @Transactional
     public void saveRegisteredUser(User user) {
         userDAO.makePersistent(user);
     }

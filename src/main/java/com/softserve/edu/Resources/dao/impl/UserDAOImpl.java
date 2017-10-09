@@ -44,7 +44,12 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO
     public User findById(long id) {
         Query query = entityManager.createQuery("select i from User i where i.id = :id")
                 .setParameter("id", id);
-        User user = (User)query.getSingleResult();
+        User user;
+        try {
+            user = (User)query.getSingleResult();
+        } catch (NoResultException e){
+            return null;
+        }
         return user;
     }
 

@@ -92,9 +92,23 @@ public class RegistrationUserController {
         VerificationToken verificationToken = userService.getVerificationToken(token);
         User userById = userService.getUserById(Long.parseLong(userId));
 
+        VerificationToken badToken = null;
+        if (userById != null){
+            badToken = userById.getVerificationToken();
+        }
+
+//        //When we have confirmatuin url but dont have user in db
+//        if (userById == null || badToken == null){
+//            String message = messages.getMessage("auth.message.userEmpty", null, locale);
+//            model.addAttribute("message", message);
+//            return "badUser";
+//        }
+
+        //When verificationToken is invalid or empty
         if (verificationToken == null) {
             String message = messages.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
+            userService.deleteVerificationToken(badToken);
             userService.delete(userById);
             return "badUser";
         }
@@ -104,6 +118,7 @@ public class RegistrationUserController {
         if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
             String message = messages.getMessage("auth.message.expired", null, locale);
             model.addAttribute("message", message);
+            userService.deleteVerificationToken(verificationToken);
             userService.delete(user);
             return "badUser";
         }
