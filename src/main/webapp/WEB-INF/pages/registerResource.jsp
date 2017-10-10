@@ -31,7 +31,7 @@
 
                 <!-- MAIN FORM FOR REGISTRATING RESOURCE -->
 
-                <form role="form-horizontal" enctype="multipart/form-data">
+                <%--<form role="form-horizontal" enctype="multipart/form-data">--%>
 
                 <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
                 <div class="row">

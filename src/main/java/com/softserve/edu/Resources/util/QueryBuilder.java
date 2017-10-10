@@ -56,6 +56,13 @@ public class QueryBuilder {
         return createQuery.toString();
     }
 
+    /**
+     *  Retrieves all data from dto objects and builds jpql query.
+     *
+     * @param searchDTO - object containing all necessary data to build query, like
+     *                  entity name and it's fields and values.
+     * @return valid query or empty string
+     */
     public String buildQuery(SearchDTO searchDTO) {
         logger.info("Building query to search");
 
@@ -64,20 +71,25 @@ public class QueryBuilder {
 
         logger.info("Searching this type of entity: " + ownerType);
 
-        String ownerTypeFirstChar = String.valueOf(ownerType.charAt(0)).toLowerCase();
+        String ownerTypeFirstChar = ownerType.substring(0, 1).toLowerCase();
 
         Map<String, String> fieldsAndValues = searchDTO.getFieldsAndValues();
 
+        // e.g. - "SELECT a FROM Address a"
         stringBuilder.append("SELECT " + ownerTypeFirstChar + " FROM " + ownerType + " " + ownerTypeFirstChar);
 
-
         Set<Map.Entry<String, String>> entries = fieldsAndValues.entrySet();
+
+        // get rid of empty entry value
+        // from not empty values, build where-clause
         String whereClause = entries
                 .stream()
                 .filter(entry -> !entry.getValue().isEmpty())
                 .map(entry -> entry.getKey() + "=\'" + entry.getValue() + "\'")
                 .collect(Collectors.joining(" AND "));
 
+        // all fields are empty, return empty string
+        // if not, append "WHERE" key-word and whereClause string
         if (whereClause.isEmpty()){
             return "";
         } else {
@@ -87,8 +99,6 @@ public class QueryBuilder {
 
         String readyQuery = stringBuilder.toString();
 
-        System.out.println(whereClause);
-        System.out.println(readyQuery);
         logger.info("Query to send to the DAO layer: " + readyQuery);
 
         return readyQuery;
