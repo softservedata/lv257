@@ -46,7 +46,7 @@ function composeResourceType() {
 		tableName: $('#table-name').val(),
 		properties: constrainedPropertiesBrief
 	}
-	console.log(resourceType);
+	// console.log(JSON.stringify(resourceType));
 	return resourceType;
 }
 
@@ -69,17 +69,17 @@ $('#categories-select').change(function(e) {
 // set Save button handler
 $('#save-type-btn').click(function (e) {
 	let restourceType = composeResourceType();
-	$.ajax("/api/resource/", {
-		method: 'POST',
+	$.ajax({
+		type: "POST",
+		contentType: "application/json",
+		url: "/api/resource",
+		accept: "application/json",
 		data: JSON.stringify(restourceType),
-		dataType: 'json',
-		contentType: 'application/json',
 		success: function (response, status, jqxhr) {
+			// updateCurrentType
 		},
 		error: function (jqxhr, status, exception) {
-		},
-		beforeSend: function () {
-			return true;
+			// provide error message
 		}
 	});
 });

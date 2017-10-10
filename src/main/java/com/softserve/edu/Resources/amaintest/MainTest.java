@@ -1,8 +1,6 @@
 package com.softserve.edu.Resources.amaintest;
 
 import com.softserve.edu.Resources.config.ApplicationConfig;
-import com.softserve.edu.Resources.config.DBConfig;
-import com.softserve.edu.Resources.config.WebConfig;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
@@ -32,7 +30,6 @@ public class MainTest {
 
         ResourceTypeService resTypeService = ctx.getBean(ResourceTypeService.class);
         System.out.println("Try another bean ResourceTypeService method: ");
-        resTypeService.testHello();
         System.out.println();
 
         System.out.println("Checking if there is connection to database and queries work with EntityManager:");
