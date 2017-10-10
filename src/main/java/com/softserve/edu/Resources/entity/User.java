@@ -26,9 +26,9 @@ public class User {
 
     private String secret;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private UserDetails userDetails;
@@ -42,10 +42,17 @@ public class User {
     @OneToMany(mappedBy = "register")
     private Collection<ResourceRequest> requestsByRegister;
 
-
     public User() {
         this.secret = Base32.random();
         this.enabled = false;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public UserDetails getUserDetails() {
@@ -57,12 +64,12 @@ public class User {
         userDetails.setUser(this);
     }
 
-    public VerificationToken getVerificationToken() {
-        return verificationToken;
+    public Long getId() {
+        return id;
     }
 
-    public void setVerificationToken(VerificationToken verificationToken) {
-        this.verificationToken = verificationToken;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -89,28 +96,20 @@ public class User {
         this.enabled = enabled;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getSecret() {
         return secret;
     }
 
     public void setSecret(String secret) {
         this.secret = secret;
+    }
+
+    public VerificationToken getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(VerificationToken verificationToken) {
+        this.verificationToken = verificationToken;
     }
 
     @Override
@@ -141,13 +140,17 @@ public class User {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("User [id=").append(id)
-                .append(", username=").append(username)
-                .append(", password=").append(password)
-                .append(", enabled=").append(enabled)
-                .append(", secret=").append(secret)
-                .append(", roles=").append(role).append("]");
-        return builder.toString();
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", secret='" + secret + '\'' +
+                ", roles=" + roles +
+                ", userDetails=" + userDetails +
+                ", verificationToken=" + verificationToken +
+                ", requestsByAdmin=" + requestsByAdmin +
+                ", requestsByRegister=" + requestsByRegister +
+                '}';
     }
 }

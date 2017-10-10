@@ -122,19 +122,19 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         subcategory2.getChildrenCategories().add(typecategory2_1);
         subcategory2.getChildrenCategories().add(typecategory2_2);
 
-        ResourceType type1 = new ResourceType("type1");
+        ResourceType type1 = new ResourceType("Land");
         type1.setCategory(typecategory2_2);
-        type1.setTableName("type1");
+        type1.setTableName("Land");
         type1.setInstantiated(true);
         typecategory2_2.getResourceTypes().add(type1);
-        ResourceType type3 = new ResourceType("type3");
+        ResourceType type3 = new ResourceType("Bank account");
         type3.setCategory(typecategory2_2);
-        type3.setTableName("type3");
+        type3.setTableName("Bank account");
         type3.setInstantiated(true);
         typecategory2_2.getResourceTypes().add(type3);
-        ResourceType type2 = new ResourceType("type2");
+        ResourceType type2 = new ResourceType("Boat");
         type2.setCategory(typecategory2_2);
-        type2.setTableName("type2");
+        type2.setTableName("Boat");
         type2.setInstantiated(true);
         typecategory2_2.getResourceTypes().add(type2);
 

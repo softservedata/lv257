@@ -11,7 +11,7 @@
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 
 <div class="container-fluid">
     <div class="container">

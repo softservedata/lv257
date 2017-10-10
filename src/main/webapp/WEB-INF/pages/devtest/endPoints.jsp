@@ -4,10 +4,10 @@
 <html>
 <head>
     <title>Endpoint list</title>
-    <jsp:include page="metadata.jsp"/>
+    <jsp:include page="../metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="../menu.jsp" />
 <div class="container">
     <div class="table-responsive">
         <%--<h2>Roles list</h2>--%>

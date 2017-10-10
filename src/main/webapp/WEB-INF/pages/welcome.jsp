@@ -5,7 +5,7 @@
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 <br>
 <div class="container">
 

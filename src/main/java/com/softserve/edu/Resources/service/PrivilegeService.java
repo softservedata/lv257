@@ -9,10 +9,15 @@ import java.util.List;
 public interface PrivilegeService {
 
     public Privilege getPrivilegeById(Long id);
+
+    Privilege addPrivilege(Privilege s);
+
     public Privilege addPrivilege(String s);
     public Privilege addPrivilege(String s, PrivilegeType privilegeType);
 
     public List<Privilege> getAllPrivileges();
+
+    Privilege addPrivilege(String name, String description, PrivilegeType privilegeType);
 
     public void deletePrivilege();
     public void deleteAllPrivilege();

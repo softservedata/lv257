@@ -1,11 +1,13 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
+@Table(name = "privilege")
 public class Privilege {
 
     @Id
@@ -13,9 +15,12 @@ public class Privilege {
     private Long id;
 
     private String name;
+    private String description;
+
 
     private PrivilegeType privilegeType;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "privileges")
     private Collection<Role> roles;
 
@@ -30,6 +35,13 @@ public class Privilege {
     public Privilege(final String name, final PrivilegeType privilegeType) {
         super();
         this.name = name;
+        this.privilegeType = privilegeType;
+    }
+
+    public Privilege(final String name, final String description,final PrivilegeType privilegeType) {
+        super();
+        this.name = name;
+        this.description = description;
         this.privilegeType = privilegeType;
     }
 
@@ -49,6 +61,14 @@ public class Privilege {
 
     public void setName(final String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Collection<Role> getRoles() {
@@ -95,8 +115,22 @@ public class Privilege {
 
     @Override
     public String toString() {
-        final StringBuilder builder = new StringBuilder();
-        builder.append("Privilege [name=").append(name).append("]").append("[id=").append(id).append("]");
-        return builder.toString();
+        return "Privilege{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", privilegeType=" + privilegeType +
+                ", roles=" + roles +
+                '}';
     }
+
+/* @Override
+    public String toString() {
+        return "Privilege{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", privilegeType=" + privilegeType +
+                ", roles=" + roles +
+                '}';
+    }*/
 }

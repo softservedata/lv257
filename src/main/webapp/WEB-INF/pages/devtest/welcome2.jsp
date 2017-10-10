@@ -3,10 +3,10 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"/>
+    <jsp:include page="../metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="../menu.jsp" />
 <br>
 <br>
 <br>
