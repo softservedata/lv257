@@ -2,9 +2,10 @@ package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.entity.PrivilegeType;
 import com.softserve.edu.Resources.service.PrivilegeService;
+import com.softserve.edu.Resources.service.ResourceCategoryService;
 import com.softserve.edu.Resources.service.UserDetailsService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
+import com.softserve.edu.Resources.service.impl.ResourceCategoryServiceImpl;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,9 +34,6 @@ public class DevTestController {
 
     @Autowired
     ResourceCategoryService categoryService;
-
-    @Autowired
-    ResourceCategoryService resourceCategoryService;
 
     @Autowired
     private RequestMappingHandlerMapping requestMappingHandlerMapping;

@@ -25,7 +25,7 @@ public class ResourceCategory {
     @OneToMany(mappedBy = "parentCategory", cascade = CascadeType.ALL)
     private Set<ResourceCategory> childrenCategories = new HashSet<>();
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private Set<ResourceType> resourceTypes = new HashSet<>();
 
     public ResourceCategory(String categoryName) {

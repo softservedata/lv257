@@ -17,6 +17,7 @@ $(document).ready(function () {
     //Build contents of modal window for managing categories
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
+        $('#save-alert').addClass('hidden');
         buildCategoriesNestableTree();
     });
 
@@ -29,22 +30,22 @@ $(document).ready(function () {
     //Validate inputted text and save changes and close modal window for adding/editing categories
     $('#save-name').on('click', function (e) {
         e.preventDefault();
-        let categoryName = $('#category-name-input').val();
+        let categoryName = $('#category-name-input').val().trim();
         let action = $('#category-name-input').data('action');
         let ownerId = $('#category-name-input').data('ownerId');
         if (!validateInputTextForUnique(categoryName, action, ownerId)) {
             showValidationFailMessage('notUnique');
-        } else if (categoryName.trim().length === 0) {
+        } else if (categoryName.length === 0) {
             showValidationFailMessage('blank');
-        } else if (categoryName.trim().length > 50) {
-            showValidationFailMessage('tooLong');
+        } else if (categoryName.length < 3 || categoryName.length > 50) {
+            showValidationFailMessage('badLength');
         } else {
             if (action === 'add') {
                 addCategory(ownerId, categoryName);
             }
             if (action === 'edit') {
                 editCategory(ownerId, categoryName);
-            };
+            }
             $('.close-name-dialog')[0].click();
         }
     });
@@ -182,7 +183,7 @@ $(document).ready(function () {
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
             })
             .error(function () {
-                alert("Error " + jqxhr.status);
+                // alert("Error " + jqxhr.status);
             });
     }
 
@@ -198,7 +199,13 @@ $(document).ready(function () {
         else {
             output.val('JSON browser support required for this demo.');
         }
-        console.log(window.JSON.stringify(list.nestable('serialize')));
+
+        //Mark non-leaf categories which have resource types
+        $('.dd-handle').removeClass('non-leaf-categories-with-types');
+        let nonLeafCategoriesWithTypes = $('.dd-list').parent().filter('li').filter(function () {
+            return $(this).attr('data-hastypes') === 'true';
+        }).children('.dd-handle');
+        nonLeafCategoriesWithTypes.addClass('non-leaf-categories-with-types');
     };
 
     /**
@@ -219,15 +226,21 @@ $(document).ready(function () {
             url: "/resources/categories",
             accept: "application/json",
             data: json,
-            success: function (result) {
-                alert("Changes are saved!");
-                $('#close-managing').click();
+            success: function (jqXHR) {
+                $('#save-alert').removeClass('hidden');
+                setTimeout(function () {
+                    $('#categories-view').fadeOut(100, function () {
+                        $('#categories-view').modal('hide');
+                        $('#nestable').nestable('destroy');
+                    });
+                }, 1000);
                 let lastSelectedId = $('#categories-select').data('selectedID');
                 $('#categories_and_types').empty();
                 loadCategories(lastSelectedId);
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
+            error: function (jqXHR) {
+                var error = JSON.parse(jqXHR.responseText);
+                alert('Error!\n" + error.message');
             }
         })
     }
@@ -466,8 +479,8 @@ $(document).ready(function () {
     function validateInputTextForUnique(text, action, ownerId) {
         let allCategories = $('.dd-item');
         for (let i = 0; i < allCategories.length; i++) {
-            let categoryName = $(allCategories[i]).data('categoryname');
-            if (text.trim().toLowerCase() === categoryName.trim().toLowerCase()) {
+            let categoryName = $(allCategories[i]).attr('data-categoryname');
+            if (text.toLowerCase() === categoryName.trim().toLowerCase()) {
                 if (action === 'edit' && ownerId == $(allCategories[i]).data('id')) continue;
                 return false;
             }
@@ -488,8 +501,8 @@ $(document).ready(function () {
             case 'blank' :
                 messageText = 'Name of resourse category can not be empty';
                 break;
-            case 'tooLong' :
-                messageText = 'Name of resourse category must be shorter than 50 characters';
+            case 'badLength' :
+                messageText = 'Name of resourse category must be longer than 2 and shorter than 50 characters';
                 break;
         }
         $('#input-div').addClass('has-error has-feedback');
