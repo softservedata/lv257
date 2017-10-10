@@ -1,21 +1,31 @@
 package com.softserve.edu.Resources.dto;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ResourceTypeUpdate {
-    private long id;
-    private long categoryId;
+
+    private Long id;
+    private Long categoryId;
     private String typeName;
     private String tableName;
-    private Set<ConstrainedPropertyBrief> properties = new HashSet<>();
+    private List<ConstrainedPropertyBrief> properties = new ArrayList<>();
 
-    public long getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getTypeName() {
@@ -34,19 +44,12 @@ public class ResourceTypeUpdate {
         this.tableName = tableName;
     }
 
-    public Set<ConstrainedPropertyBrief> getProperties() {
+    public List<ConstrainedPropertyBrief> getProperties() {
         return properties;
     }
 
-    public void setProperties(Set<ConstrainedPropertyBrief> properties) {
+    public void setProperties(List<ConstrainedPropertyBrief> properties) {
         this.properties = properties;
     }
 
-    public long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
 }

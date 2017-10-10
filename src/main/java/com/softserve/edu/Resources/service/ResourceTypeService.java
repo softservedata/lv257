@@ -30,12 +30,8 @@ public interface ResourceTypeService {
 
     int getInstancesCount();
     
-
-    
     ResourceType findWithPropertiesByID(Long ID);
 
     List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties);
     
-    void testHello();
-
 }

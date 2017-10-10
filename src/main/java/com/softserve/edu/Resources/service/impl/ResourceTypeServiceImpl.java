@@ -91,10 +91,10 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         }
 
         Set<ResourceProperty> updatedTypeProperties = validIDs.stream()
-                                                   .map(propertyService::getPropertyById)
-                                                   .filter(Optional::isPresent)
-                                                   .map(Optional::get)
-                                                   .collect(Collectors.toSet());
+                                                              .map(propertyService::getPropertyById)
+                                                              .filter(Optional::isPresent)
+                                                              .map(Optional::get)
+                                                              .collect(Collectors.toSet());
 
         Set<ConstrainedProperty> typeProperties
                 = resourceTypeUpdate.getProperties().stream()
@@ -148,8 +148,6 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         return getInstances().size();
     }
 
-
-
     @Override
     public ResourceType findWithPropertiesByID(Long ID) {
         return resourceTypeDAO.findWithPropertiesByID(ID);
@@ -157,26 +155,9 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
     @Override
     public List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties) {
-        List<ConstrainedProperty> searchableProperties = new ArrayList<>();
-
-        for (ConstrainedProperty resourceProperty : resourceWithProperties.getProperties()) {
-            if (resourceProperty.isSearchable()) {
-                searchableProperties.add(resourceProperty);
-            }
-        }
-
-        return searchableProperties;
+        return resourceWithProperties.getProperties().stream()
+                       .filter(ConstrainedProperty::isSearchable)
+                       .collect(Collectors.toList());
     }
-
-
-
-    @Override
-    public void testHello() {
-        System.out.println("Yeah, it works!");
-    }
-
-
-
-
 
 }

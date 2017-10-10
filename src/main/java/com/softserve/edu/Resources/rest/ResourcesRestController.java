@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/api/resource")
+@RestController
+@RequestMapping(value = "/api", method = RequestMethod.GET)
 public class ResourcesRestController {
 
     @Autowired
     ResourceTypeService resourceTypeService;
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @RequestMapping(value = "/resource", method = RequestMethod.POST)
     public ResourceType addResourceProperty(@RequestBody ResourceTypeUpdate resourceTypeUpdate) {
-        ResourceType resourceType = resourceTypeService.save(resourceTypeUpdate);
-        return resourceType;
+        return resourceTypeService.save(resourceTypeUpdate);
     }
 }
