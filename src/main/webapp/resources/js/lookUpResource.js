@@ -58,6 +58,7 @@ $(document).ready(function(){
 	    	$('#div-for-types').hide();
 	    	$('#form-for-properties').hide();
 	    	$('#lookup-result').hide();
+	    	$('#new-search').hide();
 	    	$('#result-search').empty();
 	    	$('#no-inputs-error').empty();
             $('#no-inputs-error').show();
@@ -68,6 +69,7 @@ $(document).ready(function(){
 	    	$('#div-for-types').hide();
 	    	$('#form-for-properties').hide();
 	    	$('#lookup-result').hide();
+	    	$('#new-search').hide();
 	    	$('#result-search').empty();
 	    	$('#no-inputs-error').empty();
             $('#no-inputs-error').show();
@@ -76,7 +78,9 @@ $(document).ready(function(){
 	
 	var resourceTypeId;
 	// populating form with properties to fill in depends on resourceType chosen
-	$('#div-for-types').on('change',function(e){    
+	$('#div-for-types').on('change',function(e){ 
+		$('#result-search').empty();
+		$('#new-search').hide();
 	    resourceTypeId = $(e.target).data('selectedID');
 	    if (typeof resourceTypeId != 'undefined')
 		    $.ajax({    
@@ -170,7 +174,7 @@ $(document).ready(function(){
 			        	var header = $("<thead></thead>").appendTo(tableTag);
 			        	var rowHeader = $("<tr></tr>").appendTo(header);
 			        	for(var j = 0; j < result[0].propertyValues.length; j++) { 
-			       		 	$("<th>'" + result[0].propertyValues[j].type.title +"'</th>").appendTo(rowHeader);
+			       		 	$("<th>'" + result[0].propertyValues[j].type.property.title +"'</th>").appendTo(rowHeader);
 			        	}
 			        	
 			        	$("<th>More Info</th>").appendTo(rowHeader);

@@ -7,7 +7,7 @@
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 	<div class="wrapper">
 		<div class="container-fluid">
 			<div class="col-sm-12 col-md-12">
