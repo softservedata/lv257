@@ -7,7 +7,6 @@ import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Owner;
-import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.AddressService;
 import com.softserve.edu.Resources.service.OwnerService;
 import org.slf4j.Logger;
@@ -60,14 +59,12 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/address/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteResourceAddress(@RequestBody Address address) {
+    public void deleteResourceAddress(@RequestBody Address address) {
         logger.debug("Deleting address: " + address);
 
         addressService.deleteAddress(address);
 
-        logger.warn("Address is deleted from the db" + address);
-
-        return new ResponseEntity<>(new Address(), HttpStatus.OK);
+        logger.warn("Address deleted from the db" + address);
     }
 
     @ResponseBody
@@ -100,12 +97,10 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/owner/{id}/delete", method = RequestMethod.DELETE)
-    public ResponseEntity<?> deleteOwner(@PathVariable long id) throws JsonProcessingException {
+    public void deleteOwner(@PathVariable long id) throws JsonProcessingException {
         logger.warn("Deleting owner with id:" + id);
 
         ownerService.deleteOwnerById(id);
-
-        return new ResponseEntity<>(new Person(), HttpStatus.OK);
     }
 
     @ResponseBody
