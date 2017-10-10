@@ -25,17 +25,18 @@ public class Address {
     private long id;
 
     @NotEmpty
-    @Length(max = 10, message = "Country name is too big.")
+    @Length(max = 30, message = "Country name is too big.")
     @JsonProperty("country")
     private String country;
 
     @NotEmpty
-    @Size(max = 7)
+    @Size(min = 5, max = 30)
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("district")
     @NotEmpty
+    @Size(min = 5, max = 30)
     private String district;
 
     @JsonProperty("postal_index")
@@ -45,10 +46,12 @@ public class Address {
 
     @NotEmpty
     @JsonProperty("locality")
+    @Size(min = 5, max = 30)
     private String locality;
 
     @NotEmpty
     @JsonProperty("street")
+    @Size(min = 5, max = 30)
     private String street;
 
     @Min(1)
