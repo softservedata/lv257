@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -27,10 +25,11 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class PropertyServiceImpl implements PropertyService {
 
-    @Autowired
-    ResourcePropertyDAO propertyDAO;
+    final ResourcePropertyDAO propertyDAO;
 
-    public PropertyServiceImpl() {
+    @Autowired
+    public PropertyServiceImpl(ResourcePropertyDAO propertyDAO) {
+        this.propertyDAO = propertyDAO;
     }
 
     @Override
@@ -45,8 +44,8 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<ResourceProperty> getProperties() {
-        return propertyDAO.findAll();
+    public Set<ResourceProperty> getProperties() {
+        return new HashSet<>(propertyDAO.findAll());
     }
 
     @Override
@@ -60,8 +59,8 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public List<ResourceProperty> getProperties(String propertyTitle) {
-        return propertyDAO.findByTitle(propertyTitle);
+    public Set<ResourceProperty> getProperties(String propertyTitle) {
+        return new HashSet<>(propertyDAO.findByTitle(propertyTitle));
     }
 
     @Override
@@ -71,15 +70,24 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Override
     public List<ResourcePropertyDescription> getPropertyDescriptions() {
-        List<ResourcePropertyDescription> collect = propertyDAO.findAll().stream()
-                                                            .map(ResourcePropertyDescription::new)
-                                                            .sorted()
-                                                            .collect(toList());
-        return collect;
+        return propertyDAO.findAll().stream()
+                       .map(ResourcePropertyDescription::new)
+                       .sorted()
+                       .collect(toList());
     }
 
     @Override
     public List<ValueTypeDTO> getValueTypes() {
-        return Arrays.stream(ValueType.values()).map(valueType -> new ValueTypeDTO(valueType)).collect(toList());
+        return Arrays.stream(ValueType.values()).map(ValueTypeDTO::new).collect(toList());
+    }
+
+    @Override
+    public Set<Long> getPropertyIDs() {
+        return propertyDAO.findAllIds();
+    }
+
+    @Override
+    public Optional<ResourceProperty> getPropertyById(Long propID) {
+        return propertyDAO.findById(propID);
     }
 }

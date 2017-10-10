@@ -57,7 +57,9 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="type-name">Type Name</label>
-                            <input id="type-name" name="typeName" type="text" class="form-control" pattern="${typeNamePattern}"
+                            <input id="type-name" name="typeName" type="text" class="form-control"
+                                   pattern="[A-Z][a-zA-Z -]+"
+                            <%--pattern="${typeNamePattern}"--%>
                                    placeholder="Enter the name of new resource type">
                             <%--placeholder="Enter the name of new resource type">--%>
                         </div>
@@ -67,58 +69,65 @@
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="table-name">Type's Table Name</label>
                             <input id="table-name" name="tableName" type="text" class="form-control"
-                                   pattern="${tableNamePattern}"
+                                   pattern="[A-Z][a-z]+(_[A-Z][a-z]+)*"
+                            <%--pattern="${tableNamePattern}"--%>
                                    placeholder="Enter the name of resource's table">
                         </div>
                     </div>
-                    <div class="container-fluid">
-                        <br>
-                        <h4>Resource Type Properties</h4>
-                        <hr>
-                        <div class="container">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#available-props-modal">Add existing
-                            </button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#new-property-modal">Add new
-                            </button>
-                        </div>
-                        <div class="container col-md-8">
-                            <style>
-                                .centered { text-align: center;}
-                            </style>
-                            <table id="assigned-props" class="table table-hover hidden">
-                                <thead>
-                                <tr>
-                                    <th>Property</th>
-                                    <th class="centered">Units</th>
-                                    <th class="centered">Searchable</th>
-                                    <th class="centered">Required</th>
-                                    <th><%--Remove--%></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="assigned-template hidden">
-                                    <td class="title"></td>
-                                    <td class="units-short centered"></td>
-                                    <td class="centered"><input type="checkbox" class="searchable"/></td>
-                                    <td class="centered"><input type="checkbox" class="required"/></td>
-                                    <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <br>
-                    <hr>
-                    <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
-                    <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
-
                 </form>
+                <div class="container-fluid">
+                    <br>
+                    <h4>Resource Type Properties</h4>
+                    <hr>
+                    <div class="container">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#available-props-modal">Add existing
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#new-property-modal">Add new
+                        </button>
+                    </div>
+                    <div class="container col-md-8">
+                        <style>
+                            .centered { text-align: center;}
+                        </style>
+                        <table id="assigned-props" class="table table-hover hidden">
+                            <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th class="centered">Units</th>
+                                <th class="centered">Searchable</th>
+                                <th class="centered">Required</th>
+                                <th><%--Remove--%></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="assigned-template hidden">
+                                <td class="title"></td>
+                                <td class="units-short centered"></td>
+                                <td class="centered"><input type="checkbox" class="searchable"/></td>
+                                <td class="centered"><input type="checkbox" class="required"/></td>
+                                <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <hr>
+                <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
+                <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
+
+
                 <script title="Current ResourceType's variables declaration">
-                  var existentProperties;
-                  <c:set var="idVal" value="${id}"/>
-                  var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+									var existentProperties;
+									<c:set var="idVal" value="${id}"/>
+									var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+									var	assignedProperties = [];
+									var initialProperties = [];
+									var categoryID;
+									var typeName;
+									var tableName;
                 </script>
                 <jsp:include page="dialogs/properties.jsp"/>
                 <jsp:include page="dialogs/categories.jsp"/>
@@ -130,9 +139,16 @@
 <jsp:include page="${contextPath}footer.jsp"/>
 
 <script>
-    $("#addition-btn").click(function (e) {
-        $('#addition-btn, #definition-form').toggleClass('hidden');
-    });
+	$("#addition-btn").click(function (e) {
+		$('#addition-btn, #definition-form').toggleClass('hidden');
+	});
+
+	$('input[type="text"]').blur(function(e) {
+		let input = e.target;
+		let trimmedValue = $.trim($(input).val());
+		$(input).val(trimmedValue);
+		input.checkValidity();
+	});
 </script>
 <script src="${contextPath}/resources/js/resourceTypes.js"></script>
 </body>

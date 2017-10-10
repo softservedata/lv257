@@ -1,8 +1,8 @@
 //load dependency
 $.getScript('/resources/js/FormSerializePlugin.js');
 
-var assignedProperties = [];
-var initialProperties = assignedProperties.slice();
+// var assignedProperties = [];
+initialProperties = assignedProperties.slice();
 
 function updateAssignedPropsTable() {
 	let $assignedPropsTable = $('#assigned-props');
@@ -62,14 +62,16 @@ function updateAvailablePropertiesList() {
  * @param $properties to add
  */
 function addAssignedProperties($properties) {
-	let defaultConstraint = {
-		searchable:false,
-		required:true
-	};
+
 	let constrainedProperties = $.map($properties, function (property, i) {
-		let unconstrainedProperty = {'property': property};
-		return $.extend(true, defaultConstraint, unconstrainedProperty);
-		// return $.extend(true, defaultConstraint, property);
+		// let unconstrainedProperty = {'property': property};
+		// let defaultConstraint = {searchable:false,required:true};
+		// return $.extend(true, defaultConstraint, unconstrainedProperty);
+		return {
+			'property': property,
+			searchable:false,
+			required:true
+		}
 	})
 
 	$.merge(assignedProperties, constrainedProperties);

@@ -12,22 +12,22 @@
 					</div>
 					<div id="nestable-menu">
 						<button type="button" class="btn btn-primary" id="exp-col">Expand/Collapse tree</button>
-                        <button class="btn btn-default btn-add pull-right"><span class="glyphicon glyphicon-plus"></span></button>
+						<button class="btn btn-default btn-add pull-right"><span class="glyphicon glyphicon-plus"></span></button>
 					</div>
 
 					<div class="dd scrollable" id="nestable"></div>
 
 					<div class="form-group" hidden>
 						<textarea id="nestable-output" class="form-control"
-											rows="5" cols = "30" style="resize: vertical"></textarea>
+								  rows="5" cols = "30" style="resize: vertical"></textarea>
 					</div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="save-changes">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="cancel-managing">Cancel</button>
-            </div>
-        </div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" id="save-changes">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true" id="cancel-managing">Cancel</button>
+			</div>
+		</div>
 	</div>
 </div>
 <jsp:include page="addEditCategory.jsp"/>

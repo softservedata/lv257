@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  *
@@ -56,6 +53,10 @@ public class ResourcePropertyDAOImpl extends GenericDAOImpl<ResourceProperty, Lo
         return queryResultList(findByTitle, "units", units);
     }
 
+    @Override
+    public Set<Long> findAllIds() {
+        return new HashSet<>(em.createQuery("select rp.id from ResourceProperty rp", Long.class).getResultList());
+    }
 
 
 }

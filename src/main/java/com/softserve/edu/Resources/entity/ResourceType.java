@@ -7,7 +7,10 @@ import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /*
 *  ResourceType represents entity containing a set of
@@ -37,6 +40,10 @@ public class ResourceType {
     @ManyToOne
     @JoinColumn(name = "Id_Category", nullable = false)
     private ResourceCategory category;
+
+    public void setProperties(Set<ConstrainedProperty> properties) {
+        this.properties = properties;
+    }
 
     @JsonIgnore
     @ElementCollection(fetch = FetchType.LAZY)

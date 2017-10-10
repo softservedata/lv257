@@ -1,4 +1,4 @@
-var resourceType;
+var resourceType = {};
 var isModeCloning;
 
 function getResourceType(isCloning) {
@@ -19,13 +19,25 @@ function getResourceType(isCloning) {
 }
 
 function composeResourceType() {
-	let $inputs = $('input, select', '#new-property-modal');
-	let entries = $inputs.serializeArray({checkboxesAsBools: true});
-	let resourceType = entries.mapToObject();
+	let $inputs = $('input, select', '#resource-type');
+	$inputs.each(function (i, input) {
+		if (!input.checkValidity()) {
+			input.blur();
+			let label = $(input).prev('label');
+			alert(label.text() + ' value is invalid');
+			throw	new Error();
+		}
+	});
+	resourceType = {
+		categoryID: categoryID,
+		typeName: $('#type-name').val(),
+		tableName: $('#table-name').val(),
+		properties: assignedProperties
+	}
 	return resourceType;
 }
 
-(function () {
+(function uploadResourceType() {
 
 	isModeCloning = resourceTypeID < 0;
 	if (isModeCloning) {
@@ -33,27 +45,30 @@ function composeResourceType() {
 		getResourceType(isModeCloning);
 	} else if (resourceTypeID > 0) {
 		getResourceType(isModeCloning);
-	}
+	} //else we're creating new ResourceType
 
 })();
 
-(function () {
-	$('save-type-btn').click(function (e) {
-		let restourceType = composeResourceType();
-		$.ajax("/api/resources", {
-			method: 'POST',
-			data: JSON.stringify(restourceType),
-			dataType: 'json',
-			contentType: 'application/json',
-			success: function (response, status, jqxhr) {
+$('#categories-select').change(function(e) {
+	categoryID = $(e.target).data('selectedID');
+});
 
-			},
-			error: function (jqxhr, status, exception) {
+// set Save button handler
+$('#save-type-btn').click(function (e) {
+	let restourceType = composeResourceType();
+	$.ajax("/api/resources", {
+		method: 'POST',
+		data: JSON.stringify(restourceType),
+		dataType: 'json',
+		contentType: 'application/json',
+		success: function (response, status, jqxhr) {
 
-			},
-			beforeSend: function () {
-				return true;
-			}
-		});
-	})
-})();
+		},
+		error: function (jqxhr, status, exception) {
+
+		},
+		beforeSend: function () {
+			return true;
+		}
+	});
+});

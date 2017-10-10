@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.service;
 
+import com.softserve.edu.Resources.dto.ResourceTypeUpdate;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 
@@ -13,9 +14,7 @@ public interface ResourceTypeService {
 
     long getTypeCount();
 
-    ResourceType add(ResourceType resourceType);
-
-    ResourceType update(ResourceType resourceType);
+    ResourceType save(ResourceTypeUpdate resourceType);
 
     void remove(ResourceType resourceType);
 

@@ -50,8 +50,9 @@ public class ConstrainedProperty {
         return property;
     }
 
-    public void setProperty(ResourceProperty property) {
+    public ConstrainedProperty setProperty(ResourceProperty property) {
         this.property = property;
+        return this;
     }
 
 }

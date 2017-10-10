@@ -97,6 +97,10 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         return result;
     }
 
+    public List<T> queryResultList(String query) {
+        return queryResultList(query, Collections.emptyMap());
+    }
+
     public List<T> queryResultList(String queryWithNamedParams, String paramName, Object paramValue) {
         Map<String, Object> params = new HashMap<>();
         params.put(paramName, paramValue);
