@@ -97,11 +97,18 @@ public class RequestResourceController {
         ResourceRequest request = requestService.getRequestById(id);
         model.addAttribute("theme", request.getResourceType());
         model.addAttribute("info", request.getDescription());
-       // model.addAttribute("code", request.getDocument().getCode());
         model.addAttribute("extension", request.getDocument().getFileExtension());
         model.addAttribute("documentURL", request.getDocument().getDocumentsURL());
         model.addAttribute("title", "Info about Request");
 
         return "infoRequest";
+    }
+
+    @RequestMapping(value = {"/spinnerRequest"}, method = RequestMethod.POST)
+    public @ResponseBody
+    String spinnerFadeOut() {
+
+        return "Spinner Time Out";
+
     }
 }
