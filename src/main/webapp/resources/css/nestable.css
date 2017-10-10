@@ -28,7 +28,7 @@
     min-height: 20px;
     font-size: 13px;
     line-height: 20px;
-    width: 650px;
+    /*width: 650px;*/
 }
 .dd-handle {
     display: block;
