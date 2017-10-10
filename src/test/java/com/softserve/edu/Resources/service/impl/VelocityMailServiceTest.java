@@ -58,7 +58,7 @@ public class VelocityMailServiceTest {
     }
 
     @Configuration
-    @ComponentScan(basePackageClasses = VelocityMailService.class,
+    @ComponentScan(
            useDefaultFilters = false,
             includeFilters = {
                     @ComponentScan.Filter(type = ASSIGNABLE_TYPE, value = VelocityMailService.class)

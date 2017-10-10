@@ -121,7 +121,6 @@ public class RequestService {
 
         ResourceRequest request = new ResourceRequest();
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(requestId);
-        System.out.println(requestOptional);
         User resourceAdmin = userDAO.findByEmail(resourceAdminEmail);
         if (requestOptional.isPresent()) {
             if (requestOptional.get().getResourcesAdmin() == null) {
