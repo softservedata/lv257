@@ -6,6 +6,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.io.StringWriter;
 public class VelocityMailService {
 
     @Autowired
-    JavaMailSenderImpl mailSender;
+    JavaMailSender mailSender;
 
     @Autowired
     VelocityEngine velocityEngine;

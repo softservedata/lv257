@@ -1,12 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 01.09.2017
-  Time: 18:10
-  To change this templates use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <head>
@@ -19,6 +13,7 @@
 <jsp:include page="_menu2.jsp"/>
 <div class="container">
     <ul class="nav nav-tabs">
+        <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>
         <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
@@ -34,7 +29,7 @@
                    style="width: 300px">
         </div>
         <br>
-        <table class="table table-hover table-condensed text-center table-bordered display" id="requests">
+        <table class="table table-striped table-condensed text-center table-bordered display" id="requests">
             <thead>
             <tr>
                 <th>
@@ -62,7 +57,7 @@
             <tbody>
             <c:forEach items="${resourceRequest}" var="request">
 
-                <tr>
+                <tr class="active">
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
                     <td><a href="/resources/info/${request.id}">details</a></td>
@@ -111,7 +106,7 @@
     </div>
     <div align="right">
         <a href="/resources/history">
-            <button class="btn btn-primary">See processed request</button>
+            <button class="btn btn-primary">See processed requests</button>
         </a>
     </div>
 
@@ -163,10 +158,10 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.foundation.min.js"></script>
 <script>
-	$.extend(true, $.fn.dataTable.defaults, {
-		"searching": true,
-		"sPageButton": "paginate_button"
-	});
+//	$.extend(true, $.fn.dataTable.defaults, {
+//		"searching": true,
+//		"sPageButton": "paginate_button"
+//	});
 	$(document).ready(function () {
 		var table = $('#requests').DataTable({
 			'dom': 'rt<"bottom"lp><"clear">',
