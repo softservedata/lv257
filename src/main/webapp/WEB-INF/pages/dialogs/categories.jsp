@@ -7,6 +7,9 @@
 			</div>
 			<div class="modal-body">
 				<div class="container-fluid">
+					<div id="save-alert" class="alert alert-success hidden">
+						<strong>Changes were successfully saved!</strong>
+					</div>
 					<div id="nestable-menu">
 						<button type="button" class="btn btn-primary" id="exp-col">Expand/Collapse tree</button>
                         <button class="btn btn-default btn-add pull-right"><span class="glyphicon glyphicon-plus"></span></button>
