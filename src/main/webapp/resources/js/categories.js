@@ -172,7 +172,7 @@ $(document).ready(function () {
                     maxDepth: 20,
                     contentCallback: function (item) {
                         let content = item.categoryname || '' ? item.categoryname : item.id;
-                        content += ' <i>(id = ' + item.id + ')</i>';
+                        // content += ' <i>(id = ' + item.id + ')</i>';
                         return content;
                     }
                 }).on('change', updateOutput);
@@ -450,8 +450,8 @@ $(document).ready(function () {
         category.attr('data-categoryname', categoryName);
         category.data('categoryname', categoryName);
         let label = category.find('.dd-content:first');
-        label.html(categoryName + ' <i>(id = ' + id + ')</i>');
-        // label.text(categoryName);
+        // label.html(categoryName + ' <i>(id = ' + id + ')</i>');
+        label.text(categoryName);
         updateOutput($('#nestable'));
     }
 

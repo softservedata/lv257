@@ -38,4 +38,16 @@ public class RoleService {
         }
         return privileges;
     }
+
+
+    @Transactional
+    public Role findByName(String name) {
+        return roleDAO.findByName(name);
+    }
+
+    @Transactional
+    public Role updateRole(Role role) {
+        roleDAO.updateRole(role);
+        return role;
+    }
 }

@@ -42,9 +42,32 @@
 		    <version>1.0.4</version>
 		    <scope>test</scope>
 		</dependency>
-		
-		
-		
+
+		<!-- https://mvnrepository.com/artifact/com.google.cloud.sql/mysql-socket-factory -->
+		<dependency>
+			<groupId>com.google.cloud.sql</groupId>
+			<artifactId>mysql-socket-factory</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-sqladmin -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-sqladmin</artifactId>
+			<version>v1beta4-rev47-1.22.0</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-datastore</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+
+
+
+
+
 		<!-- - - - - - Mock - - - - - -->
 		<dependency>
             <groupId>org.mockito</groupId>
@@ -436,7 +459,7 @@
 				<artifactId>heroku-maven-plugin</artifactId>
 				<version>1.2.0</version>
 			</plugin>
-		
+
 		
 		</plugins>
 	</build>

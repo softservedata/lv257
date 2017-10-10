@@ -10,7 +10,7 @@
 
 <body>
 
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 <div class="container">
     <ul class="nav nav-tabs">
         <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>

@@ -4,11 +4,13 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"/>
+    <jsp:include page="../metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="../menu.jsp" />
 
+<br />
+<br />
 <br />
 <div class="container-fluid">
     <div class="row">
@@ -18,20 +20,20 @@
                     <li> <a href="${pageContext.request.contextPath}/users">Users</a></li>
                     <li class="active"> <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
                     <li> <a href="${pageContext.request.contextPath}/privileges">Privileges</a></li>
-                    <%--<li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>--%>
+                    <li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>
                 </ul>
             </div>
             <br/>
             <div class="row">
                 <div class="container">
                     <div class="margin-bottom">
-                        <button type="button" class="btn btn-primary" onclick="window.location='${pageContext.request.contextPath}/addRole';">Add new Role</button>
+                        <button type="button" class="btn btn-primary" onclick="window.location='${pageContext.request.contextPath}/privileges';">Add new Role</button>
                     </div>
                 </div>
             </div>
             <div class="container">
                 <div class="table-responsive">
-                    <%--<h2>Roles list</h2>--%>
+                    <h2>Roles list</h2>
                     <table class="table table-striped">
                         <thead>
                         <tr>
@@ -48,8 +50,8 @@
                             <ul>
                                 <c:forEach var="listValue" items="${list}">
                                     <tr>
-                                        <td><a href="${pageContext.request.contextPath}/roleInfo?rn=${listValue}">${listValue}</a></td>
-                                        <td ><a href="${pageContext.request.contextPath}/roleInfo?rn=${listValue}">
+                                        <td><a href="">${listValue}</a></td>
+                                        <td ><a href="${listValue}/roleInfo">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a></td>
                                         <td ><a href="#">
@@ -63,10 +65,33 @@
                             </ul>
 
                         </c:if>
+
+                        <%--<tr>
+                            <td><a href="">ADMIN</a></td>
+                            <td ><a href="UsersRoles.html">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a></td>
+                            <td ><a href="#">
+                                <span class="glyphicon glyphicon-copy"></span>
+                            </a></td>
+                            <td ><a href="#">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="">REGISTRATOR</a></td>
+                            <td ><a href="UsersRoles.html">
+                                <span class="glyphicon glyphicon-edit"></span>
+                            </a></td>
+                            <td ><a href="#">
+                                <span class="glyphicon glyphicon-copy"></span>
+                            </a></td>
+                            <td ><a href="#">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </a></td>
+                        </tr>--%>
                         </tbody>
                     </table>
-                </div>
-            </div>
                 </div>
 
                 <br />

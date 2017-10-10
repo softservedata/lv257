@@ -155,6 +155,6 @@ public class ResourceType {
         return "ResourceType [id=" + id + ", typeName=" + typeName + ", tableName=" + tableName + ", category="
                 + category + ", properties=" + properties + ", instantiated=" + instantiated + "]";
     }
-    
+
     
 }
