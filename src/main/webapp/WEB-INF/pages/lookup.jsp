@@ -11,7 +11,7 @@
 			rel="stylesheet" >
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 
 <h2>Look Page</h2>
 

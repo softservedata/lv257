@@ -7,7 +7,7 @@
     </style>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 <div class="log-out-message">
 
     <h2>Logging out was successful</h2>
