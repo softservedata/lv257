@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 
             <div class="container">
 

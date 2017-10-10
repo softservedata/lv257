@@ -66,7 +66,7 @@ public class DBConfig {
         properties.put(USE_SQL_COMMENTS, env.getProperty(USE_SQL_COMMENTS));
         properties.put(HBM2DDL_AUTO, env.getProperty(HBM2DDL_AUTO));
         properties.put(HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR, env.getProperty(HBM2DDL_IMPORT_FILES_SQL_EXTRACTOR));
-        properties.put(HBM2DDL_IMPORT_FILES, env.getProperty(HBM2DDL_IMPORT_FILES));
+//        properties.put(HBM2DDL_IMPORT_FILES, env.getProperty(HBM2DDL_IMPORT_FILES));
         return properties;
     }
     /*@Bean
