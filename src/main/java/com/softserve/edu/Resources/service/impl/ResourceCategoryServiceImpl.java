@@ -6,10 +6,7 @@ import com.softserve.edu.Resources.dto.ResourceTypeDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.CycleDependencyException;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.alg.CycleDetector;
-import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.SimpleDirectedGraph;
+import com.softserve.edu.Resources.exception.RemovingCategoriesWithTypesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,49 +15,55 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class ResourceCategoryService {
+public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.service.ResourceCategoryService {
 
     @Autowired
     private ResourceCategoryDAO resourceCategoryDAO;
 
+    @Override
     @Transactional
     public Optional<ResourceCategory> findCategoryById(Long id) {
         return resourceCategoryDAO.findById(id);
     }
 
+    @Override
     @Transactional
     public Optional<ResourceCategory> findCategoryByName(
             String categoryName) {
         return resourceCategoryDAO.findByName(categoryName);
     }
 
+    @Override
     @Transactional
     public List<ResourceCategory> findAllResourceCategories() {
         return resourceCategoryDAO.findAll();
     }
 
+    @Override
     @Transactional
     public void saveResourceCategory(ResourceCategory resourceCategory) {
         resourceCategoryDAO.makePersistent(resourceCategory);
     }
 
+    @Override
     @Transactional
     public void deleteResourceCategory(ResourceCategory resourceCategory) {
         resourceCategoryDAO.makeTransient(resourceCategory);
     }
 
+    @Override
     @Transactional
     public List<ResourceCategory> findRootCategories() {
-        return findAllResourceCategories().stream()
-                .filter(c -> c.getParentCategory() == null)
-                .collect(Collectors.toList());
+        return resourceCategoryDAO.findRootCategories();
     }
 
-    public List<ResourceCategory> getDescendants(ResourceCategory resourceCategory) {
+    @Override
+    public List<ResourceCategory> getDescendants(ResourceCategory resourceCategory) throws CycleDependencyException {
         return getDescendants(resourceCategory, new HashSet<>());
     }
 
-    private List<ResourceCategory> getDescendants(ResourceCategory resourceCategory, Set<ResourceCategory> visited) {
+    private List<ResourceCategory> getDescendants(ResourceCategory resourceCategory, Set<ResourceCategory> visited)
+            throws CycleDependencyException {
         List<ResourceCategory> descendants = new ArrayList<>();
         visited.add(resourceCategory);
         if (resourceCategory.getChildrenCategories() != null && !resourceCategory.getChildrenCategories().isEmpty()) {
@@ -68,7 +71,7 @@ public class ResourceCategoryService {
                 if (!visited.contains(rc)) {
                     descendants.add(rc);
                 } else {
-                    throw new CycleDependencyException("Elements " + resourceCategory + " and " + rc + " are involved in cycle dependencies");
+                    throw new CycleDependencyException("Categories hierarchy has cycle dependencies. Some categories are reduplicative");
                 }
                 descendants.addAll(getDescendants(rc, visited));
             }
@@ -76,11 +79,13 @@ public class ResourceCategoryService {
         return descendants;
     }
 
-    public List<ResourceCategory> getAncestors(ResourceCategory resourceCategory) {
+    @Override
+    public List<ResourceCategory> getAncestors(ResourceCategory resourceCategory) throws CycleDependencyException {
         return getAncestors(resourceCategory, new HashSet<>());
     }
 
-    private List<ResourceCategory> getAncestors(ResourceCategory resourceCategory, Set<ResourceCategory> visited) {
+    private List<ResourceCategory> getAncestors(ResourceCategory resourceCategory, Set<ResourceCategory> visited)
+            throws CycleDependencyException {
         List<ResourceCategory> ancestors = new ArrayList<>();
         visited.add(resourceCategory);
         ResourceCategory parent = resourceCategory.getParentCategory();
@@ -88,7 +93,7 @@ public class ResourceCategoryService {
             if (!visited.contains(parent)) {
                 ancestors.addAll(getAncestors(parent, visited));
             } else {
-                throw new CycleDependencyException("Elements " + resourceCategory + " and " + parent + " are involved in cycle dependencies");
+                throw new CycleDependencyException("Categories hierarchy has cycle dependencies. Some categories are reduplicative");
             }
             ancestors.add(parent);
         }
@@ -96,8 +101,8 @@ public class ResourceCategoryService {
     }
 
     @Transactional
-    public ResourceCategory insertCategoriesTEMPORARY() {
-        findAllResourceCategories().forEach(this::deleteResourceCategory);
+    public void insertCategoriesTEMPORARY() {
+/*        findAllResourceCategories().forEach(this::deleteResourceCategory);
         resourceCategoryDAO.flush();
 
         ResourceCategory category = new ResourceCategory("category", null);
@@ -134,37 +139,55 @@ public class ResourceCategoryService {
         typecategory2_2.getResourceTypes().add(type2);
 
         saveResourceCategory(category);
-        return category;
+*//*        saveResourceCategory(branch1);
+        saveResourceCategory(branch2);
+        saveResourceCategory(leaf1_1);
+        saveResourceCategory(leaf1_2);
+        saveResourceCategory(leaf2_1);
+        saveResourceCategory(leaf2_2);
+        saveResourceCategory(leaf1_3);*/
     }
 
-    public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories) {
+    @Override
+    public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories)
+            throws CycleDependencyException {
         List<ResourceCategory> allCategories = new ArrayList<>(rootCategories);
         rootCategories.forEach(c -> allCategories.addAll(getDescendants(c)));
         return allCategories;
     }
 
+    @Override
+    public boolean isValidCategoryName(List<ResourceCategory> categories, int minNameLength, int maxNameLength) {
+        List<String> usedNames = new ArrayList<>();
+        for (ResourceCategory category : categories) {
+            String name = category.getCategoryName();
+            if (usedNames.contains(name.toLowerCase()) || name.length() < minNameLength || name.length() > maxNameLength) {
+                return false;
+            }
+            usedNames.add(name.toLowerCase());
+        }
+        return true;
+    }
+
+    @Override
     @Transactional
-    public void deleteMissingCategoriesInDB(List<ResourceCategory> rootCategoriesFromWeb) {
-        List<ResourceCategory> allCategoriesFromWeb = deployAllCategoriesFromRoots(rootCategoriesFromWeb);
+    public void deleteMissingCategoriesInDB(List<ResourceCategory> allCategoriesFromWeb)
+            throws RemovingCategoriesWithTypesException {
         List<ResourceCategory> allCategoriesFromDB = findAllResourceCategories();
         allCategoriesFromDB.stream()
                 .filter(c -> !allCategoriesFromWeb.stream()
                         .map(ResourceCategory::getId)
                         .collect(Collectors.toList()).contains(c.getId()))
-                .forEach(this::deleteResourceCategory);
+                .forEach(dc -> {
+                    System.out.println(dc.getCategoryName());
+                    if (dc.getResourceTypes().size() == 0 && getDescendants(dc).stream()
+                            .allMatch(dcd -> dcd.getResourceTypes().size() == 0)) {
+                        deleteResourceCategory(dc);
+                    } else {
+                        throw new RemovingCategoriesWithTypesException("Can not remove from database resource categories which have resource types");
+                    }
+                });
         resourceCategoryDAO.flush();
-    }
-
-    public boolean hasCycleDependencies(List<ResourceCategory> categories) {
-        DirectedGraph<ResourceCategory, DefaultEdge> categoriesGraph = new SimpleDirectedGraph<>(DefaultEdge.class);
-        for (ResourceCategory category : categories) {
-            categoriesGraph.addVertex(category);
-            if (category.getParentCategory() != null) {
-                categoriesGraph.addEdge(category, category.getParentCategory());
-            }
-        }
-        CycleDetector<ResourceCategory, DefaultEdge> cycleDetector = new CycleDetector<>(categoriesGraph);
-        return cycleDetector.detectCycles();
     }
 
     private ResourceCategoryDTO createCategoryDTO(ResourceCategory category, Set<ResourceCategory> created) {
@@ -193,6 +216,7 @@ public class ResourceCategoryService {
         return dto;
     }
 
+    @Override
     public ResourceCategoryDTO createCategoryDTO(ResourceCategory category) {
         return createCategoryDTO(category, new HashSet<>());
     }
@@ -222,6 +246,7 @@ public class ResourceCategoryService {
         return targetCategory;
     }
 
+    @Override
     @Transactional
     public ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO) {
         return mapFromDtoToResourceCategory(categoryDTO, new HashSet<>());

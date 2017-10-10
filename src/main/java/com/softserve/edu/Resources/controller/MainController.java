@@ -1,8 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.service.PrivilegeService;
+import com.softserve.edu.Resources.service.ResourceCategoryService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +20,6 @@ import java.util.Map;
 @Controller
 @Transactional
 public class MainController {
-
-    @Autowired
-    ResourceCategoryService categoryService;
 
     @Autowired
     UserService userService;

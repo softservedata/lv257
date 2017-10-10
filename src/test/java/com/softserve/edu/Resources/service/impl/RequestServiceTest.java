@@ -153,8 +153,6 @@ public class RequestServiceTest {
         requestService.assignResourceAdmin(ID, USER_EMAIL);
         verify(resourceRequestDAO, times(0))
                 .makePersistent(request.get().setResourcesAdmin(resourceAdmin).setUpdate(date));
-
-        verify(logger).warn("ResourseRequest instance " + request.get() + " has already assigned.");
     }
 
 

@@ -31,7 +31,7 @@ $(document).ready(function () {
 
         if (ownerType == 'absent') {
             $resourceNewOwnerForm.empty();
-            $ownerAddressForm.empty();
+            $ownerAddressFormPlaceholder.empty();
             $searchOwnerAddressDiv.empty();
         } else if (ownerType == 'company') {
             addOwnerFormAndSaveResult(fieldsMetadata.rowsForCompany, ownerType);
@@ -137,7 +137,7 @@ const $deletedOwnerVersionTwo = $('#deleted_owner');
 const $resourceOwnerTable = $('.resource_owner_table');
 const $ownersTbody = $('.owners_tbody');
 const $resourceNewOwnerForm = $('#resource_new_owner_form');
-const $ownerAddressForm = $('#owner_address_form');
+const $ownerAddressFormPlaceholder = $('#owner_address_form_placeholder');
 const $resourceOwnersSelect = $('#resource_owners');
 const $resourceNewOwnerPopUp = $('#createNewOwnerPopUp');
 const newOwnerFormId = 'owner_form';
@@ -480,9 +480,10 @@ function buildChooseSearchedAddressBtn($resultDiv) {
  */
 function addOwnerFormAndSaveResult(rows, ownerType) {
     ownerAddressSearched = false;
+    addressValidator = null;
 
     $resourceNewOwnerForm.empty();
-    $ownerAddressForm.empty();
+    $ownerAddressFormPlaceholder.empty();
     $searchOwnerAddressDiv.empty();
 
     let $form = $('<form/>', {
@@ -510,23 +511,31 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
         text: "Search address",
         class: 'btn btn-primary left_margin_10'
     });
-    // let $cancelBtn = $('<button/>', {
-    //     text: "Cancel",
-    //     class: 'btn btn-info left_margin_10'
-    // });
-    // $resourceNewOwnerForm.append($cancelBtn);
-    // $cancelBtn.append($clearfix);
-    // $cancelBtn.hide();
-    //
-    // $cancelBtn.on('click', function (e) {
-    //     e.preventDefault();
-    //     $addressDiv.empty();
-    //     $searchOwnerAddressDiv.empty();
-    //
-    //     $(this).hide(500);
-    //     $addOwnerAddressBtn.show(500);
-    //     $searchOwnerAddressBtn.show(500);
-    // });
+    let $cancelBtn = $('<button/>', {
+        text: "Cancel",
+        class: 'btn btn-info'
+    });
+    $resourceNewOwnerForm.append($cancelBtn);
+    $cancelBtn.append($clearfix);
+    $cancelBtn.hide();
+
+    $cancelBtn.on('click', function (e) {
+        e.preventDefault();
+
+        $ownerAddressFormPlaceholder.hide();
+        $searchOwnerAddressDiv.hide();
+        $(this).hide(500);
+
+        $resultsOfAddressSearch.empty();
+        $('#' + searchOwnerAddressFormId).trigger('reset');
+        $('#' + ownerAddressFormId).trigger('reset');
+        if(addressValidator !== null){
+            addressValidator.resetForm();
+        }
+
+        $addOwnerAddressBtn.show(500);
+        $searchOwnerAddressBtn.show(500);
+    });
 
     // append button to register owner
     $resourceNewOwnerForm.append($registerOwnerBtn);
@@ -584,24 +593,26 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
     $addOwnerAddressBtn.on('click', function (e) {
         e.preventDefault();
 
-        // $cancelBtn.show(500);
+        $cancelBtn.show(500);
         $registerOwnerBtn.prop('disabled', true);
         $(this).hide(500);
         $searchOwnerAddressBtn.hide(500);
 
-        $ownerAddressForm.append($addressDiv);
-        $ownerAddressForm.append($clearfix);
+        $ownerAddressFormPlaceholder.append($addressDiv);
+        $ownerAddressFormPlaceholder.show(500);
+        $ownerAddressFormPlaceholder.append($clearfix);
     });
 
     $searchOwnerAddressBtn.on('click', function (e) {
         e.preventDefault();
 
-        // $cancelBtn.show(500);
+        $cancelBtn.show(500);
         $registerOwnerBtn.prop('disabled', true);
         $(this).hide(500);
         $addOwnerAddressBtn.hide(500);
 
         $searchOwnerAddressDiv.append($searchAddressDiv);
+        $searchOwnerAddressDiv.show();
         $searchOwnerAddressDiv.append($clearfix);
     });
 
@@ -655,7 +666,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
             $registerOwnerBtn.prop('disabled', false);
             ownerAddressJson = toJSON(ownerAddressFormId);
             console.log('owner address form: ' + JSON.stringify(ownerAddressJson));
-            $ownerAddressForm.hide(1500);
+            $ownerAddressFormPlaceholder.hide(1500);
             $resourceNewOwnerForm.append($clearfix);
         } else {
             console.log('owner address form is invalid!!');
@@ -697,8 +708,8 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                 accept: "application/json",
                 data: ownerWithAddress,
                 success: function (result) {
-                    $ownerAddressForm.empty();
-                    // $ownerAddressForm.show();
+                    $ownerAddressFormPlaceholder.empty();
+                    // $ownerAddressFormPlaceholder.show();
                     $searchOwnerAddressDiv.empty();
 
                     showOwnersTable(result);
@@ -712,8 +723,8 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                     console.log('errors in fields: ' + parse);
 
                     $('.my_error_class').empty();
-                    $ownerAddressForm.show(1500);
-                    $ownerAddressForm.append($clearfix);
+                    $ownerAddressFormPlaceholder.show(1500);
+                    $ownerAddressFormPlaceholder.append($clearfix);
                     appendHibernateErrors(parse);
                 }
             })

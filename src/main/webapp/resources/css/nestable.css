@@ -139,3 +139,7 @@
     background-color: transparent;
     border: none;
 }
+
+.non-leaf-categories-with-types {
+    background-color: lightcoral;
+}

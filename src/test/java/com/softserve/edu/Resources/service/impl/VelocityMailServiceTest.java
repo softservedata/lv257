@@ -2,6 +2,7 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
+import com.softserve.edu.Resources.config.ApplicationConfig;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
@@ -18,7 +19,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -56,7 +59,7 @@ public class VelocityMailServiceTest {
 
     @Configuration
     @ComponentScan(basePackageClasses = VelocityMailService.class,
-            useDefaultFilters = false,
+           useDefaultFilters = false,
             includeFilters = {
                     @ComponentScan.Filter(type = ASSIGNABLE_TYPE, value = VelocityMailService.class)
             })
@@ -65,7 +68,7 @@ public class VelocityMailServiceTest {
         private Environment env;
 
         @Bean
-        public JavaMailSenderImpl getJavaMailSender() {
+        public JavaMailSender getJavaMailSender() {
             JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
             mailSender.setHost("localhost");
             mailSender.setPort(3025);

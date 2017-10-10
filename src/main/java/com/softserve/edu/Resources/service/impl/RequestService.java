@@ -36,10 +36,8 @@ public class RequestService {
     DocumentDAOImpl documentDAO;
     @Autowired
     UserDAO userDAO;
-
-
     @Autowired
-    VelocityMailService mailService;
+    VelocityMailService velocityMailService;
 
     public RequestService() {
     }
@@ -72,7 +70,7 @@ public class RequestService {
         User user = userDAO.findByEmail(userSpring.getUsername());
 
 
-        List<ResourceRequest> requests = getResourcesRequest()
+        List<ResourceRequest> requests = getResourcesRequests()
                 .stream()
                 .filter(request -> request.getRegister().getId() == user.getId())
                 .collect(Collectors.toList());
@@ -90,7 +88,7 @@ public class RequestService {
             request.setStatus(message.getRequestStatus());
             resourceRequestDAO.makePersistent(request);
             ResponceMail mail = new ResponceMail(message, request);
-            mailService.sendResponceMail(mail);
+            velocityMailService.sendResponceMail(mail);
         } else {
             logger.warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
         }
@@ -102,18 +100,18 @@ public class RequestService {
         return request.orElse(new ResourceRequest());
     }
 
-    public List<ResourceRequest> getResourcesRequest() {
+    public List<ResourceRequest> getResourcesRequests() {
         return resourceRequestDAO.findAll();
     }
 
 
     public List<ResourceRequest> getNewResourcesRequest() {
-        return filterByStatus(getResourcesRequest(), ResourceRequest.Status.NEW);
+        return filterByStatus(getResourcesRequests(), ResourceRequest.Status.NEW);
 
     }
 
     public List<ResourceRequest> getHistoryResourcesRequest() {
-        List<ResourceRequest> requests = getResourcesRequest();
+        List<ResourceRequest> requests = getResourcesRequests();
         List<ResourceRequest> history = filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
         history.addAll(filterByStatus(requests, ResourceRequest.Status.DECLINED));
         return history;

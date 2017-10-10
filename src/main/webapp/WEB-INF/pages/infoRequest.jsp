@@ -14,7 +14,7 @@
 <jsp:include page="_menu2.jsp"/>
 <br>
 
-<div class="container">
+<div class="container" >
     <h2>Details</h2>
 
     <h3>Requested resource type:<span> ${theme}</span></h3>

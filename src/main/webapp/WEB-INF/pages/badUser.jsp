@@ -1,7 +1,7 @@
 <html>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <head>
-    <title>Bad User</title>
+    <title>Error</title>
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
