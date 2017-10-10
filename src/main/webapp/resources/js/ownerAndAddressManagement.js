@@ -447,9 +447,11 @@ function buildSelectForRetrievedAddresses(result, $resultDiv) {
                 addressStr += result[i][attributeValue] + ", ";
             }
         }
+
+        let normalStr = addressStr.slice(0, -2) + '.';
         let $option = $('<option\>', {
             value: i,
-            text: addressStr
+            text: normalStr
         });
         $select.append($option);
     }
@@ -646,7 +648,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
             success: function (result) {
                 console.log(result);
                 $resultsOfAddressSearch.empty();
-                buildSearchedOwnerAddressSelect(result, $resultsOfAddressSearch, ownerJson, $registerOwnerBtn);
+                buildSearchedOwnerAddressSelect(result, $resultsOfAddressSearch, ownerJson, $registerOwnerBtn, $cancelBtn);
             },
             error: function (result) {
                 const error = JSON.parse(result.responseText);
@@ -667,6 +669,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
             ownerAddressJson = toJSON(ownerAddressFormId);
             console.log('owner address form: ' + JSON.stringify(ownerAddressJson));
             $ownerAddressFormPlaceholder.hide(1500);
+            $cancelBtn.hide(500);
             $resourceNewOwnerForm.append($clearfix);
         } else {
             console.log('owner address form is invalid!!');
@@ -735,7 +738,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
 
 }
 
-function buildSearchedOwnerAddressSelect(result, $resultDiv, ownerJson, $registerOwnerBtn) {
+function buildSearchedOwnerAddressSelect(result, $resultDiv, ownerJson, $registerOwnerBtn, $cancelBtn) {
     let $select = buildSelectForRetrievedAddresses(result, $resultDiv);
     let $chooseAddressBtn = buildChooseSearchedAddressBtn($resultDiv);
 
@@ -756,7 +759,8 @@ function buildSearchedOwnerAddressSelect(result, $resultDiv, ownerJson, $registe
 
             showSuccessMessage($resultDiv, 'Owner address was chosen');
             $registerOwnerBtn.attr('disabled', false);
-            $searchOwnerAddressDiv.delay(4500).hide(2500);
+            $searchOwnerAddressDiv.delay(1000).hide(2500);
+            $cancelBtn.delay(1000).hide(500);
             $resourceNewOwnerForm.append($clearfix);
 
 

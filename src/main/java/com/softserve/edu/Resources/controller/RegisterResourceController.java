@@ -83,8 +83,6 @@ public class RegisterResourceController {
         }
 
         Owner savedOwner = ownerService.addOwner(owner);
-        savedOwner.getAddress().addOwner(savedOwner);
-        addressService.updateAddress(savedOwner.getAddress());
 
         logger.debug("Saved owner: " + savedOwner);
         logger.debug("Saved owner id: " + savedOwner.getId());

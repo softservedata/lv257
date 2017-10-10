@@ -14,6 +14,12 @@ public class ValidationDTOUtility {
 
     public ValidationDTOUtility(){}
 
+    /**
+     * Builds simple dto object, containing info about errors in entity fields.
+     *
+     * @param bindingResult - spring provided object, containing info about entity constraint violations.
+     * @return - dto, with field name and error message.
+     */
     public ValidationErrorDTO getErrorDTO(BindingResult bindingResult){
         errorDTO = new ValidationErrorDTO();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();

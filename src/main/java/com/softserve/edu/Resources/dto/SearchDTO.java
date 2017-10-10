@@ -2,6 +2,11 @@ package com.softserve.edu.Resources.dto;
 
 import java.util.Map;
 
+/**
+ * Represents all search info needed to build query.
+ * entityType - e.g., Address
+ * fieldsAndValues = e.g., firstName = Oleh
+ */
 public class SearchDTO {
 
     private String entityType;
