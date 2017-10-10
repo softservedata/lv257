@@ -1,4 +1,28 @@
-<%@ taglib prefix="se" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<div id="available-props-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4>Resource Properties</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="form-group">
+            <select id="available-properties" name="available-properties" multiple
+                    class="form-control scrollable" size="15">
+            </select>
+            <div class="pull-right">
+              <button type="submit" id="add-props-btn" class="btn btn-primary disabled" data-dismiss="modal">Add</button>
+              <button type="reset" id="cancel-btn" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="new-property-modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -12,13 +36,15 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="title">Property title</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+                <input type="text" class="form-control" id="title" name="title" placeholder="Title"
+                       pattern="[A-Z][-a-z0-9]+( [A-Z][-a-z0-9]+)*">
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group">
-                <label for="column-name">Property name</label>
-                <input type="text" class="form-control" id="column-name" name="columnName" placeholder="Name">
+                <label for="column-name">Property's column name</label>
+                <input type="text" class="form-control" id="column-name" name="columnName" placeholder="Name"
+                       pattern="[A-Z][_a-z0-9]+(_[A-Z][_a-z0-9]+)*">
               </div>
             </div>
           </div>
@@ -46,7 +72,14 @@
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="units">Measuring units</label>
-                <input type="text" class="form-control" id="units" name="units" placeholder="e.g. cc (cubical centimeters)">
+                <input type="text" class="form-control" id="units" name="units" placeholder="e.g. cubical centimeters">
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div class="form-group">
+                <label for="units">Units contraction</label>
+                <input type="text" class="form-control" id="units-short" name="unitsShort" placeholder="e.g. cc"
+                title="e.g. cc (cubical centimeters)" pattern="[a-zA-Z \.-]{10}">
               </div>
             </div>
             <div class="col-sm-4">
@@ -78,3 +111,6 @@
     </div>
   </div>
 </div>
+
+<%--<script src="${contextPath}/resources/js/FormSerializePlugin.js"></script>--%>
+<script src="${contextPath}/resources/js/properties.js"></script>

@@ -18,6 +18,10 @@ $(document).ready(function () {
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
         $('#save-alert').addClass('hidden');
+        //Turm on draggable for inner Nestable dialog with text input
+        $('#nestable-dialog-inner').draggable({
+            handle: ".modal-header"
+        });
         buildCategoriesNestableTree();
     });
 
@@ -48,11 +52,6 @@ $(document).ready(function () {
             }
             $('.close-name-dialog')[0].click();
         }
-    });
-
-    //Turm on draggable for inner Nestable dialog with text input
-    $('#nestable-dialog-inner').draggable({
-        handle: ".modal-header"
     });
 
     //Focus on text input after appearing of inner Nestable dialog
@@ -146,10 +145,12 @@ $(document).ready(function () {
         $.get("/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             let isLastSelectedItemExists = $('[data-value="' + lastSelectedId + '"] > a');
-            if (lastSelectedId && isLastSelectedItemExists) {
+            if (lastSelectedId
+                && isLastSelectedItemExists.text() === $('[data-id="' + lastSelectedId + '"]').attr('data-categoryname')) {
                 isLastSelectedItemExists.click();
             }
             else {
+                $('#default-item > a').click();
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }
         }, "json");

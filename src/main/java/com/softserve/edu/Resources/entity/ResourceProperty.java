@@ -1,6 +1,5 @@
 package com.softserve.edu.Resources.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softserve.edu.Resources.Constants;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -18,8 +17,6 @@ import java.util.Optional;
         uniqueConstraints = @UniqueConstraint(name = "unq_title_units",columnNames = {"Title", "Units"}))
 public class ResourceProperty {
 
-//    @Transient
-    @JsonIgnore
     transient static long idgen = 0;
 
     @Id
@@ -37,6 +34,9 @@ public class ResourceProperty {
     @Column(name = "Units")
     private String units;
 
+    @Column(name = "Units_short")
+    private String unitsShort;
+
     @Column(name = "Regex", nullable = false)
     private String pattern = ".+";
 
@@ -46,12 +46,6 @@ public class ResourceProperty {
 
     @Column(name = "Multivalued")
     private boolean multivalued = false;
-
-    @Column(name = "Requered")
-    private boolean required = true;
-
-    @Column(name = "Searchable")
-    private boolean searchable = false;
 
     public ResourceProperty() {
     }
@@ -79,13 +73,12 @@ public class ResourceProperty {
         return this;
     }
 
-    public boolean isRequired() {
-        return required;
+    public String getUnitsShort() {
+        return unitsShort;
     }
 
-    public ResourceProperty setRequired(boolean required) {
-        this.required = required;
-        return this;
+    public void setUnitsShort(String unitsShort) {
+        this.unitsShort = unitsShort;
     }
 
     public String getColumnName() {
@@ -144,15 +137,6 @@ public class ResourceProperty {
 
     public ResourceProperty setMultivalued(boolean multivalued) {
         this.multivalued = multivalued;
-        return this;
-    }
-
-    public boolean isSearchable() {
-        return searchable;
-    }
-
-    public ResourceProperty setSearchable(boolean searchable) {
-        this.searchable = searchable;
         return this;
     }
 

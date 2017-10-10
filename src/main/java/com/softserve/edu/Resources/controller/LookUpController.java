@@ -5,6 +5,7 @@ import com.softserve.edu.Resources.dto.DtoUtilMapper;
 import com.softserve.edu.Resources.dto.ExceptionJSONInfo;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.ResourceTypeDTO;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,6 +29,7 @@ public class LookUpController {
     ResourceService resourceService;
 
 
+
 //    @RequestMapping(value = "/lookup/resourceTypes", method = RequestMethod.GET)
 //    public List<ResourceTypeDTO> loadResourceTypes(){
 //
@@ -34,6 +37,7 @@ public class LookUpController {
 //        return DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
 //
 //    }
+
     
     @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
 
@@ -46,7 +50,14 @@ public class LookUpController {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
         
-        List <ResourceProperty> resourceProperties = resourceTypeService.getSearchableProperties(resourceType);
+
+        List <ConstrainedProperty> constraintProperties = resourceTypeService.getSearchableProperties(resourceType);
+        
+        List <ResourceProperty> resourceProperties = new ArrayList<>();
+        
+        for (ConstrainedProperty constraint : constraintProperties) {
+            resourceProperties.add(constraint.getProperty());
+        }
         
         if (resourceProperties.isEmpty()){
             throw new ResourceNotFoundException("No infromation was found by your request");
@@ -54,6 +65,7 @@ public class LookUpController {
         
         
         return resourceProperties;
+
 
     }
     

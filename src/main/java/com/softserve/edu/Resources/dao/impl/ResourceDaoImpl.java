@@ -1,6 +1,7 @@
 package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.ResourceDao;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.PropertyValue;
 import com.softserve.edu.Resources.entity.ResourceProperty;
@@ -23,7 +24,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByResourceType(String sqlQuery, Map<String, String> valuesToSearch,
-            List<ResourceProperty> resourceProperties) {
+                                                             List<ConstrainedProperty> resourceProperties) {
 
         List<GenericResource> genResList = new ArrayList<GenericResource>();
         List<Map<String, Object>> genResRows = new ArrayList<>();
@@ -37,7 +38,8 @@ public class ResourceDaoImpl implements ResourceDao {
             int[] argsTypes = new int[valuesToSearch.size()];
             int i = 0;
             for (String keyValue : valuesToSearch.keySet()) {
-                for (ResourceProperty property : resourceProperties) {
+                for (ConstrainedProperty constrainedProperty : resourceProperties) {
+                    ResourceProperty property = constrainedProperty.getProperty();
                     if (property.getColumnName().equals(keyValue)) {
                         argsTypes[i++] = property.getValueType().sqlType;
                         break;
@@ -63,10 +65,9 @@ public class ResourceDaoImpl implements ResourceDao {
 
             Set<PropertyValue> propertyValues = new TreeSet<>();
 
-            for (ResourceProperty property : resourceProperties) {
-                PropertyValue propertyValue = new PropertyValue(property,
-                        String.valueOf(mapRow.get(property.getColumnName())));
-
+            for (ConstrainedProperty constrainedProperty : resourceProperties) {
+                String value = String.valueOf(mapRow.get(constrainedProperty.getProperty().getColumnName()));
+                PropertyValue propertyValue = new PropertyValue(constrainedProperty, value);
                 propertyValues.add(propertyValue);
             }
 

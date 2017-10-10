@@ -1,39 +1,96 @@
+//load dependency
+$.getScript('/resources/js/FormSerializePlugin.js');
 
-var assignedProperties = [];
-var initialProperties = assignedProperties.slice();
+// var assignedProperties = [];
+initialProperties = assignedProperties.slice();
+
+function updateAssignedPropsTable() {
+	let $assignedPropsTable = $('#assigned-props');
+	if (assignedProperties.length > 0)
+				$assignedPropsTable.removeClass('hidden');
+			else
+				$assignedPropsTable.addClass('hidden');
+}
+
+/**
+ * Remove specified property from ResourceType's assignedProperties collection
+ * @param propertyToRemove
+ */
+function removeAssignedProperty(propertyToRemove) {
+	assignedProperties = $.grep(assignedProperties, function (property) {
+		return property != propertyToRemove;
+	}, false);
+	updateAssignedPropsTable();
+}
 
 /**
  * populate Existent Properties dialog with those available properties
  * that aren't in assignedProperties
  */
 function updateAvailablePropertiesList() {
+	let unconstrainedProperties = assignedProperties.map(function (i, assignedProperty) {
+		return assignedProperty.property;
+	});
+
 	let availableProperties = $.grep(existentProperties, function (property) {
-		return $.inArray(property, assignedProperties) < 0;
+		return $.inArray(property, unconstrainedProperties) < 0;
 	}, false);
 
 	$('#available-properties').empty();
 
+	function composeDescription(property, short){
+		let description = property.title;
+		let unitsField = short ? 'unitsShort' : 'units';
+		if (property[unitsField])
+			description += ', ' + property[unitsField];
+		else if (!short) description = '';
+		return description;
+	}
+
 	$.each(availableProperties, function (i, property) {
 		$('#available-properties').append($('<option>', {
 			value: property.id,
-			text: property.description
+			text: composeDescription(property, true),
+			title: composeDescription(property, false)
 		}).data('property', property));
 	});
 }
 
 /**
- * refresh table of Assigned Properties
+ * Add specified properties to ResourceType's assignedProperties collection
+ * and fresh table of Assigned Properties
+ * @param $properties to add
  */
-function addAssignedProperties($propeties) {
+function addAssignedProperties($properties) {
+
+	let constrainedProperties = $.map($properties, function (property, i) {
+		// let unconstrainedProperty = {'property': property};
+		// let defaultConstraint = {searchable:false,required:true};
+		// return $.extend(true, defaultConstraint, unconstrainedProperty);
+		return {
+			'property': property,
+			searchable:false,
+			required:true
+		}
+	})
+
+	$.merge(assignedProperties, constrainedProperties);
+
 	let $rowTemplate = $('#assigned-props tbody>tr:first');
-	$.each($propeties, function (i, property) {
+	$.each(constrainedProperties, function (i, constrainedProperty) {
 		let $newPropertyRow = $rowTemplate.clone(true, true);
-		$newPropertyRow.data('property', property);
-		$newPropertyRow.find('td:first').text(property.description);
-		let $removeButton = $newPropertyRow.find('.glyphicon-remove');
+		$newPropertyRow.data('property', constrainedProperty);
+		$newPropertyRow.find('td.title').text(constrainedProperty.property.title);
+		let $unitsCell = $newPropertyRow.find('td.units-short');
+		$unitsCell.text(constrainedProperty.property.unitsShort);
+		$unitsCell.attr('title', constrainedProperty.property.units);
+		$newPropertyRow.find('input.searchable').prop('checked', constrainedProperty.searchable);
+		$newPropertyRow.find('input.required').prop('checked', constrainedProperty.required);
+		// let $removeButton = $newPropertyRow.find('.glyphicon-remove');
 		$newPropertyRow.removeClass('hidden');
 		$('tbody', '#assigned-props').append($newPropertyRow);
 	});
+	updateAssignedPropsTable();
 }
 
 function resetNewPropertyForm() {
@@ -54,8 +111,6 @@ function loadExistentProperties() {
 // configure available properties dialog
 (function initAvailablePropertiesDialog() {
 
-	let $addBtn = $('#add-props-btn');
-
 	loadExistentProperties();
 
 	// prevent invoking Add button without select being made
@@ -66,20 +121,46 @@ function loadExistentProperties() {
 			$addBtn.addClass('disabled');
 	});
 
+	let $propertyRow = $('#assigned-props tbody>tr:first');
+
+	let $removeBtnTemplate = $propertyRow.find('.glyphicon-remove');
+
 	// set Remove button template handler
-	$('.glyphicon-remove', '#assigned-props tbody>tr:first').click(function (e) {
-				let $rowToRemove = $(e.target).closest('tr');
-				let propertyToRemove = $rowToRemove.data('property');
-				assignedProperties = $.grep(assignedProperties, function (property) {
-					return property != propertyToRemove;
-				}, false);
-				updateAvailablePropertiesList();
-				$rowToRemove.remove();
-			});
+
+	$removeBtnTemplate.click(function (e) {
+		let $rowToRemove = $(e.target).closest('tr');
+		let propertyToRemove = $rowToRemove.data('property');
+		assignedProperties = $.grep(assignedProperties, function (property) {
+			return property != propertyToRemove;
+		}, false);
+		updateAvailablePropertiesList();
+		$rowToRemove.remove();
+		updateAssignedPropsTable();
+	});
 
 	/**
+	 * returns event handler for particular constraint click event
+	 * @param constraint string representing target constraint (generally 'required' or 'searchable')
+	 * @returns {Function} input event handler function for specified constraint
+	 */
+	function constraintClickHandler(constraint) {
+		return function (e) {
+			let $targetPropertyRow = $(e.target).closest('tr');
+			let targetProperty = $targetPropertyRow.data('property');
+			targetProperty[constraint] = e.target.checked();
+		}
+	}
+
+	// set Required template handler
+	$propertyRow.find('.required').click(constraintClickHandler('required'));
+
+	// set Searchable template handler
+	$propertyRow.find('.required').click(constraintClickHandler('searchable'));
+
+	let $addBtn = $('#add-props-btn');
+	/**
 	 * handle Add button click
- 	 */
+	 */
 	$addBtn.click(function (e) {
 		$addBtn.addClass('disabled');
 
@@ -88,7 +169,7 @@ function loadExistentProperties() {
 					return $(option).data('property')
 				});
 
-		$.merge(assignedProperties, $selected);
+		// $.merge(assignedProperties, $selected);
 		addAssignedProperties($selected);
 		$(':selected', '#available-properties').remove();
 	});
@@ -133,30 +214,35 @@ function loadExistentProperties() {
 		})
 	}, "json");
 
-	let propertyCmp = function (prop1, prop2) {
-		let description1 = prop1.description.toUpperCase();
-		let description2 = prop2.description.toUpperCase();
-		return description1 > description2 ? 1
-				: description1 < description2 ? -1 : 0;
-	};
+	function strCmp(str1, str2) {
+		if (!str1 && !str2) return 0;
+		else if (!str1) return -1;
+		else if (!str2) return 1;
+		let val1 = str1.toUpperCase();
+		let val2 = str2.toUpperCase();
+		return val1 > val2 ? 1 : (val1 < val2 ? -1 : 0);
+	}
+
+	function propertyCmp(prop1, prop2) {
+		let titleCmp = strCmp(prop1.title, prop2.title);
+		return titleCmp != 0 ? titleCmp : strCmp(prop1.units, prop2.units);
+	}
 
 	var updateAvailableProperties = function (response, doAssign) {
-		let $property = $(response);
-		$.merge(existentProperties, $property);
-		$.merge(assignedProperties, $property);
+		let $properties = $(response);
+		$.merge(existentProperties, $properties);
 		existentProperties.sort(propertyCmp);
-		if (doAssign)
-			addAssignedProperties($property);
+		if (doAssign) {
+			// $.merge(assignedProperties, $properties); //move to addAssignedProperties
+			addAssignedProperties($properties);
+		}
 		updateAvailablePropertiesList();
 	};
 
 	function composeProperty() {
 		let $inputs = $('input, select', '#new-property-modal');
 		let entries = $inputs.serializeArray({checkboxesAsBools: true});
-		let property = {};
-		$.map(entries, function (entry, i) {
-			property[entry['name']] = entry['value'];
-		});
+		let property = $(entries).mapToObject();
 		return property;
 	}
 
@@ -194,6 +280,5 @@ function loadExistentProperties() {
 		let property = composeProperty();
 		requestSaveProperty(property, true);
 	});
-
 
 })();

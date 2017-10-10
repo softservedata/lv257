@@ -32,7 +32,6 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
-
                 new MultipartConfigElement(location, maxFileSize, maxFileSize * 5, maxFileSize / 2)
         );
     }

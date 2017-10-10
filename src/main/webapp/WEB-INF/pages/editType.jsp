@@ -5,7 +5,7 @@
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 
 <!DOCTYPE html>
 <html>
@@ -42,23 +42,24 @@
             </div>
             <div id="definition-form" class="container hidden"<%-- style="display: none;"--%>>
                 <br>
-                <form action="${contextPath}/resources" method="post">
+                <form id="resource-type" method="post">
                     <div class="row">
                         <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
                         <div id="categories" class="col-sm-6 col-xs-8 form-group">
                             <jsp:include page="components/resourceTypeSelect.jsp"/>
                         </div>
                         <button id="manage-categories" type="button" class="btn btn-primary btn-md"
-                                data-toggle="modal"
-                                style="margin-top: 25px"
+                                data-toggle="modal" style="margin-top: 25px" title="Manage categories"
                                 data-target="#categories-view"><span class="glyphicon glyphicon-cog"></span>
                         </button>
                     </div>
 
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
-                            <label for="resource-type">Type Name</label>
-                            <input id="resource-type" type="text" class="form-control" pattern="${typeNamePattern}"
+                            <label for="type-name">Type Name</label>
+                            <input id="type-name" name="typeName" type="text" class="form-control"
+                                   pattern="[A-Z][a-zA-Z -]+"
+                            <%--pattern="${typeNamePattern}"--%>
                                    placeholder="Enter the name of new resource type">
                             <%--placeholder="Enter the name of new resource type">--%>
                         </div>
@@ -66,47 +67,69 @@
 
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
-                            <label for="resource-table-name">Type's Table Name</label>
-                            <input id="resource-table-name" type="text" class="form-control"
-                                   pattern="${tableNamePattern}"
+                            <label for="table-name">Type's Table Name</label>
+                            <input id="table-name" name="tableName" type="text" class="form-control"
+                                   pattern="[A-Z][a-z]+(_[A-Z][a-z]+)*"
+                            <%--pattern="${tableNamePattern}"--%>
                                    placeholder="Enter the name of resource's table">
                         </div>
                     </div>
-                    <div class="container-fluid">
-                        <br>
-                        <h4>Resource Type Properties</h4>
-                        <hr>
-                        <div class="container">
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#available-props-modal">Add existing
-                            </button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#new-property-modal">Add new
-                            </button>
-                        </div>
-                        <div class="container col-md-8">
-                            <table id="assigned-props" class="table table-hover">
-                                <thead>
-                                <tr>
-                                    <th>Characteristic Name</th>
-                                    <th><%--Remove--%></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="assigned-template hidden">
-                                    <td>.</td>
-                                    <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
-                    <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
-
                 </form>
-                <jsp:include page="dialogs/availableProperties.jsp"/>
-                <jsp:include page="dialogs/newProperty.jsp"/>
+                <div class="container-fluid">
+                    <br>
+                    <h4>Resource Type Properties</h4>
+                    <hr>
+                    <div class="container">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#available-props-modal">Add existing
+                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                                data-target="#new-property-modal">Add new
+                        </button>
+                    </div>
+                    <div class="container col-md-8">
+                        <style>
+                            .centered { text-align: center;}
+                        </style>
+                        <table id="assigned-props" class="table table-hover hidden">
+                            <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th class="centered">Units</th>
+                                <th class="centered">Searchable</th>
+                                <th class="centered">Required</th>
+                                <th><%--Remove--%></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="assigned-template hidden">
+                                <td class="title"></td>
+                                <td class="units-short centered"></td>
+                                <td class="centered"><input type="checkbox" class="searchable"/></td>
+                                <td class="centered"><input type="checkbox" class="required"/></td>
+                                <td><a title="Remove"><i class="glyphicon glyphicon-remove"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <br>
+                <hr>
+                <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
+                <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
+
+
+                <script title="Current ResourceType's variables declaration">
+									var existentProperties;
+									<c:set var="idVal" value="${id}"/>
+									var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+									var	assignedProperties = [];
+									var initialProperties = [];
+									var categoryID;
+									var typeName;
+									var tableName;
+                </script>
+                <jsp:include page="dialogs/properties.jsp"/>
                 <jsp:include page="dialogs/categories.jsp"/>
             </div>
         </div>
@@ -114,16 +137,19 @@
 </div>
 
 <jsp:include page="${contextPath}footer.jsp"/>
+
 <script>
-    $("#addition-btn").click(function (e) {
-        $('#addition-btn, #definition-form').toggleClass('hidden');
-    });
-    var existentProperties;
-    <c:set var="idVal" value="${id}"></c:set>
-    var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+	$("#addition-btn").click(function (e) {
+		$('#addition-btn, #definition-form').toggleClass('hidden');
+	});
+
+	$('input[type="text"]').blur(function(e) {
+		let input = e.target;
+		let trimmedValue = $.trim($(input).val());
+		$(input).val(trimmedValue);
+		input.checkValidity();
+	});
 </script>
-<script src="${contextPath}/resources/js/FormSerializeArrayPlugin.js"></script>
 <script src="${contextPath}/resources/js/resourceTypes.js"></script>
-<script src="${contextPath}/resources/js/properties.js"></script>
 </body>
 </html>

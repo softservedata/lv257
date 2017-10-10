@@ -126,7 +126,7 @@
 }
 
 .scrollable {
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 300px;
     margin-top: 10px;
 }
