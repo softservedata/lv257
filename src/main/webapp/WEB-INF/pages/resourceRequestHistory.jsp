@@ -23,6 +23,8 @@
 
 <div class="container">
     <ul class="nav nav-tabs">
+        <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>
+
         <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
@@ -83,7 +85,15 @@
 
 
             <c:forEach items="${resourceRequest}" var="request">
-                <tr name="simpleRequest" style="visibility: visible">
+                <c:choose>
+                <c:when test="${request.status=='ACCEPTED'}">
+                    <tr name="simpleRequest" class="success">
+                </c:when>
+                <c:otherwise>
+                    <tr name="simpleRequest" class="danger">
+                </c:otherwise>
+                </c:choose>
+
 
                     <td>${request.resourceType}</td>
                     <td>${request.requesterName}</td>
@@ -100,7 +110,7 @@
     <br>
     <div align="right">
 
-        <button class="btn btn-primary" onclick="history.back()">See new request</button>
+        <button class="btn btn-primary" onclick="history.back()">See new requests</button>
 
     </div>
 </div>

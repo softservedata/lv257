@@ -14,7 +14,7 @@
 <jsp:include page="_menu2.jsp"/>
 <br>
 
-<div class="container">
+<div class="container" >
     <h2>Details</h2>
 
     <h3>Requested resource type:<span> ${theme}</span></h3>
@@ -29,7 +29,7 @@
     </c:if>
     <c:if test = "${extension == 'pdf'}">
     <div>
-        <iframe style="width: 100%; height: 600px; border: none;" src="${documentURL}"></iframe>
+        <iframe style="width: 80%; height: 600px; border: none;" src="${documentURL}"></iframe>
         <%--<embed class="documentPdf-view" src="${documentURL}">--%>
     </div>
     </c:if>

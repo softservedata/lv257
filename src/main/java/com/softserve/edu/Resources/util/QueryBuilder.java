@@ -75,7 +75,7 @@ public class QueryBuilder {
         String whereClause = entries
                 .stream()
                 .filter(entry -> !entry.getValue().isEmpty())
-                .map(entry -> entry.getKey() + "=\'" + entry.getValue() + "\' ")
+                .map(entry -> entry.getKey() + "=\'" + entry.getValue() + "\'")
                 .collect(Collectors.joining(" AND "));
 
         if (whereClause.isEmpty()){

@@ -17,36 +17,67 @@ $(document).ready(function () {
     //Build contents of modal window for managing categories
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
+        $('#save-alert').addClass('hidden');
         buildCategoriesNestableTree();
     });
 
-    //Save cnanges of category managing in Nestable
+    //Save changes of category managing in Nestable
     $('#save-changes').on('click', function (e) {
         e.preventDefault();
         saveChangesAfterManaging();
     });
 
-    //Save changes and close modal window for adding/editing categories
+    //Validate inputted text and save changes and close modal window for adding/editing categories
     $('#save-name').on('click', function (e) {
         e.preventDefault();
-        let categoryName = $('#category-name-input').val();
+        let categoryName = $('#category-name-input').val().trim();
         let action = $('#category-name-input').data('action');
         let ownerId = $('#category-name-input').data('ownerId');
-        if (action === 'add') {
-            addCategory(ownerId, categoryName);
+        if (!validateInputTextForUnique(categoryName, action, ownerId)) {
+            showValidationFailMessage('notUnique');
+        } else if (categoryName.length === 0) {
+            showValidationFailMessage('blank');
+        } else if (categoryName.length < 3 || categoryName.length > 50) {
+            showValidationFailMessage('badLength');
+        } else {
+            if (action === 'add') {
+                addCategory(ownerId, categoryName);
+            }
+            if (action === 'edit') {
+                editCategory(ownerId, categoryName);
+            }
+            $('.close-name-dialog')[0].click();
         }
-        if (action === 'edit') {
-            editCategory(ownerId, categoryName);
-        }
-        $('#category-name-input').removeData('action');
-        $('#category-name-input').removeData('ownerId');
-        $('.close-name-dialog')[0].click();
+    });
+
+    //Turm on draggable for inner Nestable dialog with text input
+    $('#nestable-dialog-inner').draggable({
+        handle: ".modal-header"
+    });
+
+    //Focus on text input after appearing of inner Nestable dialog
+    $('#nestable-dialog').on('shown.bs.modal', function () {
+        $('#category-name-input').focus();
+    });
+
+    //Return inner Nestable dialog into previous position, if it was dragged
+    $('#nestable-dialog').on('hidden.bs.modal', function () {
+        $('#nestable-dialog-inner').css({top: 0, left: 0});
     });
 
     //Discard changes and close modal window for adding/editing categories
     $('.close-name-dialog').on('click', function (e) {
         e.preventDefault();
+        $('#category-name-input').removeData('action');
+        $('#category-name-input').removeData('ownerId')
         $('#category-name-input').val('');
+        $('#input-div').removeClass('has-error has-feedback');
+        if ($('#error-icon-span').is(":visible")) {
+            $('#error-icon-span').addClass('hidden');
+        }
+        if ($('#validation-message').is(":visible")) {
+            $('#validation-message').text('').addClass('hidden');
+        }
     });
 
     //Discard changes and close modal window with categories managing
@@ -56,9 +87,9 @@ $(document).ready(function () {
     });
 
     //Expand/collapse Nestable tree
-    (function() {
+    (function () {
         var toggled = false;
-        $('#exp-col').click(function(e) {
+        $('#exp-col').click(function (e) {
             toggled = !toggled;
             $('.dd').nestable(toggled ? 'collapseAll' : 'expandAll');
         });
@@ -137,6 +168,7 @@ $(document).ready(function () {
                 //activate Nestable
                 $('#nestable').nestable({
                     json: json,
+                    maxDepth: 20,
                     contentCallback: function (item) {
                         let content = item.categoryname || '' ? item.categoryname : item.id;
                         content += ' <i>(id = ' + item.id + ')</i>';
@@ -151,7 +183,7 @@ $(document).ready(function () {
                 updateOutput($('#nestable').data('output', $('#nestable-output')));
             })
             .error(function () {
-                alert("Error " + jqxhr.status);
+                // alert("Error " + jqxhr.status);
             });
     }
 
@@ -167,7 +199,13 @@ $(document).ready(function () {
         else {
             output.val('JSON browser support required for this demo.');
         }
-        console.log(window.JSON.stringify(list.nestable('serialize')));
+
+        //Mark non-leaf categories which have resource types
+        $('.dd-handle').removeClass('non-leaf-categories-with-types');
+        let nonLeafCategoriesWithTypes = $('.dd-list').parent().filter('li').filter(function () {
+            return $(this).attr('data-hastypes') === 'true';
+        }).children('.dd-handle');
+        nonLeafCategoriesWithTypes.addClass('non-leaf-categories-with-types');
     };
 
     /**
@@ -188,15 +226,21 @@ $(document).ready(function () {
             url: "/resources/categories",
             accept: "application/json",
             data: json,
-            success: function (result) {
-                alert("Changes are saved!");
-                $('#close-managing').click();
+            success: function (jqXHR) {
+                $('#save-alert').removeClass('hidden');
+                setTimeout(function () {
+                    $('#categories-view').fadeOut(100, function () {
+                        $('#categories-view').modal('hide');
+                        $('#nestable').nestable('destroy');
+                    });
+                }, 1000);
                 let lastSelectedId = $('#categories-select').data('selectedID');
                 $('#categories_and_types').empty();
                 loadCategories(lastSelectedId);
             },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert("jqXHR: " + jqXHR.status + " Status: " + textStatus + " Error: " + errorThrown);
+            error: function (jqXHR) {
+                var error = JSON.parse(jqXHR.responseText);
+                alert('Error!\n" + error.message');
             }
         })
     }
@@ -367,9 +411,6 @@ $(document).ready(function () {
             $('#category-name-input').val(currentCategoryName);
         }
         $('#nestable-dialog').modal('show');
-        $('#nestable-dialog').on('shown.bs.modal', function() {
-            $('#category-name-input').focus();
-        });
     }
 
     /**
@@ -379,7 +420,7 @@ $(document).ready(function () {
      */
     function addCategory(id, categoryName) {
         let newItem;
-        if(id) {
+        if (id) {
             newItem = {
                 "id": ++lastTemporaryId,
                 "categoryname": categoryName,
@@ -415,7 +456,7 @@ $(document).ready(function () {
 
     /**
      * Remove category in Nestable
-     * @param id -
+     * @param id - ID of selected category
      */
     function removeCategory(id) {
         let categoriesWithResourceTypes = hasResourceTypes(id);
@@ -426,6 +467,47 @@ $(document).ready(function () {
             $('#nestable').nestable('remove', id);
             updateOutput($('#nestable'));
         }
+    }
+
+    /**
+     * Check whether already exists resource category with same name as name typed in input field
+     * @param text - text from input field
+     * @param action - action which will be performed ('add' or 'edit')
+     * @param ownerId - ID of selected category (if action is editing)
+     * @returns {boolean} true, if typed name is unique
+     */
+    function validateInputTextForUnique(text, action, ownerId) {
+        let allCategories = $('.dd-item');
+        for (let i = 0; i < allCategories.length; i++) {
+            let categoryName = $(allCategories[i]).attr('data-categoryname');
+            if (text.toLowerCase() === categoryName.trim().toLowerCase()) {
+                if (action === 'edit' && ownerId == $(allCategories[i]).data('id')) continue;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Show information about validation error
+     * @param reason - type of validation error
+     */
+    function showValidationFailMessage(reason) {
+        let messageText;
+        switch (reason) {
+            case 'notUnique' :
+                messageText = 'Name of resource category must be unique. Category with such name already exists';
+                break;
+            case 'blank' :
+                messageText = 'Name of resourse category can not be empty';
+                break;
+            case 'badLength' :
+                messageText = 'Name of resourse category must be longer than 2 and shorter than 50 characters';
+                break;
+        }
+        $('#input-div').addClass('has-error has-feedback');
+        $('#error-icon-span').removeClass('hidden');
+        $('#validation-message').text(messageText).removeClass('hidden');
     }
 
     /*    function findById(data, id) {

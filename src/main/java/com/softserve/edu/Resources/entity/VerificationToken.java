@@ -16,12 +16,14 @@ public class VerificationToken {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;
 
+    @Column
     private String token;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column
     private Date expiryDate;
 
     public VerificationToken() {

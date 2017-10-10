@@ -33,12 +33,12 @@
 
                 <%--<form role="form-horizontal" enctype="multipart/form-data">--%>
 
-                <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
-                <div class="row">
-                    <div id="categories" class="col-sm-12 col-xs-8 form-group">
-                        <jsp:include page="components/resourceTypeSelect.jsp"/>
-                    </div>
-                </div>
+                <%--<c:set var="typeSelectLabel" value="Resource Category" scope="request"/>--%>
+                <%--<div class="row">--%>
+                    <%--<div id="categories" class="col-sm-12 col-xs-8 form-group">--%>
+                        <%--<jsp:include page="components/resourceTypeSelect.jsp"/>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
 
                 <div id="deleted_owner" class="my_error_class">
                     <h4> Owner was deleted. </h4>
@@ -140,7 +140,7 @@
 
                                         </div>
 
-                                        <div id="owner_address_form">
+                                        <div id="owner_address_form_placeholder">
 
                                             <%--Here owner address form will be rendered--%>
 
@@ -321,8 +321,8 @@
 </footer>
 
 <script src="../../resources/js/ownerAndAddressManagment.js"></script>
-<script src="../../resources/js/categories.js"></script>
-<script src="../../resources/js/hierarchy-select.js"></script>
+<%--<script src="../../resources/js/categories.js"></script>--%>
+<%--<script src="../../resources/js/hierarchy-select.js"></script>--%>
 <script src="../../resources/js/jquery.validate.js"></script>
 <script>
 

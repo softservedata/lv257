@@ -13,12 +13,14 @@ public class User {
 
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-
     private Long id;
+
     @Column(name = "email", length = 36, nullable = false)
     private String username;
+
     @Column(name = "password", nullable = false)
     private String password;
+
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
@@ -31,7 +33,7 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private UserDetails userDetails;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user")
     private VerificationToken verificationToken;
 
     @OneToMany(mappedBy = "resourcesAdmin")
