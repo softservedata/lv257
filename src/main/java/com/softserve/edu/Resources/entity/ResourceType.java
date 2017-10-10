@@ -41,10 +41,6 @@ public class ResourceType {
     @JoinColumn(name = "Id_Category", nullable = false)
     private ResourceCategory category;
 
-    public void setProperties(Set<ConstrainedProperty> properties) {
-        this.properties = properties;
-    }
-
     @JsonIgnore
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
@@ -57,6 +53,10 @@ public class ResourceType {
     @Column(name = "Instantiated")
     private boolean instantiated;
 
+
+    public void setProperties(Set<ConstrainedProperty> properties) {
+        this.properties = properties;
+    }
 
     public ResourceType() {
     }

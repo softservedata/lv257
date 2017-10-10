@@ -28,12 +28,25 @@ function composeResourceType() {
 			throw	new Error();
 		}
 	});
+
+	let constrainedPropertiesBrief = $.map(assignedProperties, function (constrainedProperty, i) {
+		let propBrief = {
+			id: constrainedProperty.property.id,
+			searchable: constrainedProperty.searchable,
+			required: constrainedProperty.required
+		};
+		return propBrief;
+	});
+
 	resourceType = {
-		categoryID: categoryID,
+		id:resourceTypeID,
+		categoryId: categoryID,
+		categoryId: categoryID,
 		typeName: $('#type-name').val(),
 		tableName: $('#table-name').val(),
-		properties: assignedProperties
+		properties: constrainedPropertiesBrief
 	}
+	console.log(resourceType);
 	return resourceType;
 }
 
@@ -56,16 +69,14 @@ $('#categories-select').change(function(e) {
 // set Save button handler
 $('#save-type-btn').click(function (e) {
 	let restourceType = composeResourceType();
-	$.ajax("/api/resources", {
+	$.ajax("/api/resource/", {
 		method: 'POST',
 		data: JSON.stringify(restourceType),
 		dataType: 'json',
 		contentType: 'application/json',
 		success: function (response, status, jqxhr) {
-
 		},
 		error: function (jqxhr, status, exception) {
-
 		},
 		beforeSend: function () {
 			return true;

@@ -15,7 +15,7 @@ public class ResourcesRestController {
     @Autowired
     ResourceTypeService resourceTypeService;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResourceType addResourceProperty(@RequestBody ResourceTypeUpdate resourceTypeUpdate) {
         ResourceType resourceType = resourceTypeService.save(resourceTypeUpdate);
         return resourceType;
