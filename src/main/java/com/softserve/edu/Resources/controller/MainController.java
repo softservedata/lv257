@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,13 @@ public class MainController {
 //        else
 //            return "lookupByOwner";
         return "lookup";
+    }
+    @RequestMapping(value = "/resource/type/{typeId}/id/{id}", method = RequestMethod.GET)
+    public String lookUpResult(@PathVariable long typeId, @PathVariable long id){
+        
+        
+        // if the list is empty, send a message that no info hasn't been found
+        return "resourceInfo";
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)

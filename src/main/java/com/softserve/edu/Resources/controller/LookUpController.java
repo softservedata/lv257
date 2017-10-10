@@ -1,14 +1,18 @@
 package com.softserve.edu.Resources.controller;
 
+import com.amazonaws.services.sns.model.NotFoundException;
 import com.softserve.edu.Resources.dto.DtoUtilMapper;
+import com.softserve.edu.Resources.dto.ExceptionJSONInfo;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.ResourceTypeDTO;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.exception.ResourceNotFoundException;
 import com.softserve.edu.Resources.service.ResourceService;
 import com.softserve.edu.Resources.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +27,13 @@ public class LookUpController {
     ResourceService resourceService;
 
 
-    @RequestMapping(value = "/lookup/resourceTypes", method = RequestMethod.GET)
-    public List<ResourceTypeDTO> loadResourceTypes(){
-
-
-        return DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
-
-    }
+//    @RequestMapping(value = "/lookup/resourceTypes", method = RequestMethod.GET)
+//    public List<ResourceTypeDTO> loadResourceTypes(){
+//
+//
+//        return DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
+//
+//    }
     
     @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
 
@@ -38,9 +42,18 @@ public class LookUpController {
 
         ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
 
-        // if the list is empty, send an error/message
+        if (resourceType == null){
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
         
-        return resourceTypeService.getSearchableProperties(resourceType);
+        List <ResourceProperty> resourceProperties = resourceTypeService.getSearchableProperties(resourceType);
+        
+        if (resourceProperties.isEmpty()){
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
+        
+        
+        return resourceProperties;
 
     }
     
@@ -52,5 +65,13 @@ public class LookUpController {
         return resourceService.findResourcesByResourceType(resourceDTO);
     }
     
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ExceptionJSONInfo noInfoFound(ResourceNotFoundException e){
+        String message = e.getMessage();
+        ExceptionJSONInfo exceptionJson = new ExceptionJSONInfo();
+        exceptionJson.setMessage(message);
+        return exceptionJson;
+    }
     
 }

@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.NoResultException;
 import javax.sql.DataSource;
 
 @Repository("resourceTypeDAO")
@@ -65,8 +66,20 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
 
     @Override
     public ResourceType findWithPropertiesByID(Long resourceTypeID) {
-        return (ResourceType) em.createQuery("SELECT r FROM ResourceType r LEFT JOIN FETCH r.properties WHERE r.id =:id")
-                .setParameter("id", resourceTypeID).getSingleResult();
+        
+        ResourceType resourceType = null;
+        try {
+            resourceType = (ResourceType) em.createQuery("SELECT r FROM ResourceType r LEFT JOIN FETCH r.properties WHERE r.id =:id")
+                    .setParameter("id", resourceTypeID).getSingleResult();
+        } catch (NoResultException e) {
+            
+            String warn = "No resourceType found with Id:" + resourceTypeID + "";
+            
+            LOGGER.warn(warn, e);
+            
+        }
+        
+        return resourceType;
     }
 
 
