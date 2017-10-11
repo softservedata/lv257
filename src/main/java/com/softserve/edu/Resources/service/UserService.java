@@ -20,9 +20,13 @@ public interface UserService {
 
     User registerNewUserAccount(final UserDTO userDTO) throws UserAlreadyExistException;
 
+    void delete(User user);
+
     void createVerificationTokenForUser(User user, String token);
 
-    VerificationToken getVerificationToken(String VerificationToken);
+    VerificationToken getVerificationToken(String verificationToken);
 
     void saveRegisteredUser(User user);
+
+    void deleteVerificationToken(VerificationToken verificationToken);
 }

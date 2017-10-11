@@ -1,43 +1,37 @@
 package com.softserve.edu.Resources.dto;
 
 import com.fasterxml.jackson.annotation.*;
-import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
-public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
+public class ResourceCategoryDTO{
 
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private Long id;
 
     @JsonProperty("categoryname")
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private String categoryName;
 
     @JsonBackReference
-//    @JsonProperty("parent_id")
-//    @JsonIdentityReference(alwaysAsId = true)
-    @JsonView(Views.CategoryManaging.class)
+    @JsonView(Views.Categories.class)
     private ResourceCategoryDTO parentCategory;
 
     @JsonManagedReference
     @JsonProperty("children")
-    @JsonView(Views.CategoryManaging.class)
-    private Set<ResourceCategoryDTO> childrenCategories = new TreeSet<>();
-
-    @JsonView(Views.CategorySelecting.class)
-    private Integer depth;
-
-    @JsonView(Views.CategorySelecting.class)
-    private String treePath;
+    @JsonView(Views.Categories.class)
+    private Set<ResourceCategoryDTO> childrenCategories = new HashSet<>();
 
     @JsonManagedReference
-    @JsonView(Views.CategorySelectingWithTypes.class)
-    private Set<ResourceTypeDTO> resourceTypes = new HashSet<>();
+    @JsonProperty("restypes")
+    @JsonView(Views.CategoriesWithTypes.class)
+    private Set<ResourceTypeDTO> instantiatedResourceTypes = new HashSet<>();
+
+    @JsonProperty("hasTypes")
+    @JsonView(Views.Categories.class)
+    private boolean withResourceTypes;
 
     public Long getId() {
         return id;
@@ -71,28 +65,20 @@ public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
         this.childrenCategories = childrenCategories;
     }
 
-    public Integer getDepth() {
-        return depth;
+    public Set<ResourceTypeDTO> getInstantiatedResourceTypes() {
+        return instantiatedResourceTypes;
     }
 
-    public void setDepth(Integer depth) {
-        this.depth = depth;
+    public void setInstantiatedResourceTypes(Set<ResourceTypeDTO> instantiatedResourceTypes) {
+        this.instantiatedResourceTypes = instantiatedResourceTypes;
     }
 
-    public String getTreePath() {
-        return treePath;
+    public boolean isWithResourceTypes() {
+        return withResourceTypes;
     }
 
-    public void setTreePath(String treePath) {
-        this.treePath = treePath;
-    }
-
-    public Set<ResourceTypeDTO> getResourceTypes() {
-        return resourceTypes;
-    }
-
-    public void setResourceTypes(Set<ResourceTypeDTO> resourceTypes) {
-        this.resourceTypes = resourceTypes;
+    public void setWithResourceTypes(boolean withResourceTypes) {
+        this.withResourceTypes = withResourceTypes;
     }
 
     @Override
@@ -119,11 +105,6 @@ public class ResourceCategoryDTO implements Comparable<ResourceCategoryDTO> {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + categoryName.hashCode();
         return result;
-    }
-
-    @Override
-    public int compareTo(ResourceCategoryDTO other) {
-        return this.categoryName.compareTo(other.categoryName);
     }
 }
 

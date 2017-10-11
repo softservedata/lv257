@@ -1,26 +1,12 @@
 package com.softserve.edu.Resources.controller;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.softserve.edu.Resources.dto.CarRestTest;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.MessageTestRest;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.PropertyValue;
-import com.softserve.edu.Resources.entity.ResourceProperty;
-import com.softserve.edu.Resources.entity.ValueType;
+import com.softserve.edu.Resources.entity.*;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
 
 
 @RestController
@@ -102,7 +88,7 @@ public class RestTestController {
         resProp.setColumnName("Model");
         resProp.setValueType(ValueType.STRING);
         
-        propValue1.setType(resProp);
+        propValue1.setType(new ConstrainedProperty(resProp).setRequired(true).setSearchable(true));
         
         propertyValues.add(propValue1);
         

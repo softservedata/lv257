@@ -1,6 +1,3 @@
-/**
- * Suggest to employ this implementation as template for all DAOs
- */
 package com.softserve.edu.Resources.dao;
 
 import javax.persistence.LockModeType;

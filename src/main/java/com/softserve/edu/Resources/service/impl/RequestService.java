@@ -8,6 +8,7 @@ import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.util.ResponceMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class RequestService {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
-
-    private final Logger logger;
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
 
     @Autowired
@@ -37,15 +36,10 @@ public class RequestService {
     DocumentDAOImpl documentDAO;
     @Autowired
     UserDAO userDAO;
-
     @Autowired
-    MailSenderService mailSender;
-    @Autowired
-    RequestMessageHandler messageHandler;
-
+    VelocityMailService velocityMailService;
 
     public RequestService() {
-        logger = LOGGER;
     }
 
 
@@ -76,12 +70,13 @@ public class RequestService {
         User user = userDAO.findByEmail(userSpring.getUsername());
 
 
-        List<ResourceRequest> requests = getResourcesRequest()
+        List<ResourceRequest> requests = getResourcesRequests()
                 .stream()
                 .filter(request -> request.getRegister().getId() == user.getId())
                 .collect(Collectors.toList());
         return requests;
     }
+
 
     public void response(Message message) {
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(message.getId_request());
@@ -92,10 +87,10 @@ public class RequestService {
             request.setUpdate(new Date());
             request.setStatus(message.getRequestStatus());
             resourceRequestDAO.makePersistent(request);
-            messageHandler.setMessage(message);
-            mailSender.sendMessage(messageHandler);
+            ResponceMail mail = new ResponceMail(message, request);
+            velocityMailService.sendResponceMail(mail);
         } else {
-            logger.error("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
+            logger.warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
         }
     }
 
@@ -105,28 +100,27 @@ public class RequestService {
         return request.orElse(new ResourceRequest());
     }
 
-    public List<ResourceRequest> getResourcesRequest() {
+    public List<ResourceRequest> getResourcesRequests() {
         return resourceRequestDAO.findAll();
     }
 
 
     public List<ResourceRequest> getNewResourcesRequest() {
-        return filterByStatus(getResourcesRequest(), ResourceRequest.Status.NEW);
+        return filterByStatus(getResourcesRequests(), ResourceRequest.Status.NEW);
 
     }
 
     public List<ResourceRequest> getHistoryResourcesRequest() {
-        List<ResourceRequest> requests = getResourcesRequest();
+        List<ResourceRequest> requests = getResourcesRequests();
         List<ResourceRequest> history = filterByStatus(requests, ResourceRequest.Status.ACCEPTED);
         history.addAll(filterByStatus(requests, ResourceRequest.Status.DECLINED));
         return history;
     }
 
-    public ResourceRequest assignResourceAdmin(long requestId, String resourceAdminEmail) {
+    public ResourceRequest assignResourceAdmin(long requestId, String resourceAdminEmail) throws Exception {
 
         ResourceRequest request = new ResourceRequest();
         Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(requestId);
-        System.out.println(requestOptional);
         User resourceAdmin = userDAO.findByEmail(resourceAdminEmail);
         if (requestOptional.isPresent()) {
             if (requestOptional.get().getResourcesAdmin() == null) {
@@ -135,16 +129,17 @@ public class RequestService {
                 request.setResourcesAdmin(resourceAdmin);
                 return resourceRequestDAO.makePersistent(request);
             } else {
-                logger.error("ResourseRequest instance " + requestOptional.get() + " has already assigned.");
+
+                throw new Exception("ResourseRequest instance" + requestOptional.get() + " has already assigned.");
             }
         } else {
-            logger.error("ResourseRequest instance with id:" + requestId + " is undefined.");
+            logger.warn("ResourseRequest instance with id:" + requestId + " is undefined.");
         }
         return request;
 
     }
 
-    private List<ResourceRequest> filterByStatus(List<ResourceRequest> requests, ResourceRequest.Status status) {
+    public List<ResourceRequest> filterByStatus(List<ResourceRequest> requests, ResourceRequest.Status status) {
         return requests.stream()
                 .filter(request -> request.getStatus().equals(status))
                 .collect(Collectors.toList());

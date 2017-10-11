@@ -10,7 +10,7 @@
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 
 <h2>Look Page</h2>
 

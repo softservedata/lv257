@@ -10,10 +10,22 @@
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
 
+    <style>
+        #img {
+            width: 150px;
+            height: 150px;
+            top: 200px;
+            left: 600px;
+            position: fixed;
+            display: block;
+            z-index: 99
+        }
+    </style>
 </head>
 <body>
+<jsp:include page="menu.jsp"/>
 
-<jsp:include page="resources.jsp" />
+<img src="/resources/img/ajax-loader.gif" id="img" style="display:none"/>
 
 <style>
     .red    {
@@ -27,6 +39,15 @@
         <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
 
             <div class="container">
+
+                <ul class="nav nav-tabs">
+                    <li><a href="${pageContext.request.contextPath}/resources/registration">Register
+                        resource</a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
+                    <li><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
+                </ul>
+                <br>
+
                 <c:if test="${not empty message}">
 
                     <div class="alert alert-success alert-dismissible">
@@ -41,63 +62,83 @@
                 <form id="requestForm" action="${pageContext.request.contextPath}/resources/request"
                          method="POST" enctype="multipart/form-data">
 
-                    <div class="form-group">
-                    <spring:bind path="mRequest.resourceType">
+                    <div class="form-group" >
+                        <spring:bind path="mRequest.resourceType">
 
-                        <label>Requested resource type</label>
-                        <input type="text" path="mRequest.resourceType" name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
-                        <c:if test="${status.error}">
-                            <c:forEach items="${status.errorMessages}" var="error">
+                           <label>Requested resource type</label>
+                           <input type="text" path="mRequest.resourceType"  name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
+                           <c:if test="${status.error}">
+                               <c:forEach items="${status.errorMessages}" var="error">
 
-                                <span class="red"> ${error} </span>
+                                   <span class="red"> ${error} </span>
 
-                        </c:forEach>
-                        </c:if>
+                           </c:forEach>
+                           </c:if>
 
-                    </spring:bind>
-                    </div>
+                       </spring:bind>
+                       </div>
 
-                    <div class="form-group">
-                    <spring:bind path="mRequest.description">
+                       <div class="form-group">
+                       <spring:bind path="mRequest.description">
 
-                        <label>Description</label>
-                        <input type="text" path="mRequest.description" name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter details"/>
+                           <label>Description</label>
+                           <input type="text" path="mRequest.description" name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter details"/>
 
-                        <c:if test="${status.error}">
-                            <c:forEach items="${status.errorMessages}" var="error">
-                        <span class="red"> ${error} </span>
-                            </c:forEach>
-                        </c:if>
+                           <c:if test="${status.error}">
+                               <c:forEach items="${status.errorMessages}" var="error">
+                           <span class="red"> ${error} </span>
+                               </c:forEach>
+                           </c:if>
 
-                    </spring:bind>
-                    </div>
+                       </spring:bind>
+                       </div>
 
-                    <div class="form-group">
-                        <label for="file">Upload document</label>
+                       <div class="form-group">
+                           <label for="file">Upload document</label>
 
-                    <spring:bind path="document.file">
+                       <spring:bind path="document.file">
 
-                        <input type="file" path="document.file" name="${status.expression}" value="${status.value}" id="file"/>
-                        <c:if test="${status.error}">
-                            <c:forEach items="${status.errorMessages}" var="error" >
-                                <span class="red"> ${error} </span>
-                            </c:forEach>
-                        </c:if>
+                           <input type="file" path="document.file" name="${status.expression}" value="${status.value}" id="file"/>
+                           <c:if test="${status.error}">
+                               <c:forEach items="${status.errorMessages}" var="error" >
+                                   <span class="red"> ${error} </span>
+                               </c:forEach>
+                           </c:if>
 
-                    </spring:bind>
-                    </div>
-                    <br>
+                       </spring:bind>
+                       </div>
+                       <br>
 
-                <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>
-                </form>
-            </div>
-        </div>
-    </div>
+                   <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary" >Send request</button>
+
+                   </form>
 
 
-    <script src="${js }/jquery.validate.js"></script>
+               </div>
+           </div>
+       </div>
 
-    <script src="${js }/messageTimeOut.js"></script>
-</div>
-</body>
-</html>
+
+       <script src="${js }/jquery.validate.js"></script>
+
+       <script src="${js }/messageTimeOut.js"></script>
+
+       <script>
+           $('#submit').click(function() {
+               $('#img').show(); //<----here
+               $.ajax({
+                   type: "POST",
+                   url: "spinnerRequest",
+                   accept: "application/json",
+                   data: {id: id},
+                   success: function (result) {
+                       $('#img').hide();  //<--- hide again
+                   }
+               })
+           })
+       </script>
+   </div>
+
+   </body>
+
+   </html>

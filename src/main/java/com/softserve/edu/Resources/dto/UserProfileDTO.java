@@ -1,11 +1,11 @@
 package com.softserve.edu.Resources.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.Constants;
-import org.hibernate.validator.constraints.Length;
+import com.softserve.edu.Resources.entity.User;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Optional;
 
 public class UserProfileDTO {
 
@@ -23,7 +23,7 @@ public class UserProfileDTO {
     private String idAddress;
     private String phone;
     private String bankId;
-    private Long user;
+    private Optional<User> user;
 
     public UserProfileDTO() {
     }
@@ -116,11 +116,11 @@ public class UserProfileDTO {
         this.bankId = bankId;
     }
 
-    public Long getUser() {
+    public Optional<User> getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(Optional<User> user) {
         this.user = user;
     }
 

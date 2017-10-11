@@ -2,12 +2,12 @@ package com.softserve.edu.Resources.controller;
 
 import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserService;
-import com.softserve.edu.Resources.service.impl.ResourceCategoryService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +20,6 @@ import java.util.Map;
 @Controller
 @Transactional
 public class MainController {
-
-    @Autowired
-    ResourceCategoryService categoryService;
 
     @Autowired
     UserService userService;
@@ -41,7 +38,7 @@ public class MainController {
         }
         System.out.println("Your IP is " + request.getRemoteAddr());
         model.addAttribute("title", "Resources");
-        model.addAttribute("message", "Welcome to Resources!");
+        model.addAttribute("message", "Welcome to Resources");
         return "welcome";
     }
 
@@ -51,17 +48,20 @@ public class MainController {
         return "about";
     }
 
-    @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public String adminPage(Model model) {
-        return "adminPage";
-    }
-
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
     public String lookupPage(@RequestParam Map<String, String> lookupby) {
-        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
-            return "lookupByType";
-        else
-            return "lookupByOwner";
+//        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
+//            return "lookupByType";
+//        else
+//            return "lookupByOwner";
+        return "lookup";
+    }
+    @RequestMapping(value = "/resource/type/{typeId}/id/{id}", method = RequestMethod.GET)
+    public String lookUpResult(@PathVariable long typeId, @PathVariable long id){
+        
+        
+        // if the list is empty, send a message that no info hasn't been found
+        return "resourceInfo";
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
@@ -79,14 +79,14 @@ public class MainController {
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView users() {
-        ModelAndView usersModel = new ModelAndView("users");
+        ModelAndView usersModel = new ModelAndView("administration/users");
         usersModel.addObject("users", userService.getAllUsers());
         return usersModel;
     }
 
     @RequestMapping(value = "/roles", method = RequestMethod.GET)
     public ModelAndView roles() {
-        ModelAndView rolesModel = new ModelAndView("roles");
+        ModelAndView rolesModel = new ModelAndView("administration/roles");
         rolesModel.addObject("list", roleService.getAllRoles());
         return rolesModel;
     }
@@ -96,7 +96,7 @@ public class MainController {
     @RequestMapping(value = "/roleInfo", params = {"rn"}, method = RequestMethod.GET)
     public ModelAndView roleInfo(@RequestParam Map<String, String> queryUser) {
         String roleName = queryUser.get("rn");
-        ModelAndView model = new ModelAndView("roleInfo");
+        ModelAndView model = new ModelAndView("administration/roleInfo");
         model.addObject("list", roleService.getRolePrivileges(roleName));
         model.addObject("roleName", roleName);
         return model;
@@ -106,7 +106,7 @@ public class MainController {
     public ModelAndView userEdit(@RequestParam Map<String, String> queryUser) {
         Long userId = Long.parseLong(queryUser.get("uid"));
         System.out.println("useerID is " + userId);
-        ModelAndView model = new ModelAndView("userEdit");
+        ModelAndView model = new ModelAndView("administration/userEdit");
         model.addObject("user", userService.getUserById(userId));
         model.addObject("uid", userId);
         return model;
@@ -114,7 +114,7 @@ public class MainController {
 
     @RequestMapping(value = "/addRole", method = RequestMethod.GET)
     public ModelAndView addRole(){
-        ModelAndView model = new ModelAndView("roleAdd");
+        ModelAndView model = new ModelAndView("administration/roleAdd");
         model.addObject("list", privilegeService.getAllPrivileges());
         return model;
     }
@@ -123,7 +123,7 @@ public class MainController {
     //Returns list of privileges
     @RequestMapping(value = {"/privileges"}, method = RequestMethod.GET)
     public ModelAndView privilegesPage() {
-        ModelAndView model = new ModelAndView("privileges");
+        ModelAndView model = new ModelAndView("administration/privileges");
 
         model.addObject("list", privilegeService.getAllPrivileges());
         return model;
@@ -156,4 +156,10 @@ public class MainController {
         return "403";
     }
 
+
+
+    @RequestMapping(value = "/privilegetest", method = RequestMethod.GET)
+    public String privilegetest() {
+        return "administration/privileges2";
+    }
 }

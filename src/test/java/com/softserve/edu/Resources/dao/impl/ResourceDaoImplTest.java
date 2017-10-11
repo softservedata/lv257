@@ -1,18 +1,8 @@
 package com.softserve.edu.Resources.dao.impl;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
-import static org.mockito.Mockito.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
-import org.mockito.Matchers;
-
+import com.softserve.edu.Resources.entity.*;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -22,16 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.PropertyValue;
-import com.softserve.edu.Resources.entity.ResourceProperty;
-import com.softserve.edu.Resources.entity.ValueType;
+import java.util.*;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class ResourceDaoImplTest {
@@ -56,9 +44,13 @@ public class ResourceDaoImplTest {
 
     @Test
     @Parameters(method = "test1")
-    public void testFindResourcesByResourceType(String query, Map<String, String> inputValues,
-            List<ResourceProperty> resourceProperties, Object[] args, int[] argsTypes,
-            List<Map<String, Object>> resultSet, List<GenericResource> listGenRes) {
+    public void testFindResourcesByResourceType(String query,
+                                                Map<String, String> inputValues,
+                                                List<ConstrainedProperty> resourceProperties,
+                                                List<Map<String, Object>> resultSet,
+                                                List<GenericResource> listGenRes,
+                                                Object[] args,
+                                                int[] argsTypes) {
 
         when(jdbcTemplate.queryForList(any(), any(), (int[]) any())).thenReturn(resultSet);
         when(jdbcTemplate.queryForList(anyString())).thenReturn(resultSet);
@@ -70,12 +62,9 @@ public class ResourceDaoImplTest {
         } else {
             verify(jdbcTemplate, times(1)).queryForList(query, args, argsTypes);
         }
-       
-        
+
         assertEquals(listGenRes, retrievedListGenRes);
         assertThat(retrievedListGenRes, is(listGenRes));
-        
-
     }
 
     private Object[] test1() {
@@ -91,17 +80,18 @@ public class ResourceDaoImplTest {
         inputValues1.put("Model", "Mazda");
         inputValues1.put("Year", "2005");
         Map<String, String> inputValues6 = new TreeMap<>();
-        
 
-        List<ResourceProperty> resourceProperties1 = new ArrayList<>();
-        resourceProperties1.add(new ResourceProperty("Model").setValueType(ValueType.STRING));
-        resourceProperties1.add(new ResourceProperty("Year").setValueType(ValueType.INTEGER));
+        List<ConstrainedProperty> resourceProperties = new ArrayList<>();
+        resourceProperties.add(new ConstrainedProperty(
+                new ResourceProperty("Model").setValueType(ValueType.STRING)));
+        resourceProperties.add(new ConstrainedProperty(
+                new ResourceProperty("Year").setValueType(ValueType.INTEGER)));
 
         Object[] args1 = inputValues1.values().toArray();
 
         int[] argsTypes1 = new int[inputValues1.size()];
-        argsTypes1[0] = resourceProperties1.get(0).getValueType().getSqlType();
-        argsTypes1[1] = resourceProperties1.get(1).getValueType().getSqlType();
+        argsTypes1[0] = resourceProperties.get(0).getProperty().getValueType().getSqlType();
+        argsTypes1[1] = resourceProperties.get(1).getProperty().getValueType().getSqlType();
 
         List<Map<String, Object>> resultSet1 = new ArrayList<>();
         Map<String, Object> map1 = new TreeMap<>();
@@ -136,16 +126,16 @@ public class ResourceDaoImplTest {
         genRes1.setId(1);
         genRes1.setId_Address(1);
         Set<PropertyValue> propertyValues1 = new TreeSet<>();
-        propertyValues1.add(new PropertyValue(resourceProperties1.get(0), "Mazda"));
-        propertyValues1.add(new PropertyValue(resourceProperties1.get(1), "2005"));
+        propertyValues1.add(new PropertyValue(resourceProperties.get(0), "Mazda"));
+        propertyValues1.add(new PropertyValue(resourceProperties.get(1), "2005"));
         genRes1.setPropertyValues(propertyValues1);
 
         GenericResource genRes2 = new GenericResource();
         genRes2.setId(2);
         genRes2.setId_Address(2);
         Set<PropertyValue> propertyValues2 = new TreeSet<>();
-        propertyValues2.add(new PropertyValue(resourceProperties1.get(0), "Mazda"));
-        propertyValues2.add(new PropertyValue(resourceProperties1.get(1), "2005"));
+        propertyValues2.add(new PropertyValue(resourceProperties.get(0), "Mazda"));
+        propertyValues2.add(new PropertyValue(resourceProperties.get(1), "2005"));
         genRes2.setPropertyValues(propertyValues2);
 
         listGenRes1.add(genRes1);
@@ -156,25 +146,36 @@ public class ResourceDaoImplTest {
         genRes3.setId(1);
         genRes3.setId_Address(1);
         Set<PropertyValue> propertyValues3 = new TreeSet<>();
-        propertyValues3.add(new PropertyValue(resourceProperties1.get(0), "Mazda"));
-        propertyValues3.add(new PropertyValue(resourceProperties1.get(1), "2005"));
+        propertyValues3.add(new PropertyValue(resourceProperties.get(0), "Mazda"));
+        propertyValues3.add(new PropertyValue(resourceProperties.get(1), "2005"));
         genRes3.setPropertyValues(propertyValues3);
 
         GenericResource genRes4 = new GenericResource();
         genRes4.setId(2);
         genRes4.setId_Address(2);
         Set<PropertyValue> propertyValues4 = new TreeSet<>();
-        propertyValues4.add(new PropertyValue(resourceProperties1.get(0), "Volvo"));
-        propertyValues4.add(new PropertyValue(resourceProperties1.get(1), "2002"));
+        propertyValues4.add(new PropertyValue(resourceProperties.get(0), "Volvo"));
+        propertyValues4.add(new PropertyValue(resourceProperties.get(1), "2002"));
         genRes4.setPropertyValues(propertyValues4);
 
         listGenRes6.add(genRes3);
         listGenRes6.add(genRes4);
 
-        return new Object[] { new Object[] { result1, inputValues1, resourceProperties1, args1, argsTypes1,
-                resultSet1, listGenRes1},
-                 new Object[] { result6, inputValues6, resourceProperties1, args1, argsTypes1,
-                        resultSet6, listGenRes6}
+        return new Object[] {
+                new Object[] { result1,
+                               inputValues1,
+                               resourceProperties,
+                               resultSet1,
+                               listGenRes1,
+                               args1,
+                               argsTypes1},
+                new Object[] { result6,
+                               inputValues6,
+                               resourceProperties,
+                               resultSet6,
+                               listGenRes6,
+                               args1,
+                               argsTypes1}
                 // new Object[] { "Cars", inputValues2, allResProperties1,
                 // result2 },
                 // new Object[] { "Cars", inputValues2, allResProperties2,

@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 /**
@@ -23,17 +25,18 @@ public class Address {
     private long id;
 
     @NotEmpty
-    @Length(max = 10, message = "Country name is too big.")
+    @Length(max = 30, message = "Country name is too big.")
     @JsonProperty("country")
     private String country;
 
     @NotEmpty
-    @Size(max = 7)
+    @Size(min = 5, max = 30)
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("district")
     @NotEmpty
+    @Size(min = 5, max = 30)
     private String district;
 
     @JsonProperty("postal_index")
@@ -43,10 +46,12 @@ public class Address {
 
     @NotEmpty
     @JsonProperty("locality")
+    @Size(min = 5, max = 30)
     private String locality;
 
     @NotEmpty
     @JsonProperty("street")
+    @Size(min = 5, max = 30)
     private String street;
 
     @Min(1)
@@ -60,11 +65,11 @@ public class Address {
     @JsonProperty("apartment")
     private int apartment;
 
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-    private Owner owner;
+    @OneToMany(mappedBy = "address", fetch = FetchType.EAGER)
+    private List<Owner> owners;
 
     public Address() {
+        owners = new ArrayList<>();
     }
 
     public long getId() {
@@ -156,12 +161,19 @@ public class Address {
         return this;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public Address addOwner(Owner owner){
+        this.owners.add(owner);
+        return this;
     }
 
-    public Address setOwner(Owner owner) {
-        this.owner = owner;
+    // here, cause on field doesn't work
+    @JsonIgnore
+    public List<Owner> getOwner() {
+        return owners;
+    }
+
+    public Address setOwner(List<Owner> owners) {
+        this.owners = owners;
         return this;
     }
 
@@ -182,7 +194,7 @@ public class Address {
         if (!locality.equals(address.locality)) return false;
         if (!street.equals(address.street)) return false;
         if (block != null ? !block.equals(address.block) : address.block != null) return false;
-        return owner != null ? owner.equals(address.owner) : address.owner == null;
+        return owners != null ? owners.equals(address.owners) : address.owners == null;
     }
 
     @Override
@@ -197,7 +209,7 @@ public class Address {
         result = 31 * result + building;
         result = 31 * result + (block != null ? block.hashCode() : 0);
         result = 31 * result + apartment;
-        result = 31 * result + (owner != null ? owner.hashCode() : 0);
+        result = 31 * result + (owners != null ? owners.hashCode() : 0);
         return result;
     }
 
@@ -224,7 +236,7 @@ public class Address {
                 postalIndex + ", " +
                 locality + ", " +
                 street + ", " +
-                building + (block.isEmpty()? ", " : " " + block + " " ) +
+                building + (block.isEmpty()? ", " : ", " + block + ", " ) +
                 apartment + ".";
     }
 }

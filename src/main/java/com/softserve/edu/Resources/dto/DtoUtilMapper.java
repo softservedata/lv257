@@ -12,7 +12,7 @@ public class DtoUtilMapper {
        List <ResourceTypeDTO> resTypeDTOs = new ArrayList<>();
        
        for (ResourceType resType : resTypes) {
-        resTypeDTOs.add(new ResourceTypeDTO(resType.getId(),  resType.getTableName(),  resType.getTypeName()));
+        resTypeDTOs.add(new ResourceTypeDTO(resType.getId(),  resType.getTypeName(), resType.getTableName()));
        }
        
        return resTypeDTOs;
@@ -20,7 +20,7 @@ public class DtoUtilMapper {
 
     public static ResourceTypeDTO resTypesToResTypesDTO (ResourceType resType){
 
-        return new ResourceTypeDTO(resType.getId(), resType.getTableName(), resType.getTypeName());
+        return new ResourceTypeDTO(resType.getId(), resType.getTypeName(), resType.getTableName());
     }
     
 }

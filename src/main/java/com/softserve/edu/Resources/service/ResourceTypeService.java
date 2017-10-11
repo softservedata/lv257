@@ -1,6 +1,7 @@
 package com.softserve.edu.Resources.service;
 
-import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.dto.ResourceTypeUpdate;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 
 import java.util.Collection;
@@ -13,9 +14,7 @@ public interface ResourceTypeService {
 
     long getTypeCount();
 
-    ResourceType add(ResourceType resourceType);
-
-    ResourceType update(ResourceType resourceType);
+    ResourceType save(ResourceTypeUpdate resourceType);
 
     void remove(ResourceType resourceType);
 
@@ -31,12 +30,8 @@ public interface ResourceTypeService {
 
     int getInstancesCount();
     
-
-    
     ResourceType findWithPropertiesByID(Long ID);
 
-    List<ResourceProperty> getSearchableProperties(ResourceType resourceWithProperties);
+    List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties);
     
-    void testHello();
-
 }

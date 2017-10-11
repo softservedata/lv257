@@ -4,6 +4,7 @@ import com.softserve.edu.Resources.entity.ResourceProperty;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  *
@@ -17,4 +18,6 @@ public interface ResourcePropertyDAO extends GenericDAO<ResourceProperty, Long>{
     List<ResourceProperty> findByTitle(String title);
 
     List<ResourceProperty> findByUnits(String title);
+
+    Set<Long> findAllIds();
 }

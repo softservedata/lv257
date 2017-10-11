@@ -3,10 +3,10 @@ package com.softserve.edu.Resources.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.Constants;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Optional;
 
 @Entity
 @Table(name = "user_details")
@@ -64,7 +64,7 @@ public class UserDetails {
 
     @OneToOne
     @JoinColumn(name = "id_user")
-    private User user;
+    private Optional<User> user;
 
     public UserDetails() {
     }
@@ -157,11 +157,11 @@ public class UserDetails {
         this.bankId = bankId;
     }
 
-    public User getUser() {
+    public Optional<User> getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Optional<User> user) {
         this.user = user;
     }
 

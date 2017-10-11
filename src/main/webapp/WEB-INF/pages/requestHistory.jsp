@@ -3,21 +3,35 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"/>
-
+    <%--&lt;%&ndash;<jsp:include page="metadata.jsp"/>&ndash;%&gt;--%>
+    <%--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--%>
+    <%--<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">--%>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<jsp:include page="resources.jsp" />
+<jsp:include page="menu.jsp"/>
 
-<div class="wrapper">
-    <div class="container-fluid">
-        <div class="col-sm-12 col-md-12">
+<br>
+<br>
+<br>
             <div class="container">
 
+                <ul class="nav nav-tabs">
+                    <li><a href="${pageContext.request.contextPath}/resources/registration">Register
+                        resource</a></li>
+                    <li><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
+                    <li class="active"><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
+                </ul>
+                <br>
+
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="#NeedMoreDetails" data-toggle="pill">Not reviewed</a></li>
-                    <li ><a href="#NotReviewed" data-toggle="pill">Need more details</a></li>
+                    <li class="active"><a href="#NeedMoreDetails" data-toggle="pill">Need more details</a></li>
+                    <li ><a href="#NotReviewed" data-toggle="pill">Not reviewed</a></li>
                     <li><a href="#Accepted" data-toggle="pill">Accepted</a></li>
                     <li><a href="#Declined" data-toggle="pill">Declined</a></li>
                 </ul>
@@ -25,16 +39,14 @@
                 <div class="tab-content" id="TabContent">
 
                     <div class="tab-pane fade in active" id="NeedMoreDetails">
-                        <div class="table-responsive">
+
                             <h3>List of requests</h3>
                             <br>
-                            <br>
-                            <%----%>
-                            <table data-toggle="table"
-                                    id="listRequests"class="table table-striped table-condensed text-center">
+                            <table data-toggle="table" id="refinementRequest"
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
+                                <br>
                                 <thead>
                                 <tr>
-                                    <th class="text-center">Status</th>
                                     <th data-field="requestedCategory">
                                         <div class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
@@ -45,21 +57,60 @@
                                         <div class="text-center">Information</div></th>
                                     <th data-field="date">
                                         <div class="text-center">Date</div></th>
-
-
+                                    <th ></th>
                                 </tr>
                                 </thead>
-
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory">
+                                        <div class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register">
+                                        <div class="text-center">Who reviewed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="documentLink">
+                                        <div class="text-center">Information</div></th>
+                                    <th data-field="date">
+                                        <div class="text-center">Date</div></th>
+                                    <th ></th>
+                                </tr>
+                                </tfoot>
 
                                 <tbody>
-                                 <c:forEach items="${gRequest}" var="request">
+                                 <c:forEach items="${refinementRequest}" var="request">
 
                                 <tr>
-                                    <td>${request.status}</td>
+
                                     <td>${request.resourceType}</td>
-                                    <td>Not yet reviewed</td>
-                                    <td><a href="/resources/info/${request.id}">documentLink1</a></td>
-                                    <td>${request.update}</td>
+                                    <td>${request.resourcesAdmin.username}</td>
+                                    <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                    <td>${request.update.toString().split('\\.')[0]}</td>
+                                    <td>
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Responce</button>
+                                        <%--<div id="myModal" class="modal fade">--%>
+                                            <%--<div class="modal-dialog">--%>
+                                                <%--<div class="modal-content">--%>
+                                                    <%--<div class="modal-header">--%>
+                                                        <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--%>
+                                                        <%--<h4 class="modal-title " style="text-align: left">Response</h4>--%>
+                                                        <%--<h6 class="modal-title"  style="text-align: left">Comment:</h6>--%>
+                                                    <%--</div>--%>
+                                                    <%--<div class="modal-body">--%>
+                                                        <%--<form>--%>
+                                                            <%--<div class="form-group">--%>
+
+                                                                <%--<textarea class="form-control" rows="5"></textarea>--%>
+                                                            <%--</div>--%>
+                                                        <%--</form>--%>
+                                                    <%--</div>--%>
+                                                    <%--<div class="modal-footer" >--%>
+
+                                                        <%--<button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    </td>
                                 </tr>
                                  </c:forEach>
                                 </tbody>
@@ -67,278 +118,215 @@
 
                                 </tbody>
 
-                        </div>
+
 
                     </div>
 
                     <div class="tab-pane fade" id="Accepted">
 
-                        <div class="table-responsive">
+
                             <h3>List of processed requests</h3>
-                            <table data-toggle="table"
-                                   class="table table-striped table-condensed text-center">
+                            <br>
+                            <table data-toggle="table" id="acceptedRequest"
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
+                                <br>
                                 <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
                                     <th data-field="requestedCategory"><div
                                             class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="register"><div
-                                            class="text-center">Who requested</div>
+                                            class="text-center">Who processed</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="resourcesAdmin"><div
-                                            class="text-center">Who processed</div>
+                                            class="text-center">Details</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="status"><div
                                             class="text-center">Date</div>
                                         <div class="fht-cell"></div></th>
-
                                 </tr>
                                 </thead>
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory"><div
+                                            class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register"><div
+                                            class="text-center">Who processed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="status"><div
+                                            class="text-center">Date</div>
+                                        <div class="fht-cell"></div></th>
+                                </tr>
+                                </tfoot>
+
+
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Квартира</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin1</td>
-                                    <td>24.07.2017</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Особняк </td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin3</td>
-                                    <td>20.03.2017</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Одяг </td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin1</td>
-                                    <td>08.01.2017</td>
-                                </tr>
+                                <c:forEach items="${acceptedRequest}" var="request">
+                                    <tr>
+                                        <td>${request.resourceType}</td>
+                                        <td>${request.resourcesAdmin.username}</td>
+                                        <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                        <td>${request.update.toString().split('\\.')[0]}</td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+
                                 </tbody>
                             </table>
-                        </div>
 
 
                     </div>
 
                     <div class="tab-pane fade" id="Declined">
 
-                        <div class="table-responsive">
+
                             <h3>List of processed requests</h3>
+
                             <br>
-                            <br>
-                            <br>
-                            <table data-toggle="table"
-                                   class="table table-striped table-condensed text-center">
+                            <table data-toggle="table" id="declinedRequest"
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
+                                <br>
                                 <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
                                     <th data-field="requestedCategory"><div
                                             class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="register"><div
-                                            class="text-center">Who requested</div>
+                                            class="text-center">Who processed</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="resourcesAdmin"><div
-                                            class="text-center">Who processed</div>
+                                            class="text-center">Details</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="status"><div
                                             class="text-center">Date</div>
                                         <div class="fht-cell"></div></th>
                                 </tr>
                                 </thead>
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory"><div
+                                            class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register"><div
+                                            class="text-center">Who processed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="status"><div
+                                            class="text-center">Date</div>
+                                        <div class="fht-cell"></div></th>
+                                </tr>
+                                </tfoot>
+
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Вода</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin1</td>
-                                    <td>01.07.2017</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Повітряний простір</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin3</td>
-                                    <td>06.06.2017</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Теща</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin1</td>
-                                    <td>19.02.2017</td>
-                                </tr>
+
+                                <c:forEach items="${declinedRequest}" var="request">
+                                    <tr>
+                                        <td>${request.resourceType}</td>
+                                        <td>${request.resourcesAdmin.username}</td>
+                                        <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                        <td>${request.update.toString().split('\\.')[0]}</td>
+                                    </tr>
+                                </c:forEach>
+
                                 </tbody>
                             </table>
-                        </div>
-
 
                     </div>
+
                     <div class="tab-pane fade" id="NotReviewed">
 
-                        <div class="table-responsive">
                             <h3>List of requests</h3>
-                            <table data-toggle="table"
-                                   class="table table-striped table-condensed text-center">
+                        <br>
+                            <table data-toggle="table" id="newRequest"
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
+                                <br>
                                 <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
                                     <th data-field="requestedCategory"><div
                                             class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
                                     <th data-field="register"><div
-                                            class="text-center">Who requested</div>
-                                        <div class="fht-cell"></div></th>
-                                    <th data-field="resourcesAdmin"><div
                                             class="text-center">Who processed</div>
                                         <div class="fht-cell"></div></th>
-                                    <th data-field="status"><div
-                                            class="text-center">Date</div>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
                                         <div class="fht-cell"></div></th>
-
+                                    <th data-field="status"><div
+                                            class="text-center">Updated</div>
+                                        <div class="fht-cell"></div></th>
 
                                 </tr>
                                 </thead>
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory"><div
+                                            class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register"><div
+                                            class="text-center">Who processed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="status"><div
+                                            class="text-center">Updated</div>
+                                        <div class="fht-cell"></div></th>
+
+                                </tr>
+                                </tfoot>
+
                                 <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Велосипед</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin1</td>
-                                    <td>02.08.2017</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Самокат</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin3</td>
-                                    <td>31.06.2017</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Надра землі</td>
-                                    <td>Register1</td>
-                                    <td>ResourceAdmin1</td>
-                                    <td>05.06.2017</td>
-                                </tr>
+                                <c:forEach items="${newRequest}" var="request">
+                                    <tr>
+                                        <td>${request.resourceType}</td>
+                                        <td>${request.resourcesAdmin.username}</td>
+                                        <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                        <td>${request.update.toString().split('\\.')[0]}</td>
+                                    </tr>
+                                </c:forEach>
+
                                 </tbody>
                             </table>
-                        </div>
                     </div>
-
-
                 </div>
             </div>
-        </div>
+
+<br>
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; Lv257_Java</p>
     </div>
-</div>
+</footer>
 
-
-
-<%--<script src="//code.jquery.com/jquery-1.12.4.js"></script>--%>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<%--<script src="https://cdn.datatables.net/1.10.16/js/dataTables.foundation.min.js"></script>--%>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 
 <script>
-    $(function() {
-        $("#listRequests").dataTable({
-            lengthMenu : [
-            [ 3, 5, 10, -1 ],
-            [ '3 records', '5 records', '10 records',
-            'All records' ] ],
-            pageLength:5,
-        });
-    });
+
+    $( ".fixed-table-container" ).remove();
+    $( ".fixed-table-body" ).remove();
+
+    $(document).ready(function() {
+        $('#newRequest').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#declinedRequest').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#acceptedRequest').DataTable();
+    } );
+    $(document).ready(function() {
+        $('#refinementRequest').DataTable();
+    } );
+
 </script>
-
-<%--<script>--%>
-    <%--$.extend(true, $.fn.dataTable.defaults, {--%>
-        <%--"searching": true,--%>
-        <%--"sPageButton": "paginate_button"--%>
-    <%--});--%>
-    <%--$(document).ready(function () {--%>
-        <%--var table = $('#listRequests').DataTable({--%>
-            <%--'dom': 'rt<"bottom"lp><"clear">',--%>
-            <%--stateSave: true--%>
-        <%--});--%>
-        <%--table--%>
-            <%--.order([[5, 'asc'], [3, 'desc']])--%>
-            <%--.draw();--%>
-        <%--$("#search").on('keyup change', function () {--%>
-            <%--table--%>
-                <%--.columns(5)--%>
-                <%--.search(this.value)--%>
-                <%--.draw();--%>
-        <%--});--%>
-
-        <%--var currentRow;--%>
-        <%--$('.responce').click(function () {--%>
-            <%--$('#idRequest').text($(this).attr('data-id'))--%>
-            <%--currentRow = table--%>
-                <%--.row($(this).parents('tr'));--%>
-        <%--})--%>
-        <%--$('.assign').click(function () {--%>
-            <%--var id = $(this).attr('data-id');--%>
-            <%--$.ajax(--%>
-                <%--{--%>
-                    <%--type: "POST",--%>
-                    <%--url: "assignRequest",--%>
-                    <%--data: {id: id},--%>
-                    <%--success: function (obj) {--%>
-                        <%--alert(obj)--%>
-                    <%--}--%>
-                <%--})--%>
-        <%--})--%>
-
-
-        <%--$('.send').click(function () {--%>
-
-            <%--var comment = $('#comment').val();--%>
-            <%--var purpose = ($('input[name=radioName]:checked', "#Purpose").val());--%>
-            <%--var id_request = $("#idRequest").text();--%>
-            <%--var message = {--%>
-                <%--id_request: id_request,--%>
-                <%--purpose: purpose,--%>
-                <%--comment: comment--%>
-            <%--}--%>
-            <%--$.ajax(--%>
-                <%--{--%>
-                    <%--type: "POST",--%>
-                    <%--contentType: "text/plain",--%>
-                    <%--url: "/resources/sendResponce",--%>
-                    <%--accept: "text/plain",--%>
-                    <%--data: JSON.stringify(message),--%>
-
-                    <%--success: function (obj) {--%>
-                        <%--$("#comment").val('');--%>
-                        <%--currentRow.remove().draw();--%>
-                    <%--}--%>
-                <%--})--%>
-        <%--})--%>
-    <%--});--%>
-<%--</script>--%>
-<%--<script>--%>
-
-    <%--var $table = $('#listRequests');--%>
-
-    <%--// execute the below code only where we have this table--%>
-    <%--if ($table.length) {--%>
-
-        <%--$table.Datatable({--%>
-            <%--lengthMenu : [--%>
-                <%--[ 3, 5, 10, -1 ],--%>
-                <%--[ '3 records', '5 records', '10 records',--%>
-                    <%--'All records' ] ],--%>
-            <%--pageLength:5,--%>
-            <%--// data: requests--%>
-        <%--});--%>
-    <%--}--%>
-
-<%--</script>--%>
 
 </body>
 </html>

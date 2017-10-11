@@ -1,22 +1,10 @@
 package com.softserve.edu.Resources.amaintest;
 
 import com.softserve.edu.Resources.config.ApplicationConfig;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.service.ResourceService;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-import com.softserve.edu.Resources.config.ApplicationConfig;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.ResourceProperty;
-import com.softserve.edu.Resources.entity.ResourceType;
-import com.softserve.edu.Resources.entity.ValueType;
+import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.service.ResourceService;
 import com.softserve.edu.Resources.service.ResourceTypeService;
 import com.softserve.edu.Resources.service.impl.TestService;
@@ -33,6 +21,8 @@ public class MainTest {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
         ctx.register(ApplicationConfig.class);
+//        ctx.register(WebConfig.class);
+//        ctx.register(DBConfig.class);
         ctx.refresh();
 
         TestService testService = ctx.getBean(TestService.class);
@@ -40,7 +30,6 @@ public class MainTest {
 
         ResourceTypeService resTypeService = ctx.getBean(ResourceTypeService.class);
         System.out.println("Try another bean ResourceTypeService method: ");
-        resTypeService.testHello();
         System.out.println();
 
         System.out.println("Checking if there is connection to database and queries work with EntityManager:");
@@ -66,7 +55,7 @@ public class MainTest {
             System.out.println("Key: " + entry.getKey() + "/ Value: " + entry.getValue());
         }
 
-        List<ResourceProperty> resourceProperties = new ArrayList<>();
+        List<ConstrainedProperty> resourceProperties = new ArrayList<>();
 
         ResourceProperty resProp1 = new ResourceProperty();
         resProp1.setColumnName("Model");
@@ -76,14 +65,14 @@ public class MainTest {
         resProp2.setColumnName("Year");
         resProp2.setValueType(ValueType.INTEGER);
 
-        resourceProperties.add(resProp1);
-        resourceProperties.add(resProp2);
+        resourceProperties.add(new ConstrainedProperty(resProp1).setRequired(true).setSearchable(true));
+        resourceProperties.add(new ConstrainedProperty(resProp2).setRequired(true).setSearchable(true));
 
         System.out.println(
                 " c) third parameter is a List of all resource Properties of special resource, which we querrying");
-        for (ResourceProperty resourceProperty : resourceProperties) {
-            System.out.println("ColumnName: " + resourceProperty.getColumnName() + ", ValueType: "
-                    + resourceProperty.getValueTypeName());
+        for (ConstrainedProperty constrainedProperty : resourceProperties) {
+            ResourceProperty property = constrainedProperty.getProperty();
+            System.out.printf("ColumnName: %s, ValueType: %s%n", property.getColumnName(), property.getValueType().typeName);
         }
         List<GenericResource> genResList = resourceDao.findResourcesByResourceType(sqlQuery, valuesToSearch,
                 resourceProperties);

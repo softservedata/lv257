@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Transactional
     public Optional<UserDetails> getUserDetailsByEmail(String email){
-        Optional<UserDetails> userDetails = userDetailsDAO.findByEmail(email);
+       Optional<UserDetails> userDetails = userDetailsDAO.findByEmail(email);
         System.out.println("Privileges extracted (commented)");
 
         return userDetails;
@@ -34,16 +34,17 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Transactional
     public Optional<UserDetails> getUserDetailsByUserId(Long id){
-        Optional<UserDetails> userDetails = userDetailsDAO.findById(id);
+        Optional<UserDetails> userDetails = userDetailsDAO.findByUserId(id);
 
         return userDetails;
     }
 
 //    @Override
     public void saveOrUpdate(UserDetails userDetails) {
-            userDetailsDAO.save(userDetails);
+//        userDetailsDAO.save(userDetails);
+/*
         System.out.println("======UserDetailsServiceImpl=========");
-        System.out.println(userDetails);
+        System.out.println(userDetails);*/
     }
 
 

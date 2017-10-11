@@ -3,27 +3,26 @@ package com.softserve.edu.Resources.entity;
 public class PropertyValue implements Comparable<PropertyValue> {
 
     private int id;
-    private ResourceProperty type;
+    private ConstrainedProperty type;
     private String value;
 
     public PropertyValue() {
     }
 
-    public PropertyValue(ResourceProperty type) {
+    public PropertyValue(ConstrainedProperty type) {
         this.type = type;
     }
 
-    public PropertyValue(ResourceProperty type, String value) {
-
+    public PropertyValue(ConstrainedProperty type, String value) {
         this(type);
         setValue(value);
     }
 
-    public ResourceProperty getType() {
+    public ConstrainedProperty getType() {
         return type;
     }
 
-    public PropertyValue setType(ResourceProperty type) {
+    public PropertyValue setType(ConstrainedProperty type) {
         this.type = type;
         return this;
     }
@@ -32,21 +31,19 @@ public class PropertyValue implements Comparable<PropertyValue> {
         return value;
     }
 
-    public PropertyValue setValue(String value) {
-        if (!type.isRequired() && value == null) {
-            throw new NullPointerException("NOT NULL constraint violation.");
+  public PropertyValue setValue(String value) {
+    if (!type.isRequired() && value == null) {
+      throw new NullPointerException("NOT NULL constraint violation.");
 
-        }
-
-        if (!validate(value)) {
-            System.out.println(value);
-            throw new IllegalArgumentException("Invalid value format. Should match " + type.getPattern());
-        }
-        this.value = value;
-        return this;
+    } if (!validate(value)) {
+      throw new IllegalArgumentException(String.format("Invalid value format. Should match \"%s\"",
+                                                       type.getProperty().getPattern()));
     }
+    this.value = value;
+    return this;
+  }
 
-    @Override
+  @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -81,8 +78,8 @@ public class PropertyValue implements Comparable<PropertyValue> {
     }
 
     private boolean validate(String value) {
-        System.out.println(type.getPattern());
-        return ((type.getPattern() != null) && (value != null)) && value.matches(type.getPattern());
+        return ((type.getProperty().getPattern() != null) && (value != null))
+                       && value.matches(type.getProperty().getPattern());
     }
 
     @Override
@@ -91,9 +88,14 @@ public class PropertyValue implements Comparable<PropertyValue> {
     }
 
     @Override
-    public int compareTo(PropertyValue o) {
-
-        return this.getType().getColumnName().compareTo(o.getType().getColumnName());
+    public int compareTo(PropertyValue other) {
+        ResourceProperty otherProperty = other.getType().getProperty();
+        int typeCmp = getType().getProperty().getTitle().compareTo(otherProperty.getTitle());
+        if (typeCmp == 0) {
+            ValueType valueType = getType().getProperty().getValueType();
+            return ValueType.compare(valueType, getValue(), other.getValue());
+        }
+        return typeCmp;
     }
 
 }

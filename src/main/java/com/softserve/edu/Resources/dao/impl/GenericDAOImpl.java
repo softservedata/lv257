@@ -1,12 +1,8 @@
-/**
- * Suggest to employ this implementation as template for all DAOs
- */
 package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.GenericDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaQuery;
@@ -14,8 +10,8 @@ import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.stream.Collectors;
-public abstract class GenericDAOImpl<T, ID extends Serializable>
-    implements GenericDAO<T, ID> {
+
+public abstract class GenericDAOImpl<T, ID extends Serializable> implements GenericDAO<T, ID> {
 
     static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
@@ -27,8 +23,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
     protected final Class<T> entityClass;
 
     public GenericDAOImpl(Class<T> entityClass) {
-        this.entityClass = entityClass;
-        this.logger = LOGGER;
+        this(entityClass, LOGGER);
     }
 
     protected GenericDAOImpl(Class<T> entityClass, Logger logger) {
@@ -75,16 +70,6 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         return em.merge(instance);
     }
 
-/*    public T makePersistent(T instance) {
-        T persisted = instance;
-        if (em.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(instance) == null) {
-            em.persist(instance);
-        } else {
-            persisted = em.merge(instance);
-        }
-        return persisted;
-    }*/
-
     public Optional<T> querySingleResult(String queryWithNamedParams, String paramName, Object paramValue) {
         Map<String, Object> params = new HashMap<>();
         params.put(paramName, paramValue);
@@ -110,6 +95,10 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
         }
 
         return result;
+    }
+
+    public List<T> queryResultList(String query) {
+        return queryResultList(query, Collections.emptyMap());
     }
 
     public List<T> queryResultList(String queryWithNamedParams, String paramName, Object paramValue) {
@@ -142,11 +131,10 @@ public abstract class GenericDAOImpl<T, ID extends Serializable>
     }
 
     public void checkVersion(T entity, boolean forceUpdate) {
-        em.lock(
-            entity,
-            forceUpdate
-                ? LockModeType.OPTIMISTIC_FORCE_INCREMENT
-                : LockModeType.OPTIMISTIC
+        em.lock(entity,
+                forceUpdate
+                        ? LockModeType.OPTIMISTIC_FORCE_INCREMENT
+                        : LockModeType.OPTIMISTIC
         );
     }
 

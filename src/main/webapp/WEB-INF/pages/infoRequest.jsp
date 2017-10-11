@@ -5,35 +5,37 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"></jsp:include>
+    <jsp:include page="metadata.jsp"/>
 
 </head>
 <body>
 
 
-<jsp:include page="resources.jsp" />
+<jsp:include page="menu.jsp"/>
 <br>
 
-<div class="container">
+<div class="container" >
+    <h2>Details</h2>
 
-    <h4>Requested resource type: ${theme}</h4>
+    <h3>Requested resource type:<span> ${theme}</span></h3>
 
-    <h4>Description: ${info}</h4>
-    <h4>Uploaded Document</h4>
+    <h3>Description:<span> ${info}</span> </h3>
+    <h3>Uploaded Document:</h3>
     <hr>
     <c:if test = "${extension == 'jpeg'}">
     <div>
-        <img class="documentImg-view" src="/resources/upload/${code}.jpg">
+        <img class="documentImg-view" src="${documentURL}">
     </div>
     </c:if>
     <c:if test = "${extension == 'pdf'}">
     <div>
-        <embed class="documentPdf-view" src="/resources/upload/${code}.pdf">
+        <iframe style="width: 80%; height: 600px; border: none;" src="${documentURL}"></iframe>
+        <%--<embed class="documentPdf-view" src="${documentURL}">--%>
     </div>
     </c:if>
     <c:if test = "${extension == 'png'}">
         <div>
-            <img class="documentImg-view" src="/resources/upload/${code}.png">
+            <img class="documentImg-view" src="${documentURL}">
         </div>
     </c:if>
     <hr>

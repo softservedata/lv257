@@ -6,18 +6,14 @@ import com.softserve.edu.Resources.entity.ResourceType;
 
 public class ResourceTypeDTO {
 
-
-    @JsonView(Views.CategorySelectingWithTypes.class)
+    @JsonView(Views.CategoriesWithTypes.class)
     private long id;
 
-    @JsonView(Views.CategorySelectingWithTypes.class)
+    @JsonView(Views.CategoriesWithTypes.class)
     private String typeName;
 
-    @JsonView(Views.CategorySelectingWithTypes.class)
-    private String tableName;
-
+    @JsonView(Views.CategoriesWithTypes.class)
     @JsonBackReference
-    @JsonView(Views.CategorySelectingWithTypes.class)
     private ResourceCategoryDTO category;
     
     public ResourceTypeDTO() {
@@ -26,13 +22,11 @@ public class ResourceTypeDTO {
     public ResourceTypeDTO(Long id, String typeName, String tableName) {
         this.id = id;
         this.typeName = typeName;
-        this.tableName = tableName;
     }
 
     public ResourceTypeDTO(ResourceType resourceType) {
         this.id = resourceType.getId();
         this.typeName = resourceType.getTypeName();
-        this.tableName = resourceType.getTableName();
     }
     
     public long getId() {
@@ -49,14 +43,6 @@ public class ResourceTypeDTO {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
-    }
-
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
     }
 
     public ResourceCategoryDTO getCategory() {

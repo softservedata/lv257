@@ -25,11 +25,14 @@ public class Document {
     @Column(name = "extension")
     private String fileExtension;
 
+    @Column(name = "URL")
+    private String documentsURL;
+
     @Transient
     private MultipartFile file;
 
     public Document() {
-        this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
+        this.code = "file" + UUID.randomUUID().toString().substring(26).toUpperCase();
 
     }
 
@@ -63,5 +66,34 @@ public class Document {
 
     public void setFile(MultipartFile file) {
         this.file = file;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Document)) return false;
+
+        Document document = (Document) o;
+
+        if (id_document != document.id_document) return false;
+        if (getCode() != null ? !getCode().equals(document.getCode()) : document.getCode() != null) return false;
+        return getFileExtension() != null ? getFileExtension().equals(document.getFileExtension()) : document.getFileExtension() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id_document ^ (id_document >>> 32));
+        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+        result = 31 * result + (getFileExtension() != null ? getFileExtension().hashCode() : 0);
+        return result;
+    }
+
+    public String getDocumentsURL() {
+        return documentsURL;
+    }
+
+    public void setDocumentsURL(String documentsURL) {
+        this.documentsURL = documentsURL;
     }
 }

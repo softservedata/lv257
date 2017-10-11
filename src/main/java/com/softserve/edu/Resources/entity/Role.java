@@ -1,11 +1,13 @@
 package com.softserve.edu.Resources.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -13,7 +15,8 @@ public class Role {
 
     private Long id;
 
-    @OneToMany(mappedBy = "role")
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Collection<User> users;
 
     @ManyToMany
@@ -36,27 +39,20 @@ public class Role {
 
     //
 
+
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
     }
 
     public Collection<User> getUsers() {
         return users;
     }
 
-    public void setUsers(final Collection<User> users) {
+    public void setUsers(Collection<User> users) {
         this.users = users;
     }
 
@@ -64,8 +60,16 @@ public class Role {
         return privileges;
     }
 
-    public void setPrivileges(final Collection<Privilege> privileges) {
+    public void setPrivileges(Collection<Privilege> privileges) {
         this.privileges = privileges;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
