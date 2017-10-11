@@ -122,7 +122,7 @@
                 </button>
                 <h3 class="modal-title left-align">Response</h3>
                 <br>
-                <h5 class="modal-title" id="idRequest"></h5>
+                <h5 class="modal-title" id="idRequest" hidden></h5>
                 <br>
             </div>
             <div class="modal-body">
@@ -177,6 +177,7 @@
         var currentRow;
         $(document).on('click', '.responce', function () {
             currentRow = table.row($(this).parents('tr'));
+            $('#idRequest').text($(this).parents('td').attr('data-id'));
         })
 
         $('.assign').on('click', function () {
