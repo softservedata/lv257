@@ -144,7 +144,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `user_details` WRITE;
 
-INSERT INTO `user_details` VALUES (9,123456,'12-12-2017','FirstName',1,NULL,'MiddleName','123456','PS','+12(345)-678-90-12','SecondName',9);
+INSERT INTO `demotest`.`user_details` (`id`, `bank_id`, `date_of_issue`, `first_name`, `id_address`, `issued_by`, `middle_name`, `passport_number`, `passport_series`, `phone`, `second_name`, `id_user`) VALUES ('9', '9', '2012-12-12', 'FirstName', '9', '9', 'MiddleName', '123456', 'AB', '+12(345)-678-90-12', 'SecondName', '9');
 
 UNLOCK TABLES;
 
@@ -171,4 +171,3 @@ LOCK TABLES `yachts` WRITE;
 INSERT INTO `yachts` VALUES (1,1,'Sailing',2010,2000.00),(2,2,'Vintage',2012,3000.00),(3,3,'Woodle',2010,2500.00),(4,4,'Mario',2012,2300.00),(5,5,'Grand',2013,2200.00);
 
 UNLOCK TABLES;
-
