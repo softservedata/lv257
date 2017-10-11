@@ -10,12 +10,30 @@ INSERT INTO `cars` VALUES (1,1,'Mazda',2000,'JB423S'),(2,2,'Mazda',2005,'J2423S'
 
 UNLOCK TABLES;
 
-
-
-LOCK TABLES `company_owner` WRITE;
-
+LOCK TABLES `address` WRITE;
+/*!40000 ALTER TABLE `address` DISABLE KEYS */;
+INSERT INTO `address` VALUES (100000,17,'',37,'Ukraine','Drogobutskiy district','Boryslav','83200','Lviv region','Kovaliva'),(100001,68,'A',130,'Ukraine','Drogobutskiy district','Boryslav','83200','Lviv region','Volodymyra Velykoho'),(100002,25,'',50,'Ukraine','Drogobutskiy district','Boryslav','83200','Lviv region','Dovzhenka'),(100100,6,'',65,'Ukraine','No district','Lviv City','79068','Lviv region','Mazepu'),(100101,1,'Б',56,'Ukraine','Mukachivskuy','Mukacheve','89611','Uzhgorod','Zelena');
+/*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+LOCK TABLES `abstract_owner` WRITE;
+/*!40000 ALTER TABLE `abstract_owner` DISABLE KEYS */;
+INSERT INTO `abstract_owner` VALUES (100000,'380978456321',100000),(100001,'380659814321',100100),(100002,'380671225012',100101),(100100,'380978456321',100001),(100101,'380938001667',100002);
+/*!40000 ALTER TABLE `abstract_owner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+LOCK TABLES `company_owner` WRITE;
+/*!40000 ALTER TABLE `company_owner` DISABLE KEYS */;
+INSERT INTO `company_owner` VALUES ('Petro Petrenko','Blyzenko','TzOV','None',100001),('Ivan Ivanchencko','Sunshine','TzOV','Sunny',100100);
+/*!40000 ALTER TABLE `company_owner` ENABLE KEYS */;
+UNLOCK TABLES;
+
+LOCK TABLES `person_owner` WRITE;
+/*!40000 ALTER TABLE `person_owner` DISABLE KEYS */;
+INSERT INTO `person_owner` VALUES ('Andriy','Tsebak','Anatoliiovych','659832','HC',100000),('Anna','Frank','Volodumurivna','145863','TC',100002),('Oleh','Tsebak','Anatoliiovych','176895','KC',100101);
+/*!40000 ALTER TABLE `person_owner` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
