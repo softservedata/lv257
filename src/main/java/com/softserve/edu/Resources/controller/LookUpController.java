@@ -1,10 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
-import com.amazonaws.services.sns.model.NotFoundException;
-import com.softserve.edu.Resources.dto.DtoUtilMapper;
+
 import com.softserve.edu.Resources.dto.ExceptionJSONInfo;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
-import com.softserve.edu.Resources.dto.ResourceTypeDTO;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
