@@ -444,6 +444,7 @@ function buildSelectForRetrievedAddresses(result, $resultDiv) {
                 // id = result[i][attributeValue];
             }
             if (result[i].hasOwnProperty(attributeValue) && attributeValue != 'addressId') {
+                if(result[i][attributeValue].length === 0) continue;
                 addressStr += result[i][attributeValue] + ", ";
             }
         }
