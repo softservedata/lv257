@@ -61,7 +61,7 @@ $(document).ready(function(){
 	    	$('#new-search').hide();
 	    	$('#result-search').empty();
 	    	$('#no-inputs-error').empty();
-            $('#no-inputs-error').show();
+            $('#no-inputs-error').hide();
 	
 	    	
 	    	// here will be implemented next steps for looking up by owner
@@ -72,7 +72,7 @@ $(document).ready(function(){
 	    	$('#new-search').hide();
 	    	$('#result-search').empty();
 	    	$('#no-inputs-error').empty();
-            $('#no-inputs-error').show();
+	    	$('#no-inputs-error').hide();
 	    }
 	});
 	
@@ -81,6 +81,7 @@ $(document).ready(function(){
 	$('#div-for-types').on('change',function(e){ 
 		$('#result-search').empty();
 		$('#new-search').hide();
+		$('#no-inputs-error').hide();
 	    resourceTypeId = $(e.target).data('selectedID');
 	    if (typeof resourceTypeId != 'undefined')
 		    $.ajax({    
@@ -124,6 +125,8 @@ $(document).ready(function(){
 	
 	$('#form-for-properties').submit(function(e) {
 		$('#result-search').empty();
+		$('#no-inputs-error').empty();
+		$('#no-inputs-error').hide();
 		var empty = true;
 		$('.form-group input', $(this)).each(function() {
 			let value = $(this).val().trim();
@@ -199,7 +202,9 @@ $(document).ready(function(){
 			        	},
 			        error: function (result) {
 		                
-		                console.log('error');
+			        	$('#no-inputs-error').empty();
+		                $('#no-inputs-error').show();
+		                $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
 		              
 		            }
 			    

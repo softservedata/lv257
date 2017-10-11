@@ -49,7 +49,11 @@ INSERT INTO `resource_properties` VALUES (100200,'model','\0','[A-Za-z0-9]{2,20}
 UNLOCK TABLES;
 
 
+LOCK TABLES `user_account` WRITE;
 
+INSERT INTO `user_account` VALUES (8,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
+
+UNLOCK TABLES;
 
 
 LOCK TABLES `resource_request` WRITE;
@@ -61,11 +65,11 @@ UNLOCK TABLES;
 
 
 
-LOCK TABLES `resource_sequence` WRITE;
+--LOCK TABLES `resource_sequence` WRITE;
 
-INSERT INTO `resource_sequence` VALUES (100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400);
+--INSERT INTO `resource_sequence` VALUES (100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400);
 
-UNLOCK TABLES;
+--UNLOCK TABLES;
 
 
 
@@ -116,11 +120,7 @@ UNLOCK TABLES;
 
 
 
-LOCK TABLES `user_account` WRITE;
 
-INSERT INTO `user_account` VALUES (8,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,'','$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
-
-UNLOCK TABLES;
 
 
 

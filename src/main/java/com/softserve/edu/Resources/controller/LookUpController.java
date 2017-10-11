@@ -21,69 +21,68 @@ import java.util.List;
 
 @RestController
 public class LookUpController {
-    
+
     @Autowired
     ResourceTypeService resourceTypeService;
-    
+
     @Autowired
     ResourceService resourceService;
 
+    // @RequestMapping(value = "/lookup/resourceTypes", method =
+    // RequestMethod.GET)
+    // public List<ResourceTypeDTO> loadResourceTypes(){
+    //
+    //
+    // return
+    // DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
+    //
+    // }
 
-
-//    @RequestMapping(value = "/lookup/resourceTypes", method = RequestMethod.GET)
-//    public List<ResourceTypeDTO> loadResourceTypes(){
-//
-//
-//        return DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
-//
-//    }
-
-    
     @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
 
-    public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId){
-        
+    public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId) {
 
         ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
 
-        if (resourceType == null){
+        if (resourceType == null) {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
-        
 
-        List <ConstrainedProperty> constraintProperties = resourceTypeService.getSearchableProperties(resourceType);
-        
-        List <ResourceProperty> resourceProperties = new ArrayList<>();
-        
+        List<ConstrainedProperty> constraintProperties = resourceTypeService.getSearchableProperties(resourceType);
+
+        List<ResourceProperty> resourceProperties = new ArrayList<>();
+
         for (ConstrainedProperty constraint : constraintProperties) {
             resourceProperties.add(constraint.getProperty());
         }
+
+        if (resourceProperties.isEmpty()) {
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
+
+        return resourceProperties;
+
+    }
+
+    @RequestMapping(value = "/lookUp/inputValues", method = RequestMethod.POST)
+    public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO) {
+
+        List <GenericResource> genResList = resourceService.findResourcesByResourceType(resourceDTO);
         
-        if (resourceProperties.isEmpty()){
+        if (genResList.isEmpty()){
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
         
-        
-        return resourceProperties;
-
-
+        return genResList;
     }
-    
-    
-    @RequestMapping(value = "/lookUp/inputValues", method = RequestMethod.POST)
-    public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO){
 
-        // if the list is empty, send a message that no info hasn't been found
-        return resourceService.findResourcesByResourceType(resourceDTO);
-    }
-    
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ExceptionJSONInfo noInfoFound(ResourceNotFoundException e){
+    public ExceptionJSONInfo noInfoFound(ResourceNotFoundException e) {
         String message = e.getMessage();
         ExceptionJSONInfo exceptionJson = new ExceptionJSONInfo();
         exceptionJson.setMessage(message);
         return exceptionJson;
     }
-    
+
 }
