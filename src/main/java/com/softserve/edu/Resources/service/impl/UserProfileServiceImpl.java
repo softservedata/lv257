@@ -32,12 +32,12 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     @Transactional
-    public Optional<UserDetails> getUserDetailsByDTO(UserProfileDTO userProfileDTO) {
+    public UserDetails getUserDetailsByDTO(UserProfileDTO userProfileDTO) {
         long id = userProfileDTO.getId();
-        Optional<UserDetails> createdUserDetailsEntity = userDetailsDAO.findByUserId(id);
-        createdUserDetailsEntity.get().setFirstName(userProfileDTO.getFirstName());
-
-        return createdUserDetailsEntity;
+        Optional <UserDetails> createdUserDetailsEntity = userDetailsDAO.findByUserId(id);
+        UserDetails createdUserDetails = createdUserDetailsEntity.get();
+        createdUserDetails.setFirstName(userProfileDTO.getFirstName());
+        return createdUserDetails;
     }
 
     @Override
@@ -46,6 +46,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         String userName = principal.getName();
         User user = userService.findByEmail(userName);
         Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
+//        Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         userProfileDTO.setId(details.get().getId());
         userProfileDTO.setFirstName(details.get().getFirstName());
@@ -91,9 +92,10 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public void saveUserProfile(UserProfileDTO userProfileDTO) {
 
-        Optional<UserDetails> userDetails = getUserDetailsByDTO(userProfileDTO);
+//        Optional<UserDetails> userDetails = getUserDetailsByDTO(userProfileDTO);
+        UserDetails userDetails = getUserDetailsByDTO(userProfileDTO);
 
-        userDetails.get().setFirstName(userProfileDTO.getFirstName());
+/*        userDetails.get().setFirstName(userProfileDTO.getFirstName());
         userDetails.get().setMiddleName(userProfileDTO.getMiddleName());
         userDetails.get().setSecondName(userProfileDTO.getSecondName());
         userDetails.get().setPassportNumber(userProfileDTO.getPassportNumber());
@@ -101,6 +103,16 @@ public class UserProfileServiceImpl implements UserProfileService {
         userDetails.get().setPhone(userProfileDTO.getPhone());
         userDetails.get().setIdAddress(userProfileDTO.getIdAddress());
         userDetails.get().setBankId(userProfileDTO.getBankId());
-        userDetails.get().setUser(userDAO.findById(userProfileDTO.getId()));
+        userDetails.setUser(userDAO.findById(userProfileDTO.getId()));*/
+
+        userDetails.setFirstName(userProfileDTO.getFirstName());
+        userDetails.setMiddleName(userProfileDTO.getMiddleName());
+        userDetails.setSecondName(userProfileDTO.getSecondName());
+        userDetails.setPassportNumber(userProfileDTO.getPassportNumber());
+        userDetails.setPassportSeries(userProfileDTO.getPassportSeries());
+        userDetails.setPhone(userProfileDTO.getPhone());
+        userDetails.setIdAddress(userProfileDTO.getIdAddress());
+        userDetails.setBankId(userProfileDTO.getBankId());
+        userDetails.setUser(userService.getUserById(userProfileDTO.getId()));
     }
 }

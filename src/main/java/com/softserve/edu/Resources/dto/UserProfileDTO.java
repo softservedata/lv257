@@ -23,7 +23,7 @@ public class UserProfileDTO {
     private String idAddress;
     private String phone;
     private String bankId;
-    private Optional<User> user;
+    private User user;
 
     public UserProfileDTO() {
     }
@@ -116,11 +116,11 @@ public class UserProfileDTO {
         this.bankId = bankId;
     }
 
-    public Optional<User> getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Optional<User> user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

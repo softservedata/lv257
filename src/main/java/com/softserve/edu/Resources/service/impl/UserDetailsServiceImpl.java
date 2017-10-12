@@ -39,6 +39,20 @@ public class UserDetailsServiceImpl implements UserDetailsService{
         return userDetails;
     }
 
+/*    @Transactional
+    public Optional<UserDetails> getUserDetailsByUserId(Long id){
+        Optional<UserDetails> userDetails = userDetailsDAO.findByUserId(id);
+
+        return userDetails;
+    }
+    */
+/*    @Transactional
+    public UserDetails getUserDetailsByUserId(Long id){
+        UserDetails userDetails = userDetailsDAO.findByUserId(id);
+
+        return userDetails;
+    }*/
+
 //    @Override
     public void saveOrUpdate(UserDetails userDetails) {
 //        userDetailsDAO.save(userDetails);

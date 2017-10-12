@@ -8,9 +8,11 @@ import java.util.Optional;
 
 public interface UserDetailsService {
 
-    public Optional<UserDetails> getUserDetailsByEmail(String email);
+    Optional<UserDetails> getUserDetailsByEmail(String email);
 
-    public Optional<UserDetails> getUserDetailsByUserId(Long id);
+    Optional<UserDetails> getUserDetailsByUserId(Long id);
+
+//    UserDetails getUserDetailsByUserId(Long id){
 
 //    public List<User> getAllUsersDetails();
 }

@@ -9,12 +9,15 @@ import java.util.Optional;
 
 public interface UserProfileService {
 
-    @Transactional
-    Optional<UserDetails> getUserDetailsByDTO(UserProfileDTO userProfileDTO);
+//    @Transactional
+//    Optional<UserDetails> getUserDetailsByDTO(UserProfileDTO userProfileDTO);
 //    UserDetails createUserDetailsEntity(UserProfileDTO userProfileDTO);
 
     @Transactional
     UserProfileDTO createUserProfileDTO(Principal principal);
+
+    @Transactional
+    UserDetails getUserDetailsByDTO(UserProfileDTO userProfileDTO);
 
 //    public UserProfileDTO createUserProfileDTO(long id);
 
