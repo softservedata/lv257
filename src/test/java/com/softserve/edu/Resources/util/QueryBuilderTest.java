@@ -69,7 +69,7 @@ public class QueryBuilderTest {
     }
 
 
-    @Test
+//    @Test
     @Parameters(method = "searchOwnerDTOTestData")
     public void testBuildSearchOwnerQuery(SearchDTO searchDTO, String expectedQuery)  throws Exception{
         QueryBuilder qb = new QueryBuilder();

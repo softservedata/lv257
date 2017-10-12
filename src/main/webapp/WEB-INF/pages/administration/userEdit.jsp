@@ -4,10 +4,10 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"/>
+    <jsp:include page="../metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="../menu.jsp" />
 
 <br />
 
@@ -19,7 +19,6 @@
                     <li class="active"> <a href="${pageContext.request.contextPath}/users">Users</a></li>
                     <li > <a href="${pageContext.request.contextPath}/roles">Roles</a></li>
                     <li> <a href="${pageContext.request.contextPath}/privileges">Privileges</a></li>
-                    <li> <a href="UsersRequests.html">Request <span class="badge">3</span></a></li>
                 </ul>
             </div>
             <br/>

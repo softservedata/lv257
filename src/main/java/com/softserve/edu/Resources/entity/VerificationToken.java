@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-@Table(name = "passwordresettoken")
+@Table
 public class VerificationToken {
 
     private static final int EXPIRATION = 60 * 24;
@@ -23,7 +23,7 @@ public class VerificationToken {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column
+    @Column(name = "expiry_date")
     private Date expiryDate;
 
     public VerificationToken() {

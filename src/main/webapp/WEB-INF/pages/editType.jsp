@@ -14,7 +14,7 @@
     <jsp:include page="${contextPath}metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="${contextPath}_menu2.jsp"/>
+<jsp:include page="${contextPath}menu.jsp"/>
 <div class="container-fluid">
     <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
 

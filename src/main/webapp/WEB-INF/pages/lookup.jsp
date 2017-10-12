@@ -11,7 +11,7 @@
 			rel="stylesheet" >
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 
 <h2>Look Page</h2>
 
@@ -21,7 +21,7 @@
             <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
 	            <div class="row">
 	              <div class="container-fluid col-md-4">
-	            	<div class="form-group">
+	            	<div id=type-choose class="form-group">
 	            		<label for="lookup_type">Select type of Look Up:</label>
 	              		<select id="lookup_type" class="form-control">
 	                		<option value="absent">Choose type here</option>
@@ -59,24 +59,17 @@
 				<p>Result</p>
 				
 				</div>
-				<table id="result-search">
-				  <!-- <thead>
-						<tr>
-			                <th>id</th>
-			                <th>Value1</th>
-			                <th>Value2</th>
+				<div id="result-search">
 
-			            </tr>
-			        </thead>
-			        <tfoot>
-					  <tr>
-		                	<th>id</th>
-			                <th>Value1</th>
-			                <th>Value2</th>
-		            </tr>
-			        </tfoot> -->
-				</table>
-
+				</div>
+				
+				
+				<div id="new-search">
+				<button type="button" id="myButton"  class="btn btn-primary">
+				  Make a new Look Up
+				</button>
+				</div>
+				
 
 
             </div>
@@ -95,7 +88,11 @@
 <script src="../../resources/js/lookUpResource.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-
+<script>
+  $('#myButton').on('click', function () {
+    location.reload();
+  })
+</script>
 
 </body>
 </html>

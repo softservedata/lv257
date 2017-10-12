@@ -70,12 +70,4 @@ public class ResourceRequestAdmController {
         return "resourceRequestHistory";
     }
 
-
-//    @RequestMapping(value = "/details/{id}", method = RequestMethod.GET)
-//    public String requestsDetails(@PathVariable int id, Model model) {
-//
-//        ResourceRequest request = requestService.getRequestById(id);
-//        model.addAttribute("request", new RequestDTO(request));
-//        return "resourceRequestDetails";
-//    }
 }

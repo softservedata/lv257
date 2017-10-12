@@ -10,7 +10,7 @@
 
 <body>
 
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 <div class="container">
     <ul class="nav nav-tabs">
         <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>
@@ -122,7 +122,7 @@
                 </button>
                 <h3 class="modal-title left-align">Response</h3>
                 <br>
-                <h5 class="modal-title" id="idRequest"></h5>
+                <h5 class="modal-title" id="idRequest" hidden></h5>
                 <br>
             </div>
             <div class="modal-body">
@@ -158,93 +158,91 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.foundation.min.js"></script>
 <script>
-//	$.extend(true, $.fn.dataTable.defaults, {
-//		"searching": true,
-//		"sPageButton": "paginate_button"
-//	});
-	$(document).ready(function () {
-		var table = $('#requests').DataTable({
-			'dom': 'rt<"bottom"lp><"clear">',
-			stateSave: true
-		});
-		table
-				.order([[5, 'asc'], [3, 'desc']])
-				.draw();
-		$("#search").on('keyup change', function () {
-			table
-					.columns(4)
-					.search(this.value)
-					.draw();
-		});
 
-		var currentRow;
-		$(document).on('click', '.responce', function () {
-			$('#idRequest').text($(this).parents('td').attr('data-id'));
-			currentRow = table.row($(this).parents('tr'));
-		})
+    $(document).ready(function () {
+        var table = $('#requests').DataTable({
+            'dom': 'rt<"bottom"lp><"clear">',
+            stateSave: true
+        });
+        table
+            .order([[5, 'asc'], [3, 'desc']])
+            .draw();
+        $("#search").on('keyup change', function () {
+            table
+                .columns(4)
+                .search(this.value)
+                .draw();
+        });
 
-		$('.assign').on('click', function () {
-			var cell = $(this).parents('td');
-			var id = cell.attr('data-id');
-			$.ajax(
-					{
-						type: "POST",
-						url: "assignRequest",
-						accept: "application/json",
-						data: {id: id},
-						success: function (responceRequest) {
-							table.cell(cell.closest('tr'), 3).data(responceRequest.update);
-							table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
+        var currentRow;
+        $(document).on('click', '.responce', function () {
+            currentRow = table.row($(this).parents('tr'));
+            $('#idRequest').text($(this).parents('td').attr('data-id'));
+        })
+
+        $('.assign').on('click', function () {
+            var cell = $(this).parents('td');
+            var id = cell.attr('data-id');
+            $.ajax(
+                {
+                    type: "POST",
+                    url: "assignRequest",
+                    accept: "application/json",
+                    data: {id: id},
+                    success: function (responceRequest) {
+                        table.cell(cell.closest('tr'), 3).data(responceRequest.update);
+                        table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
 //
-							cell.replaceWith(" <td data-order=\"1\" data-id=" + id + ">\n" +
-									"                       <a href=\"/resources/addType\">\n" +
-									"                           <button class=\"btn btn-primary\">Process</button>\n" +
-									"                       </a>\n" +
-									"                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +
-									"                                  data-toggle=\"modal\" data-target=\"#myModal\">Responce\n" +
-									"                       </button>" +
-									"              </td>"
-							);
-							table.destroy();
-							table = $('#requests').DataTable({
-								'dom': 'rt<"bottom"lp><"clear">',
-								stateSave: true
-							});
+                        cell.replaceWith(" <td data-order=\"1\" data-id=" + id + ">\n" +
+                            "                       <a href=\"/resources/addType\">\n" +
+                            "                           <button class=\"btn btn-primary\">Process</button>\n" +
+                            "                       </a>\n" +
+                            "                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +
+                            "                                  data-toggle=\"modal\" data-target=\"#myModal\">Responce\n" +
+                            "                       </button>" +
+                            "              </td>"
+                        );
+                        table.destroy();
+                        table = $('#requests').DataTable({
+                            'dom': 'rt<"bottom"lp><"clear">',
+                            stateSave: true
+                        });
 
-							table.order([[5, 'asc'], [3, 'desc']]).draw();
-						},
-                        error: function (result) {
-                            alert("This request has already assigned.\n" +
-                                "Please, reload page.");}
-					})
+                        table.order([[5, 'asc'], [3, 'desc']]).draw();
+                    },
+                    error: function (result) {
+                        alert("This request has already assigned.\n" +
+                            "Please, reload page.");
+                    }
+                })
 
-		})
+        })
 
 
-		$('.send').click(function () {
+        $('.send').click(function () {
 
-			var comment = $('#comment').val();
-			var purpose = ($('input[name=radioName]:checked', "#Purpose").val());
-			var id_request = $("#idRequest").text();
-			var message = {
-				id_request: id_request,
-				purpose: purpose,
-				comment: comment
-			}
-			$.ajax(
-					{
-						type: "POST",
-						contentType: "application/json",
-						url: "/resources/sendResponce",
-						accept: "text/plain",
-						data: JSON.stringify(message),
-						success: function (obj) {
-							alert("Your mail has already sent.")
-							$("#comment").val('');
-							currentRow.remove().draw();
-						}
-					})
-		})
-	});
+            var comment = $('#comment').val();
+            var purpose = ($('input[name=radioName]:checked', "#Purpose").val());
+            var id_request = $("#idRequest").text();
+            var message = {
+                id_request: id_request,
+                purpose: purpose,
+                comment: comment
+            }
+            $.ajax(
+                {
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/resources/sendResponce",
+                    accept: "text/plain",
+                    data: JSON.stringify(message),
+                    success: function (obj) {
+                        alert("Your mail has already sent.")
+                        $("#comment").val('');
+                        currentRow.remove().draw();
+                    }
+                })
+        })
+    });
 </script>
 </html>

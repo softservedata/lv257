@@ -84,23 +84,40 @@ public class OwnerServiceImpl implements OwnerService {
         return ownerDAO.findById(id).orElse(new Person());
     }
 
+    /**
+     * Builds dto with fields common to each owner type.
+     * All owner type specific info is stored in personalInfo field.
+     *
+     * @param owners - owners list
+     * @return list of owner dtos
+     */
     @Override
     public List<OwnerDTO> fromOwnerToOwnerDto(List<Owner> owners) {
         logger.info("Building OwnerDTO list");
 
         List<OwnerDTO> ownerDTOS = new ArrayList<>();
-        OwnerDTO ownerDTO;
+        final OwnerDTO[] ownerDTO = new OwnerDTO[1];
 
-        for (Owner owner: owners) {
-            ownerDTO = new OwnerDTO();
-            ownerDTO.setOwnerId(owner.getId())
+        owners.forEach(owner -> {
+            ownerDTO[0] = new OwnerDTO();
+            ownerDTO[0].setOwnerId(owner.getId())
                     .setOwnerType(owner.ownerType())
                     .setPhone(owner.getPhone())
                     .setAddressInfo(owner.addressInfo())
                     .setPersonalInfo(owner.customToString());
 
-            ownerDTOS.add(ownerDTO);
-        }
+            ownerDTOS.add(ownerDTO[0]);
+        });
+//        for (Owner owner: owners) {
+//            ownerDTO[0] = new OwnerDTO();
+//            ownerDTO[0].setOwnerId(owner.getId())
+//                    .setOwnerType(owner.ownerType())
+//                    .setPhone(owner.getPhone())
+//                    .setAddressInfo(owner.addressInfo())
+//                    .setPersonalInfo(owner.customToString());
+//
+//            ownerDTOS.add(ownerDTO[0]);
+//        }
         return ownerDTOS;
     }
 
@@ -111,7 +128,6 @@ public class OwnerServiceImpl implements OwnerService {
         if (readyQuery.isEmpty()){
             return new ArrayList<>();
         }
-
         return ownerDAO.findOwners(readyQuery);
     }
 

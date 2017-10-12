@@ -32,6 +32,12 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
+    public Privilege addPrivilege(Privilege s) {
+        Privilege privilege = privilegeDAO.addPrivilege(s);
+        return privilege;
+    }
+
+    @Override
     public Privilege addPrivilege(String s) {
         Privilege privilege = privilegeDAO.addPrivilege(new Privilege(s));
         return privilege;
@@ -40,6 +46,12 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Override
     public Privilege addPrivilege(String s, PrivilegeType privilegeType) {
         Privilege privilege = privilegeDAO.addPrivilege(new Privilege(s, privilegeType));
+        return privilege;
+    }
+
+    @Override
+    public Privilege addPrivilege(String name, String description, PrivilegeType privilegeType) {
+        Privilege privilege = privilegeDAO.addPrivilege(new Privilege(name, description, privilegeType));
         return privilege;
     }
 

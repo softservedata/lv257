@@ -6,7 +6,7 @@ $(function(){
 
         setTimeout(function(){
             $alert.fadeOut('slow');
-        }, 3000)
+        }, 5000)
     }
 
     var $requestForm = $('#requestForm');
@@ -17,25 +17,25 @@ $(function(){
         $requestForm.validate({
 
             rules : {
-                theme : {
+                resourceType : {
                     minlength : 4
                 },
-                details : {
+                description : {
                     minlength : 4
                 }
             },
             messages : {
-                name : {
-                    minlength : 'The request name should not be less than 2 letters'
+                error : {
+                    minlength : 'The request name should not be less than 4 letters'
                 },
-                description : {
-                    minlength : 'The request name should not be less than 2 letters'
+                error : {
+                    minlength : 'The request name should not be less than 4 letters'
                 }
             },
             errorElement : 'em',
             errorPlacement : function(error, element) {
                 //add the class of help-block
-                error.addClass('help-block');
+                error.addClass('red');
 
 
                 //add the error element after the input element

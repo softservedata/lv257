@@ -3,14 +3,22 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"/>
+    <%--&lt;%&ndash;<jsp:include page="metadata.jsp"/>&ndash;%&gt;--%>
     <%--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">--%>
+    <%--<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">--%>
+    <meta charset="UTF-8">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
 
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 
+<br>
+<br>
+<br>
             <div class="container">
 
                 <ul class="nav nav-tabs">
@@ -31,15 +39,14 @@
                 <div class="tab-content" id="TabContent">
 
                     <div class="tab-pane fade in active" id="NeedMoreDetails">
-                        <div class="table-responsive" style="overflow: auto;border: none">
+
                             <h3>List of requests</h3>
                             <br>
                             <table data-toggle="table" id="refinementRequest"
-                                   class="table table-hover table-condensed text-center table-bordered display">
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
                                 <br>
                                 <thead>
                                 <tr>
-
                                     <th data-field="requestedCategory">
                                         <div class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
@@ -53,7 +60,21 @@
                                     <th ></th>
                                 </tr>
                                 </thead>
-
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory">
+                                        <div class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register">
+                                        <div class="text-center">Who reviewed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="documentLink">
+                                        <div class="text-center">Information</div></th>
+                                    <th data-field="date">
+                                        <div class="text-center">Date</div></th>
+                                    <th ></th>
+                                </tr>
+                                </tfoot>
 
                                 <tbody>
                                  <c:forEach items="${refinementRequest}" var="request">
@@ -66,29 +87,29 @@
                                     <td>${request.update.toString().split('\\.')[0]}</td>
                                     <td>
                                         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Responce</button>
-                                        <div id="myModal" class="modal fade">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title " style="text-align: left">Response</h4>
-                                                        <h6 class="modal-title"  style="text-align: left">Comment:</h6>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form>
-                                                            <div class="form-group">
+                                        <%--<div id="myModal" class="modal fade">--%>
+                                            <%--<div class="modal-dialog">--%>
+                                                <%--<div class="modal-content">--%>
+                                                    <%--<div class="modal-header">--%>
+                                                        <%--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>--%>
+                                                        <%--<h4 class="modal-title " style="text-align: left">Response</h4>--%>
+                                                        <%--<h6 class="modal-title"  style="text-align: left">Comment:</h6>--%>
+                                                    <%--</div>--%>
+                                                    <%--<div class="modal-body">--%>
+                                                        <%--<form>--%>
+                                                            <%--<div class="form-group">--%>
 
-                                                                <textarea class="form-control" rows="5"></textarea>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                    <div class="modal-footer" >
+                                                                <%--<textarea class="form-control" rows="5"></textarea>--%>
+                                                            <%--</div>--%>
+                                                        <%--</form>--%>
+                                                    <%--</div>--%>
+                                                    <%--<div class="modal-footer" >--%>
 
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                        <%--<button type="button" class="btn btn-primary" data-dismiss="modal">Send</button>--%>
+                                                    <%--</div>--%>
+                                                <%--</div>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
                                     </td>
                                 </tr>
                                  </c:forEach>
@@ -97,17 +118,17 @@
 
                                 </tbody>
 
-                        </div>
+
 
                     </div>
 
                     <div class="tab-pane fade" id="Accepted">
 
-                        <div class="table-responsive">
+
                             <h3>List of processed requests</h3>
                             <br>
                             <table data-toggle="table" id="acceptedRequest"
-                                   class="table table-hover table-condensed text-center table-bordered display">
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
                                 <br>
                                 <thead>
                                 <tr>
@@ -125,7 +146,23 @@
                                         <div class="fht-cell"></div></th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory"><div
+                                            class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register"><div
+                                            class="text-center">Who processed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="status"><div
+                                            class="text-center">Date</div>
+                                        <div class="fht-cell"></div></th>
+                                </tr>
+                                </tfoot>
+
 
                                 <tbody>
                                 <c:forEach items="${acceptedRequest}" var="request">
@@ -140,22 +177,21 @@
 
                                 </tbody>
                             </table>
-                        </div>
+
 
                     </div>
 
                     <div class="tab-pane fade" id="Declined">
 
-                        <div class="table-responsive">
+
                             <h3>List of processed requests</h3>
 
                             <br>
                             <table data-toggle="table" id="declinedRequest"
-                                   class="table table-hover table-condensed text-center table-bordered display">
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
                                 <br>
                                 <thead>
                                 <tr>
-
                                     <th data-field="requestedCategory"><div
                                             class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
@@ -170,6 +206,23 @@
                                         <div class="fht-cell"></div></th>
                                 </tr>
                                 </thead>
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory"><div
+                                            class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register"><div
+                                            class="text-center">Who processed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="status"><div
+                                            class="text-center">Date</div>
+                                        <div class="fht-cell"></div></th>
+                                </tr>
+                                </tfoot>
+
                                 <tbody>
 
                                 <c:forEach items="${declinedRequest}" var="request">
@@ -183,7 +236,7 @@
 
                                 </tbody>
                             </table>
-                        </div>
+
                     </div>
 
                     <div class="tab-pane fade" id="NotReviewed">
@@ -191,11 +244,10 @@
                             <h3>List of requests</h3>
                         <br>
                             <table data-toggle="table" id="newRequest"
-                                   class="table table-hover table-condensed text-center table-bordered display">
+                                   class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
                                 <br>
                                 <thead>
                                 <tr>
-
                                     <th data-field="requestedCategory"><div
                                             class="text-center">RequestedCategory</div>
                                         <div class="fht-cell"></div></th>
@@ -211,8 +263,25 @@
 
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tfoot>
+                                <tr>
+                                    <th data-field="requestedCategory"><div
+                                            class="text-center">RequestedCategory</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="register"><div
+                                            class="text-center">Who processed</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="resourcesAdmin"><div
+                                            class="text-center">Details</div>
+                                        <div class="fht-cell"></div></th>
+                                    <th data-field="status"><div
+                                            class="text-center">Updated</div>
+                                        <div class="fht-cell"></div></th>
 
+                                </tr>
+                                </tfoot>
+
+                                <tbody>
                                 <c:forEach items="${newRequest}" var="request">
                                     <tr>
                                         <td>${request.resourceType}</td>
@@ -240,6 +309,9 @@
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 
 <script>
+
+    $( ".fixed-table-container" ).remove();
+    $( ".fixed-table-body" ).remove();
 
     $(document).ready(function() {
         $('#newRequest').DataTable();

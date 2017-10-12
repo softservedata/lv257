@@ -5,14 +5,13 @@ import com.softserve.edu.Resources.dao.RoleDAO;
 import com.softserve.edu.Resources.dao.UserDAO;
 import com.softserve.edu.Resources.dao.VerificationTokenDAO;
 import com.softserve.edu.Resources.dto.UserDTO;
-import com.softserve.edu.Resources.entity.Privilege;
-import com.softserve.edu.Resources.entity.User;
-import com.softserve.edu.Resources.entity.UserDetails;
-import com.softserve.edu.Resources.entity.VerificationToken;
+import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.exception.UserAlreadyExistException;
 import com.softserve.edu.Resources.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,9 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     UserDAO userDAO;
@@ -30,17 +32,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private VerificationTokenDAO verificationTokenDAO;
 
+    @Transactional
     public User getUserForSpring (String email){
         User user = userDAO.findByEmail(email);
-        ArrayList<Privilege> privileges = new ArrayList<>(user.getRole().getPrivileges());
-        System.out.println("Privileges extracted");
+        ArrayList<Privilege> privileges = new ArrayList<>();
+        for (Role role: user.getRoles()) {
+            privileges.addAll(role.getPrivileges());
+        }
         return user;
     }
-
-//    public User getUserById (Long id){
-//        User user = userDAO.findById(id);
-//        return user;
-//    }
 
     public User getUserById (Long id){
 
@@ -59,8 +59,8 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> getAllUsers(){
-        System.out.println(userDAO.getAllUsers());
-        return userDAO.getAllUsers();
+        List<User> users = userDAO.getAllUsers();
+        return users;
     }
 
     public User registerNewUserAccount(final UserDTO userDTO) throws UserAlreadyExistException {
@@ -70,11 +70,11 @@ public class UserServiceImpl implements UserService {
         }
 
         final User user = new User();
-
+        user.setRoles(new ArrayList<>());
         System.out.println("setting password from DTO");
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setUsername(userDTO.getEmail());
-        user.setRole(roleDAO.findByName("ROLE_USER"));
+        user.getRoles().add(roleDAO.findByName("ROLE_USER"));
         user.setUserDetails(new UserDetails());
         return userDAO.makePersistent(user);
     }

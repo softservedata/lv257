@@ -11,7 +11,7 @@
 
 <body>
 
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 <br/>
 
 <div id="bootstrap-overrides" class="wrapper">
@@ -31,7 +31,7 @@
 
                 <!-- MAIN FORM FOR REGISTRATING RESOURCE -->
 
-                <form role="form-horizontal" enctype="multipart/form-data">
+                <%--<form role="form-horizontal" enctype="multipart/form-data">--%>
 
                 <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
                 <div class="row">
@@ -244,7 +244,7 @@
                             </div>
                             <div class="modal-body">
 
-                                <jsp:include page="components/resourceAddressForm.jsp"/>
+                                <jsp:include page="dialogs/resourceAddressForm.jsp"/>
 
                             </div>
 
@@ -263,7 +263,7 @@
                             </div>
                             <div class="modal-body">
 
-                                <jsp:include page="components/searchResourceAddress.jsp"/>
+                                <jsp:include page="dialogs/searchResourceAddress.jsp"/>
 
                             </div>
 

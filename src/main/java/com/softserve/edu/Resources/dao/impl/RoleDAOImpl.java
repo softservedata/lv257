@@ -38,6 +38,13 @@ public class RoleDAOImpl implements RoleDAO  {
 
     }
 
+    @Override
+    //@SuppressWarnings("unchecked")
+    public Role updateRole (Role role) {
+        entityManager.persist(role);
+        return role;
+    }
+
 
 
 

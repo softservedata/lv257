@@ -1,4 +1,5 @@
 package com.softserve.edu.Resources.service.impl;
+
 import com.softserve.edu.Resources.util.RegistrationConfirmMail;
 import com.softserve.edu.Resources.util.ResponceMail;
 import org.apache.velocity.Template;
@@ -21,7 +22,7 @@ public class VelocityMailService {
     @Autowired
     VelocityEngine velocityEngine;
 
-    public void sendResponceMail(ResponceMail mail){
+    public void sendResponceMail(ResponceMail mail) {
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -34,8 +35,8 @@ public class VelocityMailService {
         velocityContext.put("register", mail.getReceiver());
         velocityContext.put("resourceType", mail.getResourceType());
         velocityContext.put("resourceAdmin", mail.getResourceAdmin());
-        velocityContext.put("status",mail.getStatus());
-        velocityContext.put("comment",mail.getComment());
+        velocityContext.put("status", mail.getStatus());
+        velocityContext.put("comment", mail.getComment());
 
         StringWriter stringWriter = new StringWriter();
 
@@ -46,7 +47,7 @@ public class VelocityMailService {
         mailSender.send(message);
     }
 
-    public void sendConfirmationMail(RegistrationConfirmMail mail){
+    public void sendConfirmationMail(RegistrationConfirmMail mail) {
 
         SimpleMailMessage message = new SimpleMailMessage();
 
@@ -57,9 +58,9 @@ public class VelocityMailService {
         Template template = velocityEngine.getTemplate("./templates/" + mail.getTemplateName());
 
         VelocityContext velocityContext = new VelocityContext();
-        velocityContext.put("host",mail.getHost());
-        velocityContext.put("token",mail.getToken());
-        velocityContext.put("userId",mail.getUserId());
+        velocityContext.put("host", mail.getHost());
+        velocityContext.put("token", mail.getToken());
+        velocityContext.put("userId", mail.getUserId());
 
         StringWriter stringWriter = new StringWriter();
 

@@ -4,10 +4,10 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"/>
+    <jsp:include page="../metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="../menu.jsp" />
 
 <br />
 
@@ -150,7 +150,10 @@
                                         <td>${listValue.id}</td>
                                         <td>Full name</td>
                                         <td>${listValue.username}</td>
-                                        <td>${listValue.role.description}</td>
+                                        <td><c:forEach var="role" items="${listValue.roles}">
+                                            ${role.name}
+                                        </c:forEach>
+                                        </td>
                                         <c:if test="${listValue.enabled=='true'}">
                                             <td>
                                                 <div class="checkbox" >

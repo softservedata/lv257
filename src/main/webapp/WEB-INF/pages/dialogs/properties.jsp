@@ -49,26 +49,6 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label for="searchable">Searchable</label>
-                <input type="checkbox" id="searchable" name="searchable">
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label for="required">Required</label>
-                <input type="checkbox" id="required" name="required">
-              </div>
-            </div>
-            <div class="col-sm-4">
-              <div class="form-group">
-                <label for="multivalued">Multivalued</label>
-                <input type="checkbox" id="multivalued" name="multivalued">
-              </div>
-            </div>
-          </div>
-          <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
                 <label for="units">Measuring units</label>

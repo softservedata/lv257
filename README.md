@@ -8,7 +8,7 @@ The application's backend is developed using Spring and JPA/Hibernate.
 
 View technology may vary for each framework. Here, JSP views are (re)used for most of current implementations. Thymeleaf is also planned to be used as alternative to JSPs.
 
-URLs under /users, /roles etc. must be accessible to only logged users with right privileges. This requirement implemented using Spring Security
+URLs under /users, /roles etc. must be accessibleChecked to only logged users with right privileges. This requirement implemented using Spring Security
 
 # Build and run
 1. Check out the project source code from github : git clone https://github.com/softservedata/lv257.git
