@@ -19,8 +19,8 @@ public class AppTest {
                 + Runtime.getRuntime().maxMemory() / (1024.0 * 1024.0) + "Mb");
         //
         System.out.println("Test done");
-        Assert.assertTrue(true);
-        //Assert.assertTrue(false);
+        //Assert.assertTrue(true);
+        Assert.assertTrue(false);
     }
     
 }
