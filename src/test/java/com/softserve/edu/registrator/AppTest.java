@@ -20,7 +20,8 @@ public class AppTest {
         //
         System.out.println("Test done");
         //Assert.assertTrue(true);
-        Assert.assertTrue(false);
+        //Assert.assertTrue(false);
+        Assert.assertTrue(1>2);
     }
     
 }
