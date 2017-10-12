@@ -61,7 +61,7 @@ public class User {
 
     public void setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
-        userDetails.setUser(java.util.Optional.of(this));
+        userDetails.setUser(this);
     }
 //    check Rostik
     public Long getId() {
