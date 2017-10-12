@@ -64,7 +64,7 @@ public class UserDetails {
 
     @OneToOne
     @JoinColumn(name = "id_user")
-    private Optional<User> user;
+    private User user;
 
     public UserDetails() {
     }
@@ -157,11 +157,15 @@ public class UserDetails {
         this.bankId = bankId;
     }
 
-    public Optional<User> getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Optional<User> user) {
+    /*public void setUser(Optional<User> user) {
+        this.user = user;
+    }
+*/
+    public void setUser(User user) {
         this.user = user;
     }
 
