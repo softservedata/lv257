@@ -10,9 +10,6 @@ public interface UserDetailsService {
 
     Optional<UserDetails> getUserDetailsByEmail(String email);
 
-    Optional<UserDetails> getUserDetailsByUserId(Long id);
+    UserDetails getUserDetailsByUserId(Long id);
 
-//    UserDetails getUserDetailsByUserId(Long id){
-
-//    public List<User> getAllUsersDetails();
 }

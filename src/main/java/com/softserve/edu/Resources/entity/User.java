@@ -63,7 +63,7 @@ public class User {
         this.userDetails = userDetails;
         userDetails.setUser(this);
     }
-//    check Rostik
+
     public Long getId() {
         return id;
     }

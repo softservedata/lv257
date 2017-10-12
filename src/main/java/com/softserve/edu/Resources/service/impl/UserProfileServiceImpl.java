@@ -34,8 +34,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public UserDetails getUserDetailsByDTO(UserProfileDTO userProfileDTO) {
         long id = userProfileDTO.getId();
-        Optional <UserDetails> createdUserDetailsEntity = userDetailsDAO.findByUserId(id);
-        UserDetails createdUserDetails = createdUserDetailsEntity.get();
+        UserDetails createdUserDetails = userDetailsDAO.findByUserId(id);
         createdUserDetails.setFirstName(userProfileDTO.getFirstName());
         return createdUserDetails;
     }
@@ -45,29 +44,19 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfileDTO createUserProfileDTO(Principal principal){
         String userName = principal.getName();
         User user = userService.findByEmail(userName);
-        Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
-//        Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
+        UserDetails details = userDetailsService.getUserDetailsByUserId(user.getId());
         UserProfileDTO userProfileDTO = new UserProfileDTO();
-        userProfileDTO.setId(details.get().getId());
-        userProfileDTO.setFirstName(details.get().getFirstName());
-        userProfileDTO.setMiddleName(details.get().getMiddleName());
-        userProfileDTO.setSecondName(details.get().getSecondName());
-        userProfileDTO.setPassportNumber(details.get().getPassportNumber());
-        userProfileDTO.setPassportSeries(details.get().getPassportSeries());
-        userProfileDTO.setPhone(details.get().getPhone());
-        userProfileDTO.setIdAddress(details.get().getIdAddress());
-        userProfileDTO.setBankId(details.get().getBankId());
-/*        userProfileDTO.setIssuedBy(details.get().getIssuedBy());
+        userProfileDTO.setId(details.getId());
+        userProfileDTO.setFirstName(details.getFirstName());
+        userProfileDTO.setMiddleName(details.getMiddleName());
+        userProfileDTO.setSecondName(details.getSecondName());
+        userProfileDTO.setPassportNumber(details.getPassportNumber());
+        userProfileDTO.setPassportSeries(details.getPassportSeries());
+        userProfileDTO.setPhone(details.getPhone());
+        userProfileDTO.setIdAddress(details.getIdAddress());
+        userProfileDTO.setBankId(details.getBankId());
 
-        int year = 2017;
-        int month = 10;
-        int day = 1;
-        GregorianCalendar calendar = new GregorianCalendar(year, month, day);
-        Date date = calendar.getTime();
-        userProfileDTO.setDateOfIssue(date);
-//        userProfileDTO.setDateOfIssue(details.get().getDateOfIssue());*/
-
-        userProfileDTO.setUser(details.get().getUser());
+        userProfileDTO.setUser(details.getUser());
         System.out.println();
         return userProfileDTO;
     }
@@ -92,18 +81,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public void saveUserProfile(UserProfileDTO userProfileDTO) {
 
-//        Optional<UserDetails> userDetails = getUserDetailsByDTO(userProfileDTO);
         UserDetails userDetails = getUserDetailsByDTO(userProfileDTO);
-
-/*        userDetails.get().setFirstName(userProfileDTO.getFirstName());
-        userDetails.get().setMiddleName(userProfileDTO.getMiddleName());
-        userDetails.get().setSecondName(userProfileDTO.getSecondName());
-        userDetails.get().setPassportNumber(userProfileDTO.getPassportNumber());
-        userDetails.get().setPassportSeries(userProfileDTO.getPassportSeries());
-        userDetails.get().setPhone(userProfileDTO.getPhone());
-        userDetails.get().setIdAddress(userProfileDTO.getIdAddress());
-        userDetails.get().setBankId(userProfileDTO.getBankId());
-        userDetails.setUser(userDAO.findById(userProfileDTO.getId()));*/
 
         userDetails.setFirstName(userProfileDTO.getFirstName());
         userDetails.setMiddleName(userProfileDTO.getMiddleName());

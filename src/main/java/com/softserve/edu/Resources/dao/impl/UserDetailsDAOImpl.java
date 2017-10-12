@@ -34,10 +34,10 @@ public class UserDetailsDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
         return querySingleResult(queryUserDetails, "username", email);
     }
 
-    public Optional<UserDetails> findByUserId(long id) {
+    public UserDetails findByUserId(long id) {
         Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id")
                 .setParameter("id", id);
-        Optional<UserDetails> userDetails = (Optional<UserDetails>) query.getSingleResult();
+        UserDetails userDetails = (UserDetails) query.getSingleResult();
         return userDetails;
     }
 
