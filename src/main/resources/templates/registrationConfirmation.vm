@@ -1,0 +1,2 @@
+Please follow the link and confirm your registration.
+${host}/registrationConfirm?token=${token}&userId=${userId}

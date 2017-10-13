@@ -1,10 +1,13 @@
 package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Represents legal document issued by authorities
@@ -14,67 +17,83 @@ import java.util.Set;
 public class Document {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+    private long id_document;
 
-    private long id;
+    @Column(name = "code")
+    private String code;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "extension")
+    private String fileExtension;
 
-    @Column(name = "series")
-    private String series;
-
-    @Column(name = "number")
-    private String number;
+    @Column(name = "URL")
+    private String documentsURL;
 
     @Transient
-    private Set<URL> copies = new HashSet<>();
-
+    private MultipartFile file;
 
     public Document() {
+        this.code = "file" + UUID.randomUUID().toString().substring(26).toUpperCase();
+
     }
 
     public long getId() {
-        return id;
+        return id_document;
     }
 
-    public Document setId(long id) {
-        this.id = id;
-        return this;
+    public void setId(long id_document) {
+        this.id_document = id_document;
     }
 
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    public Document setName(String name) {
-        this.name = name;
-        return this;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getSeries() {
-        return series;
+    public String getFileExtension() {
+        return fileExtension;
     }
 
-    public Document setSeries(String series) {
-        this.series = series;
-        return this;
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
-    public String getNumber() {
-        return number;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public Document setNumber(String number) {
-        this.number = number;
-        return this;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
-//    public Set<URL> getCopies() {
-//        return new HashSet<>();
-//    }
 
-//    public Document setCopies(Set<URL> copies) {
-//       // this.copies = copies;
-//        return this;
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Document)) return false;
+
+        Document document = (Document) o;
+
+        if (id_document != document.id_document) return false;
+        if (getCode() != null ? !getCode().equals(document.getCode()) : document.getCode() != null) return false;
+        return getFileExtension() != null ? getFileExtension().equals(document.getFileExtension()) : document.getFileExtension() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id_document ^ (id_document >>> 32));
+        result = 31 * result + (getCode() != null ? getCode().hashCode() : 0);
+        result = 31 * result + (getFileExtension() != null ? getFileExtension().hashCode() : 0);
+        return result;
+    }
+
+    public String getDocumentsURL() {
+        return documentsURL;
+    }
+
+    public void setDocumentsURL(String documentsURL) {
+        this.documentsURL = documentsURL;
+    }
 }

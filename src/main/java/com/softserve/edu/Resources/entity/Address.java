@@ -1,9 +1,8 @@
 package com.softserve.edu.Resources.entity;
 
-import com.softserve.edu.Resources.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.softserve.edu.Resources.Constants;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -22,20 +21,22 @@ public class Address {
 
     @Id()
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+    @JsonProperty("addressId")
     private long id;
 
     @NotEmpty
-    @Length(max = 10, message = "Country name is too big.")
+    @Length(max = 30, message = "Country name is too big.")
     @JsonProperty("country")
     private String country;
 
     @NotEmpty
-    @Size(max = 7)
+    @Size(min = 5, max = 30)
     @JsonProperty("region")
     private String region;
 
     @JsonProperty("district")
     @NotEmpty
+    @Size(min = 5, max = 30)
     private String district;
 
     @JsonProperty("postal_index")
@@ -45,10 +46,12 @@ public class Address {
 
     @NotEmpty
     @JsonProperty("locality")
+    @Size(min = 5, max = 30)
     private String locality;
 
     @NotEmpty
     @JsonProperty("street")
+    @Size(min = 5, max = 30)
     private String street;
 
     @Min(1)
@@ -62,8 +65,7 @@ public class Address {
     @JsonProperty("apartment")
     private int apartment;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "address", fetch = FetchType.EAGER)
     private List<Owner> owners;
 
     public Address() {
@@ -74,6 +76,10 @@ public class Address {
         return id;
     }
 
+    public Address setId(long id) {
+        this.id = id;
+        return this;
+    }
     public String getCountry() {
         return country;
     }
@@ -155,17 +161,19 @@ public class Address {
         return this;
     }
 
-    public List<Owner> getOwners() {
-        return owners;
-    }
-
-    public Address setOwners(List<Owner> owners) {
-        this.owners = owners;
+    public Address addOwner(Owner owner){
+        this.owners.add(owner);
         return this;
     }
 
-    public Address addOwner(Owner owner){
-        this.owners.add(owner);
+    // here, cause on field doesn't work
+    @JsonIgnore
+    public List<Owner> getOwner() {
+        return owners;
+    }
+
+    public Address setOwner(List<Owner> owners) {
+        this.owners = owners;
         return this;
     }
 
@@ -179,12 +187,12 @@ public class Address {
         if (id != address.id) return false;
         if (building != address.building) return false;
         if (apartment != address.apartment) return false;
-        if (country != null ? !country.equals(address.country) : address.country != null) return false;
-        if (region != null ? !region.equals(address.region) : address.region != null) return false;
+        if (!country.equals(address.country)) return false;
+        if (!region.equals(address.region)) return false;
         if (district != null ? !district.equals(address.district) : address.district != null) return false;
-        if (postalIndex != null ? !postalIndex.equals(address.postalIndex) : address.postalIndex != null) return false;
-        if (locality != null ? !locality.equals(address.locality) : address.locality != null) return false;
-        if (street != null ? !street.equals(address.street) : address.street != null) return false;
+        if (!postalIndex.equals(address.postalIndex)) return false;
+        if (!locality.equals(address.locality)) return false;
+        if (!street.equals(address.street)) return false;
         if (block != null ? !block.equals(address.block) : address.block != null) return false;
         return owners != null ? owners.equals(address.owners) : address.owners == null;
     }
@@ -192,12 +200,12 @@ public class Address {
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + country.hashCode();
+        result = 31 * result + region.hashCode();
         result = 31 * result + (district != null ? district.hashCode() : 0);
-        result = 31 * result + (postalIndex != null ? postalIndex.hashCode() : 0);
-        result = 31 * result + (locality != null ? locality.hashCode() : 0);
-        result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + postalIndex.hashCode();
+        result = 31 * result + locality.hashCode();
+        result = 31 * result + street.hashCode();
         result = 31 * result + building;
         result = 31 * result + (block != null ? block.hashCode() : 0);
         result = 31 * result + apartment;
@@ -222,15 +230,13 @@ public class Address {
     }
 
     public String customToString(){
-        return "Address: " +
-                country + ", " +
+        return  country + ", " +
                 region + ", " +
                 district + ", " +
                 postalIndex + ", " +
                 locality + ", " +
                 street + ", " +
-                building + ", " +
-                block + ", " +
+                building + (block.isEmpty()? ", " : ", " + block + ", " ) +
                 apartment + ".";
     }
 }

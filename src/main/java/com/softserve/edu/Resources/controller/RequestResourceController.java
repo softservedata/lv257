@@ -1,7 +1,10 @@
 package com.softserve.edu.Resources.controller;
 
+import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
+import com.softserve.edu.Resources.service.impl.DocumentService;
 import com.softserve.edu.Resources.service.impl.RequestService;
+import com.softserve.edu.Resources.util.FileUpload;
 import com.softserve.edu.Resources.util.FileUploadUtility;
 import com.softserve.edu.Resources.validator.UploadFileValidator;
 import org.slf4j.Logger;
@@ -9,12 +12,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import static com.softserve.edu.Resources.entity.ResourceRequest.Status.*;
 
 
 @Controller
@@ -23,63 +28,64 @@ public class RequestResourceController {
 
     @Autowired
     RequestService requestService;
+    @Autowired
+    DocumentService documentService;
 
     private static final Logger logger = LoggerFactory.getLogger(RequestResourceController.class);
 
     @RequestMapping(value="/request", method= RequestMethod.GET)
-    public ModelAndView sendResourcesRequests(@RequestParam(value = "operation", required = false) String operation) {
-
-        requestService.getRequestsForRegistrar();
-
-        ModelAndView mv = new ModelAndView("sendRequest");
+    public String sendResourcesRequests(ModelMap mv, @RequestParam(value = "operation", required = false) String operation) {
 
         ResourceRequest nRequest = new ResourceRequest();
+        Document nDocument = new Document();
 
-        mv.addObject("request", nRequest);
-        mv.addObject("userClickSendRequest", true);
-        mv.addObject("title", "Send Request");
+        mv.addAttribute("mRequest", nRequest);
+        mv.addAttribute("document", nDocument);
+        mv.addAttribute("userClickSendRequest", true);
+        mv.addAttribute("title", "Send Request");
 
-       if(operation != null){
+        if(operation != null){
             if(operation.equals("request")){
-                mv.addObject("message", "Request sent successfully!");
+                mv.addAttribute("message", "Request sent successfully!");
             }
         }
 
-        return mv;
+        return "sendRequest";
     }
 
     @RequestMapping(value="/request", method=RequestMethod.POST)
-    public String handleRequestSubmission(@Valid @ModelAttribute("request") ResourceRequest mRequest, BindingResult results,
-                                          Model model, HttpServletRequest httpRequest) throws Exception {
+    public String handleRequestSubmission(@Valid @ModelAttribute("mRequest") ResourceRequest mRequest,
+                                          BindingResult requestResults, @ModelAttribute("document") Document document,
+                                          BindingResult documentResults, Model model)
+                                          throws Exception {
 
         //check if there are any errors
-        new UploadFileValidator().validate(mRequest, results);
+        new UploadFileValidator().validate(document, documentResults);
 
-
-        if(results.hasErrors()){
-            //model.addAttribute("userClickSendRequest", true);
+        if(requestResults.hasErrors() || documentResults.hasErrors()){
+            model.addAttribute("userClickSendRequest", true);
             model.addAttribute("title", "Send Request");
             model.addAttribute("message", "Validation failed for sending request!");
 
             return "sendRequest";
         }
 
-        requestService.fillUpRequest(mRequest);
-
         logger.info(mRequest.toString());
 
-        if(!mRequest.getFile().getOriginalFilename().equals("")){
-            FileUploadUtility.uploadFile(httpRequest, mRequest.getFile(),mRequest.getCode());
-        }
+        documentService.fillUpDocument(document);
+        requestService.fillUpRequest(mRequest, document);
 
-       return "redirect:/resources/request?operation=request";
+        return "redirect:/resources/request?operation=request";
     }
 
     @RequestMapping(value={"/story"}, method= RequestMethod.GET)
     public String sendRegistrarRequests(Model model) {
 
-        model.addAttribute("gRequest", requestService.getRequestsForRegistrar());
-        model.addAttribute("title", "Story of Request");
+        model.addAttribute("newRequest", requestService.filterByStatus(requestService.getRequestsForRegistrar(), NEW));
+        model.addAttribute("acceptedRequest", requestService.filterByStatus(requestService.getRequestsForRegistrar(), ACCEPTED));
+        model.addAttribute("declinedRequest", requestService.filterByStatus(requestService.getRequestsForRegistrar(), DECLINED));
+        model.addAttribute("refinementRequest", requestService.filterByStatus(requestService.getRequestsForRegistrar(), TO_REFINEMENT));
+        model.addAttribute("title", "Story of Requests");
 
         return "requestHistory";
     }
@@ -91,9 +97,18 @@ public class RequestResourceController {
         ResourceRequest request = requestService.getRequestById(id);
         model.addAttribute("theme", request.getResourceType());
         model.addAttribute("info", request.getDescription());
-        model.addAttribute("code", request.getCode());
+        model.addAttribute("extension", request.getDocument().getFileExtension());
+        model.addAttribute("documentURL", request.getDocument().getDocumentsURL());
         model.addAttribute("title", "Info about Request");
 
         return "infoRequest";
+    }
+
+    @RequestMapping(value = {"/spinnerRequest"}, method = RequestMethod.POST)
+    public @ResponseBody
+    String spinnerFadeOut() {
+
+        return "Spinner Time Out";
+
     }
 }

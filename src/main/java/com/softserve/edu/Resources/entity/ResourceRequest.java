@@ -1,14 +1,12 @@
-package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
+package com.softserve.edu.Resources.entity;
+import com.softserve.edu.Resources.Constants;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.persistence.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Table(name = "RESOURCE_REQUEST")
@@ -21,10 +19,11 @@ public class ResourceRequest {
     @Column(name = "id_request")
     private long id;
 
-    @Column(name = "code", nullable = false)
-    private String code;
+    @OneToOne (cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_document")
+    private Document document;
 
-    @Column(name = "resourceType", nullable = false)
+    @Column(name = "resourceType")
     @NotBlank(message = "Please, enter new type of resource!")
     private String resourceType;
 
@@ -51,101 +50,99 @@ public class ResourceRequest {
         NEW, ACCEPTED, DECLINED, TO_REFINEMENT;
     }
 
-    @Transient
-    private MultipartFile file;
-
     public ResourceRequest(){
-        this.code = "PRD" + UUID.randomUUID().toString().substring(26).toUpperCase();
+
     }
 
     public ResourceRequest(String resourceType, String description, User register, User resourcesAdmin,
-                           Status status, Date update) {
+                           Status status, Date update, Document document) {
         this.resourceType = resourceType;
         this.description = description;
         this.register = register;
         this.update = update;
         this.status = status;
         this.resourcesAdmin = resourcesAdmin;
-    }
+        this.document = document;
 
-    public MultipartFile getFile() {
-        return file;
-    }
-
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public ResourceRequest setId(long id) {
         this.id = id;
+        return this;
+    }
+
+    public Document getDocument() {
+        return document;
+    }
+
+    public ResourceRequest setDocument(Document document) {
+        this.document = document;
+        return this;
     }
 
     public String getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(String resourceType) {
+    public ResourceRequest setResourceType(String resourceType) {
         this.resourceType = resourceType;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public ResourceRequest setDescription(String description) {
         this.description = description;
+        return this;
     }
 
     public User getRegister() {
         return this.register;
     }
 
-    public void setRegister(User register) {
+    public ResourceRequest setRegister(User register) {
         this.register = register;
+        return this;
     }
 
     public User getResourcesAdmin() {
         return resourcesAdmin;
     }
 
-    public void setResourcesAdmin(User resourcesAdmin) {
+    public ResourceRequest setResourcesAdmin(User resourcesAdmin) {
         this.resourcesAdmin = resourcesAdmin;
+        return this;
     }
 
     public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public ResourceRequest setStatus(Status status) {
         this.status = status;
+        return this;
     }
 
     public Date getUpdate() {
         return update;
     }
 
-    public void setUpdate(Date update) {
+    public ResourceRequest setUpdate(Date update) {
         this.update = update;
+        return this;
     }
-
 
     @Override
     public String toString() {
         return "ResourceRequest{" +
-                "id_request=" + id +
-                ", code='" + code + '\'' +
+                "id=" + id +
+                ", document=" + document +
                 ", resourceType='" + resourceType + '\'' +
                 ", description='" + description + '\'' +
                 ", register=" + register +
@@ -153,5 +150,37 @@ public class ResourceRequest {
                 ", status=" + status +
                 ", update=" + update +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ResourceRequest that = (ResourceRequest) o;
+
+        if (id != that.id) return false;
+        if (!document.equals(that.document)) return false;
+        if (!resourceType.equals(that.resourceType)) return false;
+        if (!description.equals(that.description)) return false;
+        if (!register.equals(that.register)) return false;
+        if (resourcesAdmin != null ? !resourcesAdmin.equals(that.resourcesAdmin) : that.resourcesAdmin != null)
+            return false;
+        if (status != that.status) return false;
+        return update.equals(that.update);
+    }
+
+    @Override
+    public int hashCode() {
+
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (document == null ? 0 : document.hashCode());
+        result = 31 * result + (resourceType == null ? 0 : resourceType.hashCode());
+        result = 31 * result + (description == null  ? 0 : description.hashCode());
+        result = 31 * result + (register == null ? 0 : register.hashCode());
+        result = 31 * result + (resourcesAdmin != null ? resourcesAdmin.hashCode() : 0);
+        result = 31 * result + (status == null ? 0 : status.hashCode());
+        result = 31 * result + (update == null ? 0 : update.hashCode());
+        return result;
     }
 }

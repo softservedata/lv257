@@ -10,8 +10,8 @@ import java.io.File;
 
 public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    public static String location = "/tmp/resources/uploads";
-    private static final int maxFileSize = 5 * 1024 * 1024; // 5 MB
+    public static String location = "/resources/upload";
+    private static final int maxFileSize = 2 * 1024 * 1024; // 2 MB
 
 
     @Override
@@ -32,16 +32,18 @@ public class SpringWebAppInitializer extends AbstractAnnotationConfigDispatcherS
     @Override
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
         registration.setMultipartConfig(
-                new MultipartConfigElement(location, maxFileSize, maxFileSize * 2, maxFileSize / 2)
+                new MultipartConfigElement(location, maxFileSize, maxFileSize * 5, maxFileSize / 2)
         );
     }
 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
-        super.onStartup(servletContext);
+
 
         location = ((File) servletContext.getAttribute("javax.servlet.context.tempdir")).getAbsolutePath();
+        super.onStartup(servletContext);
 
+        servletContext.addListener(new SessionListener());
         //31.08.2017
         //TODO after first initialization to fulfill tables in DB with testing data(privileges, roles, users, resources etc )
 

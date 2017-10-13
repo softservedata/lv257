@@ -1,5 +1,4 @@
 package com.softserve.edu.Resources.entity;
-import com.softserve.edu.Resources.Constants;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -109,11 +108,15 @@ public class Company extends Owner {
     }
 
     @Override
+    public String ownerType() {
+        return "Company";
+    }
+
+    @Override
     public String customToString() {
-        return super.customToString() + " " +
-                organizationForm + " " +
+        return organizationForm + " " +
                 fullName + " " +
-                shortName + " " +
+                shortName + ", " +
                 ceo + ".";
     }
 }

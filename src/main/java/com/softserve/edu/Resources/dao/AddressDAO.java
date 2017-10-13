@@ -4,13 +4,10 @@ import com.softserve.edu.Resources.entity.Address;
 
 import java.util.List;
 
-public interface AddressDAO {
+public interface AddressDAO extends GenericDAO<Address, Long> {
 
-    void addAddress(Address address);
+    void deleteAddress(Address address);
 
-    Address getById(long id);
+    List<Address> findAddresses(String query);
 
-    void updateAddress(Address address);
-
-    List<Address> getAllAddresses();
 }

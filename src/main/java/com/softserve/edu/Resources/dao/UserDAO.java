@@ -3,16 +3,17 @@ package com.softserve.edu.Resources.dao;
 import com.softserve.edu.Resources.entity.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDAO {
 
-    User addUser(User user);
+    User makePersistent(User user);
 
     User findByEmail(String email);
 
-    User findById(long id);
+    Optional<User> findById(Long id);
 
-    void delete(User user);
+    void makeTransient(User user);
 
     List<User> getAllUsers();
 }

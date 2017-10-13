@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.lang.invoke.MethodHandles;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  *
@@ -18,7 +15,7 @@ import java.util.Optional;
 @Repository("propertyDAO")
 public class ResourcePropertyDAOImpl extends GenericDAOImpl<ResourceProperty, Long> implements ResourcePropertyDAO {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().getClass().getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
     protected ResourcePropertyDAOImpl() {
         super(ResourceProperty.class);
@@ -56,6 +53,10 @@ public class ResourcePropertyDAOImpl extends GenericDAOImpl<ResourceProperty, Lo
         return queryResultList(findByTitle, "units", units);
     }
 
+    @Override
+    public Set<Long> findAllIds() {
+        return new HashSet<>(em.createQuery("select rp.id from ResourceProperty rp", Long.class).getResultList());
+    }
 
 
 }

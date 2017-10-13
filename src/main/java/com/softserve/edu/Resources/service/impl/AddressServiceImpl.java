@@ -1,48 +1,87 @@
 package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.AddressDAO;
-import com.softserve.edu.Resources.dto.SelectInfoDTO;
+import com.softserve.edu.Resources.dto.SearchDTO;
+import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.service.AddressService;
+import com.softserve.edu.Resources.util.QueryBuilder;
+import com.softserve.edu.Resources.util.ValidationDTOUtility;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
 
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
 public class AddressServiceImpl implements AddressService {
 
+    static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
+
     @Autowired
     AddressDAO addressDAO;
 
+    @Autowired
+    private QueryBuilder queryBuilder;
+
+    @Autowired
+    private ValidationDTOUtility validationUtility;
+
     @Override
-    public void addAddress(Address address) {
-        addressDAO.addAddress(address);
+    public Address addAddress(Address address) {
+        logger.trace("Saving address:" + address);
+
+        return addressDAO.makePersistent(address);
     }
 
     @Override
     public Address getById(long id) {
-        return addressDAO.getById(id);
+        logger.trace("Retrieving address:" + id);
+
+        return addressDAO.findById(id).orElse(new Address());
     }
 
     @Override
-    public void updateAddress(Address address) {
-        addressDAO.updateAddress(address);
+    public Address updateAddress(Address address) {
+        logger.trace("Updating address:" + address);
+
+        return addressDAO.makePersistent(address);
+    }
+
+    @Override
+    public void deleteAddress(Address address) {
+        logger.trace("Deleting address:" + address);
+
+        addressDAO.deleteAddress(address);
     }
 
     @Override
     public List<Address> getAllAddresses() {
-        return addressDAO.getAllAddresses();
+        logger.trace("Retrieving all addresses");
+
+        return addressDAO.findAll();
     }
 
     @Override
-    public SelectInfoDTO fromAddressToDto(Address address) {
-        SelectInfoDTO infoDTO = new SelectInfoDTO();
-        infoDTO.setObjectId(address.getId());
-        infoDTO.setMessage(address.customToString());
+    public List<Address> findAddresses(SearchDTO searchDTO) {
+        String readyQuery = queryBuilder.buildQuery(searchDTO);
 
-        return infoDTO;
+        if (readyQuery.isEmpty()){
+            return new ArrayList<>();
+        }
+        return addressDAO.findAddresses(readyQuery);
+    }
+
+    @Override
+    public ValidationErrorDTO validationDTO(BindingResult result) {
+        logger.trace("Validating address with errors in fields:" + result.getFieldErrors());
+
+        return validationUtility.getErrorDTO(result);
     }
 }

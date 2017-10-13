@@ -6,21 +6,32 @@ import java.util.HashSet;
 import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-//@JsonIdentityInfo(generator = ObjectIdGenerat4ors.PropertyGenerator.class, property = "id")
-public class ResourceCategoryDTO {
+public class ResourceCategoryDTO{
+
+    @JsonView(Views.Categories.class)
     private Long id;
 
-    @JsonProperty("catname")
+    @JsonProperty("categoryname")
+    @JsonView(Views.Categories.class)
     private String categoryName;
 
     @JsonBackReference
-//    @JsonProperty("parent_id")
-//    @JsonIdentityReference(alwaysAsId = true)
+    @JsonView(Views.Categories.class)
     private ResourceCategoryDTO parentCategory;
 
     @JsonManagedReference
     @JsonProperty("children")
+    @JsonView(Views.Categories.class)
     private Set<ResourceCategoryDTO> childrenCategories = new HashSet<>();
+
+    @JsonManagedReference
+    @JsonProperty("restypes")
+    @JsonView(Views.CategoriesWithTypes.class)
+    private Set<ResourceTypeDTO> instantiatedResourceTypes = new HashSet<>();
+
+    @JsonProperty("hasTypes")
+    @JsonView(Views.Categories.class)
+    private boolean withResourceTypes;
 
     public Long getId() {
         return id;
@@ -54,12 +65,27 @@ public class ResourceCategoryDTO {
         this.childrenCategories = childrenCategories;
     }
 
+    public Set<ResourceTypeDTO> getInstantiatedResourceTypes() {
+        return instantiatedResourceTypes;
+    }
+
+    public void setInstantiatedResourceTypes(Set<ResourceTypeDTO> instantiatedResourceTypes) {
+        this.instantiatedResourceTypes = instantiatedResourceTypes;
+    }
+
+    public boolean isWithResourceTypes() {
+        return withResourceTypes;
+    }
+
+    public void setWithResourceTypes(boolean withResourceTypes) {
+        this.withResourceTypes = withResourceTypes;
+    }
+
     @Override
     public String toString() {
         return "ResourceCategoryDTO{" +
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
-                ", parentCategory=" + parentCategory +
                 '}';
     }
 
@@ -70,12 +96,15 @@ public class ResourceCategoryDTO {
 
         ResourceCategoryDTO that = (ResourceCategoryDTO) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         return categoryName.equals(that.categoryName);
     }
 
     @Override
     public int hashCode() {
-        return categoryName.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + categoryName.hashCode();
+        return result;
     }
 }
 

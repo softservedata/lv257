@@ -8,6 +8,11 @@ public class SelectInfoDTO {
     public SelectInfoDTO() {
     }
 
+    public SelectInfoDTO(long objectId, String message) {
+        this.objectId = objectId;
+        this.message = message;
+    }
+
     public long getObjectId() {
         return objectId;
     }
@@ -22,5 +27,13 @@ public class SelectInfoDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public String toString() {
+        return "SelectInfoDTO{" +
+                "objectId=" + objectId +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

@@ -20,10 +20,10 @@
     <script src="../js/jquery.nestable.js"></script>
     <script>
         $(document).ready(function () {
-            var updateOutput = function(e) {
+            var updateOutput = function (e) {
                 var list = e.length ? e : $(e.target),
                     output = list.data('output');
-                if(window.JSON) {
+                if (window.JSON) {
                     output.val(window.JSON.stringify(list.nestable('serialize')));//, null, 2));
                 }
                 else {
@@ -33,73 +33,73 @@
             };
 
             var json = [{
-                "id" : 773,
-                "catname" : "root",
-                "children" : [ {
-                    "id" : 774,
-                    "catname" : "branch1",
-                    "children" : [ {
-                        "id" : 776,
-                        "catname" : "leaf1_1",
-                        "children" : [ ],
-                        "level" : 2,
-                        "rootpath" : "/root/branch1/leaf1_1",
-                        "restypes" : null
+                "id": 773,
+                "catname": "root",
+                "children": [{
+                    "id": 774,
+                    "catname": "branch1",
+                    "children": [{
+                        "id": 776,
+                        "catname": "leaf1_1",
+                        "children": [],
+                        "level": 2,
+                        "rootpath": "/root/branch1/leaf1_1",
+                        "restypes": [{"typename": "type1_1_1"}, {"typename": "type1_1_2"}]
                     }, {
-                        "id" : 777,
-                        "catname" : "leaf1_2",
-                        "children" : [ ],
-                        "level" : 2,
-                        "rootpath" : "/root/branch1/leaf1_2",
-                        "restypes" : null
+                        "id": 777,
+                        "catname": "leaf1_2",
+                        "children": [],
+                        "level": 2,
+                        "rootpath": "/root/branch1/leaf1_2",
+                        "restypes": null
                     }, {
-                        "id" : 780,
-                        "catname" : "leaf1_3",
-                        "children" : [ ],
-                        "level" : 2,
-                        "rootpath" : "/root/branch1/leaf1_3",
-                        "restypes" : null
-                    } ],
-                    "level" : 1,
-                    "rootpath" : "/root/branch1",
-                    "restypes" : null
+                        "id": 780,
+                        "catname": "leaf1_3",
+                        "children": [],
+                        "level": 2,
+                        "rootpath": "/root/branch1/leaf1_3",
+                        "restypes": null
+                    }],
+                    "level": 1,
+                    "rootpath": "/root/branch1",
+                    "restypes": [{"typename": "typebr1_1"}, {"typename": "typebr1_2"}]
                 }, {
-                    "id" : 775,
-                    "catname" : "branch2",
-                    "children" : [ {
-                        "id" : 779,
-                        "catname" : "leaf2_2",
-                        "children" : [ ],
-                        "level" : 2,
-                        "rootpath" : "/root/branch2/leaf2_2",
-                        "restypes" : null
+                    "id": 775,
+                    "catname": "branch2",
+                    "children": [{
+                        "id": 779,
+                        "catname": "leaf2_2",
+                        "children": [],
+                        "level": 2,
+                        "rootpath": "/root/branch2/leaf2_2",
+                        "restypes": [{"typename": "type2_2_1"}, {"typename": "type2_2_2"}]
                     }, {
-                        "id" : 778,
-                        "catname" : "leaf2_1",
-                        "children" : [ ],
-                        "level" : 2,
-                        "rootpath" : "/root/branch2/leaf2_1",
-                        "restypes" : null
-                    } ],
-                    "level" : 1,
-                    "rootpath" : "/root/branch2",
-                    "restypes" : null
-                } ],
-                "level" : 0,
-                "rootpath" : "/root",
-                "restypes" : null
+                        "id": 778,
+                        "catname": "leaf2_1",
+                        "children": [],
+                        "level": 2,
+                        "rootpath": "/root/branch2/leaf2_1",
+                        "restypes": null
+                    }],
+                    "level": 1,
+                    "rootpath": "/root/branch2",
+                    "restypes": null
+                }],
+                "level": 0,
+                "rootpath": "/root",
+                "restypes": null
             }];
 
             // activate Nestable for list 1
-/*            $('#nestable').nestable({
-                json: json,
-                contentCallback: function(item) {
-                    var content = item.catname || '' ? item.catname : item.id;
-                    content += ' <i>(id = ' + item.id + ')</i>';
+            /*            $('#nestable').nestable({
+                            json: json,
+                            contentCallback: function(item) {
+                                var content = item.catname || '' ? item.catname : item.id;
+                                content += ' <i>(id = ' + item.id + ')</i>';
 
-                    return content;
-                }
-            }).on('change', updateOutput);*/
+                                return content;
+                            }
+                        }).on('change', updateOutput);*/
 
             // output initial serialised data
             updateOutput($('#nestable').data('output', $('#nestable-output')));
@@ -114,6 +114,11 @@
                     $('.dd').nestable('collapseAll');
                 }
             });
+
+//            $('body').append(ParseChildren(json));
+            var temp = [{"id": 1, "catname": "c"}, {"id": 2, "catname": "b"}, {"id": 3, "catname": "a"}];
+            var temp2 = sortJSON(temp, 'catname', '123');
+            ParseChildren(json);
         });
     </script>
 </head>
@@ -194,79 +199,144 @@
         <ol class="dd-list">
             <li class="dd-item rcategory" data-id="1">
                 <div>
-                <div class="dd-handle">Item 1<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
-            </button></span></div></div>
+                    <div class="dd-handle">Item 1<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                                  data-toggle="modal"
+                                                                                  data-target="#editProp"><span
+                            class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                            class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                            class="glyphicon glyphicon-remove"></span>
+            </button></span></div>
+                </div>
             </li>
             <li class="dd-item rcategory" data-id="2">
-                <div class="dd-handle">Item 2<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                <div class="dd-handle">Item 2<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                              data-toggle="modal"
+                                                                              data-target="#editProp"><span
+                        class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                        class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                        class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                 <ol class="dd-list">
                     <li class="dd-item rcategory" data-id="3">
-                        <div class="dd-handle">Item 3<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                        <div class="dd-handle">Item 3<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                                      data-toggle="modal"
+                                                                                      data-target="#editProp"><span
+                                class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                     </li>
                     <li class="dd-item rcategory" data-id="4">
-                        <div class="dd-handle">Item 4<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                        <div class="dd-handle">Item 4<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                                      data-toggle="modal"
+                                                                                      data-target="#editProp"><span
+                                class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                     </li>
                     <li class="dd-item rcategory" data-id="5">
-                        <div class="dd-handle">Item 5<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                        <div class="dd-handle">Item 5<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                                      data-toggle="modal"
+                                                                                      data-target="#editProp"><span
+                                class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                         <ol class="dd-list">
                             <li class="dd-item rtype" data-id="6">
-                                <div class="dd-handle">Item 6<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-list-alt"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                                <div class="dd-handle">Item 6<span class="pull-right"><button type="button"
+                                                                                              class="btn btn-link"
+                                                                                              data-toggle="modal"
+                                                                                              data-target="#editProp"><span
+                                        class="glyphicon glyphicon-list-alt"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                        class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                        class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                             </li>
                             <li class="dd-item rtype" data-id="7">
-                                <div class="dd-handle">Item 7<span class="pull-right"><button type="button" class="btn btn-link props" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-list-alt"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                                <div class="dd-handle">Item 7<span class="pull-right"><button type="button"
+                                                                                              class="btn btn-link props"
+                                                                                              data-toggle="modal"
+                                                                                              data-target="#editProp"><span
+                                        class="glyphicon glyphicon-list-alt"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                        class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                        class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                             </li>
                             <li class="dd-item rtype" data-id="8">
-                                <div class="dd-handle">Item 8<span class="pull-right"><button type="button" class="btn btn-link props" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-list-alt"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                                <div class="dd-handle">Item 8<span class="pull-right"><button type="button"
+                                                                                              class="btn btn-link props"
+                                                                                              data-toggle="modal"
+                                                                                              data-target="#editProp"><span
+                                        class="glyphicon glyphicon-list-alt"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                        class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                        class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                             </li>
                         </ol>
                     </li>
                     <li class="dd-item rcategory" data-id="9">
-                        <div class="dd-handle">Item 9<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                        <div class="dd-handle">Item 9<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                                      data-toggle="modal"
+                                                                                      data-target="#editProp"><span
+                                class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                     </li>
                     <li class="dd-item rcategory" data-id="10">
-                        <div class="dd-handle">Item 10<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                        <div class="dd-handle">Item 10<span class="pull-right"><button type="button"
+                                                                                       class="btn btn-link"
+                                                                                       data-toggle="modal"
+                                                                                       data-target="#editProp"><span
+                                class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                                class="glyphicon glyphicon-remove"></span>
             </button></span></div>
                     </li>
                 </ol>
             </li>
             <li class="dd-item" data-id="11">
-                <div class="dd-handle">Item 11<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                <div class="dd-handle">Item 11<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                               data-toggle="modal"
+                                                                               data-target="#editProp"><span
+                        class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                        class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                        class="glyphicon glyphicon-remove"></span>
             </button></span></div>
             </li>
             <li class="dd-item" data-id="12">
-                <div class="dd-handle">Item 12<span class="pull-right"><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-plus"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-edit"></span>
-            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span class="glyphicon glyphicon-remove"></span>
+                <div class="dd-handle">Item 12<span class="pull-right"><button type="button" class="btn btn-link"
+                                                                               data-toggle="modal"
+                                                                               data-target="#editProp"><span
+                        class="glyphicon glyphicon-plus"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                        class="glyphicon glyphicon-edit"></span>
+            </button><button type="button" class="btn btn-link" data-toggle="modal" data-target="#editProp"><span
+                        class="glyphicon glyphicon-remove"></span>
             </button></span></div>
             </li>
         </ol>
@@ -423,8 +493,8 @@
         </div>
     </div>
     <div class="pull-right">
-        <button class="btn">Cancel</button>
         <button class="btn btn-primary">Save</button>
+        <button class="btn">Cancel</button>
     </div>
 </div>
 <br>
@@ -442,5 +512,51 @@
 <script>$("#props").on('click', function () {
     $("#proptable").hide();
 })</script>
+<script>
+    function sortJSON(data, key, way) {
+        return data.sort(function (a, b) {
+            var x = a[key];
+            var y = b[key];
+            if (way === '123') {
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            }
+            if (way === '321') {
+                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+            }
+        });
+    }
+
+    function ParseChildren(data, level = 0) {
+//        var result = '<ul>';
+
+        for (var i = 0; i < data.length; i++) {
+//            result += '<li>' + data[i].catname + " Level: " + level + '</li>';
+            data = data.sort(function (a, b) {
+                var x = a['catname'];
+                var y = b['catname'];
+                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+            });
+            $('<li/>', {
+                'catname': data[i].catname,
+                text: data[i].catname + " Level: " + level,
+                appendTo: $('body')
+            });
+            var restypes = eval(data[i].restypes);
+            if (restypes) {
+                for (var j = 0; j < restypes.length; j++) {
+                    $('<li/>', {
+                        'typename': restypes[j].typename,
+                        text: restypes[j].typename + " Level: " + (level + 1),
+                        appendTo: $('body')
+                    });
+                }
+            }
+            if (data[i].children && data[i].children.length > 0)
+//                result += ParseChildren(data[i].children);
+                ParseChildren(data[i].children, level + 1);
+        }
+//        return result;/* + '</ul>';*/
+    }
+</script>
 </body>
 </html>

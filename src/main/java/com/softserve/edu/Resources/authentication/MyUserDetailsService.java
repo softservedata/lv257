@@ -10,17 +10,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -36,48 +38,39 @@ public class MyUserDetailsService implements UserDetailsService {
         boolean credentialsNonExpired = true;
         boolean accountNonLocked = true;
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, getAuthorities(user.getRole()));
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),user.getPassword(),
+                user.isEnabled(),
+                accountNonExpired,
+                credentialsNonExpired,
+                accountNonLocked,
+                getAuthorities(user.getRoles()));
     }
 
-    private final Collection<? extends GrantedAuthority> getAuthorities(Role role) {
-        return getGrantedAuthorities(getPrivileges(role));
+    private final Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
+        return getGrantedAuthorities(getPrivileges(roles));
     }
 
-    private final List<String> getPrivileges(Role role) {
-        final List<String> privileges = new ArrayList<String>();
-        final List<Privilege> collection = new ArrayList<Privilege>();
+    private final Set<String> getPrivileges(Collection<Role> roles) {
+        final Set<String> privileges = new HashSet<>();
 
-        collection.addAll(role.getPrivileges());
-
-        for (final Privilege item : collection) {
-            privileges.add(item.getName());
+        for (Role x: roles) {
+            //add all role names to privileges collection
+            privileges.add(x.getName());
+            //add all privileges names to privileges collection
+            for (Privilege item :x.getPrivileges()) {
+                privileges.add(item.getName());
+            }
         }
-
-        privileges.add(role.getName());
 
         return privileges;
     }
 
-    private final List<GrantedAuthority> getGrantedAuthorities(final List<String> privileges) {
+    private final List<GrantedAuthority> getGrantedAuthorities(final Set<String> privileges) {
         final List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         for (final String privilege : privileges) {
             authorities.add(new SimpleGrantedAuthority(privilege));
         }
         return authorities;
     }
-
-    //should be this service method here or be replaced to another service class?
-    /*@Transactional
-    User getUserForSpring (String email){
-        System.out.println(1);
-        User user = userDAO.findByEmail(email);
-        System.out.println(2);
-        Role role = user.getRole();
-        System.out.println(3);
-
-        //To start lazy initialization
-        ArrayList<Privilege> privileges = new ArrayList<>(role.getPrivileges());
-        System.out.println(4);
-        return user;
-    }*/
 }

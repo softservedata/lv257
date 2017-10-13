@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@page language="java"
         contentType="text/html; charset=UTF-8"
-        pageEncoding="UTF-8" %> s
+        pageEncoding="UTF-8" %>
 <%@page session="true"%>
 
 
@@ -11,19 +11,24 @@
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp" />
 
 <div class="container-fluid">
     <div class="container">
         <div class="row">
             <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
+            
+            
+            
+            
+            
                 <div class="dropdown">
                     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Choose type of ReSearch
+                        Choose type of Look Up
                         <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li class="active"><a href="${pageContext.request.contextPath}/lookup?lookupBy=byType">Looking up by type or Resource</a></li>
+                        <li><a href="${pageContext.request.contextPath}/lookup/resourceTypes">Looking up by type of Resource</a></li>
                         <li><a href="${pageContext.request.contextPath}/lookup?lookupBy=byOwner">Looking up by Owner</a></li>
 
                     </ul>

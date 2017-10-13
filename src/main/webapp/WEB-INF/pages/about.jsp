@@ -1,16 +1,25 @@
-<%@page session="false"%>
+<%@page session="false" %>
 <html>
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="_menu2.jsp" />
+<jsp:include page="menu.jsp"/>
 <br>
 <br>
 <br>
-<div class="container-fluid">
-    <h1>Resources is non-commercial government service for managing and keeping information about resources registered and located in Ukraine!</h1>
+<div class="container" style="text-align: center">
+    <h3>Resources is non-commercial government service <br>for managing and keeping information about resources in
+        Ukraine.</h3>
+
+
+    <p> This is centralized system for registration of resources of Ukraine.
+        <br> Enterprise open-source project intended to control process of registration of natural resources all over
+        Ukraine.
+        <br>The main goal of the project is to create centralized system of registration and search different resources
+        in Ukraine.
+    </p>
 </div>
 </body>
 </html>

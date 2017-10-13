@@ -4,7 +4,7 @@
   User: User
   Date: 01.09.2017
   Time: 18:10
-  To change this template use File | Settings | File Templates.
+  To change this templates use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
@@ -19,10 +19,12 @@
 <body>
 
 
-<jsp:include page="_menu2.jsp"/>
+<jsp:include page="menu.jsp"/>
 
 <div class="container">
     <ul class="nav nav-tabs">
+        <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>
+
         <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
@@ -31,7 +33,7 @@
 <div class="container">
 
     <div class="table-responsive">
-        <h2>List of processed Resource Type requests</h2>
+        <h3>Processed requests for resource type</h3>
 
         <table class="table table-hover table-condensed text-center table-bordered" id="requests">
             <thead>
@@ -83,12 +85,20 @@
 
 
             <c:forEach items="${resourceRequest}" var="request">
-                <tr name="simpleRequest" style="visibility: visible">
+                <c:choose>
+                <c:when test="${request.status=='ACCEPTED'}">
+                    <tr name="simpleRequest" class="success">
+                </c:when>
+                <c:otherwise>
+                    <tr name="simpleRequest" class="danger">
+                </c:otherwise>
+                </c:choose>
+
 
                     <td>${request.resourceType}</td>
-                    <td>${request.register.username}</td>
-                    <td>${request.update}</td>
-                    <td>${request.resourcesAdmin.username}</td>
+                    <td>${request.requesterName}</td>
+                    <td>${request.update.toString().split('\\.')[0]}</td>
+                    <td>${request.assignerName}</td>
                     <td>${request.status}</td>
 
                 </tr>
@@ -100,7 +110,7 @@
     <br>
     <div align="right">
 
-        <button class="btn btn-primary" onclick="history.back()">See new request</button>
+        <button class="btn btn-primary" onclick="history.back()">See new requests</button>
 
     </div>
 </div>

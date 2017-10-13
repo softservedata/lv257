@@ -1,53 +1,62 @@
 package com.softserve.edu.Resources.util;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
+import java.io.InputStream;
 
-public class FileUploadUtility {
-
-    private static final String ABS_PATH = "C:\\Users\\lenovo\\IdeaProjects\\trunk\\lv257\\src\\main\\webapp\\resources\\upload\\";
-    private static String REAL_PATH = "";
-    private static final Logger logger = LoggerFactory.getLogger(FileUploadUtility.class);
-
-    public static void uploadFile(HttpServletRequest httpRequest, MultipartFile file, String code) {
+public class FileUploadUtility extends FileUpload{
 
 
-        REAL_PATH = httpRequest.getSession().getServletContext().getRealPath("/resources/upload/");
+    public String uploadFile( MultipartFile file, String code) {
 
-        logger.info(REAL_PATH);
+       BasicAWSCredentials credentials = new BasicAWSCredentials("AKIAIRSMVLMUF2W4ZSAA", "guZpt9C/VXOHpi1UwAOMHR0kKeDybkWEzPbELVc9");
+       AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1)
+                                                .withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 
-        // to make sure all the directory exists. if not exists
-        // please create the directories
-        if (!new File(ABS_PATH).exists()) {
-            // create the directories
-            new File(ABS_PATH).mkdirs();
-        }
+        String bucketName = code.toLowerCase();
+        s3Client.createBucket(bucketName);
 
-        if (!new File(REAL_PATH).exists()) {
-            // create the directories
-            new File(REAL_PATH).mkdirs();
-        }
+        String url = "";
 
-        try {
+        try{
+            InputStream is = file.getInputStream();
+
+            ObjectMetadata objectMetadata = new ObjectMetadata();
             if(file.getContentType().equals("application/pdf")){
-                file.transferTo(new File(REAL_PATH + code + ".pdf"));
-                // project directory upload
-                file.transferTo(new File(ABS_PATH + code + ".pdf"));
-            } else {
-                // server upload
-                file.transferTo(new File(REAL_PATH + code + ".jpg"));
-                // project directory upload
-                file.transferTo(new File(ABS_PATH + code + ".jpg"));
+                objectMetadata.setContentType("application/pdf");
+                objectMetadata.setContentDisposition("inline");
+                code = code + ".pdf";
+            } else if(file.getContentType().equals("image/jpeg")){
+                code = code + ".jpg";
+            }else{
+                code = code + ".png";
             }
-        } catch (IOException e) {
 
+            s3Client.putObject(new PutObjectRequest(bucketName,code,is, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            //get a reference to the image object
+            S3Object s3Object = s3Client.getObject(new GetObjectRequest(bucketName,code));
+            //add to model
+            //redirectAttributes.addAttribute("picUrl",s3Object.getObjectContent().getHttpRequest().getURI().toString());
+            System.out.println(s3Object.getObjectContent().getHttpRequest().getURI().toString());
+             url = s3Object.getObjectContent().getHttpRequest().getURI().toString();
+        }catch(IOException e){
             e.printStackTrace();
         }
+        return url;
 
     }
+
 }
+
+
+

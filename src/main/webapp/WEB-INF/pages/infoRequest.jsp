@@ -5,29 +5,39 @@
 <html>
 <head>
     <title>${title}</title>
-    <jsp:include page="metadata.jsp"></jsp:include>
+    <jsp:include page="metadata.jsp"/>
 
 </head>
 <body>
 
-<jsp:include page="_menu2.jsp"/>
-<jsp:include page="resources.jsp" />
+
+<jsp:include page="menu.jsp"/>
 <br>
 
-<div class="container">
+<div class="container" >
+    <h2>Details</h2>
 
-    <h4>Requested category: ${theme}</h4>
+    <h3>Requested resource type:<span> ${theme}</span></h3>
 
-    <h4>Additional information: ${info}</h4>
-    <h4>Uploaded Document</h4>
+    <h3>Description:<span> ${info}</span> </h3>
+    <h3>Uploaded Document:</h3>
     <hr>
+    <c:if test = "${extension == 'jpeg'}">
     <div>
-        <img class="documentImg-view" src="/resources/upload/${code}.jpg"></div>
-    <%--<div>--%>
-        <%--<embed class="documentPdf-view" src="/resources/upload/${code}.pdf">--%>
-    <%--</div>--%>
-
-
+        <img class="documentImg-view" src="${documentURL}">
+    </div>
+    </c:if>
+    <c:if test = "${extension == 'pdf'}">
+    <div>
+        <iframe style="width: 80%; height: 600px; border: none;" src="${documentURL}"></iframe>
+        <%--<embed class="documentPdf-view" src="${documentURL}">--%>
+    </div>
+    </c:if>
+    <c:if test = "${extension == 'png'}">
+        <div>
+            <img class="documentImg-view" src="${documentURL}">
+        </div>
+    </c:if>
     <hr>
     <br>
     <button class="btn btn-primary" name="back" onclick="history.back()">Back</button>

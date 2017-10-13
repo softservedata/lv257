@@ -1,24 +1,16 @@
 package com.softserve.edu.Resources.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.stereotype.Repository;
-
 import com.softserve.edu.Resources.dao.ResourceDao;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.PropertyValue;
 import com.softserve.edu.Resources.entity.ResourceProperty;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.*;
 
 @Repository
 public class ResourceDaoImpl implements ResourceDao {
@@ -32,49 +24,50 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByResourceType(String sqlQuery, Map<String, String> valuesToSearch,
-            List<ResourceProperty> resourceProperties) {
+                                                             List<ConstrainedProperty> resourceProperties) {
 
         List<GenericResource> genResList = new ArrayList<GenericResource>();
+        List<Map<String, Object>> genResRows = new ArrayList<>();
 
-        Object[] args = new Object[valuesToSearch.size()];
+        if (!valuesToSearch.isEmpty()) {
 
-//        int i = 0;
-//
-//        for (Map.Entry<String, String> entry : valuesToSearch.entrySet()) {
-//            args[i++] = entry.getValue();
-//        }
-        
-        args = valuesToSearch.values().toArray();
-        
+            Object[] args = new Object[valuesToSearch.size()];
 
-        int[] argsTypes = new int[valuesToSearch.size()];
-        int i = 0;
-        for (String keyValue : valuesToSearch.keySet()) {
-            for (ResourceProperty property : resourceProperties) {
-                if (property.getColumnName().equals(keyValue)) {
-                    argsTypes[i++] = property.getValueType().getSqlType(); 
-                    break;
+            args = valuesToSearch.values().toArray();
+
+            int[] argsTypes = new int[valuesToSearch.size()];
+            int i = 0;
+            for (String keyValue : valuesToSearch.keySet()) {
+                for (ConstrainedProperty constrainedProperty : resourceProperties) {
+                    ResourceProperty property = constrainedProperty.getProperty();
+                    if (property.getColumnName().equals(keyValue)) {
+                        argsTypes[i++] = property.getValueType().sqlType;
+                        break;
+                    }
                 }
+
             }
+            i = 0;
 
+            genResRows = jdbcTemplate.queryForList(sqlQuery, args, argsTypes);
+
+        } else {
+            genResRows = jdbcTemplate.queryForList(sqlQuery);
         }
-        i = 0;
 
-        List<Map<String, Object>> genResRows = jdbcTemplate.queryForList(sqlQuery, args, argsTypes);
-       // it also possible to make with named parameters jdbcTemplate
+        // it also possible to make with named parameters jdbcTemplate
 
         for (Map<String, Object> mapRow : genResRows) {
             GenericResource genResource = new GenericResource();
 
             genResource.setId(Integer.parseInt(String.valueOf(mapRow.get("id"))));
-            genResource.setId_Address(Integer.parseInt(String.valueOf(mapRow.get("id_Address"))));
+            genResource.setId_Address(Integer.parseInt(String.valueOf(mapRow.get("id_address"))));
 
             Set<PropertyValue> propertyValues = new TreeSet<>();
 
-            for (ResourceProperty property : resourceProperties) {
-                PropertyValue propertyValue = new PropertyValue(property,
-                        String.valueOf(mapRow.get(property.getColumnName())));
-                
+            for (ConstrainedProperty constrainedProperty : resourceProperties) {
+                String value = String.valueOf(mapRow.get(constrainedProperty.getProperty().getColumnName()));
+                PropertyValue propertyValue = new PropertyValue(constrainedProperty, value);
                 propertyValues.add(propertyValue);
             }
 
