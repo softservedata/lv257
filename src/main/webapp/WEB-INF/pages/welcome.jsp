@@ -15,12 +15,12 @@
             registered and located in Ukraine</h5>
     </div>
     <div>
-        <img width="100%" height="auto" src="/resources/img/welcome.png">
+        <img width="100%" height="auto" src="${pageContext.request.contextPath}/resources/img/welcome.png">
     </div>
 
 
 </div>
-<jsp:include page="${contextPath}footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>

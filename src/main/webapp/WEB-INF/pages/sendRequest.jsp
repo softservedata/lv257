@@ -4,7 +4,10 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<spring:url var="js" value="/resources/js"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
+<spring:url var="js" value="${contextPath}/resources/js"/>
+
 <html>
 <head>
     <title>${title}</title>
@@ -25,7 +28,7 @@
 <body>
 <jsp:include page="menu.jsp"/>
 
-<img src="/resources/img/ajax-loader.gif" id="img" style="display:none"/>
+<img src="${contextPath}/resources/img/ajax-loader.gif" id="img" style="display:none"/>
 
 <style>
     .red    {
@@ -41,10 +44,10 @@
             <div class="container">
 
                 <ul class="nav nav-tabs">
-                    <li><a href="${pageContext.request.contextPath}/resources/registration">Register
+                    <li><a href="${contextPath}/resources/registration">Register
                         resource</a></li>
-                    <li class="active"><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
-                    <li><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
+                    <li class="active"><a href="${contextPath}/resources/request">Send request</a></li>
+                    <li><a href="${contextPath}/resources/story">History</a></li>
                 </ul>
                 <br>
 
@@ -59,7 +62,7 @@
 
                 </c:if>
                 <%--@elvariable id="request" type=""--%>
-                <form id="requestForm" action="${pageContext.request.contextPath}/resources/request"
+                <form id="requestForm" action="${contextPath}/resources/request"
                          method="POST" enctype="multipart/form-data">
 
                     <div class="form-group" >
@@ -119,16 +122,16 @@
        </div>
 
 
-       <script src="${js }/jquery.validate.js"></script>
+       <script src="${js}/jquery.validate.js"></script>
 
-       <script src="${js }/messageTimeOut.js"></script>
+       <script src="${js}/messageTimeOut.js"></script>
 
        <script>
            $('#submit').click(function() {
                $('#img').show(); //<----here
                $.ajax({
                    type: "POST",
-                   url: "spinnerRequest",
+                   url: projectPathPrefix + "spinnerRequest",
                    accept: "application/json",
                    data: {id: id},
                    success: function (result) {

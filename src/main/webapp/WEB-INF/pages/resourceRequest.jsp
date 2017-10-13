@@ -186,7 +186,7 @@
             $.ajax(
                 {
                     type: "POST",
-                    url: "assignRequest",
+                    url: projectPathPrefix + "assignRequest",
                     accept: "application/json",
                     data: {id: id},
                     success: function (responceRequest) {
@@ -233,7 +233,7 @@
                 {
                     type: "POST",
                     contentType: "application/json",
-                    url: "/resources/sendResponce",
+                    url: projectPathPrefix + "/resources/sendResponce",
                     accept: "text/plain",
                     data: JSON.stringify(message),
                     success: function (obj) {

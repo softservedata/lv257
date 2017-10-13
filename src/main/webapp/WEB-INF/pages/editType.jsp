@@ -5,16 +5,16 @@
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Add Resource definition</title>
-    <jsp:include page="${contextPath}metadata.jsp"/>
+    <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="${contextPath}menu.jsp"/>
+<jsp:include page="menu.jsp"/>
 <div class="container-fluid">
     <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 main">
 
@@ -22,7 +22,7 @@
             <ul class="nav nav-tabs">
                 <li><a href="ResourcesView.html">View</a></li>
                 <li class="active"><a href="#">Add</a></li>
-                <li><a href="${pageContext.request.contextPath}/resources/requests">Requests</a></li>
+                <li><a href="/resources/requests">Requests</a></li>
             </ul>
         </div>
         <div class="container">
@@ -136,18 +136,11 @@
     </div>
 </div>
 
-<jsp:include page="${contextPath}footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 
 <script>
 	$("#addition-btn").click(function (e) {
 		$('#addition-btn, #definition-form').toggleClass('hidden');
-	});
-
-	$('input[type="text"]').blur(function(e) {
-		let input = e.target;
-		let trimmedValue = $.trim($(input).val());
-		$(input).val(trimmedValue);
-		input.checkValidity();
 	});
 </script>
 <script src="${contextPath}/resources/js/resourceTypes.js"></script>

@@ -2,22 +2,22 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Managing Resource Types</title>
-    <jsp:include page="${contextPath}metadata.jsp"/>
+    <jsp:include page="metadata.jsp"/>
 </head>
 <body>
-<jsp:include page="${contextPath}_menu2.jsp" />
+<jsp:include page="_menu2.jsp" />
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${contextPath}ResourcesView.html">View</a></li>
+        <li><a href="ResourcesView.html">View</a></li>
         <li><a href="#">Add</a></li>
         <li class="active"><a href="#">Edit</a></li>
-        <li><a href="${contextPath}ResourcesRequest.html">Requests <span class="badge">3</span></a></li>
+        <li><a href="ResourcesRequest.html">Requests <span class="badge">3</span></a></li>
     </ul>
     <br>
     <h3>Manage resource types and its properties</h3>

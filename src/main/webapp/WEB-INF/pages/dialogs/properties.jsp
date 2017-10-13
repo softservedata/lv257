@@ -1,4 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <div id="available-props-modal" class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -59,7 +62,7 @@
               <div class="form-group">
                 <label for="units">Units contraction</label>
                 <input type="text" class="form-control" id="units-short" name="unitsShort" placeholder="e.g. cc"
-                title="e.g. cc (cubical centimeters)" pattern="[a-zA-Z \.-]{10}">
+                       title="e.g. cc (cubical centimeters)" pattern="[a-zA-Z \.-]{10}">
               </div>
             </div>
             <div class="col-sm-4">
@@ -81,16 +84,27 @@
               </div>
             </div>
           </div>
-          <div class="pull-right">
-            <button type="button" id="save-btn" class="btn btn-primary" data-dismiss="modal">Save</button>
-            <button type="button" id="save-add-btn" class="btn btn-primary" data-dismiss="modal">Save/Add New</button>
-          </div>
-          <div class="clearfix"></div>
         </form>
+        <div class="col-sm-12">
+          <div class="pull-left">
+            <div class="row">
+              <input type="checkbox" id="reset-on-save"/>
+              <label for="reset-on-save" style="font-weight: 100;">Reset fields after Save</label>
+            </div>
+            <div class="row">
+              <input type="checkbox" id="keep-on-save"/>
+              <label for="keep-on-save" style="font-weight: 100;">Continuous editing</label>
+            </div>
+          </div>
+          <div class="pull-right">
+            <button type="button" id="save-btn" class="btn btn-primary" <%--data-dismiss="modal"--%>>Save</button>
+            <button type="button" id="save-add-btn" class="btn btn-primary" <%--data-dismiss="modal"--%>>Save/Add New</button>
+          </div>
+        </div>
+        <div class="clearfix"></div>
       </div>
     </div>
   </div>
 </div>
 
-<%--<script src="${contextPath}/resources/js/FormSerializePlugin.js"></script>--%>
 <script src="${contextPath}/resources/js/properties.js"></script>

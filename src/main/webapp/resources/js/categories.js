@@ -171,7 +171,7 @@ $(document).ready(function () {
      */
     function loadCategories(lastSelectedId) {
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
-        $.get("/resources/" + urlSuffix, function (data) {
+        $.get(projectPathPrefix + "/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             if (lastSelectedId) {
                 selectLastItem(lastSelectedId);
@@ -249,7 +249,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/categories",
+            url: projectPathPrefix + "/resources/categories",
             accept: "application/json",
             data: json,
             success: function (jqXHR) {

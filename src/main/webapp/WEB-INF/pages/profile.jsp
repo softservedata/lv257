@@ -5,6 +5,8 @@
 <%@page session="true" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
+
 <html>
 <head>
     <title>Profile</title>
@@ -20,10 +22,10 @@
                 <div class="panel-heading">Personal settings</div>
                 <div class="panel-body selected">Profile</div>
                 <div class="panel-body"><a class="menu-link"
-                                           href="${pageContext.request.contextPath}/account">Account</a></div>
-                <div class="panel-body"><a class="menu-link" href="${pageContext.request.contextPath}/pendingRequests">Pending
+                                           href="${contextPath}/account">Account</a></div>
+                <div class="panel-body"><a class="menu-link" href="${contextPath}/pendingRequests">Pending
                     requests</a></div>
-                <div class="panel-body"><a class="menu-link" href="${pageContext.request.contextPath}/bookmarks">Bookmarks</a>
+                <div class="panel-body"><a class="menu-link" href="${contextPath}/bookmarks">Bookmarks</a>
                 </div>
             </div>
         </div>
@@ -32,7 +34,7 @@
         <H3>Public profile</H3>
         <hr>
 
-        <th:form th:action="${pageContext.request.contextPath}/profile" th:object="${userDetails}" method="post">
+        <th:form th:action="${contextPath}/profile" th:object="${userDetails}" method="post">
         <p><input type="submit" value="Submit"/><input type="reset" value="Reset"/></p>
 
         <div class="row">
@@ -101,7 +103,7 @@
     <br>
     <div class="row">
         <div class="pull-right">
-            <img src="<c:url value="/resources/img/NoFoto.png"/> "
+            <img src="${contextPath}/resources/img/NoFoto.png"
                  alt="your advertisement could be here" width="200px" height="200"/>
         </div>
         <div><br></div>

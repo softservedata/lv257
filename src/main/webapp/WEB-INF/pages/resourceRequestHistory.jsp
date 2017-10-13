@@ -1,16 +1,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 01.09.2017
-  Time: 18:10
-  To change this templates use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
-    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.16/js/dataTables.foundation.min.js"></script>
 
@@ -18,14 +14,13 @@
 
 <body>
 
-
 <jsp:include page="menu.jsp"/>
 
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>
+        <li><a href="${contextPath}/resources/view">View</a></li>
 
-        <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
+        <li><a href="${contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>
 </div>
