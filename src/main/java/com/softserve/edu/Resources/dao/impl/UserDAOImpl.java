@@ -41,7 +41,7 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO
         return user;
     }
 
-     public List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         List<?> list = entityManager.createQuery("SELECT p FROM User p").getResultList();
         return (List<User>) list;
     }
