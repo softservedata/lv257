@@ -1,6 +1,5 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>--%>
-<%@ taglib prefix="th" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 
 <%@page session="true" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -34,99 +33,104 @@
         <H3>Public profile</H3>
         <hr>
 
-        <th:form th:action="${contextPath}/profile" th:object="${userDetails}" method="post">
-        <p><input type="submit" value="Submit"/><input type="reset" value="Reset"/></p>
+        <sf:form id="requestForm" modelAttribute="details" action="${pageContext.request.contextPath}/profile"
+                 method="POST">
 
-        <div class="row">
-            <div class="font-bold">Email</div>
-            <input name="id" class="form-control" value="${pageContext.request.userPrincipal.name}"/>
-        </div>
+            <div class="form-group">
+                <div class="font-bold">E-mail</div>
+                <input class="form-control" value="${pageContext.request.userPrincipal.name}" readonly/>
+            </div>
 
-        <div class="row">
-            <div class="font-bold">First Name</div>
-            <input name="first_name" class="form-control" value="${details.first_name}"/>
-        </div>
+            <div class="form-group">
+                <sf:input path="id" cssClass="hidden"/>
+            </div>
 
-        <div class="row">
-            <div class="font-bold">Last Name</div>
-            <input name="second_name" class="form-control" value="${details.second_name}"/>
-        </div>
+            <div class="form-group">
+                <div class="font-bold">First name</div>
+                <sf:input type="text" path="firstName" class="form-control" placeholder="First name"/>
+            </div>
 
-        <div class="row">
-            <div class="font-bold">Middle Name</div>
-            <input name="middle_name" class="form-control" value="${details.middle_name}"/>
-        </div>
+            <div class="form-group">
+                <div class="font-bold">Second name</div>
+                <sf:input type="text" path="secondName" class="form-control" placeholder="Second name"/>
+            </div>
 
-        <div class="row">
-            <div class="font-bold">Passport series</div>
-            <input name="passport_series" class="form-control" value="${details.passport_series}"/>
-        </div>
+            <div class="form-group">
+                <div class="font-bold">Middle name</div>
+                <sf:input type="text" path="middleName" class="form-control" placeholder="Middle name"/>
+            </div>
 
-        <div class="row">
-            <div class="font-bold">Passport series</div>
-            <input name="passport_number" class="form-control" value="${details.passport_number}"/>
-        </div>
+            <div class="form-group">
+                <div class="font-bold">Passport series</div>
+                <sf:input type="text" path="passportSeries" class="form-control" placeholder="Passport series"/>
+            </div>
 
-        <div class="row">
-            <div class="font-bold">Issued by</div>
-            <input name="issued_by" class="form-control" value="${details.issued_by}"/>
-        </div>
+            <div class="form-group">
+                <div class="font-bold">Passport number</div>
+                <sf:input type="text" path="passportNumber" class="form-control" placeholder="Passport number"/>
+            </div>
+            <%--
 
-        <div class="row">
-            <div class="font-bold">Date of issue</div>
-            <input name="date_of_issue" class="form-control" value="${details.date_of_issue}"/>
-        </div>
+                    <div class="form-group">
+                        <div class="font-bold">issuedBy</div>
+                        <sf:input type="text" path="issuedBy" class="form-control" placeholder="issuedBy"/>
+                    </div>
 
-        <div class="row">
-            <div class="font-bold">Date of issue</div>
-            <input name="bank_id" class="form-control" value="${details.bank_id}"/>
-        </div>
+                    <div class="form-group">
+                        <div class="font-bold">dateOfIssue</div>
+                        &lt;%&ndash;datetime-local&ndash;%&gt;
+                        <sf:input type="date" path="dateOfIssue" class="form-control" placeholder="dateOfIssue"/>
+                        &lt;%&ndash;<sf:input type="date" path="dateOfIssue" class="form-control" placeholder="dateOfIssue"/>&ndash;%&gt;
+                    </div>
+
+            --%>
+
+            <div class="form-group">
+                <div class="font-bold">ID address</div>
+                <sf:input type="text" path="idAddress" class="form-control" placeholder="ID address"/>
+            </div>
+
+            <div class="form-group">
+                <div class="font-bold">Phone</div>
+                <sf:input type="text" path="phone" class="form-control" placeholder="Phone"/>
+            </div>
+
+            <div class="form-group">
+                <div class="font-bold">Bank ID</div>
+                <sf:input type="text" path="bankId" class="form-control" placeholder="Bank ID"/>
+            </div>
+            <br>
+            <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary">Save changes</button>
+        </sf:form>
     </div>
 
-    <div class="row">
+    <div class="col-md-3 float-left">
         <br>
-        <button type="submit" class="btn btn-default pull-right">Update profile</button>
-    </div>
-    <div class="row">
-        <br>
-    </div>
-    <H3 class="font-bold">Document copies</H3>
-    <hr>
-    <div class="row">
-        <span class="font-bold">Uploaded documents: </span><span id="uploadedDocsCount">0</span>
-        <button class="btn btn-default pull-right">Upload</button>
-        <button class="btn btn-default pull-right disabled">Review</button>
+        <div class="row">
+            <div class="pull-right">
+                <%--<img src="<c:url value="/resources/img/NoFoto.png"/> "--%>
+                    <img src="${contextPath}/resources/img/NoFoto.png"
+                     alt="your advertisement could be here" width="200px" height="200"/>
+            </div>
+            <div><br></div>
+            <br>
+            <button class="btn btn-default pull-right">Upload foto</button>
+
+            <div class="container">
+                <c:if test="${not empty message}">
+
+                    <div class="alert alert-success alert-dismissible">
+
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+                            ${message}
+                    </div>
+                </c:if>
+            </div>
+        </div>
     </div>
 
 </div>
-<div class="col-md-3 float-left">
-    <br>
-    <div class="row">
-        <div class="pull-right">
-            <img src="${contextPath}/resources/img/NoFoto.png"
-                 alt="your advertisement could be here" width="200px" height="200"/>
-        </div>
-        <div><br></div>
-        <br>
-
-        <button class="btn btn-default pull-right">Upload foto</button>
-
-        <div class="container">
-            <c:if test="${not empty message}">
-
-                <div class="alert alert-success alert-dismissible">
-
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-
-                        ${message}
-                </div>
-            </c:if>
-        </div>
-    </div>
-
-    </th:form>
-</div>
-<%--</div>--%>
 
 </body>
 </html>
