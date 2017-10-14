@@ -43,11 +43,11 @@ public class ResourceTypeManagementController {
 
     @RequestMapping(value = "/editType", method = RequestMethod.GET)
     public String editResource(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
-        model.addAttribute("id", id);
-        model.addAttribute("env", env);
+//        model.addAttribute("env", env);
         if (id == 0) {
             return "editType";
         } else {
+            model.addAttribute("id", id);
             ////todo: populate resourceType{id}
             return "editType";
         }
