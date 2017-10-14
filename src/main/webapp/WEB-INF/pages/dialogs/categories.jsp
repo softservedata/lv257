@@ -1,3 +1,4 @@
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 <div id="categories-view" class="modal fade" tabindex="-1" data-focus-on="input:first" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">

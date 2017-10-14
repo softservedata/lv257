@@ -18,6 +18,10 @@ import java.util.Set;
 *
 * */
 @Entity
+@NamedEntityGraph(
+        name = "TypesProperties",
+        attributeNodes = {@NamedAttributeNode("properties")}
+        )
 @Table(name = "RESOURCE_TYPES")
 public class ResourceType {
 
@@ -153,8 +157,8 @@ public class ResourceType {
     @Override
     public String toString() {
         return "ResourceType [id=" + id + ", typeName=" + typeName + ", tableName=" + tableName + ", category="
-                + category + ", properties=" + properties + ", instantiated=" + instantiated + "]";
+                       + category + ", properties=" + properties + ", instantiated=" + instantiated + "]";
     }
 
-    
+
 }

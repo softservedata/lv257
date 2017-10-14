@@ -86,7 +86,7 @@ $(document).ready(function(){
 	    if (typeof resourceTypeId != 'undefined')
 		    $.ajax({    
 		        type: 'GET',
-		        url: '/lookUp/resourceProperties/'+ resourceTypeId,
+		        url: projectPathPrefix + '/lookUp/resourceProperties/'+ resourceTypeId,
 		        contentType: 'application/json; charset=UTF-8',
 		        dataType: 'json',
 		        success: function(result){    

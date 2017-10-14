@@ -136,20 +136,25 @@ $(document).ready(function () {
     }
 
     /**
-     * Find option with specified ID
+     * Select item of selectlist by ID
      * @param id - ID of item("option") of component
-     * @returns {jQuery|HTMLElement}
      */
-    function getSelectlistItemById(id) {
-        return $('[data-value="' + id + '"]');
+    function selectItemById(id) {
+        let item = $('[data-value="' + id + '"]').find('a');
+        if (item) {
+            item.click();
+        } else {
+            $('#default-item > a').click();
+            $('#selected-label').text('Select ' + defaultSelectedLabel);
+        }
     }
 
     /**
      * Select item of selectlist by ID, if it still exist after managing categories in Nestable
      * @param id - ID of item("option") of component
      */
-    function selectLastItem(id) {
-        let lastSelectedItem = getSelectlistItemById(id).find('a');
+    function selectLastItemAfterManagingCategories(id) {
+        let lastSelectedItem = $('[data-value="' + id + '"]').find('a');
         if (lastSelectedItem.text() === $('[data-id="' + id + '"]').attr('data-categoryname')) {
             lastSelectedItem.click();
         }
@@ -166,7 +171,7 @@ $(document).ready(function () {
      */
     function loadCategories(lastSelectedId) {
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
-        $.get("/resources/" + urlSuffix, function (data) {
+        $.get(projectPathPrefix + "/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             if (lastSelectedId) {
                 selectLastItem(lastSelectedId);
@@ -244,7 +249,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/categories",
+            url: projectPathPrefix + "/resources/categories",
             accept: "application/json",
             data: json,
             success: function (jqXHR) {

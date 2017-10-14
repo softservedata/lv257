@@ -8,7 +8,7 @@
                 ),
                 @org.hibernate.annotations.Parameter(
                         name = "initial_value",
-                        value = "100000"
+                        value = "200000"
                 ),
                 @org.hibernate.annotations.Parameter(
                         name = "increment_size",
