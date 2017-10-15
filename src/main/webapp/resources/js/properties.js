@@ -1,5 +1,5 @@
 //load dependency
-$.getScript('/resources/js/FormSerializePlugin.js');
+$.getScript(projectPathPrefix + '/resources/js/FormSerializePlugin.js');
 
 // var assignedProperties = [];
 initialProperties = assignedProperties.slice();
@@ -32,7 +32,7 @@ function updateAvailablePropertiesList() {
 		return assignedProperty.property;
 	});
 
-	let availableProperties = $.grep(existentProperties, function (property) {
+	availableProperties = $.grep(existentProperties, function (property) {
 		return $.inArray(property, unconstrainedProperties) < 0;
 	}, false);
 
@@ -90,6 +90,7 @@ function addAssignedProperties($properties) {
 		$newPropertyRow.removeClass('hidden');
 		$('tbody', '#assigned-props').append($newPropertyRow);
 	});
+
 	updateAssignedPropsTable();
 }
 
@@ -102,7 +103,7 @@ function resetNewPropertyForm() {
  * load existent ResourceProperties
  */
 function loadExistentProperties() {
-	$.get("/api/resources/properties", function (properties) {
+	$.get(projectPathPrefix + "/api/resources/properties", function (properties) {
 		existentProperties = properties;
 		updateAvailablePropertiesList();
 	}, "json");
@@ -147,7 +148,7 @@ function loadExistentProperties() {
 		return function (e) {
 			let $targetPropertyRow = $(e.target).closest('tr');
 			let targetProperty = $targetPropertyRow.data('property');
-			targetProperty[constraint] = e.target.checked();
+			targetProperty[constraint] = $(e.target).is(':checked');
 		}
 	}
 
@@ -155,7 +156,7 @@ function loadExistentProperties() {
 	$propertyRow.find('.required').click(constraintClickHandler('required'));
 
 	// set Searchable template handler
-	$propertyRow.find('.required').click(constraintClickHandler('searchable'));
+	$propertyRow.find('.searchable').click(constraintClickHandler('searchable'));
 
 	let $addBtn = $('#add-props-btn');
 	/**
@@ -188,7 +189,7 @@ function loadExistentProperties() {
 (function initNewPropertyDialog() {
 
 	// load availaple property value types
-	$.get("/api/resources/properties/valueTypes", function (valueTypes) {
+	$.get(projectPathPrefix + "/api/resources/properties/valueTypes", function (valueTypes) {
 		$.each(valueTypes, function (i, type) {
 			$('#value-type').append($('<option>', {
 				value: type.valueType,
@@ -197,8 +198,13 @@ function loadExistentProperties() {
 			}));
 		});
 
-		// $('#new-property-modal').on('hide', resetNewPropertyForm());
-		// $('#existent-props').on('show', updateAvailablePropertiesList());
+		/*if ($('#reset-on-save').val()) {
+			resetNewPropertyForm();
+		}
+
+		if (!$('#keed-on-save').val()) {
+			resetNewPropertyForm();
+		}*/
 
 		/**
 		 * value type select change handler
@@ -250,7 +256,7 @@ function loadExistentProperties() {
 		$.ajax({
 			type: "POST",
 			contentType: "application/json",
-			url: "/api/resources/property",
+			url: projectPathPrefix + "/api/resources/property",
 			accept: "application/json",
 			data: JSON.stringify(property),
 			success: function (response) {
@@ -269,7 +275,12 @@ function loadExistentProperties() {
 		e.preventDefault();
 		let property = composeProperty();
 		requestSaveProperty(property, false);
-		// resetNewPropertyForm();
+		if (!$('#keep-on-save').is(':checked')) {
+			$('#new-property-modal').modal('hide');
+		}
+		if ($('#reset-on-save').is(':checked')) {
+			resetNewPropertyForm();
+		}
 	});
 
 	/**
@@ -279,6 +290,12 @@ function loadExistentProperties() {
 		e.preventDefault();
 		let property = composeProperty();
 		requestSaveProperty(property, true);
+		if (!$('#keep-on-save').is(':checked')) {
+			$('#new-property-modal').modal('hide');
+		}
+		if (!$('#keep-on-save').is(':checked')) {
+			resetNewPropertyForm();
+		}
 	});
 
 })();

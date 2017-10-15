@@ -2,7 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <html>
 <head><title>Sign Up</title>
     <jsp:include page="metadata.jsp"/>
@@ -24,7 +25,7 @@
 <br>
 
 
-            <img width="100%" height="auto" src="/resources/img/welcome.png">
+            <img width="100%" height="auto" src="${contextPath}/resources/img/welcome.png">
         </div>
 
 
@@ -66,7 +67,7 @@
         <%--</div>--%>
     <%--</footer>--%>
 </div>
-<jsp:include page="${contextPath}footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>

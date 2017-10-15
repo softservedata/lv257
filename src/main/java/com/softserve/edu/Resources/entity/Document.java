@@ -1,12 +1,10 @@
-package com.softserve.edu.Resources.entity;import com.softserve.edu.Resources.Constants;
+package com.softserve.edu.Resources.entity;
+import com.softserve.edu.Resources.Constants;
 
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-import java.net.URL;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+
 import java.util.UUID;
 
 /**

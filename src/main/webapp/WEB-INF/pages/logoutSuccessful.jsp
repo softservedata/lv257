@@ -1,3 +1,5 @@
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <html>
 <head>
     <title>Logout</title>
@@ -13,8 +15,8 @@
     <h2>Logging out was successful</h2>
     <h4>You are welcome to visit us again</h4>
 
-    <img src="/resources/img/welcome.png" width="100%">
+    <img src="${contextPath}/resources/img/welcome.png" width="100%">
 </div>
-<jsp:include page="${contextPath}footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

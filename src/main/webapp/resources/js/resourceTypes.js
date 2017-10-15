@@ -1,21 +1,45 @@
 var resourceType = {};
 var isModeCloning;
 
-function getResourceType(isCloning) {
+function updateView() {
+		//todo: update assigned properties table
+}
+
+function updateResourceType(actualType, isCloned) {
+	resourceType = actualType;
+	// eliminate id in cloned Resource Type (or it should be set to 0 just as for a newly created definition)
+	if (isCloned)
+		delete resourceType['id'];
+	if (resourceType.id) {
+		resourceTypeID = resourceType.id;
+	}
+	initialType = $.extend(true, {}, resourceType);
+	let typePropertyIDs = $.map(resourceType.properties, function (constrainedProperty, i) {
+		return id;
+	})
+	assignedProperties = $.grep(availableProperties, function (property) {
+		return $.inArray(property.id, typePropertyIDs);
+	})
+	updateView();
+}
+
+function getResourceType(isCloned) {
 	$.ajax({
-		type: "POST",
+		type: "GET",
 		contentType: "application/json",
 		accept: "application/json",
-		url: "/api/resource/" + resourceTypeID,
+		url: projectPathPrefix + "/api/resource/" + resourceTypeID,
 		success: function (response) {
-			resourceType = response;
-			if (isCloning)
-				delete resourceType['id'];
+			updateResourceType(response, isCloned)
 		},
 		error: function (jqxhr, status, exception) {
-			console.log(status + ' ' + exception);
+			console.log('Error has occured: ' + status + ' ' + exception);
 		}
 	});
+}
+
+function showSuccessMessage() {
+
 }
 
 function composeResourceType() {
@@ -41,15 +65,16 @@ function composeResourceType() {
 	resourceType = {
 		id:resourceTypeID,
 		categoryId: categoryID,
-		categoryId: categoryID,
 		typeName: $('#type-name').val(),
 		tableName: $('#table-name').val(),
 		properties: constrainedPropertiesBrief
 	}
-	// console.log(JSON.stringify(resourceType));
 	return resourceType;
 }
 
+/**
+ * init model for current view
+ */
 (function uploadResourceType() {
 
 	isModeCloning = resourceTypeID < 0;
@@ -62,24 +87,33 @@ function composeResourceType() {
 
 })();
 
+//
 $('#categories-select').change(function(e) {
 	categoryID = $(e.target).data('selectedID');
 });
 
 // set Save button handler
 $('#save-type-btn').click(function (e) {
-	let restourceType = composeResourceType();
 	$.ajax({
 		type: "POST",
 		contentType: "application/json",
-		url: "/api/resource",
+		url: projectPathPrefix + "/api/resource",
 		accept: "application/json",
-		data: JSON.stringify(restourceType),
+		data: JSON.stringify(composeResourceType()),
 		success: function (response, status, jqxhr) {
-			// updateCurrentType
+			updateResourceType(response);
+			showSuccessMessage();
 		},
 		error: function (jqxhr, status, exception) {
 			// provide error message
 		}
+	});
+
+	// set input handler trimming leading and tail spaces
+	$('input[type="text"]').blur(function(e) {
+		let input = e.target;
+		let trimmedValue = $.trim($(input).val());
+		$(input).val(trimmedValue);
+		input.checkValidity();
 	});
 });

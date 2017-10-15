@@ -20,5 +20,5 @@ public interface ResourceTypeDAO extends GenericDAO<ResourceType, Long> {
 
     ResourceType findWithPropertiesByID(Long resourceTypeID);
 
-
+    Optional<ResourceType> findById(Long id, boolean doFetch);
 }

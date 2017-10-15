@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--including JSP should define var ${typeSelectLabel} to set appropriate label--%>
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <label for="categories-select"><c:out value="${typeSelectLabel}"/></label>
 <div class="btn-group hierarchy-select" data-resize="auto" id="categories-select">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">

@@ -11,8 +11,6 @@ public interface UserDAO {
 
     User findByEmail(String email);
 
-//    User findById(long id);
-
     Optional<User> findById(Long id);
 
     void makeTransient(User user);

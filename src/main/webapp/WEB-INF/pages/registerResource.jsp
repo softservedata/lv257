@@ -244,7 +244,7 @@
                             </div>
                             <div class="modal-body">
 
-                                <jsp:include page="components/resourceAddressForm.jsp"/>
+                                <jsp:include page="dialogs/resourceAddressForm.jsp"/>
 
                             </div>
 
@@ -263,7 +263,7 @@
                             </div>
                             <div class="modal-body">
 
-                                <jsp:include page="components/searchResourceAddress.jsp"/>
+                                <jsp:include page="dialogs/searchResourceAddress.jsp"/>
 
                             </div>
 

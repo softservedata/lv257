@@ -1,28 +1,18 @@
 package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.PropertyValue;
 import com.softserve.edu.Resources.entity.ResourceProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NoResultException;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-
-import javax.persistence.NoResultException;
-import javax.sql.DataSource;
 
 @Repository("resourceTypeDAO")
 public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> implements ResourceTypeDAO {
@@ -82,10 +72,15 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
         return resourceType;
     }
 
+    @Override
+    public Optional<ResourceType> findById(Long id, boolean doFetch) {
+        if (!doFetch)
+            return super.findById(id);
+        // fetch with loadgraph hint
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("javax.persistence.loadgraph",  em.getEntityGraph("TypesProperties"));
+        return Optional.ofNullable(em.find(ResourceType.class, id, properties));
+    }
 
-    
-    
-    
-    
-    
+
 }

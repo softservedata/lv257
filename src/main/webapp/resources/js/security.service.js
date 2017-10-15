@@ -1,6 +1,6 @@
 function getPrivileges() {
 
-    var resourcesAPI = "http://localhost:8080/API/privilege/";
+    var resourcesAPI = projectPathPrefix+ "/api/privilege/";
     var data;
     //var data = {};
     /*data["query"] = $("#query").val();*/
@@ -90,7 +90,7 @@ function displayTable(data) {
 
 function getPrivileges2() {
 
-    var resourcesAPI = "http://localhost:8080/API/privilege/new/?rn=ROLE_ADMIN";
+    var resourcesAPI = projectPathPrefix + "/api/privilege/new/?rn=ROLE_ADMIN";
     var data;
     $.ajax({
         type : "GET",

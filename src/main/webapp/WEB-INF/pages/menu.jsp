@@ -67,3 +67,6 @@
     </div>
 </nav>
 <br/>
+<script>
+    projectPathPrefix = "<c:out value="${pageContext.request.contextPath}"/>"
+</script>

@@ -231,7 +231,7 @@ function saveAddressAjax(json, url) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: url,
+        url: projectPathPrefix + url,
         accept: "application/json",
         data: json,
         // if success, show select for address and append option with saved address
@@ -303,7 +303,7 @@ function showAddressTable(result) {
             $.ajax({
                 type: "DELETE",
                 contentType: "application/json",
-                url: "/resources/address/delete",
+                url: projectPathPrefix + "/resources/address/delete",
                 accept: "application/json",
                 data: JSON.stringify(toJSON(newResourceAddressFormId)),
                 success: function (result) {
@@ -374,7 +374,7 @@ function searchAddressAjaxCall($resultDiv, searchAddressFormId) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/resources/address/search",
+        url: projectPathPrefix + "/resources/address/search",
         accept: "application/json",
         data: JSON.stringify(searchJson),
         success: function (result) {
@@ -643,7 +643,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/address/search",
+            url: projectPathPrefix + "/resources/address/search",
             accept: "application/json",
             data: JSON.stringify(searchJson),
             success: function (result) {
@@ -708,7 +708,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                url: "/resources/owner",
+                url: projectPathPrefix + "/resources/owner",
                 accept: "application/json",
                 data: ownerWithAddress,
                 success: function (result) {
@@ -824,7 +824,7 @@ function checkIfEmptyOwnerTable() {
 function deleteOwner(ownerId) {
     $.ajax({
         type: "DELETE",
-        url: "owner/" + ownerId + "/delete",
+        url: projectPathPrefix + "owner/" + ownerId + "/delete",
         success: function (result) {
             console.log("owner was deleted from db");
             console.log(result);

@@ -4,12 +4,12 @@ import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.entity.UserDetails;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserDetailsService {
 
-    public UserDetails getUserDetailsByEmail(String email);
+    Optional<UserDetails> getUserDetailsByEmail(String email);
 
-    public UserDetails getUserDetailsByUserId(Long id);
+    UserDetails getUserDetailsByUserId(Long id);
 
-    public List<User> getAllUsersDetails();
 }

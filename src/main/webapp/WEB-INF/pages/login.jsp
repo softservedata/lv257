@@ -1,5 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+
 <html>
 <head><title>Login</title>
     <jsp:include page="metadata.jsp"/>
@@ -21,13 +23,13 @@
 
 
 <br>
-            <img width="100%" height="auto" src="/resources/img/welcome.png">
+            <img width="100%" height="auto" src="${contextPath}/resources/img/welcome.png">
         </div>
 
 
         <div class="col-md-4" style="float: left;">
     <center>
-        <form style="border: 1px groove gray; border-radius: 5px; padding: 5px; width: 280px" name='f' action="${pageContext.request.contextPath}/j_spring_security_check" method='POST'>
+        <form style="border: 1px groove gray; border-radius: 5px; padding: 5px; width: 280px" name='f' action="${contextPath}/j_spring_security_check" method='POST'>
 <br>
             <div class="form-group" style="padding-left: 5px; padding-right: 5px; width: 250px;">
                 <label for="email" style="float: left;">Email address:</label>
@@ -55,7 +57,7 @@
     </div>
     </div>
 </div>
-<jsp:include page="${contextPath}footer.jsp"/>
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>
