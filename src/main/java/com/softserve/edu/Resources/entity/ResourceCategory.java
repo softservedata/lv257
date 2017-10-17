@@ -39,41 +39,46 @@ public class ResourceCategory {
         return id;
     }
 
-    public void setId(Long id) {
+    public ResourceCategory setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
+    public ResourceCategory setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+        return this;
     }
 
     public ResourceCategory getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(ResourceCategory parentCategory) {
+    public ResourceCategory setParentCategory(ResourceCategory parentCategory) {
         this.parentCategory = parentCategory;
+        return this;
     }
 
     public Set<ResourceCategory> getChildrenCategories() {
         return childrenCategories;
     }
 
-    public void setChildrenCategories(
+    public ResourceCategory setChildrenCategories(
             Set<ResourceCategory> childrenCategories) {
         this.childrenCategories = childrenCategories;
+        return this;
     }
 
     public Set<ResourceType> getResourceTypes() {
         return resourceTypes;
     }
 
-    public void setResourceTypes(Set<ResourceType> resourceTypes) {
+    public ResourceCategory setResourceTypes(Set<ResourceType> resourceTypes) {
         this.resourceTypes = resourceTypes;
+        return this;
     }
 
     @Override

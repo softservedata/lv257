@@ -21,7 +21,7 @@ public interface ResourceCategoryService {
     List<ResourceCategory> findAllResourceCategories();
 
     @Transactional
-    void saveResourceCategory(ResourceCategory resourceCategory);
+    ResourceCategory saveResourceCategory(ResourceCategory resourceCategory);
 
     @Transactional
     void deleteResourceCategory(ResourceCategory resourceCategory);

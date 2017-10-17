@@ -174,7 +174,7 @@ $(document).ready(function () {
         $.get(projectPathPrefix + "/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             if (lastSelectedId) {
-                selectLastItem(lastSelectedId);
+                selectLastItemAfterManagingCategories(lastSelectedId);
             } else {
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }

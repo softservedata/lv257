@@ -41,8 +41,8 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
 
     @Override
     @Transactional
-    public void saveResourceCategory(ResourceCategory resourceCategory) {
-        resourceCategoryDAO.makePersistent(resourceCategory);
+    public ResourceCategory saveResourceCategory(ResourceCategory resourceCategory) {
+        return resourceCategoryDAO.makePersistent(resourceCategory);
     }
 
     @Override
@@ -153,6 +153,9 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
             throws CycleDependencyException {
         List<ResourceCategory> allCategories = new ArrayList<>(rootCategories);
         rootCategories.forEach(c -> allCategories.addAll(getDescendants(c)));
+        if (allCategories.size() > new HashSet<>(allCategories).size()) {
+            throw new CycleDependencyException("Categories hierarchy has cycle dependencies. Some categories are reduplicative");
+        }
         return allCategories;
     }
 
@@ -161,7 +164,10 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         List<String> usedNames = new ArrayList<>();
         for (ResourceCategory category : categories) {
             String name = category.getCategoryName();
-            if (usedNames.contains(name.toLowerCase()) || name.length() < minNameLength || name.length() > maxNameLength) {
+            if (name == null
+                    || usedNames.contains(name.toLowerCase())
+                    || name.length() < minNameLength
+                    || name.length() > maxNameLength) {
                 return false;
             }
             usedNames.add(name.toLowerCase());
@@ -179,7 +185,6 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
                         .map(ResourceCategory::getId)
                         .collect(Collectors.toList()).contains(c.getId()))
                 .forEach(dc -> {
-                    System.out.println(dc.getCategoryName());
                     if (dc.getResourceTypes().size() == 0 && getDescendants(dc).stream()
                             .allMatch(dcd -> dcd.getResourceTypes().size() == 0)) {
                         deleteResourceCategory(dc);
