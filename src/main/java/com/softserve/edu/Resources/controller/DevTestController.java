@@ -34,9 +34,6 @@ public class DevTestController {
     PrivilegeService privilegeService;
 
     @Autowired
-    ResourceCategoryService categoryService;
-
-    @Autowired
     ResourceCategoryService resourceCategoryService;
 
     @Autowired
@@ -98,8 +95,6 @@ public class DevTestController {
             }
         }
 
-
-        categoryService.insertCategoriesTEMPORARY();
 
         return "devtest/welcome2";
     }

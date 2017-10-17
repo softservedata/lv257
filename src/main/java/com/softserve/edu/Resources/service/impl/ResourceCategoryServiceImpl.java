@@ -100,54 +100,6 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         return ancestors;
     }
 
-    @Transactional
-    public void insertCategoriesTEMPORARY() {
-/*        findAllResourceCategories().forEach(this::deleteResourceCategory);
-        resourceCategoryDAO.flush();
-
-        ResourceCategory category = new ResourceCategory("category", null);
-        ResourceCategory subcategory1 = new ResourceCategory("subcategory1", category);
-        ResourceCategory subcategory2 = new ResourceCategory("subcategory2", category);
-        ResourceCategory typecategory1_1 = new ResourceCategory("typecategory1_1", subcategory1);
-        ResourceCategory typecategory1_2 = new ResourceCategory("typecategory1_2", subcategory1);
-        ResourceCategory typecategory2_1 = new ResourceCategory("typecategory2_1", subcategory2);
-        ResourceCategory typecategory2_2 = new ResourceCategory("typecategory2_2", subcategory2);
-        ResourceCategory typecategory1_3 = new ResourceCategory("typecategory1_3", subcategory1);
-
-        category.getChildrenCategories().add(subcategory1);
-        category.getChildrenCategories().add(subcategory2);
-        subcategory1.getChildrenCategories().add(typecategory1_1);
-        subcategory1.getChildrenCategories().add(typecategory1_2);
-        subcategory1.getChildrenCategories().add(typecategory1_3);
-        subcategory2.getChildrenCategories().add(typecategory2_1);
-        subcategory2.getChildrenCategories().add(typecategory2_2);
-
-        ResourceType type1 = new ResourceType("Land");
-        type1.setCategory(typecategory2_2);
-        type1.setTableName("Land");
-        type1.setInstantiated(true);
-        typecategory2_2.getResourceTypes().add(type1);
-        ResourceType type3 = new ResourceType("Bank account");
-        type3.setCategory(typecategory2_2);
-        type3.setTableName("Bank account");
-        type3.setInstantiated(true);
-        typecategory2_2.getResourceTypes().add(type3);
-        ResourceType type2 = new ResourceType("Boat");
-        type2.setCategory(typecategory2_2);
-        type2.setTableName("Boat");
-        type2.setInstantiated(true);
-        typecategory2_2.getResourceTypes().add(type2);
-
-        saveResourceCategory(category);
-*//*        saveResourceCategory(branch1);
-        saveResourceCategory(branch2);
-        saveResourceCategory(leaf1_1);
-        saveResourceCategory(leaf1_2);
-        saveResourceCategory(leaf2_1);
-        saveResourceCategory(leaf2_2);
-        saveResourceCategory(leaf1_3);*/
-    }
-
     @Override
     public List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories)
             throws CycleDependencyException {
@@ -230,7 +182,8 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         ResourceCategory targetCategory = new ResourceCategory();
         if (categoryDTO != null) {
             if (categoryDTO.getId() != null) {
-                targetCategory = findCategoryById(categoryDTO.getId()).orElse(targetCategory);
+                targetCategory = findCategoryById(categoryDTO.getId())
+                        .orElse(targetCategory);
             }
             mapped.add(categoryDTO);
             targetCategory.setCategoryName(categoryDTO.getCategoryName());

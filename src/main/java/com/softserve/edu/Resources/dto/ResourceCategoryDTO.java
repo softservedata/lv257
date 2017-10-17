@@ -33,52 +33,66 @@ public class ResourceCategoryDTO{
     @JsonView(Views.Categories.class)
     private boolean withResourceTypes;
 
+    public ResourceCategoryDTO() {
+    }
+
+    public ResourceCategoryDTO(String categoryName, ResourceCategoryDTO parentCategory) {
+        this.categoryName = categoryName;
+        this.parentCategory = parentCategory;
+    }
+
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public ResourceCategoryDTO setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getCategoryName() {
         return categoryName;
     }
 
-    public void setCategoryName(String categoryName) {
+    public ResourceCategoryDTO setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+        return this;
     }
 
     public ResourceCategoryDTO getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(ResourceCategoryDTO parentCategory) {
+    public ResourceCategoryDTO setParentCategory(ResourceCategoryDTO parentCategory) {
         this.parentCategory = parentCategory;
+        return this;
     }
 
     public Set<ResourceCategoryDTO> getChildrenCategories() {
         return childrenCategories;
     }
 
-    public void setChildrenCategories(Set<ResourceCategoryDTO> childrenCategories) {
+    public ResourceCategoryDTO setChildrenCategories(Set<ResourceCategoryDTO> childrenCategories) {
         this.childrenCategories = childrenCategories;
+        return this;
     }
 
     public Set<ResourceTypeDTO> getInstantiatedResourceTypes() {
         return instantiatedResourceTypes;
     }
 
-    public void setInstantiatedResourceTypes(Set<ResourceTypeDTO> instantiatedResourceTypes) {
+    public ResourceCategoryDTO setInstantiatedResourceTypes(Set<ResourceTypeDTO> instantiatedResourceTypes) {
         this.instantiatedResourceTypes = instantiatedResourceTypes;
+        return this;
     }
 
     public boolean isWithResourceTypes() {
         return withResourceTypes;
     }
 
-    public void setWithResourceTypes(boolean withResourceTypes) {
+    public ResourceCategoryDTO setWithResourceTypes(boolean withResourceTypes) {
         this.withResourceTypes = withResourceTypes;
+        return this;
     }
 
     @Override

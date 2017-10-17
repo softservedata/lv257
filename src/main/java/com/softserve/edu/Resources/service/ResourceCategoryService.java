@@ -47,6 +47,4 @@ public interface ResourceCategoryService {
     @Transactional
     ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO);
 
-    @Transactional
-    void insertCategoriesTEMPORARY();
 }
