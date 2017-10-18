@@ -171,13 +171,14 @@ $(document).ready(function () {
      */
     function loadCategories(lastSelectedId) {
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
-        $.get(projectPathPrefix + "/resources/" + urlSuffix, function (data) {
+        $.get(projectPathPrefix + "/api/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             if (lastSelectedId) {
-                selectLastItem(lastSelectedId);
+                selectLastItemAfterManagingCategories(lastSelectedId);
             } else {
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }
+            $('#categories-select')[0].dispatchEvent(new Event('load'));
         }, "json");
     }
 
@@ -185,7 +186,7 @@ $(document).ready(function () {
      * Activate Nestable and build categories tree
      */
     function buildCategoriesNestableTree() {
-        let jqxhr = $.getJSON("/resources/categories")
+        let jqxhr = $.getJSON("/api/resources/categories")
             .success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
                 lastTemporaryId = findLastDatabaseId(data);
@@ -249,7 +250,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: projectPathPrefix + "/resources/categories",
+            url: projectPathPrefix + "/api/resources/categories",
             accept: "application/json",
             data: json,
             success: function (jqXHR) {
@@ -375,7 +376,6 @@ $(document).ready(function () {
                 $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
                 console.log($('#categories-select').data('selectedID'));
                 $('#categories-select')[0].dispatchEvent(new Event('change'));
-
             })
         })
     }

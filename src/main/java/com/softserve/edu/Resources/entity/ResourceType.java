@@ -30,22 +30,18 @@ public class ResourceType {
     @Column(name = "Id")
     private Long id;
 
-    @JsonProperty("typename")
     @NotNull
     @Column(name = "Type_Name", unique = true, nullable = false)
     private String typeName;
 
-    @JsonIgnore
     @NotNull
     @Column(name = "Table_Name", unique = true, nullable = false)
     private String tableName;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "Id_Category", nullable = false)
     private ResourceCategory category;
 
-    @JsonIgnore
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "Type_Properties",
@@ -53,7 +49,6 @@ public class ResourceType {
     )
     private Set<ConstrainedProperty> properties = new HashSet<>();
 
-    @JsonIgnore
     @Column(name = "Instantiated")
     private boolean instantiated;
 

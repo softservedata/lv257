@@ -21,7 +21,7 @@ public interface ResourceCategoryService {
     List<ResourceCategory> findAllResourceCategories();
 
     @Transactional
-    void saveResourceCategory(ResourceCategory resourceCategory);
+    ResourceCategory saveResourceCategory(ResourceCategory resourceCategory);
 
     @Transactional
     void deleteResourceCategory(ResourceCategory resourceCategory);
@@ -47,6 +47,4 @@ public interface ResourceCategoryService {
     @Transactional
     ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO);
 
-    @Transactional
-    void insertCategoriesTEMPORARY();
 }
