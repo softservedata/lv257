@@ -5,7 +5,8 @@
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="idVal" value="${id}"/>
 
 <!DOCTYPE html>
 <html>
@@ -35,17 +36,21 @@
                     <div class="row">
                         <div>
                             <a href="ResourcesView.html" class="btn btn-primary" type="button">Clone existing</a>
-                            <button id="addition-btn" class="btn btn-primary" type="button">Define new</button>
+                            <button id="define-btn"
+                                    class="btn btn-primary <c:if test="${idVal != 0}"><c:out value="hidden"/></c:if>"
+                                    type="button">Define new</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="definition-form" class="container hidden"<%-- style="display: none;"--%>>
+            <%--<div id="definition-form" class="container <c:if test="${idVal == 0}"><c:out value="hidden"/></c:if>">--%>
+            <div id="definition-form" class="container hidden">
                 <br>
                 <form id="resource-type" method="post">
                     <div class="row">
                         <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
                         <div id="categories" class="col-sm-6 col-xs-8 form-group">
+                            <jsp:include page="dialogs/categories.jsp"/>
                             <jsp:include page="components/resourceTypeSelect.jsp"/>
                         </div>
                         <button id="manage-categories" type="button" class="btn btn-primary btn-md"
@@ -120,29 +125,16 @@
 
 
                 <script title="Current ResourceType's variables declaration">
-									var existentProperties;
-									<c:set var="idVal" value="${id}"/>
 									var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
-									var	assignedProperties = [];
-									var initialProperties = [];
+									var assignedProperties = [];
 									var categoryID;
-									var typeName;
-									var tableName;
                 </script>
                 <jsp:include page="dialogs/properties.jsp"/>
-                <jsp:include page="dialogs/categories.jsp"/>
+                <script src="${contextPath}/resources/js/resourceTypes.js"></script>
             </div>
         </div>
     </div>
 </div>
-
 <jsp:include page="footer.jsp"/>
-
-<script>
-	$("#addition-btn").click(function (e) {
-		$('#addition-btn, #definition-form').toggleClass('hidden');
-	});
-</script>
-<script src="${contextPath}/resources/js/resourceTypes.js"></script>
 </body>
 </html>
