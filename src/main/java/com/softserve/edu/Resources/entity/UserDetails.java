@@ -161,10 +161,6 @@ public class UserDetails {
         return user;
     }
 
-    /*public void setUser(Optional<User> user) {
-        this.user = user;
-    }
-*/
     public void setUser(User user) {
         this.user = user;
     }
@@ -176,7 +172,7 @@ public class UserDetails {
 
         UserDetails that = (UserDetails) o;
 
-        if (!id.equals(that.id)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
         if (secondName != null ? !secondName.equals(that.secondName) : that.secondName != null) return false;
         if (middleName != null ? !middleName.equals(that.middleName) : that.middleName != null) return false;
@@ -189,12 +185,12 @@ public class UserDetails {
         if (idAddress != null ? !idAddress.equals(that.idAddress) : that.idAddress != null) return false;
         if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
         if (bankId != null ? !bankId.equals(that.bankId) : that.bankId != null) return false;
-        return user.equals(that.user);
+        return user != null ? user.equals(that.user) : that.user == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (secondName != null ? secondName.hashCode() : 0);
         result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
@@ -205,7 +201,7 @@ public class UserDetails {
         result = 31 * result + (idAddress != null ? idAddress.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (bankId != null ? bankId.hashCode() : 0);
-        result = 31 * result + user.hashCode();
+        result = 31 * result + (user != null ? user.hashCode() : 0);
         return result;
     }
 

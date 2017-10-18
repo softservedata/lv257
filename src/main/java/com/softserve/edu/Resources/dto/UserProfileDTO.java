@@ -24,6 +24,10 @@ public class UserProfileDTO {
     private String phone;
     private String bankId;
     private User user;
+    private String gender;
+    private String phoneCountry;
+    private String phoneOperator;
+    private String phoneNumber;
 
     public UserProfileDTO() {
     }
@@ -180,5 +184,37 @@ public class UserProfileDTO {
                 ", bankId='" + bankId + '\'' +
                 ", user=" + user +
                 '}';
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setPhoneCountry(String phoneCountry) {
+        this.phoneCountry = phoneCountry;
+    }
+
+    public String getPhoneCountry() {
+        return phoneCountry;
+    }
+
+    public void setPhoneOperator(String phoneOperator) {
+        this.phoneOperator = phoneOperator;
+    }
+
+    public String getPhoneOperator() {
+        return phoneOperator;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }
