@@ -1,25 +1,48 @@
 var resourceType = {};
+var assignedProperties = [];
 var isModeCloning;
 
 function updateView() {
-		//todo: update assigned properties table
+	$('#type-name').val(resourceType.typeName);
+	$('#table-name').val(resourceType.tableName);
+	let propertyIDs = $(resourceType.properties).map(function (property) {
+		return property.id;
+	});
+	let typeProperties = $.grep(availableProperties, function (property) {
+		return $.inArray(property.id, propertyIDs) >= 0;
+	});
+	addAssignedProperties(typeProperties);
+	// console.log('resource.categoryID = '+	resourceType.categoryId);
+	resourceCategorySelect.selectItem(resourceType.categoryId);
+	const $definitionForm = $('#definition-form');
+	if ($definitionForm.is(':hidden'))
+		$definitionForm.removeClass('hidden');
 }
 
 function updateResourceType(actualType, isCloned) {
 	resourceType = actualType;
 	// eliminate id in cloned Resource Type (or it should be set to 0 just as for a newly created definition)
-	if (isCloned)
+	if (isCloned) {
 		delete resourceType['id'];
+
+	}
+
 	if (resourceType.id) {
 		resourceTypeID = resourceType.id;
 	}
+	if (resourceType.categoryId) {
+		categoryID = resourceType.categoryId;
+	}
 	initialType = $.extend(true, {}, resourceType);
+
 	let typePropertyIDs = $.map(resourceType.properties, function (constrainedProperty, i) {
-		return id;
-	})
+		return constrainedProperty.id;
+	});
+
 	assignedProperties = $.grep(availableProperties, function (property) {
-		return $.inArray(property.id, typePropertyIDs);
-	})
+		return $.inArray(property.id, typePropertyIDs) >= 0;
+	});
+
 	updateView();
 }
 
@@ -30,7 +53,7 @@ function getResourceType(isCloned) {
 		accept: "application/json",
 		url: projectPathPrefix + "/api/resource/" + resourceTypeID,
 		success: function (response) {
-			updateResourceType(response, isCloned)
+				updateResourceType(response, isCloned)
 		},
 		error: function (jqxhr, status, exception) {
 			console.log('Error has occured: ' + status + ' ' + exception);
@@ -75,7 +98,7 @@ function composeResourceType() {
 /**
  * init model for current view
  */
-(function uploadResourceType() {
+$('#categories-select').load(function () {
 
 	isModeCloning = resourceTypeID < 0;
 	if (isModeCloning) {
@@ -85,11 +108,15 @@ function composeResourceType() {
 		getResourceType(isModeCloning);
 	} //else we're creating new ResourceType
 
-})();
+});
 
-//
+
+$("#define-btn").click(function (e) {
+	$('#define-btn, #definition-form').toggleClass('hidden');
+});
+
 $('#categories-select').change(function(e) {
-	categoryID = $(e.target).data('selectedID');
+	categoryID = resourceCategorySelect.getSelectedId.call(resourceCategorySelect);
 });
 
 // set Save button handler
