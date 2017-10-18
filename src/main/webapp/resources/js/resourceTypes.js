@@ -53,7 +53,10 @@ function getResourceType(isCloned) {
 		accept: "application/json",
 		url: projectPathPrefix + "/api/resource/" + resourceTypeID,
 		success: function (response) {
-				updateResourceType(response, isCloned)
+			if (categorySelectReady)
+				updateResourceType(response, isCloned);
+			else
+				$('#categories-select').load(updateResourceType(response, isCloned))
 		},
 		error: function (jqxhr, status, exception) {
 			console.log('Error has occured: ' + status + ' ' + exception);
@@ -94,6 +97,11 @@ function composeResourceType() {
 	}
 	return resourceType;
 }
+
+
+$('#categories-select').load(function (e) {
+	categorySelectReady = true;
+});
 
 /**
  * init model for current view
