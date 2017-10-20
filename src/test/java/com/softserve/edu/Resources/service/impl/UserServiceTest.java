@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.*;
 
@@ -48,6 +49,9 @@ public class UserServiceTest {
     @Mock
     private VerificationTokenDAO verificationTokenDAO;
 
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
     @InjectMocks
     private UserServiceImpl userService;
 
@@ -79,7 +83,7 @@ public class UserServiceTest {
         persistentVerificationToken = new VerificationToken()
                 .setId(verificationTokenId)
                 .setUser(user)
-                .setExpiryDate(date)
+                .setExpiryDate(mock(Date.class))
                 .setToken(token);
         transientOrEmptyVerificationToken = new VerificationToken();
 
@@ -128,11 +132,11 @@ public class UserServiceTest {
     @Test
     public void registerNewUserAccountTest() throws UserAlreadyExistException {
 
-//        when(userDAO.makePersistent(any(User.class))).thenReturn(persistentUser);
-//
-//        User savedUser = userService.registerNewUserAccount(userDTO);
-//        assertEquals(savedUser, persistentUser);
-//        verify(userDAO, times(1)).makePersistent(persistentUser);
+        when(userDAO.makePersistent(any(User.class))).thenReturn(persistentUser);
+
+        User savedUser = userService.registerNewUserAccount(userDTO);
+        assertEquals(savedUser, persistentUser);
+        verify(userDAO, times(1)).makePersistent(persistentUser);
     }
 
     @Test
@@ -151,7 +155,6 @@ public class UserServiceTest {
         assertEquals(persistentVerificationToken, savedVerificationToken);
         assertEquals(savedVerificationToken.getId(), verificationTokenId);
 //        verify(verificationTokenDAO).makePersistent(persistentVerificationToken);
-
     }
 
     @Test
