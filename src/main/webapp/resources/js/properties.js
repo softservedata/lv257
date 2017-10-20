@@ -1,8 +1,8 @@
+var assignedProperties = [];
+var existentProperties = [];
+
 //load dependency
 $.getScript(projectPathPrefix + '/resources/js/FormSerializePlugin.js');
-
-// var assignedProperties = [];
-// initialProperties = assignedProperties.slice();
 
 function refreshAssignedPropsTable() {
 
@@ -21,10 +21,10 @@ function refreshAssignedPropsTable() {
 		let $newPropertyRow = $rowTemplate.clone(true, true);
 		$newPropertyRow.removeClass('assigned-template').addClass('assigned-property');
 		$newPropertyRow.data('property', constrainedProperty);
-		$newPropertyRow.find('td.title').text(constrainedProperty./*property.*/title);
+		$newPropertyRow.find('td.title').text(constrainedProperty.property.title);
 		let $unitsCell = $newPropertyRow.find('td.units-short');
-		$unitsCell.text(constrainedProperty./*property.*/unitsShort);
-		$unitsCell.attr('title', constrainedProperty./*property.*/units);
+		$unitsCell.text(constrainedProperty.property.unitsShort);
+		$unitsCell.attr('title', constrainedProperty.property.units);
 		$newPropertyRow.find('input.searchable').prop('checked', constrainedProperty.searchable);
 		$newPropertyRow.find('input.required').prop('checked', constrainedProperty.required);
 		// let $removeButton = $newPropertyRow.find('.glyphicon-remove');
@@ -38,8 +38,8 @@ function refreshAssignedPropsTable() {
  * @param propertyId
  */
 function removeAssignedProperty(propertyId) {
-	assignedProperties = $.grep(assignedProperties, function (property) {
-		return property.id === propertyId;
+	assignedProperties = $.grep(assignedProperties, function (constrainedProperty) {
+		return constrainedProperty.property.id !== propertyId;
 	});
 	refreshAssignedPropsTable();
 	updateAvailablePropertiesList();
@@ -154,6 +154,10 @@ function strCmp(str1, str2) {
 	return val1 > val2 ? 1 : (val1 < val2 ? -1 : 0);
 }
 
+function updatePropertiesIndex() {
+
+}
+
 /**
  * Appends newly created property to the list
  * @param property to be added to available properties list
@@ -162,6 +166,7 @@ function strCmp(str1, str2) {
 function addAvailableProperty(property, doAssign) {
 	let $property = $(property);
 	$.merge(existentProperties, $property);
+	updatePropertiesIndex();
 	existentProperties.sort(propertyCmp);
 	if (doAssign) {
 		addAssignedProperties($property);
@@ -220,7 +225,7 @@ function saveProperty(property, doAssign) {
 	$propertyRow.find('.glyphicon-remove').click(function (e) {
 		let $rowToRemove = $(e.target).closest('tr');
 		let propertyToRemove = $rowToRemove.data('property');
-		removeAssignedProperty(propertyToRemove.id);
+		removeAssignedProperty(propertyToRemove.property.id);
 		$rowToRemove.remove();
 	});
 

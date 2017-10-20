@@ -49,14 +49,14 @@
                 <form id="resource-type" method="post">
                     <div class="row">
                         <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
-                        <div id="categories" class="col-sm-6 col-xs-8 form-group">
-                            <jsp:include page="dialogs/categories.jsp"/>
-                            <jsp:include page="components/resourceTypeSelect.jsp"/>
-                        </div>
                         <button id="manage-categories" type="button" class="btn btn-primary btn-md"
                                 data-toggle="modal" style="margin-top: 25px" title="Manage categories"
                                 data-target="#categories-view"><span class="glyphicon glyphicon-cog"></span>
                         </button>
+                        <div id="categories" class="col-sm-6 col-xs-8 form-group">
+                            <jsp:include page="dialogs/categories.jsp"/>
+                            <jsp:include page="components/resourceTypeSelect.jsp"/>
+                        </div>
                     </div>
 
                     <div class="row">

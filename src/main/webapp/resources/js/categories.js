@@ -13,7 +13,7 @@ var resourceCategorySelect;
 	let lastTemporaryId;
 
 	let getSelectedId = function() {
-		return resourceCategorySelect.lastSelectedId;
+		return resourceCategorySelect.lastSelectedId ? resourceCategorySelect.lastSelectedId : 0;
 	};
 
 	resourceCategorySelect = {
@@ -157,8 +157,9 @@ var resourceCategorySelect;
 	 */
 	function selectItemById(id) {
 		let item = $('[data-value="' + id + '"]').find('a');
-		if (item) {
+		if (item.length !== 0) {
 			item.click();
+			resourceCategorySelect.setSelectedId(id);
 		} else {
 			$('#default-item > a').click();
 			$('#selected-label').text('Select ' + defaultSelectedLabel);
@@ -169,7 +170,7 @@ var resourceCategorySelect;
 	 * Select item of selectlist by ID, if it still exist after managing categories in Nestable
 	 * @param id - ID of item("option") of component
 	 */
-	function selectLastItemAfterManagingCategories(id) {
+	/*function selectLastItemAfterManagingCategories(id) {
 		let lastSelectedItem = $('[data-value="' + id + '"]').find('a');
 		if (lastSelectedItem.text() === $('[data-id="' + id + '"]').attr('data-categoryname')) {
 			lastSelectedItem.click();
@@ -178,7 +179,7 @@ var resourceCategorySelect;
 			$('#default-item > a').click();
 			$('#selected-label').text('Select ' + defaultSelectedLabel);
 		}
-	}
+	}*/
 
 	/**
 	 * Load data from server, build categories selectlist and reselect item,
@@ -190,7 +191,7 @@ var resourceCategorySelect;
 		$.get(projectPathPrefix + "/api/resources/" + urlSuffix, function (data) {
 			showCategoriesSelect(data);
 			if (lastSelectedId) {
-				selectLastItemAfterManagingCategories(lastSelectedId);
+				selectItemById(lastSelectedId);
 			} else {
 				$('#selected-label').text('Select ' + defaultSelectedLabel);
 			}
@@ -389,7 +390,9 @@ var resourceCategorySelect;
 		let list = $('#categories_and_types').find('li a');
 		$.each(list, function (i, item) {
 			$(item).click(function (e) {
-				$('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
+				const selectedID = $(e.target).closest('li').data('value');
+				$('#categories-select').data('selectedID', selectedID);
+				resourceCategorySelect.setSelectedId(selectedID);
 				// console.log($('#categories-select').data('selectedID'));
 				$('#categories-select')[0].dispatchEvent(new Event('change'));
 			})

@@ -31,6 +31,6 @@
 		</div>
 	</div>
 </div>
-<jsp:include page="addEditCategory.jsp"/>
 <script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script src="${contextPath}/resources/js/jquery-ui.js"></script>
+<jsp:include page="addEditCategory.jsp"/>
