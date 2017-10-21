@@ -32,7 +32,7 @@ public class UserDetails {
     @Column(name = "passport_series")
     @JsonProperty("passport_series")
 //    @NotEmpty
-//    @Length(max = 2, min = 2, message = "This is invalid passport series.")
+    @Length(max = 2, min = 2, message = "This is invalid passport series.")
     private String passportSeries;
 
     @Column(name = "passport_number")

@@ -1,6 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <%@page session="true" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -41,11 +42,11 @@
         </div>
     </div>
     <div class="col-md-4 float-left">
-        <H3>Public profile</H3>
+        <%--@declare id="passportseries"--%><H3>Public profile</H3>
         <hr>
 
-        <sf:form id="requestForm" modelAttribute="details" action="${contextPath}/profile" method="POST">
-            <%--<sf:form id="requestForm" modelAttribute="details" action="${contextPath}/profile" method="POST" enctype="multipart/form-data">--%>
+        <sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST">
+            <%--<sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST" enctype="multipart/form-data">--%>
             <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary">Save changes</button>
             <div class="form-group">
                 <div class="font-bold">E-mail</div>
@@ -78,30 +79,55 @@
 
             <div class="form-group">
                 <spring:bind path="passportSeries">
-                    <div class="font-bold">Passport series</div>
-                    <sf:input type="text" path="passportSeries" name="${status.expression}"
-                              value="${status.value}" class="form-control"
-                              placeholder="Passport series"/>
+                    <label for="passportSeries" style="float: left;">Passport series</label>
+                    <sf:input type="passportSeries" class="form-control"
+                              placeholder="passportSeries" path="passportSeries"/>
+
                     <c:if test="${status.error}">
                         <c:forEach items="${status.errorMessages}" var="error">
+
                             <span class="red"> ${error} </span>
+
                         </c:forEach>
                     </c:if>
+
+                    <%--<sf:errors path="passportSeries" cssClass="error" cssStyle="color: #ff0000;"/>--%>
                 </spring:bind>
             </div>
+
+            <%--            <div class="form-group">
+                            <spring:bind path="passportSeries">
+                                <div class="font-bold">Passport series</div>
+                                <sf:input type="text" path="passportSeries" name="${status.expression}"
+                                          value="${status.value}" class="form-control"
+                                          placeholder="Passport series"/>
+                                <c:if test="${status.error}">
+                                    <c:forEach items="${status.errorMessages}" var="error">
+                                        <span class="red"> ${error} </span>
+                                    </c:forEach>
+                                </c:if>
+                            </spring:bind>
+                        </div>--%>
 
             <div class="form-group">
-                <spring:bind path="passportNumber">
-                    <div class="font-bold">Passport number</div>
-                    <sf:input type="text" path="passportNumber" class="form-control" placeholder="Passport number"/>
-
-                    <c:if test="${status.error}">
-                        <c:forEach items="${status.errorMessages}" var="error">
-                            <span class="red"> ${error} </span>
-                        </c:forEach>
-                    </c:if>
-                </spring:bind>
+                <label for="passportNumber" style="float: left;">Passport number</label>
+                <sf:input type="passportSeries" class="form-control"
+                          placeholder="passportNumber" path="passportNumber"/>
+                <sf:errors path="passportNumber" cssClass="error" cssStyle="color: #ff0000;"/>
             </div>
+
+            <%--            <div class="form-group">
+                            <spring:bind path="passportNumber">
+                                <div class="font-bold">Passport number</div>
+                                <sf:input type="text" path="passportNumber" class="form-control" placeholder="Passport number"/>
+
+                                <c:if test="${status.error}">
+                                    <c:forEach items="${status.errorMessages}" var="error">
+                                        <span class="red"> ${error} </span>
+                                    </c:forEach>
+                                </c:if>
+                            </spring:bind>
+                        </div>--%>
 
             <%--<div class="form-group">
                 <div class="font-bold">gender</div>
@@ -157,8 +183,16 @@
                     <sf:option value="0" label="Select"/>
                     <sf:option value="+38" label="Ukraine"/>
                     <sf:option value="2" label="USA"/>
-                    <sf:option value="3" label="UK"/>
+                    <%--<sf:option selected = value="3" label="UK"/>--%>
+
                 </sf:select></td>
+
+                <c:set var="grades" value="1,2,3,A,B,C,D,E" scope="application"/>
+                <select class="grade" title="Grade Obtained">
+                    <c:forEach items="${fn:split(grades, ',')}" var="grade">
+                        <option value="${grade}" ${qd.grade == grade ? 'selected' : ''}>${grade}</option>
+                    </c:forEach>
+                </select>
 
                 <td>Operator :</td>
                 <td><sf:select path="phoneOperator">
@@ -230,7 +264,22 @@
 
 
     <script src="${js}/jquery.validate.js"></script>
+    <script src="${js}/messageTimeOut.js"></script>
 
+    <script>
+        $('#submit').click(function () {
+            $('#img').show(); //<----here
+            $.ajax({
+                type: "POST",
+                url: projectPathPrefix + "spinnerRequest",
+                accept: "application/json",
+                data: {id: id},
+                success: function (result) {
+                    $('#img').hide();  //<--- hide again
+                }
+            })
+        })
+    </script>
 </div>
 
 <!-- BEGIN JIVOSITE CODE {literal} -->

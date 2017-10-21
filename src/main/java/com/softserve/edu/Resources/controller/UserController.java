@@ -70,17 +70,17 @@ public class UserController {
             modelAndView.setViewName("403");
             return modelAndView;
         } else {
-            UserDetails nRequest = new UserDetails();
+//            UserDetails nRequest = new UserDetails();
             UserProfileDTO userProfileDTO = userProfileService.createUserProfileDTO(principal);
             userProfileDTO.setGender("F");
-            ModelAndView profile = new ModelAndView("profile");
-            profile.addObject("details", userProfileDTO);
+//            ModelAndView profile = new ModelAndView("profile");
+            modelAndView.addObject("details", userProfileDTO);
 
-            return profile;
+            return modelAndView;
         }
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+/*    @RequestMapping(value = "/profile", method = RequestMethod.POST)
 //    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
     public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserProfileDTO userProfileDTO,
                                      BindingResult bindingResult, ModelAndView modelAndView
@@ -100,12 +100,44 @@ public class UserController {
             userProfileService.saveUserProfile(userProfileDTO);
         }
         return modelAndView;
+    }*/
+
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+//    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
+    public String profilePOST0(@ModelAttribute(value="details") @Valid UserProfileDTO userProfileDTO,
+                                     BindingResult bindingResult, ModelAndView modelAndView
+//            , UserProfileDTO userProfileDTO
+    )
+//            throws Exception
+    {
+
+//        modelAndView.addObject("FieldError0", "FieldError0");
+        View view = modelAndView.getView();
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.addObject("title", "bindingResult.hasErrors");
+            modelAndView.addObject("details", userProfileDTO);
+            modelAndView.setViewName("403");
+        } else {
+            modelAndView.addObject("title", "profile");
+            modelAndView.addObject("details", userProfileDTO);
+            userProfileService.saveUserProfile(userProfileDTO);
+        }
+        return "profile";
     }
 
     @RequestMapping(value = "/profile4040", method = RequestMethod.GET)
     public ModelAndView profileGET4040(Model model, Principal principal) {
         ModelAndView modelAndView = new ModelAndView("404");
         modelAndView.addObject("message", "Please sign in");
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "/profileValidation01", method = RequestMethod.GET)
+    public ModelAndView profileValidation01(Model model, Principal principal) {
+        ModelAndView modelAndView = new ModelAndView("profileValidation01");
+        modelAndView.addObject("message", "Please sign in");
+        modelAndView.addObject("grade", "A");
         return modelAndView;
     }
 

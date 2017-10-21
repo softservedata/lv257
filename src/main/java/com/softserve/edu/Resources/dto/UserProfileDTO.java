@@ -4,6 +4,7 @@ import com.softserve.edu.Resources.Constants;
 import com.softserve.edu.Resources.entity.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Optional;
 
@@ -16,8 +17,13 @@ public class UserProfileDTO {
     private String firstName;
     private String secondName;
     private String middleName;
+
+    @Size(min = 2, max = 2, message = "This is invalid passport series.UserProfileDTO")
     private String passportSeries;
+
+    @Size(min = 6, max = 6, message = "This is invalid passport series.UserProfileDTO")
     private String passportNumber;
+
     private String issuedBy;
     private Date dateOfIssue;
     private String idAddress;
