@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "verification_token")
 public class VerificationToken {
 
     private static final int EXPIRATION = 60 * 24;
@@ -41,6 +41,11 @@ public class VerificationToken {
         this.expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
+    public VerificationToken setId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public Long getId() {
         return id;
     }
@@ -49,24 +54,27 @@ public class VerificationToken {
         return token;
     }
 
-    public void setToken(final String token) {
+    public VerificationToken setToken(final String token) {
         this.token = token;
+        return this;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(final User user) {
+    public VerificationToken setUser(final User user) {
         this.user = user;
+        return this;
     }
 
     public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(final Date expiryDate) {
+    public VerificationToken setExpiryDate(final Date expiryDate) {
         this.expiryDate = expiryDate;
+        return this;
     }
 
     private Date calculateExpiryDate(final int expiryTimeInMinutes) {

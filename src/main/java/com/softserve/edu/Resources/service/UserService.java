@@ -22,7 +22,7 @@ public interface UserService {
 
     void delete(User user);
 
-    void createVerificationTokenForUser(User user, String token);
+    VerificationToken createVerificationTokenForUser(User user, String token);
 
     VerificationToken getVerificationToken(String verificationToken);
 
