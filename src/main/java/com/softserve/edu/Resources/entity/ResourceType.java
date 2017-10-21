@@ -1,8 +1,5 @@
 package com.softserve.edu.Resources.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
@@ -14,7 +11,7 @@ import java.util.Set;
 
 /*
 *  ResourceType represents entity containing a set of
-*  ResourceProperty that describe particular GenericResource
+*  ResourceProperty that describes particular GenericResource
 *
 * */
 @Entity

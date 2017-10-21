@@ -94,7 +94,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `resource_types` WRITE;
 
-INSERT INTO `resource_types` VALUES (100300,'','cars','Car',134327),(100302,'','yachts','Yacht',134323),(100303,'','trains','Train',134331),(124000,'\0','vehicles','Vehicles',134327),(124001,'\0','trucks','Trucks',134327),(124002,'\0','apartments','Apartments',134316),(124003,'\0','cottages','Cottages',134316);
+INSERT INTO `resource_types` VALUES (100300,'','cars','Car',134327),(100302,'','yachts','Yacht',134323),(100303,'','trains','Train',134331),(124000,'\0','vehicles','Vehicle',134327),(124001,'\0','trucks','Truck',134327),(124002,'\0','apartments','Apartment',134316),(124003,'\0','cottages','Cottage',134316);
 
 UNLOCK TABLES;
 

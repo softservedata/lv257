@@ -1,4 +1,4 @@
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<%--<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>--%>
 <div id="categories-view" class="modal fade" tabindex="-1" data-focus-on="input:first" style="display: none;">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -31,6 +31,6 @@
 		</div>
 	</div>
 </div>
-<jsp:include page="addEditCategory.jsp"/>
 <script src="${contextPath}/resources/js/jquery.nestable.js"></script>
 <script src="${contextPath}/resources/js/jquery-ui.js"></script>
+<jsp:include page="addEditCategory.jsp"/>

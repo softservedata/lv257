@@ -24,10 +24,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    UserDAO userDAO;
+    private UserDAO userDAO;
 
     @Autowired
-    RoleDAO roleDAO;
+    private RoleDAO roleDAO;
 
     @Autowired
     private VerificationTokenDAO verificationTokenDAO;
@@ -71,7 +71,6 @@ public class UserServiceImpl implements UserService {
 
         final User user = new User();
         user.setRoles(new ArrayList<>());
-        System.out.println("setting password from DTO");
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setUsername(userDTO.getEmail());
         user.getRoles().add(roleDAO.findByName("ROLE_USER"));
@@ -85,9 +84,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createVerificationTokenForUser(User user, String token) {
+    public VerificationToken createVerificationTokenForUser(User user, String token) {
         final VerificationToken myToken = new VerificationToken(token, user);
-        verificationTokenDAO.makePersistent(myToken);
+        return verificationTokenDAO.makePersistent(myToken);
     }
 
     @Override

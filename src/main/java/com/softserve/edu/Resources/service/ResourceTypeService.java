@@ -1,6 +1,6 @@
 package com.softserve.edu.Resources.service;
 
-import com.softserve.edu.Resources.dto.ResourceTypeUpdate;
+import com.softserve.edu.Resources.dto.ResourceTypeBrief;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
 
@@ -14,7 +14,7 @@ public interface ResourceTypeService {
 
     long getTypeCount();
 
-    ResourceType save(ResourceTypeUpdate resourceType);
+    ResourceType save(ResourceTypeBrief resourceType);
 
     void remove(ResourceType resourceType);
 
@@ -33,5 +33,8 @@ public interface ResourceTypeService {
     ResourceType findWithPropertiesByID(Long ID);
 
     List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties);
-    
+
+    Optional<ResourceType> get(Long id);
+
+    Optional<ResourceType> get(Long id, boolean fetch);
 }
