@@ -22,7 +22,11 @@
         <div class="container">
             <ul class="nav nav-tabs">
                 <li><a href="ResourcesView.html">View</a></li>
-                <li class="active"><a href="#">Add</a></li>
+                <li class="active"><a href="#">
+                    <c:if test="${idVal == 0}"><c:out value="Add"/></c:if>
+                    <c:if test="${idVal > 0}"><c:out value="Edit"/></c:if>
+                    <c:if test="${idVal < 0}"><c:out value="Clone"/></c:if>
+                </a></li>
                 <li><a href="/resources/requests">Requests</a></li>
             </ul>
         </div>
@@ -31,7 +35,7 @@
             <div class="container-fluid col-sd-12">
                 <div class="container-fluid">
                     <br>
-                    <h3>Choose a way to create definition</h3>
+                    <h3>Define Resource Type</h3>
                     <br>
                     <div class="row">
                         <div>
@@ -62,8 +66,8 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="type-name">Type Name</label>
-                            <input id="type-name" name="typeName" type="text" class="form-control"
-                                   pattern="[A-Z][a-zA-Z -]+"
+                            <input id="type-name" name="typeName" type="text" class="form-control" required minlength="3"
+                                   pattern="[A-Z][a-zA-Z -]+" title="Alphabetical characters with dash or space as separator"
                             <%--pattern="${typeNamePattern}"--%>
                                    placeholder="Enter the name of new resource type">
                             <%--placeholder="Enter the name of new resource type">--%>
@@ -73,8 +77,8 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="table-name">Type's Table Name</label>
-                            <input id="table-name" name="tableName" type="text" class="form-control"
-                                   pattern="[A-Z][a-z]+(_[A-Z][a-z]+)*"
+                            <input id="table-name" name="tableName" type="text" class="form-control" required minlength="3"
+                                   pattern="[A-Z][a-z]+(_[A-Z][a-z]+)*" title="Type in Camel case names separated with underscores"
                             <%--pattern="${tableNamePattern}"--%>
                                    placeholder="Enter the name of resource's table">
                         </div>
@@ -118,11 +122,12 @@
                         </table>
                     </div>
                 </div>
-                <br>
                 <hr>
-                <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
-                <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
-
+                <div id="buttons-block" class="pull-left hidden">
+                    <button id="save-type-btn" type="submit" class="btn btn-default">Save</button>
+                    <button id="discard-btn" type="reset" class="btn btn-default">Discard</button>
+                </div>
+                <br>
 
                 <script title="Current ResourceType's variables declaration">
 									var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;

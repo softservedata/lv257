@@ -69,7 +69,7 @@
               <div class="form-group">
                 <label for="value-type">Value type</label>
                 <select id="value-type" name="valueType" class="form-control">
-                  <option disabled selected hidden>Select value type</option>
+                  <option disabled selected hidden value="">Select value type</option>
                 </select>
               </div>
             </div>
@@ -106,5 +106,5 @@
     </div>
   </div>
 </div>
-
+<script src="${contextPath}/resources/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/js/properties.js"></script>

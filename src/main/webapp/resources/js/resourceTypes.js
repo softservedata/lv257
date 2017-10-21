@@ -1,6 +1,7 @@
 var isModeCloning;
 var resourceType = {};
 var initialType = {};
+var changeWatchdog;
 
 function updateView() {
 	$('#type-name').val(resourceType.typeName);
@@ -18,9 +19,10 @@ function updateResourceType(actualType, isCloned) {
 	resourceType = actualType;
 	// eliminate id in cloned Resource Type (or it should be set to 0 just as for a newly created definition)
 	if (isCloned) {
-		delete resourceType['id'];
-		$('#type-name').val('');
-		$('#table-name').val('');
+		resourceTypeID = 0;
+		resourceType['id'] = 0;
+		resourceType['typeName'] = '';
+		resourceType['tableName'] = '';
 	}
 
 	if (resourceType.id) {
@@ -51,6 +53,14 @@ function updateResourceType(actualType, isCloned) {
 	});
 
 	updateView();
+
+	// prevent saving of ResourceType definition without changes
+	if (changeWatchdog) clearTimeout(changeWatchdog);
+	changeWatchdog = setInterval(
+			function () {
+				let $btnBlock = $('#buttons-block');
+				$btnBlock[isTypeDefinitionChanged() ? 'addClass' : 'removeClass']('hidden')
+			}, 500);
 }
 
 function getResourceType(isCloned) {
@@ -69,16 +79,28 @@ function getResourceType(isCloned) {
 }
 
 function showSuccessMessage() {
+	$('#successMsg').removeClass('hidden');
+	setTimeout(function () {
+		$('#successMsg').addClass('hidden');
+	}, 3000);
+}
 
+function showErrorMessage(message) {
+	$('#errorMsg').removeClass('hidden');
+	setTimeout(function () {
+		$('#successMsg').addClass('hidden');
+	}, 3000);
 }
 
 function composeResourceType(checkValidity) {
+	if (resourceCategorySelect.getSelectedId() === 0)
+		throw	new Error();
 	let $inputs = $('input, select', '#resource-type');
 	$inputs.each(function (i, input) {
 		if (checkValidity && !input.checkValidity()) {
 			input.blur();
-			let label = $(input).prev('label');
-			alert(label.text() + ' value is invalid');
+			// let label = $(input).prev('label');
+			// showErrorMessage(label.text() + ' value is invalid');
 			throw	new Error();
 		}
 	});
@@ -119,7 +141,6 @@ $('#categories-select').load(function () {
 
 });
 
-
 $("#define-btn").click(function (e) {
 	$('#define-btn, #definition-form').toggleClass('hidden');
 });
@@ -128,22 +149,17 @@ $('#categories-select').change(function(e) {
 	resourceCategorySelect.setSelectedId(resourceCategorySelect.getSelectedId());
 });
 
-// prevent saving of ResourceType definition without changes
-setInterval(
-		function () {
-			let $saveBtn = $('#save-type-btn');
-			let $discardBtn = $('#discard-btn');
-			const currentTypeJSON = JSON.stringify(composeResourceType());
-			const initialTypeJSON = JSON.stringify(initialType);
-			//todo: localeCompare needs sorted by Id properties or need to implement dedicted type comparator
-			if (currentTypeJSON.localeCompare(initialTypeJSON) === 0) {
-				$saveBtn.addClass('disabled');
-				$discardBtn.addClass('disabled');
-			} else {
-				$saveBtn.removeClass('disabled');
-				$discardBtn.removeClass('disabled');
-			}
-		}, 1000);
+function isTypeDefinitionChanged() {
+	const currentTypeCopy = $.extend(true, {}, composeResourceType());
+	sortByProperty(currentTypeCopy.properties, 'id');
+	const currentTypeJSON = JSON.stringify(currentTypeCopy);
+	const initialTypeCopy = $.extend(true, {}, initialType);
+	sortByProperty(initialTypeCopy.properties, 'id');
+	const initialTypeJSON = JSON.stringify(initialTypeCopy);
+	console.log(currentTypeJSON);
+	console.log(initialTypeJSON);
+	return currentTypeJSON.localeCompare(initialTypeJSON) === 0;
+}
 
 // set Save button handler
 $('#save-type-btn').click(function (e) {
@@ -166,8 +182,9 @@ $('#save-type-btn').click(function (e) {
 });
 
 $('#discard-btn').click(function (e) {
-	resourceType = $.extend(true, {}, initialType);
-	updateView();
+	updateResourceType(initialType, true);
+	// resourceType = $.extend(true, {}, initialType);
+	// updateView();
 });
 
 // set input handler trimming leading and tail spaces

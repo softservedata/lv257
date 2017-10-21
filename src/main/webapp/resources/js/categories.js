@@ -1,14 +1,35 @@
-var resourceCategorySelect;
 /**
- * Calling JSP should define variable {showTypesInCategoryHierarchy = true}
+ * A calling JSP should define variable {showTypesInCategoryHierarchy = true}
  * to allow displaying resource types in select
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-/*$(document).ready*/(function () {
-	const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
-	const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
-	const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
+var resourceCategorySelect;
+
+/**
+ * Sort array of objects by particular object property
+ * @param data - array of objects
+ * @param key - object key for sorting
+ * @param way - ascending or descending order
+ * @returns {Array.<T>} array of sorted objects
+ */
+function sortByProperty(data, key, way) {
+	return data.sort(function (a, b) {
+		let x = a[key];
+		let y = b[key];
+		if (!way || way === 'asc') {
+			return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+		}
+		if (way === 'desc') {
+			return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+		}
+	});
+}
+
+(function initCategorySelectComponent() {
+	const includeTypes = (typeof showTypesInCategoryHierarchy === 'undefined') ? false : showTypesInCategoryHierarchy;
+	const suppressChoosingParents = (typeof disableAncestorSelecting === 'undefined') ? true : disableAncestorSelecting;
+	const defaultSelectedLabel = (includeTypes ? 'type' : 'category') + ' of resource';
 	let lastDatabaseId;
 	let lastTemporaryId;
 
@@ -18,7 +39,6 @@ var resourceCategorySelect;
 
 	resourceCategorySelect = {
 		selectItem: function(id) {
-			// console.log('selecting item ID = ' + id);
 			selectItemById(id);
 		},
 		getSelectedId: function () {
@@ -27,6 +47,7 @@ var resourceCategorySelect;
 		lastSelectedId: 0,
 		setSelectedId: function (id) {this.lastSelectedId = id;}
 	};
+
 	//Enable categories selectlist
 	loadCategories();
 
@@ -290,26 +311,6 @@ var resourceCategorySelect;
 	}
 
 	/**
-	 * Sort array of objects by some object key
-	 * @param data - array of objects
-	 * @param key - object key for sorting
-	 * @param way - ascending or descending order
-	 * @returns {Array.<T>} array of sorted objects
-	 */
-	function sortComponents(data, key, way) {
-		return data.sort(function (a, b) {
-			let x = a[key];
-			let y = b[key];
-			if (way === 'asc') {
-				return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-			}
-			if (way === 'desc') {
-				return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-			}
-		});
-	}
-
-	/**
 	 * Sort array of objects which may have nested objects by some object key
 	 * @param data - array of objects
 	 * @param categoryKey - object key for sorting categories
@@ -318,14 +319,14 @@ var resourceCategorySelect;
 	 * @returns {Array.<T>} array of sorted objects
 	 */
 	function sortNestedComponents(data, categoryKey, typeKey, way) {
-		data = sortComponents(data, categoryKey, way);
+		data = sortByProperty(data, categoryKey, way);
 		for (let i = 0; i < data.length; i++) {
 			if (data[i].children && data[i].children.length > 0) {
 				sortNestedComponents(data[i].children, categoryKey, typeKey, way);
 			}
 			let restypes = eval(data[i].restypes);
 			if (restypes && restypes.length > 0) {
-				restypes = sortComponents(restypes, typeKey, way);
+				restypes = sortByProperty(restypes, typeKey, way);
 			}
 		}
 		return data;

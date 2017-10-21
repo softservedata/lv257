@@ -1,7 +1,8 @@
 var assignedProperties = [];
 var existentProperties = [];
 
-//load dependency
+//load dependencies
+// $.getScript(projectPathPrefix + '/resources/js/jquery.validate.js');
 $.getScript(projectPathPrefix + '/resources/js/FormSerializePlugin.js');
 
 function refreshAssignedPropsTable() {
@@ -62,12 +63,13 @@ function updateAvailablePropertiesList() {
 
 	$('#available-properties').empty();
 
-	let unconstrainedProperties = assignedProperties.map(function (i, assignedProperty) {
-		return assignedProperty.property;
+	const propertyIDs = assignedProperties.map(function (assignedProperty, i) {
+		return assignedProperty.property.id;
 	});
 
 	availableProperties = $.grep(existentProperties, function (property) {
-		return $.inArray(property, unconstrainedProperties) < 0;
+		const pos = $.inArray(property.id, propertyIDs);
+		return pos < 0;
 	}, false);
 
 	$.each(availableProperties, function (i, property) {
@@ -302,3 +304,49 @@ function saveProperty(property, doAssign) {
 	});
 
 })();
+
+const $property = $('#property-form');
+
+$property.validate({
+	errorClass: "my_error_class",
+	rules: {
+		title: {
+			required: true,
+			minlength: 3
+		},
+		columnName: {
+			required: true,
+			minlength: 3
+		},
+		units: {
+			required: false,
+			minlength: 3
+		},
+		unitsShort: {
+			required: false,
+			minlength: 1
+		},
+		valueType: "required",
+		pattern: "required"
+	},
+	messages: {
+		title: {
+			required: "Please, provide a name for a property",
+			minlength: "Name of a property should be at least 3 characters"
+		},
+		columnName: {
+			required: "Please, provide a name for a property's column name",
+			minlength: "Name of a column name should be at least 3 characters"
+		},
+		units: {
+			required: false,
+			minlength: "Units name should be at least 2 characters"
+		},
+		unitsShort: {
+			required: false,
+			minlength: "Units name's contraction should be at least 1 character"
+		},
+		valueType: "Please, select type of a propoerty's value",
+		pattern: "Please, provide a pattern regex for property's value validation"
+	}
+});
