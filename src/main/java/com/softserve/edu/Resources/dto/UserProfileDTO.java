@@ -4,6 +4,8 @@ import com.softserve.edu.Resources.Constants;
 import com.softserve.edu.Resources.entity.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Optional;
@@ -25,12 +27,15 @@ public class UserProfileDTO {
     private String passportNumber;
 
     private String issuedBy;
+    @Past
     private Date dateOfIssue;
     private String idAddress;
     private String phone;
     private String bankId;
     private User user;
     private String gender;
+
+    @DecimalMax("999")
     private String phoneCountry;
     private String phoneOperator;
     private String phoneNumber;

@@ -1,33 +1,33 @@
 $(function () {
 
-        var $alert = $('.alert');
+        /*var $alert = $('.alert');
 
         if ($alert.length) {
 
             setTimeout(function () {
                 $alert.fadeOut('slow');
             }, 5000)
-        }
+        }*/
 
-        var $requestForm = $('#requestForm');
+        var $profileForm = $('#profileForm');
 
-        if ($requestForm.length) {
-            $requestForm.validate({
+        if ($profileForm.length) {
+            $profileForm.validate({
 
                 rules: {
-                    resourceType: {
-                        minlength: 4
+                    passportSeries: {
+                        minlength: 2
                     },
-                    description: {
-                        minlength: 4
+                    passportNumber: {
+                        minlength: 6
                     }
                 },
                 messages: {
                     error: {
-                        minlength: 'The request name should not be less than 4 letters'
+                        minlength: 'The passportSeries should not be less than 02 letters'
                     },
                     error: {
-                        minlength: 'The request name should not be less than 4 letters'
+                        minlength: 'The passportNumber should not be less than 2 letters'
                     }
                 },
                 errorElement: 'em',

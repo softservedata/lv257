@@ -78,21 +78,24 @@
             </div>
 
             <div class="form-group">
-                <spring:bind path="passportSeries">
-                    <label for="passportSeries" style="float: left;">Passport series</label>
-                    <sf:input type="passportSeries" class="form-control"
-                              placeholder="passportSeries" path="passportSeries"/>
+                    <spring:bind path="passportSeries">
+                <label for="passportSeries" style="float: left;">Passport series</label>
+                    <%--<sf:input type="passportSeries"--%>
+                <input type="text"
+                       path="passportSeries"
+                       name="${status.expression}"
+                       value="${status.value}"
+                       class="form-control"
+                       placeholder="passportSeries"/>
 
-                    <c:if test="${status.error}">
-                        <c:forEach items="${status.errorMessages}" var="error">
-
-                            <span class="red"> ${error} </span>
-
-                        </c:forEach>
-                    </c:if>
+                <c:if test="${status.error}">
+                    <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                    </c:forEach>
+                </c:if>
 
                     <%--<sf:errors path="passportSeries" cssClass="error" cssStyle="color: #ff0000;"/>--%>
-                </spring:bind>
+                    </spring:bind>
             </div>
 
             <%--            <div class="form-group">
@@ -264,7 +267,8 @@
 
 
     <script src="${js}/jquery.validate.js"></script>
-    <script src="${js}/messageTimeOut.js"></script>
+    <script src="${js}/profileValidate.js"></script>
+    <%--<script src="${js}/messageTimeOut.js"></script>--%>
 
     <script>
         $('#submit').click(function () {
