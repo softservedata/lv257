@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -50,6 +51,9 @@ public class ResourceServiceImpl implements ResourceService {
         
         Set <String> propertyColumnNames = valuesToSearch.keySet();
         
+        
+        /*validation of keyValues: do such columnNames exists for this resource type*/
+        // TODO: use security service to get allowed properties to search for the client
         boolean columnNameExist = false;
         for (String columnName : propertyColumnNames) {
             for (ConstrainedProperty constrainedProperty : resourceProperties) {
@@ -61,7 +65,21 @@ public class ResourceServiceImpl implements ResourceService {
                 }
             }
             if (!columnNameExist){
-                throw new ResourceNotFoundException("You`ve requested wrong data.");
+                throw new ResourceNotFoundException("You've requested wrong data.");
+            }
+        }
+        
+        /*validation of client inputs: do they matches with pattern for concrete resource property*/
+        boolean match = false;
+        for (Map.Entry<String, String> columnNamesAndInputs: valuesToSearch.entrySet()) {
+            for (ConstrainedProperty constrainedProperty : resourceProperties) {
+                if(columnNamesAndInputs.getKey().equalsIgnoreCase(constrainedProperty.getProperty().getColumnName())){
+                     match = columnNamesAndInputs.getValue().matches(constrainedProperty.getProperty().getPattern());
+                     break;
+                }
+            }
+            if (!match){
+                throw new ResourceNotFoundException("You've requested wrong data.");
             }
         }
         

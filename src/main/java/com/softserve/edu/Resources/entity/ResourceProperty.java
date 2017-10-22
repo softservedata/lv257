@@ -36,6 +36,9 @@ public class ResourceProperty implements Comparable<ResourceProperty>{
 
     @Column(name = "Units_short")
     private String unitsShort;
+    
+    @Column(name = "Hint")
+    private String hint;
 
     @Column(name = "Regex", nullable = false)
     private String pattern = ".+";
@@ -106,6 +109,14 @@ public class ResourceProperty implements Comparable<ResourceProperty>{
     public ResourceProperty setUnits(String units) {
         this.units = units;
         return this;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 
     public String getPattern() {

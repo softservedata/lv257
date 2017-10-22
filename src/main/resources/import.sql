@@ -62,7 +62,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `resource_properties` WRITE;
 
-INSERT INTO `resource_properties` VALUES (100200,'model','\0','[A-Za-z0-9]{2,20}','Model','','','STRING'),(100203,'year','\0','[0-9]{4,20}','Year','digits','','STRING'),(100204,'weight','\0','\\d+\\.\\d{1,3}','Weight','kilograms','kg','DOUBLE'),(100205,'load_capacity','\0','\\d+','Load-carrying capacity','kilograms','kg','INTEGER'),(100206,'vin','\0','[A-Z0-9]+','VIN',NULL,NULL,'STRING');
+INSERT INTO `resource_properties` VALUES (100200,'model','letters,digits,e.g: "Mazda6"(not less than 2 and more than 20 symbols','\0','[A-Za-z0-9]{2,20}','Model','','','STRING'),(100203,'year','only digits, e.g: 2004','\0','[0-9]{4,20}','Year','digits','','STRING'),(100204,'weight','only double, e.g: 200.20(not more than 3 digits after dot)','\0','\\d+\\.\\d{1,3}','Weight','kilograms','kg','DOUBLE'),(100205,'load_capacity','only integers, e.g: 2000','\0','\\d+','Load-carrying capacity','kilograms','kg','INTEGER'),(100206,'vin','only letters with upper case and integers, e.g: V2WWW45KP','\0','[A-Z0-9]+','VIN',NULL,NULL,'STRING');
 
 UNLOCK TABLES;
 

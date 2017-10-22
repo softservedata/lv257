@@ -81,7 +81,7 @@ $(document).ready(function(){
                         form.append("<div class=\"form-group row\">" +
                             "<label for='"+result[j].title+"' class=\"col-sm-2 control-label\">" + result[j].title+ "</label>" +
                             "<div class=\"col-sm-10\">" +
-                            "<input type=\"text\" name= '" +result[j].columnName+ "' pattern= '"+result[j].pattern+"' class=\"form-control\" id='" +result[j].title+ "' placeholder='" + result[j].title +"'>" +
+                            "<input type=\"text\" name= '" +result[j].columnName+ "' pattern= '"+result[j].pattern+"' title= '"+result[j].hint+"' class=\"form-control\" id='" +result[j].title+ "' placeholder='" + result[j].title +"'>" +
                             "</div>"+
                             "</div>");
                     }
