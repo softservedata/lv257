@@ -15,7 +15,7 @@ import java.util.Optional;
 @Table(
         name = "RESOURCE_PROPERTIES",
         uniqueConstraints = @UniqueConstraint(name = "unq_title_units",columnNames = {"Title", "Units"}))
-public class ResourceProperty {
+public class ResourceProperty implements Comparable<ResourceProperty>{
 
     transient static long idgen = 0;
 
@@ -167,5 +167,13 @@ public class ResourceProperty {
         return units == null || units.isEmpty()
                        ? title
                        : String.join(", ", title, units);
+    }
+
+    @Override
+    public int compareTo(ResourceProperty o) {
+
+        return this.getColumnName().compareToIgnoreCase(o.getColumnName());
+        
+        
     }
 }

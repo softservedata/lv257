@@ -1,23 +1,6 @@
 $(document).ready(function(){
 
-//	var dataObject = [{"name":"yura", "model":"mazda", "year":"2005"}, {"name":"george", "model":"toyota", "year":"2009"}];
-//	$('#result-search').append('<thead> <tr></tr> </thead>');
-//	$('#result-search').append('<tfoot> <tr></tr> </tfoot>');
-//	
-//	for(var key in dataObject[0]) { 
-//		 $('#result-search thead tr').append('<th>' + key + '</th>');
-//	}
-//	 
-//	var dtColumns = [];
-//	var c = 0;
-//	for(var key in dataObject[0]) { 
-//		dtColumns.push({data:key}); 
-//	} 
-//	
-//	$('#result-search').DataTable({
-//		"data": dataObject,
-//		"columns": dtColumns 
-//	});
+
 
     $('#div-for-types').hide();
     $('#form-for-properties').hide();

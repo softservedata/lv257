@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -53,11 +54,11 @@ public class LookUpController {
         for (ConstrainedProperty constraint : constraintProperties) {
             resourceProperties.add(constraint.getProperty());
         }
-
+        
         if (resourceProperties.isEmpty()) {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
-
+        Collections.sort(resourceProperties);
         return resourceProperties;
 
     }
@@ -66,6 +67,8 @@ public class LookUpController {
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO) {
 
         List <GenericResource> genResList = resourceService.findResourcesByResourceType(resourceDTO);
+        
+        
         
         if (genResList.isEmpty()){
             throw new ResourceNotFoundException("No infromation was found by your request");
