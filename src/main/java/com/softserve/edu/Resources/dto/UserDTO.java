@@ -15,8 +15,8 @@ public class UserDTO {
     @Email(message = "Invalid email address!")
     private String email;
 
-    @NotNull
-    @Size(min = 3, max = 15, message = "Password should be from 3 to 15 characters")
+    @NotNull(message = "Password should not be empty")
+    @Size(min = 6, max = 20, message = "Password should be from 6 to 20 characters")
     private String password;
 
     @Transient
