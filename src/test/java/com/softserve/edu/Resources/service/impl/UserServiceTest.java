@@ -4,7 +4,6 @@ import com.softserve.edu.Resources.dao.RoleDAO;
 import com.softserve.edu.Resources.dao.UserDAO;
 import com.softserve.edu.Resources.dao.VerificationTokenDAO;
 import com.softserve.edu.Resources.dto.UserDTO;
-import com.softserve.edu.Resources.entity.Role;
 import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.entity.VerificationToken;
 import com.softserve.edu.Resources.exception.UserAlreadyExistException;
@@ -38,7 +37,6 @@ public class UserServiceTest {
     private static List<User> allUsers;
     private static VerificationToken persistentVerificationToken;
     private static VerificationToken transientOrEmptyVerificationToken;
-    private static Date date;
 
     @Mock
     private UserDAO userDAO;
@@ -67,26 +65,21 @@ public class UserServiceTest {
         user = new User();
         userForSpring = new User()
                 .setUsername(email)
-                .setRoles(new ArrayList<Role>());
+                .setRoles(new ArrayList<>());
         userByEmail = new User();
         persistentUser = new User()
                 .setId(userId)
                 .setUsername(email)
                 .setVerificationToken(new VerificationToken())
-                .setRoles(new ArrayList<Role>())
-                .setPassword(new String());
+                .setRoles(new ArrayList<>())
+                .setPassword(password);
         userDTO = new UserDTO();
         userDTO.setEmail(email);
         userDTO.setPassword(password);
         allUsers = new ArrayList<>();
-        date = new Date();
-        persistentVerificationToken = new VerificationToken()
-                .setId(verificationTokenId)
-                .setUser(user)
-                .setExpiryDate(mock(Date.class))
-                .setToken(token);
+        persistentVerificationToken = new VerificationToken(token)
+                .setId(verificationTokenId);
         transientOrEmptyVerificationToken = new VerificationToken();
-
     }
 
     @Test
@@ -152,9 +145,10 @@ public class UserServiceTest {
         when(verificationTokenDAO.makePersistent(any(VerificationToken.class))).thenReturn(persistentVerificationToken);
 
         VerificationToken savedVerificationToken = userService.createVerificationTokenForUser(user, token);
+
         assertEquals(persistentVerificationToken, savedVerificationToken);
         assertEquals(savedVerificationToken.getId(), verificationTokenId);
-//        verify(verificationTokenDAO).makePersistent(persistentVerificationToken);
+        verify(verificationTokenDAO, times(1)).makePersistent(any(VerificationToken.class));
     }
 
     @Test
