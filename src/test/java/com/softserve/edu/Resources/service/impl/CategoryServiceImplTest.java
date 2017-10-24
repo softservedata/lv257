@@ -6,7 +6,9 @@ import com.softserve.edu.Resources.dto.ResourceTypeDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.CycleDependencyException;
+import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.RemovingCategoriesWithTypesException;
+import com.sun.org.apache.regexp.internal.RE;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +45,7 @@ public class CategoryServiceImplTest {
 
     private static ResourceType type1;
     private static ResourceType type2;
+    private static ResourceType type3;
 
     private static ResourceCategoryDTO rootCategory1DTO;
     private static ResourceCategoryDTO rootCategory2DTO;
@@ -85,10 +88,13 @@ public class CategoryServiceImplTest {
 
         type1 = new ResourceType("type1").setId(101L).setTableName("type1")
                 .setCategory(leafCategory_1_3).setInstantiated(true);
-        type2 = new ResourceType("type2").setId(101L).setTableName("type2")
+        type2 = new ResourceType("type2").setId(102L).setTableName("type2")
                 .setCategory(leafCategory_1_3).setInstantiated(false);
+        type3 = new ResourceType("type3").setId(103L).setTableName("type3")
+                .setCategory(leafCategory_1_1).setInstantiated(true);
 
         leafCategory_1_3.setResourceTypes(new HashSet<>(Arrays.asList(type1, type2)));
+        leafCategory_1_1.setResourceTypes(new HashSet<>(Arrays.asList(type3)));
 
         allCategories = Arrays.asList(rootCategory1, rootCategory2, branchCategory1, branchCategory2, leafCategory_1_1,
                 leafCategory_1_2, leafCategory_1_3, leafCategory_2_1, leafCategory_2_2);
@@ -199,6 +205,17 @@ public class CategoryServiceImplTest {
     }
 
     @Test
+    public void deployCategoryTest() {
+        List<ResourceCategory> expected = new ArrayList<>(allCategories);
+        expected.remove(rootCategory2);
+        List<ResourceCategory> actual = categoryServiceSpy.deployCategory(rootCategory1);
+        assertTrue(actual.containsAll(expected));
+        assertTrue(expected.containsAll(actual));
+        assertTrue(actual.size() == expected.size());
+        verify(categoryServiceSpy, times(1)).getDescendants(any(ResourceCategory.class));
+    }
+
+    @Test
     public void deployAllCategoriesFromRootsTest() {
         List<ResourceCategory> expected = allCategories;
         List<ResourceCategory> actual = categoryServiceSpy.deployAllCategoriesFromRoots(rootCategories);
@@ -287,5 +304,31 @@ public class CategoryServiceImplTest {
         ResourceCategory expected2 = branchCategory2;
         ResourceCategory actual2 = categoryServiceSpy.mapFromDtoToResourceCategory(branchCategory2DTO);
         assertEquals(expected2, actual2);
+    }
+
+    @Test
+    public void getTypesByCategoryIdTest() {
+        doAnswer(invocation -> {
+            long id = invocation.getArgumentAt(0, long.class);
+            return allCategories.stream().filter(c -> c.getId().equals(id)).findFirst();
+        }).when(categoryServiceSpy).findCategoryById(anyLong());
+        List<ResourceType> expected1 = new ArrayList<>(Arrays.asList(type1, type2));
+        List<ResourceType> actual1 = categoryServiceSpy.getTypesByCategoryId(Optional.ofNullable(leafCategory_1_3.getId()));
+        assertTrue(actual1.containsAll(expected1));
+        assertTrue(expected1.containsAll(actual1));
+        assertTrue(actual1.size() == expected1.size());
+
+        when(categoryServiceSpy.findAllResourceCategories()).thenReturn(allCategories);
+        List<ResourceType> expected2 = new ArrayList<>(Arrays.asList(type1, type2, type3));
+        List<ResourceType> actual2 = categoryServiceSpy.getTypesByCategoryId(Optional.empty());
+        assertTrue(actual2.containsAll(expected2));
+        assertTrue(expected2.containsAll(actual2));
+        assertTrue(actual2.size() == expected2.size());
+    }
+
+    @Test(expected = InvalidResourceCategoryException.class)
+    public void getTypesByCategoryIdNullTest() {
+        doReturn(Optional.empty()).when(categoryServiceSpy).findCategoryById(anyLong());
+        categoryServiceSpy.getTypesByCategoryId(Optional.of(10L));
     }
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 @NamedEntityGraph(
         name = "TypesProperties",
         attributeNodes = {@NamedAttributeNode("properties")}
-        )
+)
 @Table(name = "RESOURCE_TYPES")
 public class ResourceType {
 
@@ -48,6 +48,10 @@ public class ResourceType {
 
     @Column(name = "Instantiated")
     private boolean instantiated;
+
+    @ManyToOne
+    @JoinColumn(name = "Id_Assigner", nullable = false)
+    private User assigner;
 
 
     public void setProperties(Set<ConstrainedProperty> properties) {
@@ -124,8 +128,8 @@ public class ResourceType {
 
     public Optional<ConstrainedProperty> getProperty(String propertyName) {
         return properties.stream()
-                       .filter(rp -> rp.getProperty().getTitle().equalsIgnoreCase(propertyName))
-                       .findFirst();
+                .filter(rp -> rp.getProperty().getTitle().equalsIgnoreCase(propertyName))
+                .findFirst();
     }
 
     public ResourceCategory getCategory() {
@@ -146,10 +150,20 @@ public class ResourceType {
         return this;
     }
 
+    public User getAssigner() {
+        return assigner;
+    }
+
+    public ResourceType setAssigner(User assigner) {
+        this.assigner = assigner;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ResourceType [id=" + id + ", typeName=" + typeName + ", tableName=" + tableName + ", category="
-                       + category + ", properties=" + properties + ", instantiated=" + instantiated + "]";
+                + category + ", properties=" + properties + ", instantiated=" + instantiated
+                + ", assigner=" + assigner + "]";
     }
 
 

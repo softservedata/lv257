@@ -21,7 +21,7 @@
 
         <div class="container">
             <ul class="nav nav-tabs">
-                <li><a href="ResourcesView.html">View</a></li>
+                <li><a href="/resources/viewTypes">View</a></li>
                 <li class="active"><a href="#">
                     <c:if test="${idVal == 0}"><c:out value="Add"/></c:if>
                     <c:if test="${idVal > 0}"><c:out value="Edit"/></c:if>

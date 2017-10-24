@@ -16,6 +16,7 @@
         </div>
         <ul class="dropdown-menu inner" role="menu" id="categories_and_types">
             <li id="default-item" data-level="1" hidden class="disabled active"><a href="#"></a></li>
+            <li id="all-categories" data-level="1" hidden><a href="#">All resource categories</a></li>
         </ul>
     </div>
     <input class="hidden hidden-field" name="search_form[category]" readonly

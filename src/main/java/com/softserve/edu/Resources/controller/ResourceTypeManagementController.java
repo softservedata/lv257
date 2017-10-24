@@ -40,4 +40,10 @@ public class ResourceTypeManagementController {
     public String cloneResourceType(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
         return editResourceType(-id, model);
     }
+
+    @RequestMapping(value = "/viewTypes", method = RequestMethod.GET)
+    public String viewsResourceTypes(Model model) {
+
+        return "viewTypes";
+    }
 }

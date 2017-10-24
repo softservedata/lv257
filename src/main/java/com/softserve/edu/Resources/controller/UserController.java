@@ -52,7 +52,7 @@ public class UserController {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
     //OK
-    private static final Logger logger = LoggerFactory.getLogger(UserController0.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 
     //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/

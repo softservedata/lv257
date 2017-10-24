@@ -3,9 +3,11 @@ package com.softserve.edu.Resources.service.impl;
 import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.dto.ResourceCategoryDTO;
 import com.softserve.edu.Resources.dto.ResourceTypeDTO;
+import com.softserve.edu.Resources.dto.ViewTypesDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.CycleDependencyException;
+import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.RemovingCategoriesWithTypesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -98,6 +100,13 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
             ancestors.add(parent);
         }
         return ancestors;
+    }
+
+    @Override
+    public List<ResourceCategory> deployCategory(ResourceCategory rootCategory) {
+        List<ResourceCategory> allCategories = new ArrayList<>(Arrays.asList(rootCategory));
+        allCategories.addAll(getDescendants(rootCategory));
+        return allCategories;
     }
 
     @Override
@@ -208,5 +217,24 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
     @Transactional
     public ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO) {
         return mapFromDtoToResourceCategory(categoryDTO, new HashSet<>());
+    }
+
+    @Override
+    @Transactional
+    public List<ResourceType> getTypesByCategoryId(Optional<Long> id) {
+        List<ResourceCategory> categories;
+        if (id.isPresent()) {
+            Optional<ResourceCategory> rootCategory = findCategoryById(id.get());
+            if (!rootCategory.isPresent()) {
+                throw new InvalidResourceCategoryException("Requested Resource Category not found.");
+            }
+            categories = deployCategory(rootCategory.get());
+        } else {
+            categories = findAllResourceCategories();
+        }
+        return categories.stream()
+                .map(ResourceCategory::getResourceTypes)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 }
