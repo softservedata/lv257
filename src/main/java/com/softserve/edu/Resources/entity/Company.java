@@ -1,13 +1,15 @@
 package com.softserve.edu.Resources.entity;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "company_owner")
+@Table(name = "company")
 /**
  * Represents Company entity as a resource owner
  */
@@ -27,6 +29,11 @@ public class Company extends Owner {
     @JsonProperty("organization_form")
     @NotEmpty
     private String organizationForm;
+
+    @Column(name = "edrpo_number")
+    @JsonProperty("edrpo_number")
+    @Pattern(regexp="[\\d]{8}", message = "Should be 8 digits. E.g., 87963214")
+    private String edrpoNumber;
 
     @Column(name = "CEO")
     @JsonProperty("ceo")
@@ -56,6 +63,15 @@ public class Company extends Owner {
         return this;
     }
 
+    public Company setEdrpoNumber(String edrpoNumber) {
+        this.edrpoNumber = edrpoNumber;
+        return this;
+    }
+
+    public String getEdrpoNumber() {
+        return edrpoNumber;
+    }
+
     public String getFullName() {
         return fullName;
     }
@@ -80,20 +96,21 @@ public class Company extends Owner {
 
         Company company = (Company) o;
 
-        if (fullName != null ? !fullName.equals(company.fullName) : company.fullName != null) return false;
-        if (shortName != null ? !shortName.equals(company.shortName) : company.shortName != null) return false;
-        if (organizationForm != null ? !organizationForm.equals(company.organizationForm) : company.organizationForm != null)
-            return false;
-        return ceo != null ? ceo.equals(company.ceo) : company.ceo == null;
+        if (!fullName.equals(company.fullName)) return false;
+        if (!shortName.equals(company.shortName)) return false;
+        if (!organizationForm.equals(company.organizationForm)) return false;
+        if (!edrpoNumber.equals(company.edrpoNumber)) return false;
+        return ceo.equals(company.ceo);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
-        result = 31 * result + (organizationForm != null ? organizationForm.hashCode() : 0);
-        result = 31 * result + (ceo != null ? ceo.hashCode() : 0);
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + shortName.hashCode();
+        result = 31 * result + organizationForm.hashCode();
+        result = 31 * result + edrpoNumber.hashCode();
+        result = 31 * result + ceo.hashCode();
         return result;
     }
 
@@ -117,6 +134,7 @@ public class Company extends Owner {
         return organizationForm + " " +
                 fullName + " " +
                 shortName + ", " +
+                edrpoNumber + ", " +
                 ceo + ".";
     }
 }
