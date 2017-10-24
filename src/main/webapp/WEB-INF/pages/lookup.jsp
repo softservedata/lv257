@@ -32,6 +32,12 @@
 	               </div>
 				</div>
                 <br />
+
+                <div>
+                    <script> var lookUpOwner = true </script>
+                    <%--<script> var findOwnersForResistrar = true </script>--%>
+                    <jsp:include page="components/searchOwner.jsp"/>
+                </div>
                 <c:set var="typeSelectLabel" value="Resource Type" scope="request"/>
                 <div class="row">
                     <div class="container-fluid col-md-4">
@@ -85,6 +91,7 @@
 
 </div>
 
+<script src="../../resources/js/ownerAndAddressManagement.js"></script>
 <script src="../../resources/js/lookUpResource.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>

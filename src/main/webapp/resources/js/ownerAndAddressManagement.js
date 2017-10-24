@@ -45,6 +45,7 @@ $(document).ready(function () {
      * Than depending on the response shows error message or address table.
      */
     $addResourceAddressBtn.on('click', function () {
+        console.log("wtf");
         // clears all inputs in the form
         $('#' + newResourceAddressFormId).trigger('reset');
         //clears all hibernate errors
@@ -90,7 +91,8 @@ $(document).ready(function () {
 
 });
 
-
+const lookUp = (typeof lookUpOwner  == 'undefined') ? false: lookUpOwner;
+const registrar = (typeof findOwnersForResistrar  == 'undefined') ? false: findOwnersForResistrar;
 // add resource address button on the main jsp page
 const $addResourceAddressBtn = $('#add_resource_address_btn');
 // static resource address form id
@@ -104,7 +106,7 @@ const searchResourceAddressSubmitBtnId = 'search_resource_address_submit_button'
 // hidden input for the resource address id (needed to pass it to the generic resource impl)
 const $idAddressHiddenInput = $('#resource_address_id');
 // results of address search will be appended here
-const $resourceAddressSearchResultDiv = $('.resource_address_search_result')
+const $resourceAddressSearchResultDiv = $('.resource_address_search_result');
 // div contsining three address related buttons
 const $addressButtons = $('#address_buttons');
 // to reset validator errors
@@ -1413,41 +1415,56 @@ function showResults(success, $resultDiv) {
 
     buildOptions(success, $select);
 
-    let $chooseOwnerBtn = $('<button/>', {
-        id: 'choose_owner',
-        class: 'btn btn-success pull-right',
-        text: 'Choose owner'
-    });
-    let $clearfix = $('<div/>', {
-        class: 'clearfix'
-    });
-    $resultDiv.append($chooseOwnerBtn);
-    $resultDiv.append($clearfix);
+    if (lookUp){
+        console.log("look up");
+        let $fidnResourcesByOwnerBtn = $('<button/>', {
+            id: '',
+            class: 'btn btn-success pull-right',
+            text: ''
+        });
 
-    let choosenOwnerId = 'none';
-    let choosenOwnerInfo;
+        // Yura TODO
 
-    $select.on('change', function () {
-        choosenOwnerId = this.value;
-        choosenOwnerInfo = $(this).find('option:selected').text();
-        console.log(choosenOwnerInfo);
-        console.log('choosen owner id: ' + choosenOwnerId);
-    });
+    } else if (registrar){
+        let $chooseOwnerBtn = $('<button/>', {
+            id: 'choose_owner',
+            class: 'btn btn-success pull-right',
+            text: 'Choose owner'
+        });
 
-    $chooseOwnerBtn.on('click', function (e) {
-        e.preventDefault();
+        let $clearfix = $('<div/>', {
+            class: 'clearfix'
+        });
+        $resultDiv.append($chooseOwnerBtn);
+        $resultDiv.append($clearfix);
 
-        if (choosenOwnerId != 'none') {
+        let choosenOwnerId = 'none';
+        let choosenOwnerInfo;
 
-            if (!checkIfOwnerAlreadyInTable(success, choosenOwnerId)) {
-                appendOwnerToTable(success, choosenOwnerId);
-                showSuccessMessage($resultDiv, 'Owner was chosen.');
-            } else {
-                alert("Owner already added in the table!!!")
+        $select.on('change', function () {
+            choosenOwnerId = this.value;
+            choosenOwnerInfo = $(this).find('option:selected').text();
+            console.log(choosenOwnerInfo);
+            console.log('choosen owner id: ' + choosenOwnerId);
+        });
+
+        $chooseOwnerBtn.on('click', function (e) {
+            e.preventDefault();
+
+            if (choosenOwnerId != 'none') {
+
+                if (!checkIfOwnerAlreadyInTable(success, choosenOwnerId)) {
+                    appendOwnerToTable(success, choosenOwnerId);
+                    showSuccessMessage($resultDiv, 'Owner was chosen.');
+                } else {
+                    alert("Owner already added in the table!!!")
+                }
+                // $resourceOwnersMultySelect.append($searchedOwner);
             }
-            // $resourceOwnersMultySelect.append($searchedOwner);
-        }
-    })
+        })
+    }
+
+
 }
 
 function checkIfOwnerAlreadyInTable(owners, choosenOwnerId) {
