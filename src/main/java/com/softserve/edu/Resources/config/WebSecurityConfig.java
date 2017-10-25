@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Bean
+    GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
+    }
 
     @Autowired
     private MyUserDetailsService myUserDetailsService;
@@ -41,12 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // The pages does not require login
         http.authorizeRequests().antMatchers("/", "/welcome", "/login", "/logout").permitAll();
 
-        // /userInfo page requires login as USER or ADMIN.
-        // If no login, it will redirect to /login page.
+
         http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
 
-        // For ADMIN only.
-        http.authorizeRequests().antMatchers("/admin","/users","/roles","/privileges").access("hasRole('ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers("/users").access("hasRole('Read users information')");
+        http.authorizeRequests().antMatchers("/roles","/privileges").access("hasRole('Read roles')");
 
         // When the user has logged in as XX.
         // But access a page that requires role YY,
@@ -70,4 +74,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder(11);
     }
+
 }

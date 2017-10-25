@@ -21,8 +21,9 @@
             <div class="container">
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="${pageContext.request.contextPath}/resources/registration">Register
-                        resource</a></li>
+                    <%--<c:if test="${pageContext.request.isUserInRole('Look up')}">
+                    </c:if>--%>
+                    <li class="active"><a href="${pageContext.request.contextPath}/resources/registration">Register resource</a></li>
                     <li><a href="${pageContext.request.contextPath}/resources/request">Send request</a></li>
                     <li><a href="${pageContext.request.contextPath}/resources/story">History</a></li>
                 </ul>

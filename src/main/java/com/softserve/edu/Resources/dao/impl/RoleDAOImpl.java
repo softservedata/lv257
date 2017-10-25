@@ -45,8 +45,11 @@ public class RoleDAOImpl implements RoleDAO  {
         return role;
     }
 
-
-
-
-
+    @Override
+    public void deleteAllRoles() {
+        entityManager.createNativeQuery("TRUNCATE TABLE users_roles;").executeUpdate();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 0;").executeUpdate();
+        entityManager.createNativeQuery("TRUNCATE table role;").executeUpdate();
+        entityManager.createNativeQuery("SET FOREIGN_KEY_CHECKS = 1;").executeUpdate();
+    }
 }

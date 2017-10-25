@@ -31,7 +31,43 @@ function getPrivileges() {
 }*/
 
 function displayTable(data) {
-    var list1 = [];
+    $.each(data.systemPrivileges, function (index, item) {
+        var eachrow = "<tr>"
+            + "<td>" + item.name + "</td>"
+            + "<td>" + item.enabled + "</td>"
+            + "</tr>";
+        console.log(item);
+        $('#sp').append(eachrow);
+    });
+    $.each(data.typePrivileges, function (index, item) {
+        var eachrow = "<tr>"
+            + "<td>" + item.name + "</td>"
+            + "<td>" + item.create + "</td>"
+            + "<td>" + item.read + "</td>"
+            + "<td>" + item.update + "</td>"
+            + "<td>" + item.delete + "</td>"
+            + "</tr>"
+            + "<tr>"
+            +"<table><thead><tr><td>Property</td><td>Read</td><td>Update</td></tr></thead>" +
+            "<tbody>";
+
+        $.each(item.properties, function (index, item2) {
+            eachrow = eachrow + "<tr><td>"
+                + "<td>" + item2.name + "</td>"
+                + "<td>" + item2.read + "</td>"
+                + "<td>" + item2.update + "</td>"
+                + "</tr>";
+        });
+
+            eachrow = eachrow + "</tbody>" +
+            "</table>"
+            + "</td></tr>";
+        console.log(item);
+        $('#rtp').append(eachrow);
+    });
+
+
+    /*var list1 = [];
     var list2 = [];
     var list3 = [];
     for(i=0; i<data.length; i++){
@@ -84,10 +120,11 @@ function displayTable(data) {
             + "</tr>";
         console.log(item + "rpp");
         $('#rpp').append(eachrow);
-    });
+    });*/
 
 }
 
+/*
 function getPrivileges2() {
 
     var resourcesAPI = projectPathPrefix + "/api/privilege/new/?rn=ROLE_ADMIN";
@@ -158,12 +195,12 @@ function displayTable2(data) {
         else
             console.log(index + " is system ********");
 
-        /*var eachrow =
-        console.log(index + " rpp " + item);*/
+        /!*var eachrow =
+        console.log(index + " rpp " + item);*!/
     });
     console.log("hello after");
 
-    /*
+    /!*
     var list1 = [];
     var list2 = [];
     var list3 = [];
@@ -217,6 +254,6 @@ function displayTable2(data) {
             + "</tr>";
         console.log(item + "rpp");
         $('#rpp').append(eachrow);
-    });*/
+    });*!/
 
-}
+}*/

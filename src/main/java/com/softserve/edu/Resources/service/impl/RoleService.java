@@ -50,4 +50,9 @@ public class RoleService {
         roleDAO.updateRole(role);
         return role;
     }
+
+    @Transactional
+    public void deleteAllRoles() {
+        roleDAO.deleteAllRoles();
+    }
 }

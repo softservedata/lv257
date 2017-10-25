@@ -21,13 +21,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <%--<c:if test="${pageContext.request.isUserInRole('Look up')}">
+                </c:if>--%>
                 <li><a href="${pageContext.request.contextPath}/lookup">Look up</a></li>
-                <li><a href="${pageContext.request.contextPath}/resources">Resources</a></li>
-                <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+
+                <c:if test="${pageContext.request.isUserInRole('Access to resources management panel')}">
+                    <li><a href="${pageContext.request.contextPath}/resources">Resources</a></li>
+                </c:if>
+
+                <c:if test="${pageContext.request.isUserInRole('Access to administration panel')}">
                     <li><a href="${pageContext.request.contextPath}/users">Administration</a></li>
                 </c:if>
                 <li><a href="${pageContext.request.contextPath}/about">About</a></li>
-                <li><a href="${pageContext.request.contextPath}/endPoints">ENDPOINTS !</a></li>
+
+                <c:if test="${pageContext.request.isUserInRole('ROLE_ADMIN')}">
+                    <li><a href="${pageContext.request.contextPath}/endPoints">ENDPOINTS !</a></li>
+                </c:if>
+
             </ul>
             <ul class="nav navbar-nav navbar-right">
                     <li><li/>

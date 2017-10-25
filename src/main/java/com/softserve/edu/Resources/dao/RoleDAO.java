@@ -13,4 +13,6 @@ public interface RoleDAO  {
 
     //@SuppressWarnings("unchecked")
     Role updateRole(Role role);
+
+    void deleteAllRoles();
 }

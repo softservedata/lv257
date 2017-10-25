@@ -206,31 +206,30 @@
 		    <artifactId>spring-jdbc</artifactId>
 		    <version>4.3.6.RELEASE</version>
 		</dependency>
-			
-		
-		<!-- Spring Security Artifacts - START -->
-		<!-- Spring Security Artifacts - START -->
-		<!-- http://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>4.0.4.RELEASE</version>
+			<version>4.2.3.RELEASE</version>
 		</dependency>
-		
-		<!-- http://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>4.0.4.RELEASE</version>
+			<version>4.2.3.RELEASE</version>
 		</dependency>
-		
-		<!-- http://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<version>4.0.4.RELEASE</version>
+			<version>4.2.3.RELEASE</version>
 		</dependency>
-		
+
+
 		<!-- Hibernate -->
 		<!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>

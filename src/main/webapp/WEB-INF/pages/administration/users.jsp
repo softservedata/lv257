@@ -29,13 +29,13 @@
                         <button id="add_resource_address_btn"
                                 class="btn btn-primary"
                                 type="button" data-toggle="modal"
-                                data-target="#resourseAdressPopUp">
+                                data-target="#addUserPopUp">
                             Add new User
                         </button>
                     </div>
                 </div>
 
-                <div id="resourseAdressPopUp" class="modal fade">
+                <div id="addUserPopUp" class="modal fade">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -96,18 +96,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <label for="select_privileges">Select privileges (hold shift to select more than one):</label>
-                                                <select multiple class="form-control" id="select_privileges">
-                                                    <option>RESOURCE:CREATE</option>
-                                                    <option>RESOURCE:READ</option>
-                                                    <option>RESOURCE:UPDATE</option>
-                                                    <option>RESOURCE:DELETE</option>
-                                                    <option>5</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <button class="btn pull-right  btn-success " id="resource_custom_btn">Add</button>
                                         <div class="clearfix">
 
@@ -130,14 +118,12 @@
                         <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Full name</th>
                             <th>Email</th>
-                            <th>Role</th>
+                            <th>Roles</th>
                             <th>Enabled</th>
-                            <th>Last visit</th>
                             <th>Edit</th>
-                            <th>Clone</th>
-                            <%--<th>Delete</th>--%>
+                            <%--<th>Clone</th>--%>
+                            <th>Delete</th>
 
                         </tr>
                         </thead>
@@ -148,7 +134,6 @@
                                 <c:forEach var="listValue" items="${users}">
                                     <tr>
                                         <td>${listValue.id}</td>
-                                        <td>Full name</td>
                                         <td>${listValue.username}</td>
                                         <td><c:forEach var="role" items="${listValue.roles}">
                                             ${role.name}
@@ -168,16 +153,15 @@
                                                 </div>
                                             </td>
                                         </c:if>
-                                        <td>${listValue.password}</td>
                                         <td ><a href="${pageContext.request.contextPath}/userEdit?uid=${listValue.id}">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a></td>
-                                        <td ><a href="#">
-                                            <span class="glyphicon glyphicon-copy"></span>
-                                        </a></td>
                                         <%--<td ><a href="#">
-                                            <span class="glyphicon glyphicon-remove"></span>
+                                            <span class="glyphicon glyphicon-copy"></span>
                                         </a></td>--%>
+                                        <td ><a href="#">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </a></td>
                                     </tr>
                                 </c:forEach>
                             </ul>

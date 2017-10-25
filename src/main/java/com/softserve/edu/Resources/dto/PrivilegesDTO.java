@@ -99,13 +99,13 @@ public class PrivilegesDTO {
             if (typeItem.isUpdate()){
                 Privilege privilege = new Privilege();
                 privilege.setPrivilegeType(PrivilegeType.RESOURCE_TYPE);
-                privilege.setName(typeItem.getName()+":create");
+                privilege.setName(typeItem.getName()+":update");
                 privileges.add(privilege);
             }
             if (typeItem.isDelete()){
                 Privilege privilege = new Privilege();
                 privilege.setPrivilegeType(PrivilegeType.RESOURCE_TYPE);
-                privilege.setName(typeItem.getName()+":create");
+                privilege.setName(typeItem.getName()+":delete");
                 privileges.add(privilege);
             }
 
@@ -113,13 +113,13 @@ public class PrivilegesDTO {
                 if (propItem.isRead()){
                     Privilege privilege = new Privilege();
                     privilege.setPrivilegeType(PrivilegeType.PROPERTY);
-                    privilege.setName(typeItem.getName()+":read");
+                    privilege.setName(typeItem.getName()+":"+propItem.getName()+":read");
                     privileges.add(privilege);
                 }
                 if (propItem.isUpdate()){
                     Privilege privilege = new Privilege();
                     privilege.setPrivilegeType(PrivilegeType.PROPERTY);
-                    privilege.setName(typeItem.getName()+":create");
+                    privilege.setName(typeItem.getName()+":"+propItem.getName()+":update");
                     privileges.add(privilege);
                 }
             }

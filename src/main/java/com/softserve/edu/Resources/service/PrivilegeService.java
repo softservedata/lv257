@@ -10,6 +10,8 @@ public interface PrivilegeService {
 
     public Privilege getPrivilegeById(Long id);
 
+    Privilege getPrivilegeByName(String name);
+
     Privilege addPrivilege(Privilege s);
 
     public Privilege addPrivilege(String s);
