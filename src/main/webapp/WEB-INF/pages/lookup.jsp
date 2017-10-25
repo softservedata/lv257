@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/>
+	
 <html>
 <head>
     <title>${title}</title>
@@ -22,7 +22,7 @@
 	            <div class="row">
 	              <div class="container-fluid col-md-4">
 	            	<div id=type-choose class="form-group">
-	            		<label for="lookup_type">Select type of Look Up:</label> <br> <c:out value="${contextPath}"/>
+	            		<label for="lookup_type">Select type of Look Up:</label> <br> <c:out value="${pageContext.request.contextPath}"/>
 	              		<select id="lookup_type" class="form-control">
 	                		<option value="absent">Choose type here</option>
 	                		<option value="by-type">Looking up by type of Resource</option>
@@ -91,7 +91,7 @@
 
 </div>
 
-<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
+<script src="../resources/js/ownerAndAddressManagement.js"></script>
 <script src="${contextPath}/resources/js/lookUpResource.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
