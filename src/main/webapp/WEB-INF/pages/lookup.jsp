@@ -22,7 +22,7 @@
 	            <div class="row">
 	              <div class="container-fluid col-md-4">
 	            	<div id=type-choose class="form-group">
-	            		<label for="lookup_type">Select type of Look Up:</label>
+	            		<label for="lookup_type">Select type of Look Up:</label> <br> <c:out value="${contextPath}">
 	              		<select id="lookup_type" class="form-control">
 	                		<option value="absent">Choose type here</option>
 	                		<option value="by-type">Looking up by type of Resource</option>
