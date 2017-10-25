@@ -1,16 +1,21 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags" %>
 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<script>
+    currentAdmin = "<c:out value="${currentAdmin}"/>"
+</script>
 <html>
 <head>
     <title>View resource types</title>
     <jsp:include page="metadata.jsp"/>
     <script src="${contextPath}/resources/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+    <script src="${contextPath}/resources/js/viewTypes.js"></script>
 </head>
 <body>
 <jsp:include page="menu.jsp"/>
@@ -28,35 +33,31 @@
         <div class="container">
             <br>
             <h3>View resource types</h3>
-            <br>
-            <table class="table table-striped table-condensed text-center table-bordered display" id="types-table">
+            <table class="table table-striped table-condensed text-center display" width="100%" id="types-table">
                 <thead>
                 <tr>
                     <th>
-                        <div class="text-center ">Resource category</div>
+                        <div class="text-center">#</div>
                     </th>
                     <th>
-                        <div class="text-center ">Resource type</div>
+                        <div class="text-center">Resource category</div>
+                    </th>
+                    <th>
+                        <div class="text-center">Resource type</div>
                     </th>
                     <th>
                         <div class="text-center">Created by</div>
                     </th>
+                    <th></th>
                     <th>
-                        <div class="text-center ">Instantiated</div>
+                        <div class="text-center">Actions</div>
                     </th>
-                    <th>
-                        <div class="text-center">Edit</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Clone</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Delete</div>
-                    </th>
+                    <th></th>
                 </tr>
                 </thead>
 
                 <thead>
+                <th></th>
                 <th>
                     <div class="theader-with-select" id="categories">
                         <script> var disableAncestorSelecting = false;
@@ -73,15 +74,41 @@
                 </th>
                 <th>
                     <select class="selectpicker" data-live-search="true" data-width="100%" id="admins">
-                        <option>All administrators</option>
-                        <option>Myself</option>
+                        <option data-value="all">All administrators</option>
+                        <option data-value="${currentAdmin}">Me</option>
+                        <c:forEach items="${administrators}" var="adminName">
+                            <c:if test="${adminName != currentAdmin}">
+                                <option data-value="${adminName}">${adminName}</option>
+                            </c:if>
+                        </c:forEach>
                     </select>
                 </th>
                 <th></th>
                 <th></th>
                 <th></th>
-                <th></th>
                 </thead>
+
+                <tfoot>
+                <tr>
+                    <th>
+                        <div class="text-center">#</div>
+                    </th>
+                    <th>
+                        <div class="text-center">Resource category</div>
+                    </th>
+                    <th>
+                        <div class="text-center">Resource type</div>
+                    </th>
+                    <th>
+                        <div class="text-center">Created by</div>
+                    </th>
+                    <th></th>
+                    <th>
+                        <div class="text-center">Actions</div>
+                    </th>
+                    <th></th>
+                </tr>
+                </tfoot>
 
                 <tbody>
                 </tbody>

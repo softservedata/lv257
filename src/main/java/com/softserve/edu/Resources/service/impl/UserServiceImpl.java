@@ -114,4 +114,9 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    @Transactional
+    public List<User> getUsersWithRoles(String... roleNames) {
+        return userDAO.getUsersWithRoles(roleNames);
+    }
 }
