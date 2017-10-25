@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface ResourceTypeDAO extends GenericDAO<ResourceType, Long> {
 
     Optional<ResourceType> findByName(String name);
+    Optional<ResourceType> findByTypeName(String typeName);
 
     List<ResourceType> findByProperty(ResourceProperty property);
 

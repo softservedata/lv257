@@ -1,19 +1,33 @@
 package com.softserve.edu.Resources.dao.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.sql.DataSource;
+
+import org.hibernate.transform.Transformers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+
 import com.softserve.edu.Resources.dao.ResourceDao;
+import com.softserve.edu.Resources.dto.GroupedResourceCount;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.PropertyValue;
 import com.softserve.edu.Resources.entity.ResourceProperty;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
-import java.util.*;
 
 @Repository
 public class ResourceDaoImpl implements ResourceDao {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -24,11 +38,11 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByResourceType(String sqlQuery, Map<String, String> valuesToSearch,
-                                                             List<ConstrainedProperty> resourceProperties) {
+            List<ConstrainedProperty> resourceProperties) {
 
         List<GenericResource> genResList = new ArrayList<GenericResource>();
         List<Map<String, Object>> genResRows = new ArrayList<>();
-
+        
         if (!valuesToSearch.isEmpty()) {
 
             Object[] args = new Object[valuesToSearch.size()];
@@ -80,4 +94,29 @@ public class ResourceDaoImpl implements ResourceDao {
 
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<GroupedResourceCount> findResourcesCountGroupedByResourceTypeForOwner(Long ownerId) {
+
+        return (List<GroupedResourceCount>) entityManager
+                .createQuery("SELECT new com.softserve.edu.Resources.dto.GroupedResourceCount( "
+                        + "ro.resourceType.typeName, COUNT(ro) ) FROM ResourceOwning ro WHERE ro.owner.id = :id "
+                        + "GROUP BY ro.resourceType.typeName")
+                .setParameter("id", ownerId).getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Long> findResourcesIdsByOwner(long ownerId, String resourceTypeName) {
+        // TODO Auto-generated method stub
+        return entityManager.createQuery("SELECT ro.resource.id FROM ResourceOwning ro "
+                + "WHERE ro.resourceType.typeName = :resourceTypeName AND ro.owner.id = :id", Long.class)
+                .setParameter("resourceTypeName", resourceTypeName).setParameter("id", ownerId).getResultList();
+        
+        
+    }
+
+    
+    
+    
 }

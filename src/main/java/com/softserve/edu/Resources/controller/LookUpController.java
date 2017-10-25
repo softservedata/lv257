@@ -1,8 +1,8 @@
 package com.softserve.edu.Resources.controller;
 
-
 import com.softserve.edu.Resources.dto.ExceptionJSONInfo;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
+import com.softserve.edu.Resources.dto.GroupedResourceCount;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.ResourceProperty;
@@ -27,16 +27,6 @@ public class LookUpController {
     @Autowired
     ResourceService resourceService;
 
-    // @RequestMapping(value = "/lookup/resourceTypes", method =
-    // RequestMethod.GET)
-    // public List<ResourceTypeDTO> loadResourceTypes(){
-    //
-    //
-    // return
-    // DtoUtilMapper.resTypesToResTypesDTO(resourceTypeService.getInstances());
-    //
-    // }
-
     @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
 
     public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId) {
@@ -54,7 +44,7 @@ public class LookUpController {
         for (ConstrainedProperty constraint : constraintProperties) {
             resourceProperties.add(constraint.getProperty());
         }
-        
+
         if (resourceProperties.isEmpty()) {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
@@ -66,15 +56,34 @@ public class LookUpController {
     @RequestMapping(value = "/lookUp/inputValues", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO) {
 
-        List <GenericResource> genResList = resourceService.findResourcesByResourceType(resourceDTO);
-        
-        
-        
-        if (genResList.isEmpty()){
+        List<GenericResource> genResList = resourceService.findResourcesByResourceType(resourceDTO);
+
+        if (genResList.isEmpty()) {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
-        
+
         return genResList;
+    }
+
+    @RequestMapping(value = "/lookUp/{ownerId}", method = RequestMethod.GET)
+    public List<GroupedResourceCount> findAllOwnerResourcesGroupedByResourceType(@PathVariable String ownerId) {
+
+        List<GroupedResourceCount> groupedRescorces = resourceService
+                .findResourcesCountGroupedByResourceTypeForOwner(ownerId);
+
+        if (groupedRescorces.isEmpty()) {
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
+
+        return groupedRescorces;
+    }
+
+    @RequestMapping(value = "/lookUp/owner/{ownerId}/resourcetype/{resourceTypeName}", method = RequestMethod.GET)
+    public List<GenericResource> lookUpByOwner(@PathVariable long ownerId, @PathVariable String resourceTypeName) {
+
+        List<GenericResource>  genericResources = resourceService.findResourcesByOwnerAndType(ownerId, resourceTypeName);
+
+        return genericResources;
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -87,4 +96,3 @@ public class LookUpController {
     }
 
 }
-

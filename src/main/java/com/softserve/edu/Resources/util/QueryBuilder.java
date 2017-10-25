@@ -55,6 +55,9 @@ public class QueryBuilder {
         }
         return createQuery.toString();
     }
+    
+    
+  
 
     /**
      *  Retrieves all data from dto objects and builds jpql query.

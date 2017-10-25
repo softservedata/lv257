@@ -71,6 +71,12 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
         
         return resourceType;
     }
+    
+    @Override
+    public Optional<ResourceType> findByTypeName(String typeName) {
+        final String queryByTypeName = "select i from ResourceType i where i.typeName = :name";
+        return querySingleResult(queryByTypeName, "name", typeName);
+    }
 
     @Override
     public Optional<ResourceType> findById(Long id, boolean doFetch) {
