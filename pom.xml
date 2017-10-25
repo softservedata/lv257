@@ -427,7 +427,7 @@
 	
 	
 	<build>
-		<finalName>resourcesdemo</finalName>
+		<finalName>ResourceInventory</finalName>
 		<plugins>
 			
 			<!-- Config: Maven Tomcat Plugin -->

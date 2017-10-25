@@ -3,9 +3,11 @@ package com.softserve.edu.Resources.service.impl;
 import com.softserve.edu.Resources.dao.ResourceCategoryDAO;
 import com.softserve.edu.Resources.dto.ResourceCategoryDTO;
 import com.softserve.edu.Resources.dto.ResourceTypeDTO;
+import com.softserve.edu.Resources.dto.ViewTypesDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.CycleDependencyException;
+import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.RemovingCategoriesWithTypesException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,8 +43,8 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
 
     @Override
     @Transactional
-    public void saveResourceCategory(ResourceCategory resourceCategory) {
-        resourceCategoryDAO.makePersistent(resourceCategory);
+    public ResourceCategory saveResourceCategory(ResourceCategory resourceCategory) {
+        return resourceCategoryDAO.makePersistent(resourceCategory);
     }
 
     @Override
@@ -100,52 +102,11 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         return ancestors;
     }
 
-    @Transactional
-    public void insertCategoriesTEMPORARY() {
-/*        findAllResourceCategories().forEach(this::deleteResourceCategory);
-        resourceCategoryDAO.flush();
-
-        ResourceCategory category = new ResourceCategory("category", null);
-        ResourceCategory subcategory1 = new ResourceCategory("subcategory1", category);
-        ResourceCategory subcategory2 = new ResourceCategory("subcategory2", category);
-        ResourceCategory typecategory1_1 = new ResourceCategory("typecategory1_1", subcategory1);
-        ResourceCategory typecategory1_2 = new ResourceCategory("typecategory1_2", subcategory1);
-        ResourceCategory typecategory2_1 = new ResourceCategory("typecategory2_1", subcategory2);
-        ResourceCategory typecategory2_2 = new ResourceCategory("typecategory2_2", subcategory2);
-        ResourceCategory typecategory1_3 = new ResourceCategory("typecategory1_3", subcategory1);
-
-        category.getChildrenCategories().add(subcategory1);
-        category.getChildrenCategories().add(subcategory2);
-        subcategory1.getChildrenCategories().add(typecategory1_1);
-        subcategory1.getChildrenCategories().add(typecategory1_2);
-        subcategory1.getChildrenCategories().add(typecategory1_3);
-        subcategory2.getChildrenCategories().add(typecategory2_1);
-        subcategory2.getChildrenCategories().add(typecategory2_2);
-
-        ResourceType type1 = new ResourceType("Land");
-        type1.setCategory(typecategory2_2);
-        type1.setTableName("Land");
-        type1.setInstantiated(true);
-        typecategory2_2.getResourceTypes().add(type1);
-        ResourceType type3 = new ResourceType("Bank account");
-        type3.setCategory(typecategory2_2);
-        type3.setTableName("Bank account");
-        type3.setInstantiated(true);
-        typecategory2_2.getResourceTypes().add(type3);
-        ResourceType type2 = new ResourceType("Boat");
-        type2.setCategory(typecategory2_2);
-        type2.setTableName("Boat");
-        type2.setInstantiated(true);
-        typecategory2_2.getResourceTypes().add(type2);
-
-        saveResourceCategory(category);
-*//*        saveResourceCategory(branch1);
-        saveResourceCategory(branch2);
-        saveResourceCategory(leaf1_1);
-        saveResourceCategory(leaf1_2);
-        saveResourceCategory(leaf2_1);
-        saveResourceCategory(leaf2_2);
-        saveResourceCategory(leaf1_3);*/
+    @Override
+    public List<ResourceCategory> deployCategory(ResourceCategory rootCategory) {
+        List<ResourceCategory> allCategories = new ArrayList<>(Arrays.asList(rootCategory));
+        allCategories.addAll(getDescendants(rootCategory));
+        return allCategories;
     }
 
     @Override
@@ -153,6 +114,9 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
             throws CycleDependencyException {
         List<ResourceCategory> allCategories = new ArrayList<>(rootCategories);
         rootCategories.forEach(c -> allCategories.addAll(getDescendants(c)));
+        if (allCategories.size() > new HashSet<>(allCategories).size()) {
+            throw new CycleDependencyException("Categories hierarchy has cycle dependencies. Some categories are reduplicative");
+        }
         return allCategories;
     }
 
@@ -161,7 +125,10 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         List<String> usedNames = new ArrayList<>();
         for (ResourceCategory category : categories) {
             String name = category.getCategoryName();
-            if (usedNames.contains(name.toLowerCase()) || name.length() < minNameLength || name.length() > maxNameLength) {
+            if (name == null
+                    || usedNames.contains(name.toLowerCase())
+                    || name.length() < minNameLength
+                    || name.length() > maxNameLength) {
                 return false;
             }
             usedNames.add(name.toLowerCase());
@@ -179,7 +146,6 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
                         .map(ResourceCategory::getId)
                         .collect(Collectors.toList()).contains(c.getId()))
                 .forEach(dc -> {
-                    System.out.println(dc.getCategoryName());
                     if (dc.getResourceTypes().size() == 0 && getDescendants(dc).stream()
                             .allMatch(dcd -> dcd.getResourceTypes().size() == 0)) {
                         deleteResourceCategory(dc);
@@ -225,7 +191,8 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
         ResourceCategory targetCategory = new ResourceCategory();
         if (categoryDTO != null) {
             if (categoryDTO.getId() != null) {
-                targetCategory = findCategoryById(categoryDTO.getId()).orElse(targetCategory);
+                targetCategory = findCategoryById(categoryDTO.getId())
+                        .orElse(targetCategory);
             }
             mapped.add(categoryDTO);
             targetCategory.setCategoryName(categoryDTO.getCategoryName());
@@ -250,5 +217,24 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
     @Transactional
     public ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO) {
         return mapFromDtoToResourceCategory(categoryDTO, new HashSet<>());
+    }
+
+    @Override
+    @Transactional
+    public List<ResourceType> getTypesByCategoryId(Optional<Long> id) {
+        List<ResourceCategory> categories;
+        if (id.isPresent()) {
+            Optional<ResourceCategory> rootCategory = findCategoryById(id.get());
+            if (!rootCategory.isPresent()) {
+                throw new InvalidResourceCategoryException("Requested Resource Category not found.");
+            }
+            categories = deployCategory(rootCategory.get());
+        } else {
+            categories = findAllResourceCategories();
+        }
+        return categories.stream()
+                .map(ResourceCategory::getResourceTypes)
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 }

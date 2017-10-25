@@ -2,6 +2,7 @@ package com.softserve.edu.Resources.service;
 
 import com.softserve.edu.Resources.dto.ResourceCategoryDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
+import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.CycleDependencyException;
 import com.softserve.edu.Resources.exception.RemovingCategoriesWithTypesException;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public interface ResourceCategoryService {
     List<ResourceCategory> findAllResourceCategories();
 
     @Transactional
-    void saveResourceCategory(ResourceCategory resourceCategory);
+    ResourceCategory saveResourceCategory(ResourceCategory resourceCategory);
 
     @Transactional
     void deleteResourceCategory(ResourceCategory resourceCategory);
@@ -32,6 +33,8 @@ public interface ResourceCategoryService {
     List<ResourceCategory> getDescendants(ResourceCategory resourceCategory) throws CycleDependencyException;
 
     List<ResourceCategory> getAncestors(ResourceCategory resourceCategory) throws CycleDependencyException;
+
+    List<ResourceCategory> deployCategory(ResourceCategory rootCategory);
 
     List<ResourceCategory> deployAllCategoriesFromRoots(List<ResourceCategory> rootCategories)
             throws CycleDependencyException;
@@ -48,5 +51,5 @@ public interface ResourceCategoryService {
     ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO);
 
     @Transactional
-    void insertCategoriesTEMPORARY();
+    List<ResourceType> getTypesByCategoryId(Optional<Long> id);
 }

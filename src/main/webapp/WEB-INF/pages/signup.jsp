@@ -7,6 +7,11 @@
 <html>
 <head><title>Sign Up</title>
     <jsp:include page="metadata.jsp"/>
+    <style>
+        label.error {
+            color: #ad241a;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="menu.jsp" />
@@ -32,12 +37,12 @@
         <div class="col-md-4" style="float: left;">
             <center>
                 <h3>Registration form</h3>
-        <form:form modelAttribute="newUser" method="post" style="border: 1px groove gray; border-radius: 5px; padding: 5px; width: 280px" >
+        <form:form  id="formregister" modelAttribute="newUser" method="post" style="border: 1px groove gray; border-radius: 5px; padding: 5px; width: 280px" >
 <br>
 
             <div class="form-group" style="width: 250px;">
                 <label for="email" style="float: left;">Login/Email:</label>
-                <form:input class="form-control" placeholder="Enter login/email" path="email"/>
+                <form:input class="form-control" placeholder="Enter login/email" path="email" />
                 <form:errors path="email" cssClass="error" cssStyle="color: #ff0000;"/>
             </div>
             <div class="form-group" style="width: 250px;">
@@ -59,15 +64,9 @@
 
     </div>
     </div>
-
-
-    <%--<footer class="footer">--%>
-        <%--<div class="container">--%>
-            <%--<p class="text-muted">&copy; Lv257_Java</p>--%>
-        <%--</div>--%>
-    <%--</footer>--%>
 </div>
 <jsp:include page="footer.jsp"/>
-
 </body>
 </html>
+<script src="${contextPath}/resources/js/jquery.validate.js"></script>
+<script src="${contextPath}/resources/js/validateRegistrationForm.js"></script>

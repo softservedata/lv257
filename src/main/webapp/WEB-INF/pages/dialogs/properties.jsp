@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<%--<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>--%>
 
 <div id="available-props-modal" class="modal fade">
   <div class="modal-dialog">
@@ -34,7 +34,7 @@
         <h4>Define new Property</h4>
       </div>
       <div class="modal-body">
-        <form class="form" id="new-property">
+        <form class="form" id="property-form">
           <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
@@ -69,7 +69,7 @@
               <div class="form-group">
                 <label for="value-type">Value type</label>
                 <select id="value-type" name="valueType" class="form-control">
-                  <option disabled selected hidden>Select value type</option>
+                  <option disabled selected hidden value="">Select value type</option>
                 </select>
               </div>
             </div>
@@ -106,5 +106,5 @@
     </div>
   </div>
 </div>
-
+<script src="${contextPath}/resources/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/js/properties.js"></script>

@@ -4,6 +4,9 @@ import com.softserve.edu.Resources.Constants;
 import com.softserve.edu.Resources.entity.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Optional;
 
@@ -16,14 +19,26 @@ public class UserProfileDTO {
     private String firstName;
     private String secondName;
     private String middleName;
+
+    @Size(min = 2, max = 2, message = "This is invalid passport series.UserProfileDTO")
     private String passportSeries;
+
+    @Size(min = 6, max = 6, message = "This is invalid passport series.UserProfileDTO")
     private String passportNumber;
+
     private String issuedBy;
+    @Past
     private Date dateOfIssue;
     private String idAddress;
     private String phone;
     private String bankId;
     private User user;
+    private String gender;
+
+    @DecimalMax("999")
+    private String phoneCountry;
+    private String phoneOperator;
+    private String phoneNumber;
 
     public UserProfileDTO() {
     }
@@ -180,5 +195,37 @@ public class UserProfileDTO {
                 ", bankId='" + bankId + '\'' +
                 ", user=" + user +
                 '}';
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setPhoneCountry(String phoneCountry) {
+        this.phoneCountry = phoneCountry;
+    }
+
+    public String getPhoneCountry() {
+        return phoneCountry;
+    }
+
+    public void setPhoneOperator(String phoneOperator) {
+        this.phoneOperator = phoneOperator;
+    }
+
+    public String getPhoneOperator() {
+        return phoneOperator;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }

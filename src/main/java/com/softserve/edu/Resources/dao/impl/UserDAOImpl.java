@@ -12,6 +12,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.invoke.MethodHandles;
+import java.util.Arrays;
 import java.util.List;
 
 @Repository("userDAO")
@@ -44,5 +45,11 @@ public class UserDAOImpl extends GenericDAOImpl<User, Long> implements UserDAO
     public List<User> getAllUsers() {
         List<?> list = entityManager.createQuery("SELECT p FROM User p").getResultList();
         return (List<User>) list;
+    }
+
+    @Override
+    public List<User> getUsersWithRoles(String... roleNames) {
+        final String getUsersWithRoles = "select u from User u join u.roles r where r.name in (:names)";
+        return queryResultList(getUsersWithRoles, "names", Arrays.asList(roleNames));
     }
 }

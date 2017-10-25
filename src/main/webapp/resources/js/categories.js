@@ -1,15 +1,55 @@
 /**
- * Calling JSP should define variable {showTypesInCategoryHierarchy = true}
+ * A calling JSP should define variable {showTypesInCategoryHierarchy = true}
  * to allow displaying resource types in select
  * and variable {disableAncestorSelecting = false} to disallow selecting of  intermediate categories
  */
 
-$(document).ready(function () {
-    const includeTypes = (typeof showTypesInCategoryHierarchy == 'undefined') ? false : showTypesInCategoryHierarchy;
-    const suppressChoosingParents = (typeof disableAncestorSelecting == 'undefined') ? true : disableAncestorSelecting;
-    const defaultSelectedLabel = includeTypes ? 'type of resource' : 'category of resource';
+var resourceCategorySelect;
+
+/**
+ * Sort array of objects by particular object property
+ * @param data - array of objects
+ * @param key - object key for sorting
+ * @param way - ascending or descending order
+ * @returns {Array.<T>} array of sorted objects
+ */
+function sortByProperty(data, key, way) {
+    return data.sort(function (a, b) {
+        let x = a[key];
+        let y = b[key];
+        if (!way || way === 'asc') {
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        }
+        if (way === 'desc') {
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        }
+    });
+}
+
+(function initCategorySelectComponent() {
+    const includeTypes = (typeof showTypesInCategoryHierarchy === 'undefined') ? false : showTypesInCategoryHierarchy;
+    const suppressChoosingParents = (typeof disableAncestorSelecting === 'undefined') ? true : disableAncestorSelecting;
+    const defaultSelectedLabel = (includeTypes ? 'type' : 'category') + ' of resource';
+    const showAllCategories = (typeof showAllCategoriesInSelect === 'undefined') ? false : showAllCategoriesInSelect;
     let lastDatabaseId;
     let lastTemporaryId;
+
+    let getSelectedId = function () {
+        return resourceCategorySelect.lastSelectedId ? resourceCategorySelect.lastSelectedId : 0;
+    };
+
+    resourceCategorySelect = {
+        selectItem: function (id) {
+            selectItemById(id);
+        },
+        getSelectedId: function () {
+            return getSelectedId();
+        },
+        lastSelectedId: 0,
+        setSelectedId: function (id) {
+            this.lastSelectedId = id;
+        }
+    };
 
     //Enable categories selectlist
     loadCategories();
@@ -18,7 +58,7 @@ $(document).ready(function () {
     $('#manage-categories').on('click', function (e) {
         e.preventDefault();
         $('#save-alert').addClass('hidden');
-        //Turm on draggable for inner Nestable dialog with text input
+        //Turn on draggable for inner Nestable dialog with text input
         $('#nestable-dialog-inner').draggable({
             handle: ".modal-header"
         });
@@ -141,8 +181,9 @@ $(document).ready(function () {
      */
     function selectItemById(id) {
         let item = $('[data-value="' + id + '"]').find('a');
-        if (item) {
+        if (item.length !== 0) {
             item.click();
+            resourceCategorySelect.setSelectedId(id);
         } else {
             $('#default-item > a').click();
             $('#selected-label').text('Select ' + defaultSelectedLabel);
@@ -153,7 +194,8 @@ $(document).ready(function () {
      * Select item of selectlist by ID, if it still exist after managing categories in Nestable
      * @param id - ID of item("option") of component
      */
-    function selectLastItemAfterManagingCategories(id) {
+
+    /*function selectLastItemAfterManagingCategories(id) {
         let lastSelectedItem = $('[data-value="' + id + '"]').find('a');
         if (lastSelectedItem.text() === $('[data-id="' + id + '"]').attr('data-categoryname')) {
             lastSelectedItem.click();
@@ -162,7 +204,7 @@ $(document).ready(function () {
             $('#default-item > a').click();
             $('#selected-label').text('Select ' + defaultSelectedLabel);
         }
-    }
+    }*/
 
     /**
      * Load data from server, build categories selectlist and reselect item,
@@ -171,13 +213,16 @@ $(document).ready(function () {
      */
     function loadCategories(lastSelectedId) {
         let urlSuffix = includeTypes ? 'categorizedTypes' : 'categories';
-        $.get(projectPathPrefix + "/resources/" + urlSuffix, function (data) {
+        $.get(projectPathPrefix + "/api/resources/" + urlSuffix, function (data) {
             showCategoriesSelect(data);
             if (lastSelectedId) {
-                selectLastItem(lastSelectedId);
+                selectItemById(lastSelectedId);
+            } else if (showAllCategories) {
+                $('#all-categories > a').click();
             } else {
                 $('#selected-label').text('Select ' + defaultSelectedLabel);
             }
+            $('#categories-select')[0].dispatchEvent(new Event('load'));
         }, "json");
     }
 
@@ -185,7 +230,7 @@ $(document).ready(function () {
      * Activate Nestable and build categories tree
      */
     function buildCategoriesNestableTree() {
-        let jqxhr = $.getJSON("/resources/categories")
+        let jqxhr = $.getJSON("/api/resources/categories")
             .success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
                 lastTemporaryId = findLastDatabaseId(data);
@@ -249,7 +294,7 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: projectPathPrefix + "/resources/categories",
+            url: projectPathPrefix + "/api/resources/categories",
             accept: "application/json",
             data: json,
             success: function (jqXHR) {
@@ -272,26 +317,6 @@ $(document).ready(function () {
     }
 
     /**
-     * Sort array of objects by some object key
-     * @param data - array of objects
-     * @param key - object key for sorting
-     * @param way - ascending or descending order
-     * @returns {Array.<T>} array of sorted objects
-     */
-    function sortComponents(data, key, way) {
-        return data.sort(function (a, b) {
-            let x = a[key];
-            let y = b[key];
-            if (way === 'asc') {
-                return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-            }
-            if (way === 'desc') {
-                return ((x > y) ? -1 : ((x < y) ? 1 : 0));
-            }
-        });
-    }
-
-    /**
      * Sort array of objects which may have nested objects by some object key
      * @param data - array of objects
      * @param categoryKey - object key for sorting categories
@@ -300,14 +325,14 @@ $(document).ready(function () {
      * @returns {Array.<T>} array of sorted objects
      */
     function sortNestedComponents(data, categoryKey, typeKey, way) {
-        data = sortComponents(data, categoryKey, way);
+        data = sortByProperty(data, categoryKey, way);
         for (let i = 0; i < data.length; i++) {
             if (data[i].children && data[i].children.length > 0) {
                 sortNestedComponents(data[i].children, categoryKey, typeKey, way);
             }
             let restypes = eval(data[i].restypes);
             if (restypes && restypes.length > 0) {
-                restypes = sortComponents(restypes, typeKey, way);
+                restypes = sortByProperty(restypes, typeKey, way);
             }
         }
         return data;
@@ -318,9 +343,10 @@ $(document).ready(function () {
      * @param categories - JSON with categories and types
      * @param showTypes - include resource types in select
      * @param suppressChoosingParents - allow choosing only leaf categories in select
+     * @param showAllCategories - show or not option "All categories" in select
      * @param level - depth of hierarchy
      */
-    function BuildCategoriesSelect(categories, showTypes, suppressChoosingParents, level = 1) {
+    function buildCategoriesSelect(categories, showTypes, suppressChoosingParents, showAllCategories, level = showAllCategories ? 2 : 1) {
         for (let i = 0; i < categories.length; i++) {
             let classPrefix = (showTypes || (suppressChoosingParents && categories[i].children)) ? 'disabled category ' : '';
             let s = $('<li/>', {
@@ -344,7 +370,7 @@ $(document).ready(function () {
                 }
             }
             if (categories[i].children && categories[i].children.length > 0)
-                BuildCategoriesSelect(categories[i].children, showTypes, suppressChoosingParents, level + 1);
+                buildCategoriesSelect(categories[i].children, showTypes, suppressChoosingParents, showAllCategories, level + 1);
         }
     }
 
@@ -355,7 +381,10 @@ $(document).ready(function () {
     function showCategoriesSelect(data) {
         data = sortNestedComponents(data, 'categoryname', 'typeName', 'asc');
         console.log(JSON.stringify(data));
-        BuildCategoriesSelect(data, includeTypes, suppressChoosingParents);
+        buildCategoriesSelect(data, includeTypes, suppressChoosingParents, showAllCategories);
+        if (showAllCategories) {
+            $('#all-categories').removeAttr('hidden');
+        }
         addHandlersInSelectlist();
         $('#categories-select').hierarchySelect({
             width: '100%',
@@ -372,10 +401,11 @@ $(document).ready(function () {
         let list = $('#categories_and_types').find('li a');
         $.each(list, function (i, item) {
             $(item).click(function (e) {
-                $('#categories-select').data('selectedID', $(e.target).closest('li').data('value'));
-                console.log($('#categories-select').data('selectedID'));
+                const selectedID = $(e.target).closest('li').data('value');
+                $('#categories-select').data('selectedID', selectedID);
+                resourceCategorySelect.setSelectedId(selectedID);
+                // console.log($('#categories-select').data('selectedID'));
                 $('#categories-select')[0].dispatchEvent(new Event('change'));
-
             })
         })
     }
@@ -525,10 +555,10 @@ $(document).ready(function () {
                 messageText = 'Name of resource category must be unique. Category with such name already exists';
                 break;
             case 'blank' :
-                messageText = 'Name of resourse category can not be empty';
+                messageText = 'Name of resource category can not be empty';
                 break;
             case 'badLength' :
-                messageText = 'Name of resourse category must be longer than 2 and shorter than 50 characters';
+                messageText = 'Name of resource category must be longer than 2 and shorter than 50 characters';
                 break;
         }
         $('#input-div').addClass('has-error has-feedback');
@@ -537,12 +567,12 @@ $(document).ready(function () {
     }
 
     /*    function findById(data, id) {
-            $.each(data, function (i, item) {
-                if (item['id'] === id) {
-                    return item;
-                } else if (item.children && item.children.length > 0) {
-                    return findById(item.children, id);
-                }
-            });
-        }*/
-});
+                    $.each(data, function (i, item) {
+                            if (item['id'] === id) {
+                                    return item;
+                            } else if (item.children && item.children.length > 0) {
+                                    return findById(item.children, id);
+                            }
+                    });
+            }*/
+})();

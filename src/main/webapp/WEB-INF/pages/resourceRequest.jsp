@@ -13,7 +13,7 @@
 <jsp:include page="menu.jsp"/>
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${pageContext.request.contextPath}/resources/view">View</a></li>
+        <li><a href="${pageContext.request.contextPath}/resources/viewTypes">View</a></li>
         <li><a href="${pageContext.request.contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
     </ul>

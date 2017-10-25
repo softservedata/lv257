@@ -1,8 +1,5 @@
 package com.softserve.edu.Resources.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.Constants;
 
 import javax.persistence.*;
@@ -14,14 +11,14 @@ import java.util.Set;
 
 /*
 *  ResourceType represents entity containing a set of
-*  ResourceProperty that describe particular GenericResource
+*  ResourceProperty that describes particular GenericResource
 *
 * */
 @Entity
 @NamedEntityGraph(
         name = "TypesProperties",
         attributeNodes = {@NamedAttributeNode("properties")}
-        )
+)
 @Table(name = "RESOURCE_TYPES")
 public class ResourceType {
 
@@ -30,22 +27,18 @@ public class ResourceType {
     @Column(name = "Id")
     private Long id;
 
-    @JsonProperty("typename")
     @NotNull
     @Column(name = "Type_Name", unique = true, nullable = false)
     private String typeName;
 
-    @JsonIgnore
     @NotNull
     @Column(name = "Table_Name", unique = true, nullable = false)
     private String tableName;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "Id_Category", nullable = false)
     private ResourceCategory category;
 
-    @JsonIgnore
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(
             name = "Type_Properties",
@@ -53,9 +46,12 @@ public class ResourceType {
     )
     private Set<ConstrainedProperty> properties = new HashSet<>();
 
-    @JsonIgnore
     @Column(name = "Instantiated")
     private boolean instantiated;
+
+    @ManyToOne
+    @JoinColumn(name = "Id_Assigner", nullable = false)
+    private User assigner;
 
 
     public void setProperties(Set<ConstrainedProperty> properties) {
@@ -132,8 +128,8 @@ public class ResourceType {
 
     public Optional<ConstrainedProperty> getProperty(String propertyName) {
         return properties.stream()
-                       .filter(rp -> rp.getProperty().getTitle().equalsIgnoreCase(propertyName))
-                       .findFirst();
+                .filter(rp -> rp.getProperty().getTitle().equalsIgnoreCase(propertyName))
+                .findFirst();
     }
 
     public ResourceCategory getCategory() {
@@ -154,10 +150,20 @@ public class ResourceType {
         return this;
     }
 
+    public User getAssigner() {
+        return assigner;
+    }
+
+    public ResourceType setAssigner(User assigner) {
+        this.assigner = assigner;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "ResourceType [id=" + id + ", typeName=" + typeName + ", tableName=" + tableName + ", category="
-                       + category + ", properties=" + properties + ", instantiated=" + instantiated + "]";
+                + category + ", properties=" + properties + ", instantiated=" + instantiated
+                + ", assigner=" + assigner + "]";
     }
 
 

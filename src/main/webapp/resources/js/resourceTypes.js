@@ -1,26 +1,66 @@
-var resourceType = {};
 var isModeCloning;
+var resourceType = {};
+var initialType = {};
+var changeWatchdog;
 
 function updateView() {
-		//todo: update assigned properties table
+	$('#type-name').val(resourceType.typeName);
+	$('#table-name').val(resourceType.tableName);
+	updateAvailablePropertiesList();
+	refreshAssignedPropsTable();
+	// console.log('resource.categoryID = '+	resourceType.categoryId);
+	resourceCategorySelect.selectItem(resourceType.categoryId);
+	const $definitionForm = $('#definition-form');
+	if ($definitionForm.is(':hidden'))
+		$definitionForm.removeClass('hidden');
 }
 
 function updateResourceType(actualType, isCloned) {
 	resourceType = actualType;
 	// eliminate id in cloned Resource Type (or it should be set to 0 just as for a newly created definition)
-	if (isCloned)
-		delete resourceType['id'];
+	if (isCloned) {
+		resourceTypeID = 0;
+		resourceType['id'] = 0;
+		resourceType['typeName'] = '';
+		resourceType['tableName'] = '';
+	}
+
 	if (resourceType.id) {
 		resourceTypeID = resourceType.id;
 	}
+	if (resourceType.categoryId) {
+		categoryID = resourceType.categoryId;
+	}
 	initialType = $.extend(true, {}, resourceType);
-	let typePropertyIDs = $.map(resourceType.properties, function (constrainedProperty, i) {
-		return id;
-	})
-	assignedProperties = $.grep(availableProperties, function (property) {
-		return $.inArray(property.id, typePropertyIDs);
-	})
+
+	let constrainedPropertiesBrief = {};
+	$.each(resourceType.properties, function (i, constrainedPropertyBrief) {
+		constrainedPropertiesBrief[constrainedPropertyBrief.id] = {
+			required: constrainedPropertyBrief.required,
+			searchable: constrainedPropertyBrief.searchable
+		};
+	});
+	$.each(existentProperties, function (i, property) {
+		const id = property.id;
+		if (constrainedPropertiesBrief[id]) {
+			let prop = {property: property};
+			constrainedPropertiesBrief[id] = $.extend(true, constrainedPropertiesBrief[id], prop);
+		}
+	});
+
+	assignedProperties = $.map(constrainedPropertiesBrief, function (constrainedProperty, i) {
+		return constrainedProperty;
+	});
+
 	updateView();
+
+	// prevent saving of ResourceType definition without changes
+	if (changeWatchdog) clearTimeout(changeWatchdog);
+	changeWatchdog = setInterval(
+			function () {
+				let $btnBlock = $('#buttons-block');
+				$btnBlock[isTypeDefinitionChanged() ? 'addClass' : 'removeClass']('hidden')
+			}, 500);
 }
 
 function getResourceType(isCloned) {
@@ -30,7 +70,7 @@ function getResourceType(isCloned) {
 		accept: "application/json",
 		url: projectPathPrefix + "/api/resource/" + resourceTypeID,
 		success: function (response) {
-			updateResourceType(response, isCloned)
+				updateResourceType(response, isCloned)
 		},
 		error: function (jqxhr, status, exception) {
 			console.log('Error has occured: ' + status + ' ' + exception);
@@ -39,16 +79,28 @@ function getResourceType(isCloned) {
 }
 
 function showSuccessMessage() {
-
+	$('#successMsg').removeClass('hidden');
+	setTimeout(function () {
+		$('#successMsg').addClass('hidden');
+	}, 3000);
 }
 
-function composeResourceType() {
+function showErrorMessage(message) {
+	$('#errorMsg').removeClass('hidden');
+	setTimeout(function () {
+		$('#successMsg').addClass('hidden');
+	}, 3000);
+}
+
+function composeResourceType(checkValidity) {
+	if (resourceCategorySelect.getSelectedId() === 0)
+		throw	new Error();
 	let $inputs = $('input, select', '#resource-type');
 	$inputs.each(function (i, input) {
-		if (!input.checkValidity()) {
+		if (checkValidity && !input.checkValidity()) {
 			input.blur();
-			let label = $(input).prev('label');
-			alert(label.text() + ' value is invalid');
+			// let label = $(input).prev('label');
+			// showErrorMessage(label.text() + ' value is invalid');
 			throw	new Error();
 		}
 	});
@@ -64,7 +116,7 @@ function composeResourceType() {
 
 	resourceType = {
 		id:resourceTypeID,
-		categoryId: categoryID,
+		categoryId: resourceCategorySelect.getSelectedId(),
 		typeName: $('#type-name').val(),
 		tableName: $('#table-name').val(),
 		properties: constrainedPropertiesBrief
@@ -75,31 +127,50 @@ function composeResourceType() {
 /**
  * init model for current view
  */
-(function uploadResourceType() {
-
+$('#categories-select').load(function () {
 	isModeCloning = resourceTypeID < 0;
 	if (isModeCloning) {
 		resourceTypeID *= -1;
 		getResourceType(isModeCloning);
 	} else if (resourceTypeID > 0) {
 		getResourceType(isModeCloning);
-	} //else we're creating new ResourceType
+	} else {
+		//else we're creating new ResourceType
+		initialType = composeResourceType();
+	}
 
-})();
-
-//
-$('#categories-select').change(function(e) {
-	categoryID = $(e.target).data('selectedID');
 });
+
+$("#define-btn").click(function (e) {
+	$('#define-btn, #definition-form').toggleClass('hidden');
+});
+
+$('#categories-select').change(function(e) {
+	resourceCategorySelect.setSelectedId(resourceCategorySelect.getSelectedId());
+});
+
+function isTypeDefinitionChanged() {
+	const currentTypeCopy = $.extend(true, {}, composeResourceType());
+	sortByProperty(currentTypeCopy.properties, 'id');
+	const currentTypeJSON = JSON.stringify(currentTypeCopy);
+	const initialTypeCopy = $.extend(true, {}, initialType);
+	sortByProperty(initialTypeCopy.properties, 'id');
+	const initialTypeJSON = JSON.stringify(initialTypeCopy);
+	console.log(currentTypeJSON);
+	console.log(initialTypeJSON);
+	return currentTypeJSON.localeCompare(initialTypeJSON) === 0;
+}
 
 // set Save button handler
 $('#save-type-btn').click(function (e) {
+	const resourceType = composeResourceType(true);
+	if (resourceType === initialType) return;
 	$.ajax({
 		type: "POST",
 		contentType: "application/json",
 		url: projectPathPrefix + "/api/resource",
 		accept: "application/json",
-		data: JSON.stringify(composeResourceType()),
+		data: JSON.stringify(resourceType),
 		success: function (response, status, jqxhr) {
 			updateResourceType(response);
 			showSuccessMessage();
@@ -108,12 +179,18 @@ $('#save-type-btn').click(function (e) {
 			// provide error message
 		}
 	});
+});
 
-	// set input handler trimming leading and tail spaces
-	$('input[type="text"]').blur(function(e) {
-		let input = e.target;
-		let trimmedValue = $.trim($(input).val());
-		$(input).val(trimmedValue);
-		input.checkValidity();
-	});
+$('#discard-btn').click(function (e) {
+	updateResourceType(initialType, true);
+	// resourceType = $.extend(true, {}, initialType);
+	// updateView();
+});
+
+// set input handler trimming leading and tail spaces
+$('input[type="text"]').blur(function(e) {
+	let input = e.target;
+	let trimmedValue = $.trim($(input).val());
+	$(input).val(trimmedValue);
+	input.checkValidity();
 });

@@ -2,7 +2,7 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.ConstrainedPropertyBrief;
-import com.softserve.edu.Resources.dto.ResourceTypeUpdate;
+import com.softserve.edu.Resources.dto.ResourceTypeBrief;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceProperty;
@@ -54,29 +54,33 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public ResourceType save(ResourceTypeUpdate resourceTypeUpdate) {
-        long id = resourceTypeUpdate.getId();
+    public ResourceType save(ResourceTypeBrief resourceTypeBrief) {
+        Long id = resourceTypeBrief.getId();
         ResourceType resourceType;
-        if (id == 0) {
+        if (id == null || id == 0) {
             resourceType = new ResourceType();
         } else {
             Optional<ResourceType> existentResourceType = resourceTypeDAO.findById(id);
-            if (!existentResourceType.isPresent())
+            if (!existentResourceType.isPresent()) {
+                LOGGER.warn("Request contains invalid Resource Type reference (id = {})", id);
                 throw new InvalidResourceTypeException(String.format("ResourceType with id \"%d\" not found", id));
+            }
             resourceType = existentResourceType.get();
         }
 
-        long categoryId = resourceTypeUpdate.getCategoryId();
+        long categoryId = resourceTypeBrief.getCategoryId();
         Optional<ResourceCategory> category = resourceCategoryService.findCategoryById(categoryId);
 
-        if (!category.isPresent())
+        if (!category.isPresent()) {
+            LOGGER.warn("Request contains invalid Resource Category reference (id = {})", categoryId);
             throw new InvalidResourceCategoryException(String.format("Category \"%s\" not found", categoryId));
+        }
 
-        resourceType.setTypeName(resourceTypeUpdate.getTypeName())
-                .setTableName(resourceTypeUpdate.getTableName())
+        resourceType.setTypeName(resourceTypeBrief.getTypeName())
+                .setTableName(resourceTypeBrief.getTableName())
                 .setCategory(category.get());
 
-        Set<Long> updatedPropertyIDs = resourceTypeUpdate.getProperties().stream()
+        Set<Long> updatedPropertyIDs = resourceTypeBrief.getProperties().stream()
                                                .map(ConstrainedPropertyBrief::getId)
                                                .collect(Collectors.toSet());
 
@@ -85,9 +89,9 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
 
         validIDs.removeIf(propId -> !availablePropertyIDs.contains(propId));
 
-        if (availablePropertyIDs.size() != validIDs.size()) {
-            resourceTypeUpdate.getProperties().removeIf(cpb -> !validIDs.contains(cpb.getId()));
-            LOGGER.warn("A few invalid properties requested - %s", updatedPropertyIDs.removeAll(validIDs));
+        if (updatedPropertyIDs.size() != validIDs.size()) {
+            resourceTypeBrief.getProperties().removeIf(cpb -> !validIDs.contains(cpb.getId()));
+            LOGGER.warn("A few invalid properties requested - {}", updatedPropertyIDs.removeAll(validIDs));
         }
 
         Set<ResourceProperty> updatedTypeProperties = validIDs.stream()
@@ -97,7 +101,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
                                                               .collect(Collectors.toSet());
 
         Set<ConstrainedProperty> typeProperties
-                = resourceTypeUpdate.getProperties().stream()
+                = resourceTypeBrief.getProperties().stream()
                           .map(cpb -> new ConstrainedProperty()
                                               .setProperty(propertyService.getPropertyById(cpb.getId()).get())
                                               .setRequired(cpb.isRequired())
@@ -154,10 +158,20 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public List<ConstrainedProperty> getSearchableProperties(ResourceType resourceWithProperties) {
-        return resourceWithProperties.getProperties().stream()
+    public List<ConstrainedProperty> getSearchableProperties(ResourceType resourceType) {
+        return resourceType.getProperties().stream()
                        .filter(ConstrainedProperty::isSearchable)
                        .collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<ResourceType> get(Long id) {
+        return resourceTypeDAO.findById(id);
+    }
+
+    @Override
+    public Optional<ResourceType> get(Long id, boolean doFetch) {
+        return resourceTypeDAO.findById(id, doFetch);
     }
 
 }

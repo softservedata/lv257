@@ -193,3 +193,8 @@ h3 span {
 #nestable-dialog {
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.theader-with-select {
+    margin-top: -20px;
+    margin-bottom: 0;
+}

@@ -51,66 +51,76 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public User setRoles(Collection<Role> roles) {
         this.roles = roles;
+        return this;
     }
 
     public UserDetails getUserDetails() {
         return userDetails;
     }
 
-    public void setUserDetails(UserDetails userDetails) {
+    public User setUserDetails(UserDetails userDetails) {
         this.userDetails = userDetails;
         userDetails.setUser(this);
+        return this;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public User setId(Long id) {
         this.id = id;
+        return this;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    public User setUsername(String username) {
         this.username = username;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnabled(boolean enabled) {
+    public User setEnabled(boolean enabled) {
         this.enabled = enabled;
+        return this;
     }
 
     public String getSecret() {
         return secret;
     }
 
-    public void setSecret(String secret) {
+    public User setSecret(String secret) {
         this.secret = secret;
+        return this;
     }
 
     public VerificationToken getVerificationToken() {
         return verificationToken;
     }
 
-    public void setVerificationToken(VerificationToken verificationToken) {
+    public User setVerificationToken(VerificationToken verificationToken) {
         this.verificationToken = verificationToken;
+        return this;
     }
+
+
 
     @Override
     public int hashCode() {

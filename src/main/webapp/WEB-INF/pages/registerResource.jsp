@@ -89,18 +89,22 @@
 
                             <div class="modal-body">
 
-                                <label for="owner_search">Select type of Owner:</label>
-                                <select id="owner_search" class="form-control">
-                                    <option value="absent">Choose type here</option>
-                                    <option value="company">Company</option>
-                                    <option value="person">Person</option>
-                                </select>
+                                <%--<script> var lookUpOwner = true </script>--%>
+                                <script> var findOwnersForResistrar = true </script>
+                                <jsp:include page="components/searchOwner.jsp"/>
+
+                            <%--<label for="owner_search">Select type of Owner:</label>--%>
+                                <%--<select id="owner_search" class="form-control">--%>
+                                    <%--<option value="absent">Choose type here</option>--%>
+                                    <%--<option value="company">Company</option>--%>
+                                    <%--<option value="person">Person</option>--%>
+                                <%--</select>--%>
 
 
-                                <div id="search_owner_form">
+                                <%--<div id="search_owner_form">--%>
 
 
-                                </div>
+                                <%--</div>--%>
 
 
                             </div>
@@ -319,6 +323,7 @@
         <p class="text-muted">&copy; Lv257_Java</p>
     </div>
 </footer>
+
 
 <script src="../../resources/js/ownerAndAddressManagement.js"></script>
 <script src="../../resources/js/categories.js"></script>

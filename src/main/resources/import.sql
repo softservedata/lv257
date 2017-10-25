@@ -54,7 +54,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `resource_categories` WRITE;
 
-INSERT INTO `resource_categories` VALUES (134310,'Natural resources',NULL),(134311,'Land resources',134310),(134312,'Forest resources',134310),(134313,'Mineral resources',134310),(134314,'Water resources',134310),(134315,'Real estate',NULL),(134316,'Residental real estate',134315),(134317,'Non-residental real estate',134315),(134318,'Coininercial non-residental real estate',134317),(134319,'Industrial non-residental real estate',134317),(134320,'Transport',NULL),(134321,'Water transport',134320),(134322,'Sea transport',134321),(134323,'River transport',134321),(134324,'Air transport',134320),(134325,'Reactive airtransport',134324),(134326,'Land transport',134320),(134327,'Autotransport',134326),(134329,'Propeller airtransport',134324),(134330,'Mototransport',134326),(134331,'Railway transport',134326);
+INSERT INTO `resource_categories` VALUES (134310,'Natural resources',NULL),(134311,'Land resources',134310),(134312,'Forest resources',134310),(134313,'Mineral resources',134310),(134314,'Water resources',134310),(134315,'Real estate',NULL),(134316,'Residental real estate',134315),(134317,'Non-residental real estate',134315),(134318,'Commercial non-residental real estate',134317),(134319,'Industrial non-residental real estate',134317),(134320,'Transport',NULL),(134321,'Water transport',134320),(134322,'Sea transport',134321),(134323,'River transport',134321),(134324,'Air transport',134320),(134325,'Reactive airtransport',134324),(134326,'Land transport',134320),(134327,'Autotransport',134326),(134329,'Propeller airtransport',134324),(134330,'Mototransport',134326),(134331,'Railway transport',134326);
 
 UNLOCK TABLES;
 
@@ -83,18 +83,18 @@ UNLOCK TABLES;
 
 
 
---LOCK TABLES `resource_sequence` WRITE;
+-- LOCK TABLES `resource_sequence` WRITE;
 
---INSERT INTO `resource_sequence` VALUES (100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400);
+-- INSERT INTO `resource_sequence` VALUES (100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400),(100400);
 
---UNLOCK TABLES;
+-- UNLOCK TABLES;
 
 
 
 
 LOCK TABLES `resource_types` WRITE;
 
-INSERT INTO `resource_types` VALUES (100300,'','cars','Car',134327),(100302,'','yachts','Yacht',134323),(100303,'','trains','Train',134331),(124000,'\0','vehicles','Vehicles',134327),(124001,'\0','trucks','Trucks',134327),(124002,'\0','apartments','Apartments',134316),(124003,'\0','cottages','Cottages',134316);
+INSERT INTO `resource_types` VALUES (100300,'','cars','Car',8,134327),(100302,'','yachts','Yacht',8,134323),(100303,'','trains','Train',88,134331),(100304,'','vehicles','Vehicle',8,134327),(100305,'','trucks','Truck',88,134327),(100306,'','apartments','Apartment',88,134316),(100307,'','cottages','Cottage',8,134316);
 
 UNLOCK TABLES;
 
@@ -132,7 +132,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `type_properties` WRITE;
 
-INSERT INTO `type_properties` VALUES (100300,100200,'',''),(100302,100200,'',''),(100303,100200,'',''),(124001,100200,'',''),(100300,100203,'',''),(100302,100203,'',''),(100303,100203,'',''),(124001,100203,'',''),(100302,100204,'',''),(100303,100204,'',''),(100303,100205,'',''),(124001,100205,'',''),(100300,100206,'','');
+INSERT INTO `type_properties` VALUES (100300,100200,'',''),(100302,100200,'',''),(100303,100200,'',''),(100304,100200,'',''),(100300,100203,'',''),(100302,100203,'',''),(100303,100203,'',''),(100304,100203,'',''),(100302,100204,'',''),(100303,100204,'',''),(100303,100205,'',''),(100304,100205,'',''),(100300,100206,'','');
 
 UNLOCK TABLES;
 
