@@ -165,4 +165,12 @@ public class UserServiceTest {
         userService.deleteVerificationToken(persistentVerificationToken);
         verify(verificationTokenDAO, times(1)).makeTransient(persistentVerificationToken);
     }
+
+    @Test
+    public void getUsersWithRolesTest() {
+        List<User> expected = new ArrayList<>();
+        doReturn(expected).when(userDAO).getUsersWithRoles(anyVararg());
+        assertEquals(expected, userService.getUsersWithRoles("ROLE_RESOURCE_ADMIN"));
+        verify(userDAO, times(1)).getUsersWithRoles(anyVararg());
+    }
 }

@@ -16,4 +16,6 @@ public interface UserDAO {
     void makeTransient(User user);
 
     List<User> getAllUsers();
+
+    List<User> getUsersWithRoles(String... roleNames);
 }

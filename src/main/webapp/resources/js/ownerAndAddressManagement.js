@@ -65,7 +65,7 @@ $(document).ready(function () {
         $resourceAddressSearchResultDiv.empty();
 
         searchAddress($resourceAddressSearchResultDiv, searchResourceAddressFormId);
-    })
+    });
 
     // opens popup, where user can pick resource address from owner's address
     $('#add_resource_address_from_owner_btn').on('click', function (e) {
@@ -76,7 +76,7 @@ $(document).ready(function () {
         } else {
             buildRadios();
         }
-    })
+    });
 
     // deletes picked address from owner
     $('#delete_picked_address').on('click', function (e) {
@@ -1072,6 +1072,12 @@ function validateCompany($form) {
                 minlength: 3,
                 maxlength: 30
             },
+            edrpo_number: {
+                required: true,
+                digits: true,
+                minlength: 8,
+                maxlength: 8
+            },
             phone: {
                 required: true,
                 minlength: 11,
@@ -1104,11 +1110,12 @@ function validatePerson($form) {
                 minlength: 3,
                 maxlength: 30
             },
-            // passport_series: {
-            //     required: true,
-            //     maxlength: 2,
-            //     minlength: 2
-            // },
+            identifier_number: {
+                required: true,
+                digits: true,
+                maxlength: 10,
+                minlength: 10
+            },
             passport_number: {
                 required: true,
                 digits: true,
@@ -1148,13 +1155,13 @@ const fieldsMetadata = {
     rowsForCompany: [
         [new FieldAndSize('Full Name', 12, 'Full Name')],
         [new FieldAndSize('Short Name', 6, 'Short Name'), new FieldAndSize('Organization Form', 6, 'TzOV')],
-        [new FieldAndSize('CEO', 12, 'CEO')],
+        [new FieldAndSize('CEO', 6, 'CEO'), new FieldAndSize('EDRPO Number', 6, '12365478')],
         [new FieldAndSize('Phone', 12, '+380679365998')]
     ],
 
     rowsForPerson: [
         [new FieldAndSize('First Name', 6, 'First Name'), new FieldAndSize('Last Name', 6, 'Last Name')],
-        [new FieldAndSize('Middle Name', 12, 'Middle Name')],
+        [new FieldAndSize('Middle Name', 6, 'Middle Name'), new FieldAndSize('Identifier Number', 6, '1598746320')],
         [new FieldAndSize('Passport Series', 3, 'KC'), new FieldAndSize('Passport Number', 4, '149875'), new FieldAndSize('Phone', 5, '+30679365998')]
     ]
 };
@@ -1232,6 +1239,14 @@ function handleCompanyOptions($concreteOwnerSearchDiv, $resultDiv, ownerType) {
             $concreteOwnerSearchDiv.append($resultDiv);
             makeAjaxCall($findOwnerButton, ownerType, $resultDiv);
         }
+        if (companySearchOption == 'edrpo') {
+            $concreteOwnerSearchDiv.empty();
+            $resultDiv.empty();
+
+            let $findOwnerButton = buildOwnerSearchForm($concreteOwnerSearchDiv, searchByCompanyCharacteristicsMetadata.edrpoNumber);
+            $concreteOwnerSearchDiv.append($resultDiv);
+            makeAjaxCall($findOwnerButton, ownerType, $resultDiv);
+        }
         if (companySearchOption == 'absent') {
             $concreteOwnerSearchDiv.empty();
             $resultDiv.empty();
@@ -1257,6 +1272,14 @@ function handlePersonOptions($concreteOwnerSearchDiv, $resultDiv, ownerType) {
             $resultDiv.empty();
 
             $findOwnerButton = buildOwnerSearchForm($concreteOwnerSearchDiv, searchByPersonCharacteristicsMetadata.personsPassport)
+            $concreteOwnerSearchDiv.append($resultDiv);
+            makeAjaxCall($findOwnerButton, ownerType, $resultDiv);
+        }
+        if (personSearchOption == 'identifier') {
+            $concreteOwnerSearchDiv.empty();
+            $resultDiv.empty();
+
+            $findOwnerButton = buildOwnerSearchForm($concreteOwnerSearchDiv, searchByPersonCharacteristicsMetadata.personsIdentificationCode);
             $concreteOwnerSearchDiv.append($resultDiv);
             makeAjaxCall($findOwnerButton, ownerType, $resultDiv);
         }
@@ -1551,18 +1574,19 @@ const searchOwnerFormId = 'owner_search_form';
 
 const $deletedOwner = $('#deleted_owner');
 const $ownerSearchSelect = $('#owner_search');
-const $resourceOwnersMultySelect = $('#resource_owners');
 const $searchOwnerFormPlaceholder = $('#search_owner_form');
 
 const searchByOwnerTypeMetadata = {
     optionsForPersonSearch: [
         new SearchByOwnerType('absent', 'Choose'),
         new SearchByOwnerType('name', 'Person\'s name'),
-        new SearchByOwnerType('passport', 'Passport series')
+        new SearchByOwnerType('passport', 'Passport series'),
+        new SearchByOwnerType('identifier', 'Identification number'),
     ],
     optionsForCompanySearch: [
         new SearchByOwnerType('absent', 'Choose'),
         new SearchByOwnerType('name', 'Company\'s full and sort name'),
+        new SearchByOwnerType('edrpo', 'Company\'s EDRPO number'),
     ]
 };
 
@@ -1574,6 +1598,9 @@ const searchByPersonCharacteristicsMetadata = {
     personsPassport: [
         new FieldAndSize('Passport series', 5, 'KC'),
         new FieldAndSize('Passport number', 7, '147896')
+    ],
+    personsIdentificationCode: [
+        new FieldAndSize('Identifier Number', 12, 1234567891),
     ]
 };
 
@@ -1582,6 +1609,9 @@ const searchByCompanyCharacteristicsMetadata = {
         new FieldAndSize('Organization form', 4, 'TzOV'),
         new FieldAndSize('Full name', 4, 'Gromadske Tovarystvo Prosvita'),
         new FieldAndSize('Short name', 4, 'Prosvita')
+    ],
+    edrpoNumber: [
+        new FieldAndSize('EDRPO number', 12, '12365478'),
     ]
 };
 

@@ -1,13 +1,16 @@
-package com.softserve.edu.Resources.entity;import com.fasterxml.jackson.annotation.JsonProperty;
+package com.softserve.edu.Resources.entity;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "person_owner")
+@Table(name = "person")
 /**
  * Represents Person entity as a resource owner
  */
@@ -38,6 +41,11 @@ public class Person extends Owner {
     @Length(max = 6, min = 6, message = "This is invalid passport number.")
     private String passportNumber;
 
+    @Column(name = "identifier_number")
+    @JsonProperty("identifier_number")
+    @Pattern(regexp="[\\d]{10}", message = "Should be 10 digits. E.g., 1087963214")
+    private String identifierNumber;
+
     public Person() {
     }
 
@@ -66,6 +74,11 @@ public class Person extends Owner {
         return this;
     }
 
+    public Person setIdentifierNumber(String identifierNumber) {
+        this.identifierNumber = identifierNumber;
+        return this;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -86,6 +99,10 @@ public class Person extends Owner {
         return passportNumber;
     }
 
+    public String getIdentifierNumber() {
+        return identifierNumber;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,22 +111,23 @@ public class Person extends Owner {
 
         Person person = (Person) o;
 
-        if (firstName != null ? !firstName.equals(person.firstName) : person.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(person.lastName) : person.lastName != null) return false;
-        if (middleName != null ? !middleName.equals(person.middleName) : person.middleName != null) return false;
-        if (passportSeries != null ? !passportSeries.equals(person.passportSeries) : person.passportSeries != null)
-            return false;
-        return passportNumber != null ? passportNumber.equals(person.passportNumber) : person.passportNumber == null;
+        if (!firstName.equals(person.firstName)) return false;
+        if (!lastName.equals(person.lastName)) return false;
+        if (!middleName.equals(person.middleName)) return false;
+        if (!passportSeries.equals(person.passportSeries)) return false;
+        if (!passportNumber.equals(person.passportNumber)) return false;
+        return identifierNumber.equals(person.identifierNumber);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
-        result = 31 * result + (passportSeries != null ? passportSeries.hashCode() : 0);
-        result = 31 * result + (passportNumber != null ? passportNumber.hashCode() : 0);
+        result = 31 * result + firstName.hashCode();
+        result = 31 * result + lastName.hashCode();
+        result = 31 * result + middleName.hashCode();
+        result = 31 * result + passportSeries.hashCode();
+        result = 31 * result + passportNumber.hashCode();
+        result = 31 * result + identifierNumber.hashCode();
         return result;
     }
 
@@ -134,6 +152,7 @@ public class Person extends Owner {
         return  firstName + " " +
                 lastName + " " +
                 middleName + ", " +
+                identifierNumber + ", " +
                 passportSeries + " " +
                 passportNumber + ".";
     }
