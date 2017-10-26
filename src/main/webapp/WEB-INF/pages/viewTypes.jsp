@@ -12,10 +12,7 @@
 <head>
     <title>View resource types</title>
     <jsp:include page="metadata.jsp"/>
-    <script src="${contextPath}/resources/js/bootstrap-select.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
-    <script src="${contextPath}/resources/js/viewTypes.js"></script>
+
 </head>
 <body>
 <jsp:include page="menu.jsp"/>
@@ -53,6 +50,7 @@
                         <div class="text-center">Actions</div>
                     </th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </thead>
 
@@ -67,22 +65,21 @@
                 </th>
                 <th>
                     <select class="selectpicker" data-live-search="true" data-width="100%" id="types">
-                        <option>All resource types</option>
-                        <option>Burger, Shake and a Smile</option>
-                        <option>Sugar, Spice and all things nice</option>
+                        <%--<option value="all">All resource types</option>--%>
                     </select>
                 </th>
                 <th>
                     <select class="selectpicker" data-live-search="true" data-width="100%" id="admins">
-                        <option data-value="all">All administrators</option>
-                        <option data-value="${currentAdmin}">Me</option>
+                        <option value="all">All administrators</option>
+                        <option value="${currentAdmin}">Me</option>
                         <c:forEach items="${administrators}" var="adminName">
                             <c:if test="${adminName != currentAdmin}">
-                                <option data-value="${adminName}">${adminName}</option>
+                                <option value="${adminName}">${adminName}</option>
                             </c:if>
                         </c:forEach>
                     </select>
                 </th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -107,6 +104,7 @@
                         <div class="text-center">Actions</div>
                     </th>
                     <th></th>
+                    <th></th>
                 </tr>
                 </tfoot>
 
@@ -118,4 +116,8 @@
 </div>
 <jsp:include page="footer.jsp"/>
 </body>
+<script src="${contextPath}/resources/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
+<script src="${contextPath}/resources/js/viewTypes.js"></script>
 </html>
