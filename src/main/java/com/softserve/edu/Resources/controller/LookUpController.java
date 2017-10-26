@@ -68,20 +68,24 @@ public class LookUpController {
     @RequestMapping(value = "/lookUp/{ownerId}", method = RequestMethod.GET)
     public List<GroupedResourceCount> findAllOwnerResourcesGroupedByResourceType(@PathVariable String ownerId) {
 
-        List<GroupedResourceCount> groupedRescorces = resourceService
+        List<GroupedResourceCount> groupedResources = resourceService
                 .findResourcesCountGroupedByResourceTypeForOwner(ownerId);
 
-        if (groupedRescorces.isEmpty()) {
+        if (groupedResources.isEmpty()) {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
 
-        return groupedRescorces;
+        return groupedResources;
     }
 
     @RequestMapping(value = "/lookUp/owner/{ownerId}/resourcetype/{resourceTypeName}", method = RequestMethod.GET)
     public List<GenericResource> lookUpByOwner(@PathVariable long ownerId, @PathVariable String resourceTypeName) {
 
-        List<GenericResource>  genericResources = resourceService.findResourcesByOwnerAndType(ownerId, resourceTypeName);
+        List<GenericResource> genericResources = resourceService.findResourcesByOwnerAndType(ownerId, resourceTypeName);
+
+        if (genericResources.isEmpty()) {
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
 
         return genericResources;
     }
