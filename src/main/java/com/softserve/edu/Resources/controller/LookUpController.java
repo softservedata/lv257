@@ -34,7 +34,7 @@ public class LookUpController {
         ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
 
         if (resourceType == null) {
-            throw new ResourceNotFoundException("No infromation was found by your request");
+            throw new ResourceNotFoundException("No resourece type was found by your request");
         }
 
         List<ConstrainedProperty> constraintProperties = resourceTypeService.getSearchableProperties(resourceType);
@@ -46,7 +46,7 @@ public class LookUpController {
         }
 
         if (resourceProperties.isEmpty()) {
-            throw new ResourceNotFoundException("No infromation was found by your request");
+            throw new ResourceNotFoundException("No resource properties were found by your request");
         }
         Collections.sort(resourceProperties);
         return resourceProperties;
