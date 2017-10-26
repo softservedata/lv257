@@ -96,12 +96,12 @@ public class ResourceDaoImplTest {
         List<Map<String, Object>> resultSet1 = new ArrayList<>();
         Map<String, Object> map1 = new TreeMap<>();
         map1.put("id", 1);
-        map1.put("id_address", 1);
+//        map1.put("id_address", 1);
         map1.put("Model", "Mazda");
         map1.put("Year", 2005);
         Map<String, Object> map2 = new TreeMap<>();
         map2.put("id", 2);
-        map2.put("id_address", 2);
+//        map2.put("id_address", 2);
         map2.put("Model", "Mazda");
         map2.put("Year", 2005);
         resultSet1.add(map1);
@@ -110,12 +110,12 @@ public class ResourceDaoImplTest {
         List<Map<String, Object>> resultSet6 = new ArrayList<>();
         Map<String, Object> map3 = new TreeMap<>();
         map3.put("id", 1);
-        map3.put("id_address", 1);
+//        map3.put("id_address", 1);
         map3.put("Model", "Mazda");
         map3.put("Year", 2005);
         Map<String, Object> map4 = new TreeMap<>();
         map4.put("id", 2);
-        map4.put("id_address", 2);
+//        map4.put("id_address", 2);
         map4.put("Model", "Volvo");
         map4.put("Year", 2002);
         resultSet6.add(map3);
@@ -124,7 +124,7 @@ public class ResourceDaoImplTest {
         List<GenericResource> listGenRes1 = new ArrayList<>();
         GenericResource genRes1 = new GenericResource();
         genRes1.setId(1);
-        genRes1.setId_Address(1);
+//        genRes1.setId_Address(1);
         Set<PropertyValue> propertyValues1 = new TreeSet<>();
         propertyValues1.add(new PropertyValue(resourceProperties.get(0), "Mazda"));
         propertyValues1.add(new PropertyValue(resourceProperties.get(1), "2005"));
@@ -132,7 +132,7 @@ public class ResourceDaoImplTest {
 
         GenericResource genRes2 = new GenericResource();
         genRes2.setId(2);
-        genRes2.setId_Address(2);
+//        genRes2.setId_Address(2);
         Set<PropertyValue> propertyValues2 = new TreeSet<>();
         propertyValues2.add(new PropertyValue(resourceProperties.get(0), "Mazda"));
         propertyValues2.add(new PropertyValue(resourceProperties.get(1), "2005"));
@@ -144,7 +144,7 @@ public class ResourceDaoImplTest {
         List<GenericResource> listGenRes6 = new ArrayList<>();
         GenericResource genRes3 = new GenericResource();
         genRes3.setId(1);
-        genRes3.setId_Address(1);
+//        genRes3.setId_Address(1);
         Set<PropertyValue> propertyValues3 = new TreeSet<>();
         propertyValues3.add(new PropertyValue(resourceProperties.get(0), "Mazda"));
         propertyValues3.add(new PropertyValue(resourceProperties.get(1), "2005"));
@@ -152,7 +152,7 @@ public class ResourceDaoImplTest {
 
         GenericResource genRes4 = new GenericResource();
         genRes4.setId(2);
-        genRes4.setId_Address(2);
+//        genRes4.setId_Address(2);
         Set<PropertyValue> propertyValues4 = new TreeSet<>();
         propertyValues4.add(new PropertyValue(resourceProperties.get(0), "Volvo"));
         propertyValues4.add(new PropertyValue(resourceProperties.get(1), "2002"));

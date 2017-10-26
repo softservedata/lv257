@@ -18,26 +18,35 @@ public class QueryBuilder {
 
     static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
-    public String lookUpByResouceType(String tableName, Map<String, String> valuesToSearch,
-                                      List<ConstrainedProperty> allResourceProperties) {
+    private String formSelectAndFromPart(List<ConstrainedProperty> resourceProperties, String tableName) {
 
-        StringBuilder createQuery = new StringBuilder();
-        createQuery.append("SELECT gr.id, gr.id_address");
+        StringBuilder selectAndFromPart = new StringBuilder();
 
-        createQuery.append(allResourceProperties.isEmpty() ? " " : ", ");
+        selectAndFromPart.append("SELECT gr.id");
 
-        Iterator<ConstrainedProperty> iter = allResourceProperties.iterator();
+        selectAndFromPart.append(resourceProperties.isEmpty() ? " " : ", ");
+
+        Iterator<ConstrainedProperty> iter = resourceProperties.iterator();
         while (iter.hasNext()) {
-            createQuery.append("gr." + iter.next().getProperty().getColumnName() + "");
+            selectAndFromPart.append("gr." + iter.next().getProperty().getColumnName() + "");
             if (iter.hasNext()) {
-                createQuery.append(", ");
+                selectAndFromPart.append(", ");
             } else {
-                createQuery.append(" ");
+                selectAndFromPart.append(" ");
             }
 
         }
 
-        createQuery.append("FROM " + tableName + " gr");
+        selectAndFromPart.append("FROM " + tableName + " gr");
+
+        return selectAndFromPart.toString();
+    }
+
+    public String queryForJdbcTemplate(String tableName, Map<String, String> valuesToSearch,
+            List<ConstrainedProperty> allResourceProperties) {
+
+        StringBuilder createQuery = new StringBuilder();
+        createQuery.append(formSelectAndFromPart(allResourceProperties, tableName));
 
         if (!valuesToSearch.values().isEmpty() || !valuesToSearch.isEmpty()) {
             createQuery.append(" WHERE ");
@@ -55,15 +64,23 @@ public class QueryBuilder {
         }
         return createQuery.toString();
     }
-    
-    
-  
+
+    public String namedQueryForLookingByResourcesIds(String tableName, List<ConstrainedProperty> resourceProperties) {
+
+        StringBuilder createQuery = new StringBuilder();
+        createQuery.append(formSelectAndFromPart(resourceProperties, tableName));
+
+        createQuery.append(" WHERE gr.id IN (:ids)");
+
+        return createQuery.toString();
+    }
 
     /**
-     *  Retrieves all data from dto objects and builds jpql query.
+     * Retrieves all data from dto objects and builds jpql query.
      *
-     * @param searchDTO - object containing all necessary data to build query, like
-     *                  entity name and it's fields and values.
+     * @param searchDTO
+     *            - object containing all necessary data to build query, like
+     *            entity name and it's fields and values.
      * @return valid query or empty string
      */
     public String buildQuery(SearchDTO searchDTO) {
@@ -85,15 +102,12 @@ public class QueryBuilder {
 
         // get rid of empty entry value
         // from not empty values, build where-clause
-        String whereClause = entries
-                .stream()
-                .filter(entry -> !entry.getValue().isEmpty())
-                .map(entry -> entry.getKey() + "=\'" + entry.getValue() + "\'")
-                .collect(Collectors.joining(" AND "));
+        String whereClause = entries.stream().filter(entry -> !entry.getValue().isEmpty())
+                .map(entry -> entry.getKey() + "=\'" + entry.getValue() + "\'").collect(Collectors.joining(" AND "));
 
         // all fields are empty, return empty string
         // if not, append "WHERE" key-word and whereClause string
-        if (whereClause.isEmpty()){
+        if (whereClause.isEmpty()) {
             return "";
         } else {
             stringBuilder.append(" WHERE ");

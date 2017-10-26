@@ -93,7 +93,7 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
 
-        String queryForDao = queryBuilder.lookUpByResouceType(tableName, valuesToSearch, resourceProperties);
+        String queryForDao = queryBuilder.queryForJdbcTemplate(tableName, valuesToSearch, resourceProperties);
 
         return resourceDao.findResourcesByResourceType(queryForDao, valuesToSearch, resourceProperties);
     }
@@ -115,8 +115,9 @@ public class ResourceServiceImpl implements ResourceService {
 
         Optional<ResourceType> resourceType = resourceTypeDAO.findByTypeName(resourceTypeName);
 
+        String tableName;
         if (resourceType.isPresent()) {
-            String tableName = resourceType.get().getTableName();
+            tableName = resourceType.get().getTableName();
         } else {
             throw new ResourceNotFoundException("You've requested wrong data.");
         }
@@ -125,17 +126,11 @@ public class ResourceServiceImpl implements ResourceService {
         
         System.out.println(resourceProperties);
 
+        String sqlQuery = queryBuilder.namedQueryForLookingByResourcesIds(tableName, resourceProperties);
         
-        
-        return null;
+        return resourceDao.findResourcesByOwnerAndResourcesType(sqlQuery, resourceProperties, resourcesIds);
     }
 
-    // @Transactional
-    // @Override
-    // public List<Long> findResourcesIdsByOwner(long ownerId, String
-    // resourceTypeName){
-    //
-    // return resourceDao.findResourcesIdsByOwner(ownerId, resourceTypeName);
-    // }
+ 
 
 }

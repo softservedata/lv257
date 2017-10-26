@@ -32,7 +32,7 @@ public class QueryBuilderTest {
     public void testLookUpByResouceType(String tablename, Map<String, String> inputValues1,
                                         List<ConstrainedProperty> allResProperties, String result1)  throws Exception{
         QueryBuilder qb = new QueryBuilder();
-        assertThat(qb.lookUpByResouceType(tablename, inputValues1, allResProperties), is(result1));
+        assertThat(qb.queryForJdbcTemplate(tablename, inputValues1, allResProperties), is(result1));
     }
 
     private Object[] test1() {
@@ -53,11 +53,11 @@ public class QueryBuilderTest {
         List<ConstrainedProperty> allResProperties2 = new ArrayList<>();
         allResProperties2.add(new ConstrainedProperty(new ResourceProperty("Model")));
 
-        String result1 = "SELECT gr.id, gr.id_address, gr.Model, gr.Year FROM Cars gr WHERE gr.Model = ? AND gr.Year = ?";
-        String result2 = "SELECT gr.id, gr.id_address, gr.Model, gr.Year FROM Cars gr WHERE gr.Model = ?";
-        String result3 = "SELECT gr.id, gr.id_address, gr.Model FROM Cars gr WHERE gr.Model = ?";
-        String result4 = "SELECT gr.id, gr.id_address, gr.Model FROM Cars gr WHERE gr.Model = ? AND gr.Year = ?";
-        String result5 = "SELECT gr.id, gr.id_address, gr.Model FROM Cars gr";
+        String result1 = "SELECT gr.id, gr.Model, gr.Year FROM Cars gr WHERE gr.Model = ? AND gr.Year = ?";
+        String result2 = "SELECT gr.id, gr.Model, gr.Year FROM Cars gr WHERE gr.Model = ?";
+        String result3 = "SELECT gr.id, gr.Model FROM Cars gr WHERE gr.Model = ?";
+        String result4 = "SELECT gr.id, gr.Model FROM Cars gr WHERE gr.Model = ? AND gr.Year = ?";
+        String result5 = "SELECT gr.id, gr.Model FROM Cars gr";
 
         return new Object[]{
                      new Object[]{"Cars", inputValues1, allResProperties1, result1},

@@ -69,7 +69,7 @@ public class ResourceServiceImplTest {
 
         String queryForDao = "Select";
 
-        when(queryBuildeMock.lookUpByResouceType(anyString(), anyMap(), anyList())).thenReturn(queryForDao);
+        when(queryBuildeMock.queryForJdbcTemplate(anyString(), anyMap(), anyList())).thenReturn(queryForDao);
 
         List<GenericResource> listGenResMock = mock(List.class);
 
@@ -78,7 +78,7 @@ public class ResourceServiceImplTest {
         List<GenericResource> retrievedListGenRes = resServiceImpl.findResourcesByResourceType(genResDTOMock);
         
         verify(resourceTypeDAOMock, times(1)).findWithPropertiesByID(testId);
-        verify(queryBuildeMock, times(1)).lookUpByResouceType(eq(tableName), eq(mapMock), anyList());
+        verify(queryBuildeMock, times(1)).queryForJdbcTemplate(eq(tableName), eq(mapMock), anyList());
         verify(resourceDaoMock, times(1)).findResourcesByResourceType(eq(queryForDao), eq(mapMock), anyList());
         
         assertNotNull(retrievedListGenRes);

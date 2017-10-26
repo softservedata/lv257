@@ -78,7 +78,7 @@ public class RestTestController {
         List <GenericResource> listGenRes = new ArrayList<>();
         GenericResource genRes1 = new GenericResource();
         genRes1.setId(1);
-        genRes1.setId_Address(1);
+//        genRes1.setId_Address(1);
         Set <PropertyValue> propertyValues = new HashSet<>();
        
         PropertyValue propValue1 = new PropertyValue();
