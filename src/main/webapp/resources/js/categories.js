@@ -352,7 +352,8 @@ function sortByProperty(data, key, way) {
             let s = $('<li/>', {
                 'data-value': categories[i].id,
                 'data-level': level,
-                class: classPrefix + 'level-' + level,
+                'data-name': categories[i].categoryname,
+                class: classPrefix + 'level-' + level + ' category-item',
             }).appendTo($('#categories_and_types'));
             $('<a/>', {href: "#", text: categories[i].categoryname}).appendTo(s);
             if (showTypes) {
@@ -362,7 +363,8 @@ function sortByProperty(data, key, way) {
                         let s1 = $('<li/>', {
                             'data-value': restypes[j].id,
                             'data-level': level + 1,
-                            class: 'level-' + (level + 1),
+                            'data-name': restypes[j].typeName,
+                            class: 'level-' + (level + 1) + ' type-item',
                         }).appendTo($('#categories_and_types'));
                         $('<a/>', {href: "#", text: restypes[j].typeName}).appendTo(s1);
 
@@ -380,7 +382,7 @@ function sortByProperty(data, key, way) {
      */
     function showCategoriesSelect(data) {
         data = sortNestedComponents(data, 'categoryname', 'typeName', 'asc');
-        console.log(JSON.stringify(data));
+        // console.log(JSON.stringify(data));
         buildCategoriesSelect(data, includeTypes, suppressChoosingParents, showAllCategories);
         if (showAllCategories) {
             $('#all-categories').removeAttr('hidden');
@@ -401,8 +403,11 @@ function sortByProperty(data, key, way) {
         let list = $('#categories_and_types').find('li a');
         $.each(list, function (i, item) {
             $(item).click(function (e) {
-                const selectedID = $(e.target).closest('li').data('value');
+                let selectedID = $(e.target).closest('li').data('value');
+                if (typeof selectedID === 'undefined') selectedID = 0;
+                let selectedName = $(e.target).closest('li').data('name');
                 $('#categories-select').data('selectedID', selectedID);
+                $('#categories-select').data('selectedName', selectedName);
                 resourceCategorySelect.setSelectedId(selectedID);
                 // console.log($('#categories-select').data('selectedID'));
                 $('#categories-select')[0].dispatchEvent(new Event('change'));
