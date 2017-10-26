@@ -3,10 +3,10 @@ UNLOCK TABLES;
 LOCK TABLES `address` WRITE;
 UNLOCK TABLES;
 DROP TABLE IF EXISTS `cars`;
-CREATE TABLE `cars` (  `id` int(11) NOT NULL,  `id_address` int(11) DEFAULT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `vin` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `cars` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `vin` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 LOCK TABLES `cars` WRITE;
 
-INSERT INTO `cars` VALUES (1,1,'Mazda',2000,'JB423S'),(2,2,'Mazda',2005,'J2423S'),(3,3,'Volvo',2005,'JBAA23S'),(4,4,'Mazda',2006,'KOLS223'),(5,5,'Volvo',2000,'OKLS223');
+INSERT INTO `cars` VALUES (1,'Mazda',2000,'JB423S'),(2,'Mazda',2005,'J2423S'),(3,'Volvo',2005,'JBAA23S'),(4,'Mazda',2006,'KOLS223'),(5,'Volvo',2000,'OKLS223');
 
 UNLOCK TABLES;
 
@@ -23,17 +23,17 @@ INSERT INTO `abstract_owner` VALUES (100000,'380978456321',100000),(100001,'3806
 /*!40000 ALTER TABLE `abstract_owner` ENABLE KEYS */;
 UNLOCK TABLES;
 
-LOCK TABLES `company_owner` WRITE;
+-- LOCK TABLES `company_owner` WRITE;
 /*!40000 ALTER TABLE `company_owner` DISABLE KEYS */;
-INSERT INTO `company_owner` VALUES ('Petro Petrenko','Blyzenko','TzOV','None',100001),('Ivan Ivanchencko','Sunshine','TzOV','Sunny',100100);
+-- INSERT INTO `company_owner` VALUES ('Petro Petrenko','Blyzenko','TzOV','None',100001),('Ivan Ivanchencko','Sunshine','TzOV','Sunny',100100);
 /*!40000 ALTER TABLE `company_owner` ENABLE KEYS */;
-UNLOCK TABLES;
+-- UNLOCK TABLES;
 
-LOCK TABLES `person_owner` WRITE;
+-- LOCK TABLES `person_owner` WRITE;
 /*!40000 ALTER TABLE `person_owner` DISABLE KEYS */;
-INSERT INTO `person_owner` VALUES ('Andriy','Tsebak','Anatoliiovych','659832','HC',100000),('Anna','Frank','Volodumurivna','145863','TC',100002),('Oleh','Tsebak','Anatoliiovych','176895','KC',100101);
+-- INSERT INTO `person_owner` VALUES ('Andriy','Tsebak','Anatoliiovych','659832','HC',100000),('Anna','Frank','Volodumurivna','145863','TC',100002),('Oleh','Tsebak','Anatoliiovych','176895','KC',100101);
 /*!40000 ALTER TABLE `person_owner` ENABLE KEYS */;
-UNLOCK TABLES;
+-- UNLOCK TABLES;
 
 
 
@@ -118,13 +118,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `trains`;
 
-CREATE TABLE `trains` (  `id` int(11) NOT NULL,  `id_address` int(11) DEFAULT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `weight` decimal(10,2) DEFAULT NULL,  `load_capacity` int(11) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `trains` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `weight` decimal(10,2) DEFAULT NULL,  `load_capacity` int(11) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
 LOCK TABLES `trains` WRITE;
 
-INSERT INTO `trains` VALUES (1,1,'Hobbylinc',2012,3000.00,5000),(2,2,'Hyundai',2009,4000.00,10000),(3,3,'Kato',2009,2500.00,6000),(4,4,'Kato',2010,2000.00,4000),(5,5,'Apper',2005,5000.00,5000),(6,6,'Apper',2004,6000.00,4000);
+INSERT INTO `trains` VALUES (1,'Hobbylinc',2012,3000.00,5000),(2,'Hyundai',2009,4000.00,10000),(3,'Kato',2009,2500.00,6000),(4,'Kato',2010,2000.00,4000),(5,'Apper',2005,5000.00,5000),(6,'Apper',2004,6000.00,4000);
 
 UNLOCK TABLES;
 
@@ -162,13 +162,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `yachts`;
 
-CREATE TABLE `yachts` (  `id` int(11) NOT NULL,  `id_address` int(11) DEFAULT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `weight` decimal(10,2) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `yachts` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `weight` decimal(10,2) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
 LOCK TABLES `yachts` WRITE;
 
-INSERT INTO `yachts` VALUES (1,1,'Sailing',2010,2000.00),(2,2,'Vintage',2012,3000.00),(3,3,'Woodle',2010,2500.00),(4,4,'Mario',2012,2300.00),(5,5,'Grand',2013,2200.00);
+INSERT INTO `yachts` VALUES (1,'Sailing',2010,2000.00),(2,'Vintage',2012,3000.00),(3,'Woodle',2010,2500.00),(4,'Mario',2012,2300.00),(5,'Grand',2013,2200.00);
 
 UNLOCK TABLES;
 
