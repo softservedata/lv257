@@ -4,7 +4,10 @@ $(document).ready(function(){
         rules:{
             email: {
                 required: true,
-                email: true
+                email: true,
+                remote: {
+                    
+                }
             },
             password: {
                 required: true,
@@ -19,7 +22,8 @@ $(document).ready(function(){
         messages: {
             email: {
                 required: "Email should not be empty",
-                email: "Invalid email address!"
+                email: "Invalid email address!",
+                remote: "Email address already in use. Please use other email."
             },
             password: {
                 required: "Password should not be empty"
@@ -29,5 +33,30 @@ $(document).ready(function(){
                 equalTo: "Confirm Password should be equal to password"
             }
         }
+    });
+
+    $('#email').blur(function(){
+        check_email_exist();
     })
-})
+});
+
+function check_email_exist(){
+
+    $('#email_error').hide();
+    let email = $('#email').val();
+
+    $.ajax({
+        type: "POST",
+        contentType: "text/plain",
+        url: projectPathPrefix + "/checkemail",
+        accept: "text/plain",
+        data: email,
+        success: function(request){
+            if(request == true){
+                $('#email_error').show().html('Email address already in use. Please use other email.');
+            }
+        },
+        error: function(res){
+        }
+    })
+}
