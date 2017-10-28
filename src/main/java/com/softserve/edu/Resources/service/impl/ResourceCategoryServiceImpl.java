@@ -218,23 +218,4 @@ public class ResourceCategoryServiceImpl implements com.softserve.edu.Resources.
     public ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO) {
         return mapFromDtoToResourceCategory(categoryDTO, new HashSet<>());
     }
-
-    @Override
-    @Transactional
-    public List<ResourceType> getTypesByCategoryId(Optional<Long> id) {
-        List<ResourceCategory> categories;
-        if (id.isPresent()) {
-            Optional<ResourceCategory> rootCategory = findCategoryById(id.get());
-            if (!rootCategory.isPresent()) {
-                throw new InvalidResourceCategoryException("Requested Resource Category not found.");
-            }
-            categories = deployCategory(rootCategory.get());
-        } else {
-            categories = findAllResourceCategories();
-        }
-        return categories.stream()
-                .map(ResourceCategory::getResourceTypes)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
-    }
 }

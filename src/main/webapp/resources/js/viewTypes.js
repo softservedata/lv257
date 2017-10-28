@@ -1,13 +1,16 @@
 $(document).ready(function () {
 
     let dataSource;
-    let currentCategory;
-    loadTypes();
+    let categoriesFilterCash = findAllCategoriesNames();
+    let typesFilterCash = 'all';
+    let adminsFilterCash = 'all';
+    loadData();
 
-    function loadTypes() {
+    function loadData() {
         $.get(projectPathPrefix + "/api/getTypes", function (data) {
             dataSource = data;
             buildTable(data);
+            $('#all-categories a').click();
         }, "json");
     }
 
@@ -31,6 +34,7 @@ $(document).ready(function () {
             ],
             "columnDefs": [{
                 "targets": [-1, -2, -3, -4],
+                "searchable": false,
                 "orderable": false,
                 "render": function (data, type, row, meta) {
                     return buildActionButtons(row, meta.col);
@@ -38,28 +42,69 @@ $(document).ready(function () {
             },
                 {
                     "targets": 0,
-                    "orderable": false
+                    "searchable": false,
+                    "orderable": false,
                 }],
             "order": [[2, 'asc']]
         });
 
-        table.on('order.dt', function () {
-            table.column(0, {order: 'applied'}).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
+        table.on( 'order.dt search.dt', function () {
+            table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                cell.innerHTML = i+1;
+            } );
+        } ).draw();
 
         $('#categories').change(function (e) {
-            buildTypesSelect(e);
+            $.fn.dataTable.ext.search.pop();
+            let selectedCategoryName = $(e.target).data('selectedName');
+            let categories = selectedCategoryName === 'all' ? findAllCategoriesNames()
+                : findNestedCategoriesNames(selectedCategoryName);
+            buildTypesSelect(categories);
+            $.fn.dataTable.ext.search.push(
+                function (settings, searchData) {
+                    let category = searchData[1];
+                    let admin = searchData[3];
+                    return categories.some(function (c) {
+                        return c === category
+                    }) && (adminsFilterCash === admin || adminsFilterCash === 'all');
+                }
+            );
+            table.draw();
+            categoriesFilterCash = categories;
+        });
+
+        $('#types').change(function () {
+            $.fn.dataTable.ext.search.pop();
+            let selectedTypeName = $(this).val();
+            $.fn.dataTable.ext.search.push(
+                function (settings, searchData) {
+                    let category = searchData[1];
+                    let type = searchData[2];
+                    let admin = searchData[3];
+                    return categoriesFilterCash.some(function (c) {
+                            return c === category
+                        }) && (selectedTypeName === type || selectedTypeName === 'all')
+                        && (adminsFilterCash === admin || adminsFilterCash === 'all');
+                });
+            table.draw();
+            typesFilterCash = selectedTypeName;
         });
 
         $('#admins').change(function () {
-            let selected = $(this).val();
-            if (selected === 'all') selected = '';
-            table
-                .columns(3)
-                .search(selected)
-                .draw();
+            $.fn.dataTable.ext.search.pop();
+            let selectedAdminName = $(this).val();
+            $.fn.dataTable.ext.search.push(
+                function (settings, searchData) {
+                    let category = searchData[1];
+                    let type = searchData[2];
+                    let admin = searchData[3];
+                    return categoriesFilterCash.some(function (c) {
+                            return c === category
+                        }) && (typesFilterCash === type || typesFilterCash === 'all')
+                        && (selectedAdminName === admin || selectedAdminName === 'all');
+                });
+            table.draw();
+            adminsFilterCash = selectedAdminName;
         });
     }
 
@@ -95,52 +140,47 @@ $(document).ready(function () {
         return button;
     }
 
-    function findNestedCategories(categoryName) {
+    function findNestedCategoriesNames(categoryName) {
         let categoryItem = $("li[data-name='" + categoryName + "']");
         let nextCategoryItems = categoryItem.nextAll('.category-item');
         let level = categoryItem.attr('data-level');
         let nestedCategories = [categoryItem];
         $.each(nextCategoryItems, function (i, item) {
             if ($(item).attr('data-level') != level) {
-                nestedCategories.push($(item));
+                nestedCategories.push($(item).attr('data-name'));
             }
             return ( $(item).attr('data-level') != level );
         });
         return nestedCategories;
     }
 
-    function findAllCategories() {
+    function findAllCategoriesNames() {
         let allCategories = $('.category-item');
         let allCategoriesList = [];
         $.each(allCategories, function (i, item) {
-            allCategoriesList.push($(item));
+            allCategoriesList.push($(item).attr('data-name'));
         });
         return allCategoriesList;
     }
 
-    function buildTypesSelect(e) {
-        let selectedCategoryName = $(e.target).data('selectedName');
-        let nestedCategories = selectedCategoryName === 'all' ? findAllCategories()
-            : findNestedCategories(selectedCategoryName);
-        if (currentCategory !== selectedCategoryName) {
-            let typesItems = $('<div></div>');
-            $('#types').html('');
-            $.each(dataSource, function (i, item) {
-                if (nestedCategories.some(function (e) {
-                        return e.attr('data-name') === item['categoryName']
-                    })) {
-                    $('<option/>', {
-                        value: item['typeName'],
-                        text: item['typeName'],
-                    }).appendTo(typesItems);
-                }
-            });
-            if (typesItems.children().length > 0) {
-                $('#types').html('<option value="all">All resource types</option>');
-                $('#types').append(typesItems.children());
+    function buildTypesSelect(categories) {
+        let typesItems = $('<div></div>');
+        $('#types').html('');
+        $.each(dataSource, function (i, item) {
+            if (categories.some(function (c) {
+                    return c === item['categoryName']
+                })) {
+                $('<option/>', {
+                    value: item['typeName'],
+                    text: item['typeName'],
+                }).appendTo(typesItems);
             }
-            $('#types').selectpicker('refresh');
-            currentCategory = selectedCategoryName;
+        });
+        if (typesItems.children().length > 0) {
+            $('#types').html('<option value="all">All resource types</option>');
+            $('#types').append(typesItems.children());
         }
+        $('#types').selectpicker('refresh');
+        typesFilterCash = 'all';
     }
 });

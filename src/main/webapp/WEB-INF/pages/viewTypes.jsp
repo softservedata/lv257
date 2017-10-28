@@ -22,8 +22,8 @@
         <div class="container">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#">View</a></li>
-                <li><a href="/resources/editType">Add</a></li>
-                <li><a href="/resources/requests">Requests</a></li>
+                <li><a href="${contextPath}/resources/editType">Add</a></li>
+                <li><a href="${contextPath}/resources/requests">Requests</a></li>
             </ul>
         </div>
 
@@ -111,6 +111,7 @@
                 <tbody>
                 </tbody>
             </table>
+            <br/>
         </div>
     </div>
 </div>

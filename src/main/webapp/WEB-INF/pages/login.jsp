@@ -40,7 +40,7 @@
                 <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password">
             </div>
             <center>
-                <button type="submit" class="btn btn-default">Sing in</button>
+                <button type="submit" class="btn btn-default">Sign in</button>
             </center>
 <br>
         </form>

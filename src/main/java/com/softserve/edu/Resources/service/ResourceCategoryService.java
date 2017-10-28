@@ -49,7 +49,4 @@ public interface ResourceCategoryService {
 
     @Transactional
     ResourceCategory mapFromDtoToResourceCategory(ResourceCategoryDTO categoryDTO);
-
-    @Transactional
-    List<ResourceType> getTypesByCategoryId(Optional<Long> id);
 }
