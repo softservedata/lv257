@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    let dataSource;
     let categoriesFilterCash = findAllCategoriesNames();
     let typesFilterCash = 'all';
     let adminsFilterCash = 'all';
@@ -8,7 +7,6 @@ $(document).ready(function () {
 
     function loadData() {
         $.get(projectPathPrefix + "/api/getTypes", function (data) {
-            dataSource = data;
             buildTable(data);
             $('#all-categories a').click();
         }, "json");
@@ -31,9 +29,10 @@ $(document).ready(function () {
                 {"data": null},
                 {"data": null},
                 {"data": null},
+                {"data": null},
             ],
             "columnDefs": [{
-                "targets": [-1, -2, -3, -4],
+                "targets": [4, 5, 6, 7, 8],
                 "searchable": false,
                 "orderable": false,
                 "render": function (data, type, row, meta) {
@@ -48,18 +47,18 @@ $(document).ready(function () {
             "order": [[2, 'asc']]
         });
 
-        table.on( 'order.dt search.dt', function () {
-            table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                cell.innerHTML = i+1;
-            } );
-        } ).draw();
+        table.on('order.dt search.dt', function () {
+            table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
 
         $('#categories').change(function (e) {
             $.fn.dataTable.ext.search.pop();
             let selectedCategoryName = $(e.target).data('selectedName');
             let categories = selectedCategoryName === 'all' ? findAllCategoriesNames()
                 : findNestedCategoriesNames(selectedCategoryName);
-            buildTypesSelect(categories);
+            buildTypesSelect(categories, dataSource);
             $.fn.dataTable.ext.search.push(
                 function (settings, searchData) {
                     let category = searchData[1];
@@ -106,37 +105,75 @@ $(document).ready(function () {
             table.draw();
             adminsFilterCash = selectedAdminName;
         });
+
+        $.each($('.inst-button'), function (i, item) {
+            $(item).click(function () {
+                if (!$(this).hasClass('disabled')) {
+                    $('#confirm-dialog').modal('show');
+                    $('#confirm-dialog').data('action', 'instantiate');
+                    $('#confirm-dialog').data('id', $(item).attr('data-id'));
+                    $('#confirm-title').text('Confirm instantiation of resource type');
+                    $('#confirm-body').text('Are you sure you want to instantiate resource type "'
+                        + $(item).attr('data-type') + '"?');
+                }
+            })
+        });
+
+        $.each($('.remove-button'), function (i, item) {
+            $(item).click(function () {
+                if (!$(this).hasClass('disabled')) {
+                    $('#confirm-dialog').modal('show');
+                    $('#confirm-dialog').data('action', 'remove');
+                    $('#confirm-dialog').data('id', $(item).attr('data-id'));
+                    $('#confirm-title').text('Confirm removing of resource type');
+                    $('#confirm-body').text('Are you sure you want to remove resource type "'
+                        + $(item).attr('data-type') + '"?');
+                }
+            })
+        });
+
+        $('#confirm-button').click(function () {
+            let id = $('#confirm-dialog').data('id');
+            if ($('#confirm-dialog').data('action') === 'instantiate') {
+                instantiateType(id);
+            } else if ($('#confirm-dialog').data('action') === 'remove') {
+                removeType(id, table);
+            }
+            $('#confirm-dialog').modal('hide');
+        });
     }
 
     function buildActionButtons(rowData, col) {
         let restrictAccess = rowData.administratorName !== currentAdmin ? 'disabled"' : '"';
+        let cloneLink = projectPathPrefix + '/resources/cloneType?id=' + -rowData.typeId;
+        let editLink = projectPathPrefix + '/resources/editType?id=' + rowData.typeId;
         let button;
         switch (col) {
             case 4:
-                button = rowData.instantiated ? '' : '<button class="btn btn-primary btn-xs ' + restrictAccess
-                    + 'data-target=' + rowData.typeId + '>Instantiate</button>';
+                button = rowData.instantiated ? '' : '<button class="btn btn-primary btn-xs inst-button '
+                    + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
+                    + '>Instantiate</button>';
                 break;
             case 5:
-                button = '<a style="padding-top: 2px" href="#" class="btn btn-link" data-target='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-plus-sign"</span></a>';
+                button = '<a style="padding-top: 2px" target="_blank" href="' + cloneLink
+                    + '" class="btn btn-link" data-id=' + rowData.typeId
+                    + '><span class="glyphicon glyphicon-plus-sign"</span></a>';
                 break;
             case 6:
-                button = rowData.instantiated ? '' : '<a style="padding-top: 2px" href="#" class="btn btn-link ' + restrictAccess
-                    + 'data-target=' + rowData.typeId + '><span class="glyphicon glyphicon-pencil"</span></a>';
+                button = rowData.instantiated ? '' : '<a style="padding-top: 2px" target="_blank" href="'
+                    + editLink + '" class="btn btn-link edit-button ' + restrictAccess + 'data-id='
+                    + rowData.typeId + '><span class="glyphicon glyphicon-pencil"</span></a>';
                 break;
             case 7:
-                button = rowData.instantiated ? '' : '<a style="padding-top: 2px" href="#" class="btn btn-link ' + restrictAccess
-                    + 'data-target=' + rowData.typeId + '><span class="glyphicon glyphicon-remove"</span></a>';
+                button = rowData.instantiated ? '' : '<button style="padding-top: 2px" class="btn btn-link remove-button '
+                    + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
+                    + '><span class="glyphicon glyphicon-remove"</span></button>';
+                break;
+            case 8:
+                button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id='
+                    + rowData.typeId + '><span class="glyphicon glyphicon-eye-open"</span></button>';
                 break;
         }
-        /*            let instantiateButton = rowData.instantiated ? '' : '<button class="btn btn-primary btn-sm ' + restrictAccess
-                        + 'data-target=' + rowData.typeId + '>Instantiate</button>';
-                    let editButton = '<a href="#" class="btn btn-primary btn-sm ' + restrictAccess
-                        + 'data-target=' + rowData.typeId + '>Edit</a>';
-                    let cloneButton = '<a href="#" class="btn btn-primary btn-sm" data-target=' + rowData.typeId + '>Clone</a>';
-                    let deleteButton = '<a href="#" class="btn btn-primary btn-sm ' + restrictAccess
-                        + 'data-target=' + rowData.typeId + '>Delete</a>';
-                    return '<div class="btn-toolbar" style="display: inline-block;">' + instantiateButton + editButton + cloneButton + deleteButton + '</div>';*/
         return button;
     }
 
@@ -144,9 +181,9 @@ $(document).ready(function () {
         let categoryItem = $("li[data-name='" + categoryName + "']");
         let nextCategoryItems = categoryItem.nextAll('.category-item');
         let level = categoryItem.attr('data-level');
-        let nestedCategories = [categoryItem];
+        let nestedCategories = [categoryItem.attr('data-name')];
         $.each(nextCategoryItems, function (i, item) {
-            if ($(item).attr('data-level') != level) {
+            if ($(item).attr('data-level') > level) {
                 nestedCategories.push($(item).attr('data-name'));
             }
             return ( $(item).attr('data-level') != level );
@@ -163,7 +200,7 @@ $(document).ready(function () {
         return allCategoriesList;
     }
 
-    function buildTypesSelect(categories) {
+    function buildTypesSelect(categories, dataSource) {
         let typesItems = $('<div></div>');
         $('#types').html('');
         $.each(dataSource, function (i, item) {
@@ -182,5 +219,22 @@ $(document).ready(function () {
         }
         $('#types').selectpicker('refresh');
         typesFilterCash = 'all';
+    }
+
+    function instantiateType(id) {
+        console.log('Instantiating...');
+        $('button[data-id=' + id + ']').remove();
+        $('a.edit-button').filter(function () {
+            return $(this).attr('data-id') === id;
+        }).remove();
+    }
+
+    function removeType(id, table) {
+        console.log('Removing...');
+        let row = $('button[data-id=' + id + ']').parents('tr');
+        table
+            .row(row)
+            .remove()
+            .draw();
     }
 });

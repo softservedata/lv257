@@ -404,7 +404,7 @@ function sortByProperty(data, key, way) {
         $.each(list, function (i, item) {
             $(item).click(function (e) {
                 let selectedID = $(e.target).closest('li').data('value');
-                if (typeof selectedID === 'undefined') selectedID = 0;
+                // if (typeof selectedID === 'undefined') selectedID = 0;
                 let selectedName = $(e.target).closest('li').data('name');
                 $('#categories-select').data('selectedID', selectedID);
                 $('#categories-select').data('selectedName', selectedName);
@@ -570,14 +570,4 @@ function sortByProperty(data, key, way) {
         $('#error-icon-span').removeClass('hidden');
         $('#validation-message').text(messageText).removeClass('hidden');
     }
-
-    /*    function findById(data, id) {
-                    $.each(data, function (i, item) {
-                            if (item['id'] === id) {
-                                    return item;
-                            } else if (item.children && item.children.length > 0) {
-                                    return findById(item.children, id);
-                            }
-                    });
-            }*/
 })();

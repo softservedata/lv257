@@ -1,6 +1,7 @@
 package com.softserve.edu.Resources.rest;
 
 import com.softserve.edu.Resources.dto.ResourceTypeBrief;
+import com.softserve.edu.Resources.dto.TypeInfoDTO;
 import com.softserve.edu.Resources.dto.ViewTypesDTO;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.ResourceTypeNotFoundException;
@@ -40,5 +41,13 @@ public class ResourcesRestController {
                 .map(ViewTypesDTO::new)
                 .sorted(Comparator.comparing(ViewTypesDTO::getTypeName))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/typeInfo/{id}", method = RequestMethod.GET)
+    public TypeInfoDTO getTypeInfo(@PathVariable Long id) {
+        Optional<ResourceType> resourceType = resourceTypeService.get(id, true);
+        if (!resourceType.isPresent())
+            throw new ResourceTypeNotFoundException("Requested Resource Type not found.");
+        return new TypeInfoDTO(resourceType.get());
     }
 }

@@ -22,14 +22,19 @@
         <div class="container">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#">View</a></li>
-                <li><a href="${contextPath}/resources/editType">Add</a></li>
+                <li><a href="${contextPath}/resources/addType">Add</a></li>
                 <li><a href="${contextPath}/resources/requests">Requests</a></li>
             </ul>
         </div>
 
         <div class="container">
             <br>
-            <h3>View resource types</h3>
+            <div class="container">
+                <span class="h3">View resource types</span>
+                <a class="btn btn-primary pull-right" href="${contextPath}/resources/addType" target="_blank">Add new
+                    resource type</a>
+            </div>
+            <br>
             <table class="table table-striped table-condensed text-center display" width="100%" id="types-table">
                 <thead>
                 <tr>
@@ -46,6 +51,7 @@
                         <div class="text-center">Created by</div>
                     </th>
                     <th></th>
+                    <th></th>
                     <th>
                         <div class="text-center">Actions</div>
                     </th>
@@ -55,6 +61,7 @@
                 </thead>
 
                 <thead>
+                <tr>
                 <th></th>
                 <th>
                     <div class="theader-with-select" id="categories">
@@ -83,6 +90,8 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                </tr>
                 </thead>
 
                 <tfoot>
@@ -100,6 +109,7 @@
                         <div class="text-center">Created by</div>
                     </th>
                     <th></th>
+                    <th></th>
                     <th>
                         <div class="text-center">Actions</div>
                     </th>
@@ -112,6 +122,23 @@
                 </tbody>
             </table>
             <br/>
+        </div>
+    </div>
+
+    <div class="modal fade" id="confirm-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" id="confirm-dialog-inner">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 id="confirm-title" class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <p id="confirm-body"></p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm-button" class="btn btn-primary btn-ok">Yes</button>
+                    <button id="dismiss-button" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
