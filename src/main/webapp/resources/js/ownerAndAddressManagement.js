@@ -153,7 +153,7 @@ function buildRadios() {
     let $form = $('<form/>');
     $ownerRadios.append($form);
     for (let i = 0; i < trs.length; i++) {
-        let addressId = $(trs[i]).attr('id');
+        let addressId = $(trs[i]).find('.address_info').attr('data-owner-address-id');
         let addressText = $(trs[i]).find('.address_info').text();
 
         let $radioDiv = $('<div/>', {class: 'radio'});
@@ -787,12 +787,15 @@ function showOwnersTable(result) {
         if (result.hasOwnProperty(attributeValue) && attributeValue == 'addressInfo') {
             let $td = $('<td/>', {
                 text: result[attributeValue],
-                class: 'address_info'
+                class: 'address_info',
+                'data-owner-address-id': result['ownerAddressId']
             });
             $tr.append($td);
             continue;
         }
-        if (result.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
+        if (result.hasOwnProperty(attributeValue) &&
+            attributeValue != 'ownerId' &&
+            attributeValue != 'ownerAddressId') {
             console.log(result[attributeValue]);
             let $td = $('<td/>', {
                 text: result[attributeValue]
@@ -1449,19 +1452,19 @@ function showResults(success, $resultDiv) {
         // Yura TODO
 
         $resultDiv.append($fidnResourcesByOwnerBtn);
-        
+
         let choosenOwnerId = 'none';
-        
+
         $select.on('change', function () {
             choosenOwnerId = this.value;
             console.log('choosen owner id: ' + choosenOwnerId);
         });
-        
+
         $fidnResourcesByOwnerBtn.on('click', function (e) {
             e.preventDefault();
 
             if (choosenOwnerId != 'none') {
-            	$.ajax({
+                $.ajax({
                     type: 'GET',
                     url: projectPathPrefix +'/api/resources/lookup//owners/'+choosenOwnerId+'/groupedresources',
                     contentType: 'application/json; charset=UTF-8',
@@ -1471,9 +1474,9 @@ function showResults(success, $resultDiv) {
                         divRes.html(JSON.stringify(result));
                         for (var j = 0; j < result.length; j++){
                             console.log(result[j].resourceTypeName + "--" + result[j].resourceRecordsCount);
-  
+
                         }
-                       
+
                         divRes.show();
                     },
                     error: function (result) {
@@ -1486,13 +1489,13 @@ function showResults(success, $resultDiv) {
                     }
 
                 });
-        
+
             } else {
-                    alert("Owner hasn't been chosen")
+                alert("Owner hasn't been chosen")
             }
-            
-        }); 
-        
+
+        });
+
     } else if (registrar){
         let $chooseOwnerBtn = $('<button/>', {
             id: 'choose_owner',
@@ -1567,12 +1570,15 @@ function appendOwnerToTable(result, choosenOwnerId) {
         if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue == 'addressInfo') {
             let $td = $('<td/>', {
                 text: concreteOwner[attributeValue],
-                class: 'address_info'
+                class: 'address_info',
+                'data-owner-address-id': concreteOwner['ownerAddressId']
             });
             $tr.append($td);
             continue;
         }
-        if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
+        if (concreteOwner.hasOwnProperty(attributeValue) &&
+            attributeValue != 'ownerId' &&
+            attributeValue != 'ownerAddressId') {
             console.log(concreteOwner[attributeValue]);
             let $td = $('<td/>', {
                 text: concreteOwner[attributeValue]
@@ -1663,5 +1669,4 @@ const searchByCompanyCharacteristicsMetadata = {
 const searchOwnerAddressMetadata = [
     [new FieldAndSize('Region', 6, 'Lvivskiy'), new FieldAndSize('District', 6, 'Drogobytskiy')],
     [new FieldAndSize('Locality', 6, 'Boryslav'), new FieldAndSize('Street', 6, 'Kovaliva')],
-    [new FieldAndSize('Postal index', 4, '83200'), new FieldAndSize('Building', 4, '37'), new FieldAndSize('Apartment', 4, '17')]
-];
+    [new FieldAndSize('Postal index', 4, '83200'), new FieldAndSize('Building', 4, '37'), new FieldAndSize('Apartment', 4, '17')]];
