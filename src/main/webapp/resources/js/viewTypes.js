@@ -13,7 +13,7 @@ $(document).ready(function () {
     }
 
     function buildTable(dataSource) {
-        let table = $('#types-table').DataTable({
+        let typesTable = $('#types-table').DataTable({
             "dom": 'rt<"bottom"lp><"clear">',
             "language": {
                 "zeroRecords": "Nothing found - sorry",
@@ -47,8 +47,8 @@ $(document).ready(function () {
             "order": [[2, 'asc']]
         });
 
-        table.on('order.dt search.dt', function () {
-            table.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+        typesTable.on('order.dt search.dt', function () {
+            typesTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
@@ -68,7 +68,7 @@ $(document).ready(function () {
                     }) && (adminsFilterCash === admin || adminsFilterCash === 'all');
                 }
             );
-            table.draw();
+            typesTable.draw();
             categoriesFilterCash = categories;
         });
 
@@ -85,7 +85,7 @@ $(document).ready(function () {
                         }) && (selectedTypeName === type || selectedTypeName === 'all')
                         && (adminsFilterCash === admin || adminsFilterCash === 'all');
                 });
-            table.draw();
+            typesTable.draw();
             typesFilterCash = selectedTypeName;
         });
 
@@ -102,7 +102,7 @@ $(document).ready(function () {
                         }) && (typesFilterCash === type || typesFilterCash === 'all')
                         && (selectedAdminName === admin || selectedAdminName === 'all');
                 });
-            table.draw();
+            typesTable.draw();
             adminsFilterCash = selectedAdminName;
         });
 
@@ -137,9 +137,16 @@ $(document).ready(function () {
             if ($('#confirm-dialog').data('action') === 'instantiate') {
                 instantiateType(id);
             } else if ($('#confirm-dialog').data('action') === 'remove') {
-                removeType(id, table);
+                removeType(id, typesTable);
             }
             $('#confirm-dialog').modal('hide');
+        });
+
+        $.each($('.info-button'), function (i, item) {
+            $(item).click(function () {
+                let typeId = $(item).attr('data-id');
+                showTypeInfo(typeId);
+            })
         });
     }
 
@@ -171,7 +178,7 @@ $(document).ready(function () {
                 break;
             case 8:
                 button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-eye-open"</span></button>';
+                    + rowData.typeId + '><span class="glyphicon glyphicon-info-sign"</span></button>';
                 break;
         }
         return button;
@@ -230,11 +237,64 @@ $(document).ready(function () {
     }
 
     function removeType(id, table) {
-        console.log('Removing...');
-        let row = $('button[data-id=' + id + ']').parents('tr');
-        table
-            .row(row)
-            .remove()
-            .draw();
+        $.ajax({
+            type: "DELETE",
+            url: projectPathPrefix + "/api/deleteType/" + id,
+            success: function (jqXHR) {
+                let row = $('button[data-id=' + id + ']').parents('tr');
+                table
+                    .row(row)
+                    .remove()
+                    .draw();
+            },
+            error: function (jqXHR) {
+                let error = JSON.parse(jqXHR.responseText);
+                alert('Error!\n" + error.message');
+            }
+        });
+    }
+
+    function showTypeInfo(id) {
+        $.get(projectPathPrefix + "/api/typeInfo/" + id, function (data) {
+            data = JSON.parse(JSON.stringify(data)
+                .replace(/},"searchable"/g, ',"searchable"')
+                .replace(/{"property":/g, ''));
+            $('#type-name').html('<span class="font-bold">Resource type name: </span>' +
+                '<span>' + data.typeName + '</span>');
+            $('#category-name').html('<span class="font-bold">Category of the resource type: </span>' +
+                '<span>' + data.categoryName + '</span>');
+            $('#is-instantiated > span').text(data.instantiated === true ? 'Instantiated' : 'Not instantiated');
+            $('#props-tbody').empty();
+            if (data.properties.length === 0) {
+                $('#props-tbody').append('<tr><td class="text-center" colspan="8">' +
+                    'Resource type hasn\'t properties yet</td></tr>');
+            } else {
+                data.properties = sortByProperty(data.properties, 'title', 'asc');
+                let unitsShort;
+                $.each(data.properties, function (i, item) {
+                    $.each(item, function (j, subItem) {
+                        if (subItem === null) {
+                            item[j] = '';
+                        } else if (subItem === true) {
+                            item[j] = 'Yes';
+                        } else if (subItem === false) {
+                            item[j] = 'No';
+                        }
+                    });
+                    unitsShort = item.unitsShort === '' ? '' : ' (' + item.unitsShort + ')';
+                    $('#props-tbody').append('<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td>' + item.title + '</td>' +
+                        '<td>' + item.units + unitsShort + '</td>' +
+                        '<td>' + item.pattern + '</td>' +
+                        '<td>' + item.valueType + '</td>' +
+                        '<td>' + item.multivalued + '</td>' +
+                        '<td>' + item.searchable + '</td>' +
+                        '<td>' + item.required + '</td>' +
+                        '</tr>');
+                });
+            }
+            $('#type-info-dialog').modal('show');
+        }, "json");
     }
 });

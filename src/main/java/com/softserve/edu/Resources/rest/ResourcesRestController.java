@@ -44,10 +44,15 @@ public class ResourcesRestController {
     }
 
     @RequestMapping(value = "/typeInfo/{id}", method = RequestMethod.GET)
-    public TypeInfoDTO getTypeInfo(@PathVariable Long id) {
+    public TypeInfoDTO getResourceTypeInfo(@PathVariable Long id) {
         Optional<ResourceType> resourceType = resourceTypeService.get(id, true);
         if (!resourceType.isPresent())
             throw new ResourceTypeNotFoundException("Requested Resource Type not found.");
         return new TypeInfoDTO(resourceType.get());
+    }
+
+    @RequestMapping(value = "/deleteType/{id}", method = RequestMethod.DELETE)
+    public void deleteResourceType(@PathVariable Long id) {
+        resourceTypeService.removeById(id);
     }
 }

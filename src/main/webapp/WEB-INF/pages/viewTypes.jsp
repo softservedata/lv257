@@ -38,23 +38,13 @@
             <table class="table table-striped table-condensed text-center display" width="100%" id="types-table">
                 <thead>
                 <tr>
-                    <th>
-                        <div class="text-center">#</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Resource category</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Resource type</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Created by</div>
-                    </th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Resource category</th>
+                    <th class="text-center">Resource type</th>
+                    <th class="text-center">Created by</th>
                     <th></th>
                     <th></th>
-                    <th>
-                        <div class="text-center">Actions</div>
-                    </th>
+                    <th class="text-center">Actions</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -62,64 +52,53 @@
 
                 <thead>
                 <tr>
-                <th></th>
-                <th>
-                    <div class="theader-with-select" id="categories">
-                        <script> var disableAncestorSelecting = false;
-                        var showAllCategoriesInSelect = true;</script>
-                        <jsp:include page="components/resourceTypeSelect.jsp"/>
-                    </div>
-                </th>
-                <th>
-                    <select class="selectpicker" data-live-search="true" data-width="100%" id="types">
-                        <%--<option value="all">All resource types</option>--%>
-                    </select>
-                </th>
-                <th>
-                    <select class="selectpicker" data-live-search="true" data-width="100%" id="admins">
-                        <option value="all">All administrators</option>
-                        <option value="${currentAdmin}">Me</option>
-                        <c:forEach items="${administrators}" var="adminName">
-                            <c:if test="${adminName != currentAdmin}">
-                                <option value="${adminName}">${adminName}</option>
-                            </c:if>
-                        </c:forEach>
-                    </select>
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                    <th></th>
+                    <th>
+                        <div class="theader-with-select" id="categories">
+                            <script> var disableAncestorSelecting = false;
+                            var showAllCategoriesInSelect = true;</script>
+                            <jsp:include page="components/resourceTypeSelect.jsp"/>
+                        </div>
+                    </th>
+                    <th>
+                        <select class="selectpicker" data-live-search="true" data-width="100%" id="types">
+                            <%--<option value="all">All resource types</option>--%>
+                        </select>
+                    </th>
+                    <th>
+                        <select class="selectpicker" data-live-search="true" data-width="100%" id="admins">
+                            <option value="all">All administrators</option>
+                            <option value="${currentAdmin}">Me</option>
+                            <c:forEach items="${administrators}" var="adminName">
+                                <c:if test="${adminName != currentAdmin}">
+                                    <option value="${adminName}">${adminName}</option>
+                                </c:if>
+                            </c:forEach>
+                        </select>
+                    </th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
                 </tr>
                 </thead>
 
                 <tfoot>
                 <tr>
-                    <th>
-                        <div class="text-center">#</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Resource category</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Resource type</div>
-                    </th>
-                    <th>
-                        <div class="text-center">Created by</div>
-                    </th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Resource category</th>
+                    <th class="text-center">Resource type</th>
+                    <th class="text-center">Created by</th>
                     <th></th>
                     <th></th>
-                    <th>
-                        <div class="text-center">Actions</div>
-                    </th>
+                    <th class="text-center">Actions</th>
                     <th></th>
                     <th></th>
                 </tr>
                 </tfoot>
 
-                <tbody>
-                </tbody>
+                <tbody></tbody>
             </table>
             <br/>
         </div>
@@ -137,6 +116,46 @@
                 <div class="modal-footer">
                     <button id="confirm-button" class="btn btn-primary btn-ok">Yes</button>
                     <button id="dismiss-button" type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="type-info-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" id="type-info-dialog-inner">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close close-name-dialog" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">Resource type information</h4>
+                </div>
+                <div id="type-info-body" class="modal-body">
+                    <div id="type-name"></div>
+                    <br>
+                    <div id="category-name"></div>
+                    <br>
+                    <div id="is-instantiated"><span class="font-bold"></span></div>
+                    <p class="caption text-center font-bold" style="font-size: 12pt">Properties of the resource type</p>
+                    <table class="table table-striped table-condensed table-bordered text-center display" width="100%"
+                           id="props-table">
+                        <thead>
+                        <tr>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Units</th>
+                            <th class="text-center">RegEx pattern</th>
+                            <th class="text-center">Value type</th>
+                            <th class="text-center">Multivalued</th>
+                            <th class="text-center">Searchable</th>
+                            <th class="text-center">Required</th>
+                        </tr>
+                        </thead>
+                        <tbody id="props-tbody"></tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
