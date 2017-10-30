@@ -33,9 +33,11 @@
 
                 <%--<form role="form-horizontal" enctype="multipart/form-data">--%>
 
-                <c:set var="typeSelectLabel" value="Resource Category" scope="request"/>
+                <%--<c:set var="typeSelectLabel" value="Resource Category" scope="request"/>--%>
+                <c:set var="typeSelectLabel" value="Resource Type" scope="request"/>
                 <div class="row">
-                    <div id="categories" class="col-sm-12 col-xs-8 form-group">
+                    <div id="types" class="col-sm-12 col-xs-8 form-group">
+                        <script> var showTypesInCategoryHierarchy = true</script>
                         <jsp:include page="components/resourceTypeSelect.jsp"/>
                     </div>
                 </div>
@@ -297,9 +299,14 @@
                 </div>
 
                 <hr class="my_hr">
+                <label id="resource_prop_label">Resource Properties</label>
                 <div class="rP_chars">
 
                     <%--CONCRETE RESOURCE TYPE CHARACTERISTICS--%>
+
+                        <form id="form_for_properties" class="form-horizontal">
+                            <!-- here will be data inserted by ajax request -->
+                        </form>
 
                 </div>
 
@@ -308,7 +315,8 @@
                     <input type="file" id="files" multiple="true">
                 </div>
                 <div class="padding_bottom_15">
-                    <button type="submit" class="btn btn-success width_13em">Register resource</button>
+                    <button id="register_resource_btn"
+                            type="submit" class="btn btn-success width_13em">Register resource</button>
                 </div>
 
                 <%--</form>--%>
@@ -326,9 +334,11 @@
 
 
 <script src="../../resources/js/ownerAndAddressManagement.js"></script>
+<script src="../../resources/js/jquery.validate.js"></script>
+<script src="../../resources/js/additional-methods.js"></script>
+<script src="../../resources/js/resourceTypeChars.js"></script>
 <script src="../../resources/js/categories.js"></script>
 <script src="../../resources/js/hierarchy-select.js"></script>
-<script src="../../resources/js/jquery.validate.js"></script>
 <script>
 
 </script>
