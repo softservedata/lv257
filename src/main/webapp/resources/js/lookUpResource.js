@@ -4,10 +4,11 @@ $(document).ready(function(){
 
     $('#div-for-types').hide();
     $('#form-for-properties').hide();
-    $('#lookup-result').hide();
+    $('#lookup-result-by-owner-grouped').hide();
     $('#result-search').hide();
     $('#new-search').hide();
     $('#no-inputs-error').hide();
+    $('#div-for-owners').hide();
     var table = $('#result-search');
 
     // populating select with resource types depends on look Up type chosen
@@ -17,24 +18,29 @@ $(document).ready(function(){
 
 		
             $('#div-for-types').show();
+            $('#div-for-owners').hide();
 
 		
         } else if (lookUpType == 'by-owner') {
 
+        	$('#div-for-owners').show();
+        	
             $('#div-for-types').hide();
             $('#form-for-properties').hide();
-            $('#lookup-result').hide();
+            $('#lookup-result-by-owner-grouped').hide();
             $('#new-search').hide();
             $('#result-search').empty();
             $('#no-inputs-error').empty();
             $('#no-inputs-error').hide();
+            
 
 
             // here will be implemented next steps for looking up by owner
         } else {
+        	$('#div-for-owners').hide();
             $('#div-for-types').hide();
             $('#form-for-properties').hide();
-            $('#lookup-result').hide();
+            $('#lookup-result-by-owner-grouped').hide();
             $('#new-search').hide();
             $('#result-search').empty();
             $('#no-inputs-error').empty();
@@ -138,14 +144,14 @@ $(document).ready(function(){
                     console.log(result);
                     // populating table
                     table.empty();
-                    var tableTag = $("<table id=\"dt\"></table>").appendTo(table);
+                    var tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
                     var header = $("<thead></thead>").appendTo(tableTag);
                     var rowHeader = $("<tr></tr>").appendTo(header);
                     for(var j = 0; j < result[0].propertyValues.length; j++) {
-                        $("<th>'" + result[0].propertyValues[j].type.property.title +"'</th>").appendTo(rowHeader);
+                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
                     }
 
-                    $("<th>More Info</th>").appendTo(rowHeader);
+                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
                     var tableBody = $("<tbody></tbody>").appendTo(tableTag);
 
                     for(var i = 0; i < result.length; i++) {
@@ -155,9 +161,11 @@ $(document).ready(function(){
                         }
                         $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
                     }
+                    $("<br/>").appendTo(tableTag);
                     //DataTables plug-in
                     $('#dt').DataTable({
-                        "processing": true,
+                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+                    	"processing": true,
                         stateSave: true
                     });
 
