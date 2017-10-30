@@ -16,7 +16,7 @@ INSERT INTO `document` (`id_document`,`code`,`URL`,`extension`) VALUES (100000,'
 
 INSERT INTO `RESOURCE_CATEGORIES` (`Id`,`Category_Name`,`Id_Parent`) VALUES (134310,'Natural resources',NULL),(134311,'Land resources',134310),(134312,'Forest resources',134310),(134313,'Mineral resources',134310),(134314,'Water resources',134310),(134315,'Real estate',NULL),(134316,'Residental real estate',134315),(134317,'Non-residental real estate',134315),(134318,'Commercial non-residental real estate',134317),(134319,'Industrial non-residental real estate',134317),(134320,'Transport',NULL),(134321,'Water transport',134320),(134322,'Sea transport',134321),(134323,'River transport',134321),(134324,'Air transport',134320),(134325,'Reactive airtransport',134324),(134326,'Land transport',134320),(134327,'Autotransport',134326),(134329,'Propeller airtransport',134324),(134330,'Mototransport',134326),(134331,'Railway transport',134326);
 
-INSERT INTO `RESOURCE_PROPERTIES` (`id`,`Column_Name`,`Hint`,`Multivalued`,`Regex`,`Title`,`Units`,`Units_short`,`Value_Type`) VALUES (100200,'model','letters,digits,e.g: "Mazda6"(not less than 2 and more than 20 symbols','','[A-Za-z0-9]{2,20}','Model','','','STRING'),(100203,'year','only digits, e.g: 2004','','[0-9]{4,20}','Year','digits','','STRING'),(100204,'weight','only double, e.g: 200.20(not more than 3 digits after dot)','','\\d+\\.\\d{1,3}','Weight','kilograms','kg','DOUBLE'),(100205,'load_capacity','only integers, e.g: 2000','','\\d+','Load-carrying capacity','kilograms','kg','INTEGER'),(100206,'vin','only letters with upper case and integers, e.g: V2WWW45KP','','[A-Z0-9]+','VIN',NULL,NULL,'STRING');
+INSERT INTO `RESOURCE_PROPERTIES` (`id`,`Column_Name`,`Hint`,`Multivalued`,`Regex`,`Title`,`Units`,`Units_short`,`Value_Type`) VALUES (100200,'model','letters,digits,e.g: Mazda6','','[A-Za-z0-9]{2,20}','Model','','','STRING'),(100203,'year','only digits, e.g: 2004','','[0-9]{4,20}','Year','digits','','STRING'),(100204,'weight','only double, e.g: 200.20(not more than 3 digits after dot)','','\\d+\\.\\d{1,3}','Weight','kilograms','kg','DOUBLE'),(100205,'load_capacity','only integers, e.g: 2000','','\\d+','Load-carrying capacity','kilograms','kg','INTEGER'),(100206,'vin','only letters with upper case and integers, e.g: V2WWW45KP','','[A-Z0-9]+','VIN',NULL,NULL,'STRING');
 
 INSERT INTO `user_account` (`id`,`enabled`,`password`,`secret`,`email`) VALUES (8, TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
 
@@ -44,8 +44,8 @@ CREATE TABLE `yachts` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NUL
 
 INSERT INTO `yachts` (`id`,`model`,`year`,`weight`) VALUES (1,'Sailing',2010,2000.00),(2,'Vintage',2012,3000.00),(3,'Woodle',2010,2500.00),(4,'Mario',2012,2300.00),(5,'Grand',2013,2200.00);
 
-INSERT INTO `RESOURCE` (`Id`,`ADDRESS_ID`) VALUES (1,100000),(2,100001),(3,100002),(4,100100);
+INSERT INTO `RESOURCES` (`Id`,`ADDRESS_ID`) VALUES (1,100000),(2,100001),(3,100002),(4,100100);
 
-INSERT INTO `RESOURCE_OWNING` (`Id`,`OWNER_ID`,`RESOURCE_ID`,`RESOURCETYPE_ID`) VALUES (1,100001,1,100300),(2,100001,2,100300),(3,100100,1,100300),(4,100100,3,100302),(5,100100,4,100303);
+INSERT INTO `RESOURCE_OWNINGS` (`Id`,`OWNER_ID`,`RESOURCE_ID`,`RESOURCETYPE_ID`) VALUES (1,100001,1,100300),(2,100001,2,100300),(3,100100,1,100300),(4,100100,3,100302),(5,100100,4,100303);
 
 

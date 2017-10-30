@@ -15,27 +15,10 @@ $(document).ready(function(){
         var lookUpType = $('#lookup_type').val();
         if (lookUpType == 'by-type'){
 
-			/*  $.ajax({
-			 type: 'GET',
-			 url: '/lookup/resourceTypes',
-			 contentType: 'application/json; charset=UTF-8',
-			 dataType: 'json',
-			 success: function(result){
-			 var select = $('#sel1-resource-types');
-			 select.empty().append('<option>select type</option>');
-			 for (var j = 0; j < result.length; j++){
-			 console.log(result[j].tableName + "--" + result[j].id);
-			 select.append("<option value='" + result[j].id + "'>" +result[j].typeName+ "</option>");
-			 }*/
+		
             $('#div-for-types').show();
 
-			/*  },
-			 error: function (result) {
-
-			 console.log('error');
-
-			 }
-			 });   */
+		
         } else if (lookUpType == 'by-owner') {
 
             $('#div-for-types').hide();
@@ -69,7 +52,7 @@ $(document).ready(function(){
         if (typeof resourceTypeId != 'undefined')
             $.ajax({
                 type: 'GET',
-                url: projectPathPrefix +'/lookUp/resourceProperties/'+ resourceTypeId,
+                url: projectPathPrefix +'/api/resources/lookup/resourcetypes/'+ resourceTypeId,
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 success: function(result){
@@ -81,9 +64,13 @@ $(document).ready(function(){
                         form.append("<div class=\"form-group row\">" +
                             "<label for='"+result[j].title+"' class=\"col-sm-2 control-label\">" + result[j].title+ "</label>" +
                             "<div class=\"col-sm-10\">" +
-                            "<input type=\"text\" name= '" +result[j].columnName+ "' pattern= '"+result[j].pattern+"' title= '"+result[j].hint+"' class=\"form-control\" id='" +result[j].title+ "' placeholder='" + result[j].title +"'>" +
+                            "<input type=\"text\" name= '" +result[j].columnName+ "' oninvalid=\"this.setCustomValidity('"+result[j].hint+"')\" oninput=\"this.setCustomValidity('')\"  pattern= '"+result[j].pattern+"' class=\"form-control\" id='" +result[j].title+ "' placeholder='" + result[j].title +"'>" +
                             "</div>"+
                             "</div>");
+                        
+//                        $("#"+result[j].title).on("invalid", function(event) {
+//                       	 event.target.setCustomValidity(result[j].hint);
+//                       });
                     }
                     form.append("<div class=\"form-group row\">" +
                         "<div class=\"col-sm-offset-2 col-sm-10\">" +
@@ -143,17 +130,12 @@ $(document).ready(function(){
             e.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: projectPathPrefix +'/lookUp/inputValues',
+                url: projectPathPrefix +'/api/resources/lookup/inputedvalues/foundresources',
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(GenericResourceDTO),
                 dataType: 'json',
                 success: function(result){
                     console.log(result);
-//			        	$('#lookup-result').html(JSON.stringify(result));
-//			        	var divResult = $('#lookup-result');
-//			        	divResult.append("<p> id= "+  result[0].id + "; columnName " + result[0].propertyValues[0].type.columnName +
-//			        		"; value " +result[0].propertyValues[0].value+	"</p>");
-
                     // populating table
                     table.empty();
                     var tableTag = $("<table id=\"dt\"></table>").appendTo(table);
@@ -198,7 +180,7 @@ $(document).ready(function(){
 
     });
 
-
+    
 
 });
 function objectifyForm(formArray) {//serialize array to json

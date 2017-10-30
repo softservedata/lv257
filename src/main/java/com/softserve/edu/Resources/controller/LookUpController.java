@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/resources/lookup", method = RequestMethod.GET)
 public class LookUpController {
 
     @Autowired
@@ -27,7 +28,7 @@ public class LookUpController {
     @Autowired
     ResourceService resourceService;
 
-    @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/resourcetypes/{resourceTypeId}", method = RequestMethod.GET)
 
     public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId) {
 
@@ -53,7 +54,7 @@ public class LookUpController {
 
     }
 
-    @RequestMapping(value = "/lookUp/inputValues", method = RequestMethod.POST)
+    @RequestMapping(value = "/inputedvalues/foundresources", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO) {
 
         List<GenericResource> genResList = resourceService.findResourcesByResourceType(resourceDTO);
@@ -65,7 +66,7 @@ public class LookUpController {
         return genResList;
     }
 
-    @RequestMapping(value = "/lookUp/{ownerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/owners/{ownerId}/groupedresources", method = RequestMethod.GET)
     public List<GroupedResourceCount> findAllOwnerResourcesGroupedByResourceType(@PathVariable String ownerId) {
 
         List<GroupedResourceCount> groupedResources = resourceService
@@ -78,7 +79,7 @@ public class LookUpController {
         return groupedResources;
     }
 
-    @RequestMapping(value = "/lookUp/owner/{ownerId}/resourcetype/{resourceTypeName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/owners/{ownerId}/resourcetypes/{resourceTypeName}/foundresources", method = RequestMethod.GET)
     public List<GenericResource> lookUpByOwner(@PathVariable long ownerId, @PathVariable String resourceTypeName) {
 
         List<GenericResource> genericResources = resourceService.findResourcesByOwnerAndType(ownerId, resourceTypeName);

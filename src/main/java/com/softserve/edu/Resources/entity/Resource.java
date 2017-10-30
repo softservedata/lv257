@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import com.softserve.edu.Resources.Constants;
 
 @Entity
-@Table(name = "RESOURCE")
+@Table(name = "RESOURCES")
 public class Resource {
 
     @Id
