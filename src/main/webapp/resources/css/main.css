@@ -198,3 +198,10 @@ h3 span {
     margin-top: -20px;
     margin-bottom: 0;
 }
+
+#confirm-dialog-inner {
+    width: 500px;
+    margin-top: 15%;
+    margin-left:auto;
+    margin-right:auto;
+}

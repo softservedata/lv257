@@ -1,18 +1,19 @@
 $(document).ready(function () {
 
-    let dataSource;
-    let currentCategory;
-    loadTypes();
+    let categoriesFilterCash = findAllCategoriesNames();
+    let typesFilterCash = 'all';
+    let adminsFilterCash = 'all';
+    loadData();
 
-    function loadTypes() {
+    function loadData() {
         $.get(projectPathPrefix + "/api/getTypes", function (data) {
-            dataSource = data;
             buildTable(data);
+            $('#all-categories a').click();
         }, "json");
     }
 
     function buildTable(dataSource) {
-        let table = $('#types-table').DataTable({
+        let typesTable = $('#types-table').DataTable({
             "dom": 'rt<"bottom"lp><"clear">',
             "language": {
                 "zeroRecords": "Nothing found - sorry",
@@ -28,9 +29,11 @@ $(document).ready(function () {
                 {"data": null},
                 {"data": null},
                 {"data": null},
+                {"data": null},
             ],
             "columnDefs": [{
-                "targets": [-1, -2, -3, -4],
+                "targets": [4, 5, 6, 7, 8],
+                "searchable": false,
                 "orderable": false,
                 "render": function (data, type, row, meta) {
                     return buildActionButtons(row, meta.col);
@@ -38,109 +41,260 @@ $(document).ready(function () {
             },
                 {
                     "targets": 0,
-                    "orderable": false
+                    "searchable": false,
+                    "orderable": false,
                 }],
             "order": [[2, 'asc']]
         });
 
-        table.on('order.dt', function () {
-            table.column(0, {order: 'applied'}).nodes().each(function (cell, i) {
+        typesTable.on('order.dt search.dt', function () {
+            typesTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
 
         $('#categories').change(function (e) {
-            buildTypesSelect(e);
+            $.fn.dataTable.ext.search.pop();
+            let selectedCategoryName = $(e.target).data('selectedName');
+            let categories = selectedCategoryName === 'all' ? findAllCategoriesNames()
+                : findNestedCategoriesNames(selectedCategoryName);
+            buildTypesSelect(categories, dataSource);
+            $.fn.dataTable.ext.search.push(
+                function (settings, searchData) {
+                    let category = searchData[1];
+                    let admin = searchData[3];
+                    return categories.some(function (c) {
+                        return c === category
+                    }) && (adminsFilterCash === admin || adminsFilterCash === 'all');
+                }
+            );
+            typesTable.draw();
+            categoriesFilterCash = categories;
+        });
+
+        $('#types').change(function () {
+            $.fn.dataTable.ext.search.pop();
+            let selectedTypeName = $(this).val();
+            $.fn.dataTable.ext.search.push(
+                function (settings, searchData) {
+                    let category = searchData[1];
+                    let type = searchData[2];
+                    let admin = searchData[3];
+                    return categoriesFilterCash.some(function (c) {
+                            return c === category
+                        }) && (selectedTypeName === type || selectedTypeName === 'all')
+                        && (adminsFilterCash === admin || adminsFilterCash === 'all');
+                });
+            typesTable.draw();
+            typesFilterCash = selectedTypeName;
         });
 
         $('#admins').change(function () {
-            let selected = $(this).val();
-            if (selected === 'all') selected = '';
-            table
-                .columns(3)
-                .search(selected)
-                .draw();
+            $.fn.dataTable.ext.search.pop();
+            let selectedAdminName = $(this).val();
+            $.fn.dataTable.ext.search.push(
+                function (settings, searchData) {
+                    let category = searchData[1];
+                    let type = searchData[2];
+                    let admin = searchData[3];
+                    return categoriesFilterCash.some(function (c) {
+                            return c === category
+                        }) && (typesFilterCash === type || typesFilterCash === 'all')
+                        && (selectedAdminName === admin || selectedAdminName === 'all');
+                });
+            typesTable.draw();
+            adminsFilterCash = selectedAdminName;
+        });
+
+        $.each($('.inst-button'), function (i, item) {
+            $(item).click(function () {
+                if (!$(this).hasClass('disabled')) {
+                    $('#confirm-dialog').modal('show');
+                    $('#confirm-dialog').data('action', 'instantiate');
+                    $('#confirm-dialog').data('id', $(item).attr('data-id'));
+                    $('#confirm-title').text('Confirm instantiation of resource type');
+                    $('#confirm-body').text('Are you sure you want to instantiate resource type "'
+                        + $(item).attr('data-type') + '"?');
+                }
+            })
+        });
+
+        $.each($('.remove-button'), function (i, item) {
+            $(item).click(function () {
+                if (!$(this).hasClass('disabled')) {
+                    $('#confirm-dialog').modal('show');
+                    $('#confirm-dialog').data('action', 'remove');
+                    $('#confirm-dialog').data('id', $(item).attr('data-id'));
+                    $('#confirm-title').text('Confirm removing of resource type');
+                    $('#confirm-body').text('Are you sure you want to remove resource type "'
+                        + $(item).attr('data-type') + '"?');
+                }
+            })
+        });
+
+        $('#confirm-button').click(function () {
+            let id = $('#confirm-dialog').data('id');
+            if ($('#confirm-dialog').data('action') === 'instantiate') {
+                instantiateType(id);
+            } else if ($('#confirm-dialog').data('action') === 'remove') {
+                removeType(id, typesTable);
+            }
+            $('#confirm-dialog').modal('hide');
+        });
+
+        $.each($('.info-button'), function (i, item) {
+            $(item).click(function () {
+                let typeId = $(item).attr('data-id');
+                showTypeInfo(typeId);
+            })
         });
     }
 
     function buildActionButtons(rowData, col) {
         let restrictAccess = rowData.administratorName !== currentAdmin ? 'disabled"' : '"';
+        let cloneLink = projectPathPrefix + '/resources/cloneType?id=' + -rowData.typeId;
+        let editLink = projectPathPrefix + '/resources/editType?id=' + rowData.typeId;
         let button;
         switch (col) {
             case 4:
-                button = rowData.instantiated ? '' : '<button class="btn btn-primary btn-xs ' + restrictAccess
-                    + 'data-target=' + rowData.typeId + '>Instantiate</button>';
+                button = rowData.instantiated ? '' : '<button class="btn btn-primary btn-xs inst-button '
+                    + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
+                    + '>Instantiate</button>';
                 break;
             case 5:
-                button = '<a style="padding-top: 2px" href="#" class="btn btn-link" data-target='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-plus-sign"</span></a>';
+                button = '<a style="padding-top: 2px" target="_blank" href="' + cloneLink
+                    + '" class="btn btn-link" data-id=' + rowData.typeId
+                    + '><span class="glyphicon glyphicon-plus-sign"</span></a>';
                 break;
             case 6:
-                button = rowData.instantiated ? '' : '<a style="padding-top: 2px" href="#" class="btn btn-link ' + restrictAccess
-                    + 'data-target=' + rowData.typeId + '><span class="glyphicon glyphicon-pencil"</span></a>';
+                button = rowData.instantiated ? '' : '<a style="padding-top: 2px" target="_blank" href="'
+                    + editLink + '" class="btn btn-link edit-button ' + restrictAccess + 'data-id='
+                    + rowData.typeId + '><span class="glyphicon glyphicon-pencil"</span></a>';
                 break;
             case 7:
-                button = rowData.instantiated ? '' : '<a style="padding-top: 2px" href="#" class="btn btn-link ' + restrictAccess
-                    + 'data-target=' + rowData.typeId + '><span class="glyphicon glyphicon-remove"</span></a>';
+                button = rowData.instantiated ? '' : '<button style="padding-top: 2px" class="btn btn-link remove-button '
+                    + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
+                    + '><span class="glyphicon glyphicon-remove"</span></button>';
+                break;
+            case 8:
+                button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id='
+                    + rowData.typeId + '><span class="glyphicon glyphicon-info-sign"</span></button>';
                 break;
         }
-        /*            let instantiateButton = rowData.instantiated ? '' : '<button class="btn btn-primary btn-sm ' + restrictAccess
-                        + 'data-target=' + rowData.typeId + '>Instantiate</button>';
-                    let editButton = '<a href="#" class="btn btn-primary btn-sm ' + restrictAccess
-                        + 'data-target=' + rowData.typeId + '>Edit</a>';
-                    let cloneButton = '<a href="#" class="btn btn-primary btn-sm" data-target=' + rowData.typeId + '>Clone</a>';
-                    let deleteButton = '<a href="#" class="btn btn-primary btn-sm ' + restrictAccess
-                        + 'data-target=' + rowData.typeId + '>Delete</a>';
-                    return '<div class="btn-toolbar" style="display: inline-block;">' + instantiateButton + editButton + cloneButton + deleteButton + '</div>';*/
         return button;
     }
 
-    function findNestedCategories(categoryName) {
+    function findNestedCategoriesNames(categoryName) {
         let categoryItem = $("li[data-name='" + categoryName + "']");
         let nextCategoryItems = categoryItem.nextAll('.category-item');
         let level = categoryItem.attr('data-level');
-        let nestedCategories = [categoryItem];
+        let nestedCategories = [categoryItem.attr('data-name')];
         $.each(nextCategoryItems, function (i, item) {
-            if ($(item).attr('data-level') != level) {
-                nestedCategories.push($(item));
+            if ($(item).attr('data-level') > level) {
+                nestedCategories.push($(item).attr('data-name'));
             }
             return ( $(item).attr('data-level') != level );
         });
         return nestedCategories;
     }
 
-    function findAllCategories() {
+    function findAllCategoriesNames() {
         let allCategories = $('.category-item');
         let allCategoriesList = [];
         $.each(allCategories, function (i, item) {
-            allCategoriesList.push($(item));
+            allCategoriesList.push($(item).attr('data-name'));
         });
         return allCategoriesList;
     }
 
-    function buildTypesSelect(e) {
-        let selectedCategoryName = $(e.target).data('selectedName');
-        let nestedCategories = selectedCategoryName === 'all' ? findAllCategories()
-            : findNestedCategories(selectedCategoryName);
-        if (currentCategory !== selectedCategoryName) {
-            let typesItems = $('<div></div>');
-            $('#types').html('');
-            $.each(dataSource, function (i, item) {
-                if (nestedCategories.some(function (e) {
-                        return e.attr('data-name') === item['categoryName']
-                    })) {
-                    $('<option/>', {
-                        value: item['typeName'],
-                        text: item['typeName'],
-                    }).appendTo(typesItems);
-                }
-            });
-            if (typesItems.children().length > 0) {
-                $('#types').html('<option value="all">All resource types</option>');
-                $('#types').append(typesItems.children());
+    function buildTypesSelect(categories, dataSource) {
+        let typesItems = $('<div></div>');
+        $('#types').html('');
+        $.each(dataSource, function (i, item) {
+            if (categories.some(function (c) {
+                    return c === item['categoryName']
+                })) {
+                $('<option/>', {
+                    value: item['typeName'],
+                    text: item['typeName'],
+                }).appendTo(typesItems);
             }
-            $('#types').selectpicker('refresh');
-            currentCategory = selectedCategoryName;
+        });
+        if (typesItems.children().length > 0) {
+            $('#types').html('<option value="all">All resource types</option>');
+            $('#types').append(typesItems.children());
         }
+        $('#types').selectpicker('refresh');
+        typesFilterCash = 'all';
+    }
+
+    function instantiateType(id) {
+        console.log('Instantiating...');
+        $('button[data-id=' + id + ']').remove();
+        $('a.edit-button').filter(function () {
+            return $(this).attr('data-id') === id;
+        }).remove();
+    }
+
+    function removeType(id, table) {
+        $.ajax({
+            type: "DELETE",
+            url: projectPathPrefix + "/api/deleteType/" + id,
+            success: function (jqXHR) {
+                let row = $('button[data-id=' + id + ']').parents('tr');
+                table
+                    .row(row)
+                    .remove()
+                    .draw();
+            },
+            error: function (jqXHR) {
+                let error = JSON.parse(jqXHR.responseText);
+                alert('Error!\n" + error.message');
+            }
+        });
+    }
+
+    function showTypeInfo(id) {
+        $.get(projectPathPrefix + "/api/typeInfo/" + id, function (data) {
+            data = JSON.parse(JSON.stringify(data)
+                .replace(/},"searchable"/g, ',"searchable"')
+                .replace(/{"property":/g, ''));
+            $('#type-name').html('<span class="font-bold">Resource type name: </span>' +
+                '<span>' + data.typeName + '</span>');
+            $('#category-name').html('<span class="font-bold">Category of the resource type: </span>' +
+                '<span>' + data.categoryName + '</span>');
+            $('#is-instantiated > span').text(data.instantiated === true ? 'Instantiated' : 'Not instantiated');
+            $('#props-tbody').empty();
+            if (data.properties.length === 0) {
+                $('#props-tbody').append('<tr><td class="text-center" colspan="8">' +
+                    'Resource type hasn\'t properties yet</td></tr>');
+            } else {
+                data.properties = sortByProperty(data.properties, 'title', 'asc');
+                let unitsShort;
+                $.each(data.properties, function (i, item) {
+                    $.each(item, function (j, subItem) {
+                        if (subItem === null) {
+                            item[j] = '';
+                        } else if (subItem === true) {
+                            item[j] = 'Yes';
+                        } else if (subItem === false) {
+                            item[j] = 'No';
+                        }
+                    });
+                    unitsShort = item.unitsShort === '' ? '' : ' (' + item.unitsShort + ')';
+                    $('#props-tbody').append('<tr>' +
+                        '<td>' + (i + 1) + '</td>' +
+                        '<td>' + item.title + '</td>' +
+                        '<td>' + item.units + unitsShort + '</td>' +
+                        '<td>' + item.pattern + '</td>' +
+                        '<td>' + item.valueType + '</td>' +
+                        '<td>' + item.multivalued + '</td>' +
+                        '<td>' + item.searchable + '</td>' +
+                        '<td>' + item.required + '</td>' +
+                        '</tr>');
+                });
+            }
+            $('#type-info-dialog').modal('show');
+        }, "json");
     }
 });

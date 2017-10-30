@@ -1,15 +1,12 @@
 package com.softserve.edu.Resources.rest;
 
 import com.softserve.edu.Resources.dto.ResourceTypeBrief;
+import com.softserve.edu.Resources.dto.TypeInfoDTO;
 import com.softserve.edu.Resources.dto.ViewTypesDTO;
-import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
-import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.ResourceTypeNotFoundException;
-import com.softserve.edu.Resources.service.ResourceCategoryService;
 import com.softserve.edu.Resources.service.ResourceTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
@@ -23,9 +20,6 @@ public class ResourcesRestController {
 
     @Autowired
     ResourceTypeService resourceTypeService;
-
-    @Autowired
-    ResourceCategoryService resourceCategoryService;
 
     @RequestMapping(value = "/resource", method = RequestMethod.POST)
     public ResourceTypeBrief addResourceType(@RequestBody ResourceTypeBrief resourceTypeBrief) {
@@ -42,10 +36,23 @@ public class ResourcesRestController {
     }
 
     @RequestMapping(value = "/getTypes", method = RequestMethod.GET)
-    public List<ViewTypesDTO> getTypesByCategory(@RequestParam("id") Optional<Long> id) {
-        return resourceCategoryService.getTypesByCategoryId(id).stream()
+    public List<ViewTypesDTO> getAllResourceTypes() {
+        return resourceTypeService.getTypes().stream()
                 .map(ViewTypesDTO::new)
                 .sorted(Comparator.comparing(ViewTypesDTO::getTypeName))
                 .collect(Collectors.toList());
+    }
+
+    @RequestMapping(value = "/typeInfo/{id}", method = RequestMethod.GET)
+    public TypeInfoDTO getResourceTypeInfo(@PathVariable Long id) {
+        Optional<ResourceType> resourceType = resourceTypeService.get(id, true);
+        if (!resourceType.isPresent())
+            throw new ResourceTypeNotFoundException("Requested Resource Type not found.");
+        return new TypeInfoDTO(resourceType.get());
+    }
+
+    @RequestMapping(value = "/deleteType/{id}", method = RequestMethod.DELETE)
+    public void deleteResourceType(@PathVariable Long id) {
+        resourceTypeService.removeById(id);
     }
 }

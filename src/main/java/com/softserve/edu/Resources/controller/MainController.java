@@ -67,7 +67,7 @@ public class MainController {
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     public String resourcesPage(Model model, HttpServletRequest request) {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {
-            return "redirect:/resources/requests";
+            return "redirect:/resources/viewTypes";
         }
         return "redirect:/resources/registration";
     }
