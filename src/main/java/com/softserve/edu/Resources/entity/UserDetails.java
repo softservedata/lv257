@@ -3,10 +3,12 @@ package com.softserve.edu.Resources.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.softserve.edu.Resources.Constants;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 @Table(name = "user_details")
@@ -62,13 +64,25 @@ public class UserDetails {
 //    @Length(max = 6, min = 6, message = "This is invalid bank Id.")
     private String bankId;
 
+    @Column(name = "code")
+    private String code;
+
+    @Column(name = "extension")
+    private String fileExtension;
+
+    @Column(name = "URL")
+    private String documentsURL;
+
+    @Transient
+    private MultipartFile file;
+
     @OneToOne
     @JoinColumn(name = "id_user")
     private User user;
 
     public UserDetails() {
+        this.code = "file" + UUID.randomUUID().toString().substring(26).toUpperCase();
     }
-
     public Long getId() {
         return id;
     }
