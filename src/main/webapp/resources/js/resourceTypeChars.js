@@ -31,8 +31,9 @@ $(document).ready(function () {
             alert('Please specify resource type');
         }
 
-        console.log(propertiesForm.valid());
+        console.log("properties form is: " + propertiesForm.valid());
         if (propertiesForm.valid() &&
+        // if (
             !emptyOwners() &&
             !emptyResourceType() &&
             !emptyAddress()) {
@@ -55,7 +56,7 @@ function emptyOwners() {
 function emptyAddress() {
     let addressId = $idAddressHiddenInput.attr('value');
 
-    if (addressId === 0 || addressId === undefined) {
+    if (addressId == 0 || addressId === undefined) {
         return true;
     }
 }
@@ -75,17 +76,21 @@ function saveResourceAjaxCall() {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(resourceJson),
         success: function (result) {
-            // propertiesForm.empty();
             console.log(result);
-            // buildInputsAndValidate(constrainedProperties);
+
+            if (result.field){
+                window.location.href = result.message;
+            }
+
         },
         error: function (result) {
-//	                var responce = JSON.parse(result);
-//         console.log(result.responseJSON.message);
-//         $('#no-inputs-error').empty();
-//         $('#no-inputs-error').show();
-//         $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
-//
+            let parse = JSON.parse(result.responseText);
+            console.log('errors in fields: ' + parse);
+            $('.my_error_class').empty();
+
+            appendHibernateErrors(parse);
+
+
         }
 
     });
@@ -123,12 +128,7 @@ function ajaxCallToShowProperties(resourceTypeId) {
             buildInputsAndValidate(constrainedProperties);
         },
         error: function (result) {
-//	                var responce = JSON.parse(result);
-//         console.log(result.responseJSON.message);
-//         $('#no-inputs-error').empty();
-//         $('#no-inputs-error').show();
-//         $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
-//
+            // todo
         }
 
     });

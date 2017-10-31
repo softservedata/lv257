@@ -44,28 +44,33 @@ public class RegisterResourceController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registerResource(@RequestBody ResourceImplDTO resourceImplDTO) {
+    @ResponseBody
+    public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO) {
         System.out.println(resourceImplDTO);
 
         long addressId = resourceImplDTO.getAddressId();
-        Address byId = addressService.getById(addressId);
+        Address addressById = addressService.getById(addressId);
         Optional<ResourceType> resourceType = resourceTypeService.get(resourceImplDTO.getResourceTypeId());
 
         Resource resource = new Resource();
-        resource.setAddress(byId);
-        System.out.println(resource);
+        resource.setAddress(addressById);
 
-        resourceService.addResource(resource);
+        ValidationErrorDTO validationErrorDTO = resourceService.validateResourceImpl(resourceImplDTO);
 
-        System.out.println(resource);
+        if (validationErrorDTO.getFieldErrors().isEmpty()) {
+            resourceService.addResource(resource);
+            resourceService.addResourceOwnings(resource, resourceImplDTO);
+            resourceService.addResourceImpl(resource, resourceType.get(), resourceImplDTO.getPropertiesAndValues());
 
-        resourceService.addResourceOwnings(resource, resourceImplDTO);
-        resourceService.addResourceImpl(resource, resourceType.get(), resourceImplDTO.getPropertiesAndValues());
+            // use this dto just because I don't want to make another dto with same two String fields
+            FieldErrorDTO redirectUrl = new FieldErrorDTO("redirect", "registration");
+
+            return new ResponseEntity<>(redirectUrl, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
+        }
 
 
-
-
-        return "registerResource";
     }
 
     @ResponseBody

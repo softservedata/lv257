@@ -261,6 +261,7 @@ function saveAddressAjax(json, url) {
             let parse = JSON.parse(result.responseText);
             console.log('errors in fields: ' + parse);
             $('.my_error_class').empty();
+            // $('.my_error_class').show(600);
 
             appendHibernateErrors(parse);
         }
@@ -340,7 +341,13 @@ function appendHibernateErrors(parse) {
         var $errorDiv = $('#' + str.substring(str.indexOf('.') + 1).split(/(?=[A-Z])/).join('_').toLowerCase()).next();
         var text = parse.fieldErrors[i].message;
         $errorDiv.text(text);
+
     }
+
+    $('.my_error_class').show(600);
+    setTimeout(function () {
+        $('.my_error_class').hide(500);
+    }, 10500);
 }
 
 // clears appended hibernate errors
@@ -729,6 +736,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                     console.log('errors in fields: ' + parse);
 
                     $('.my_error_class').empty();
+                    // $('.my_error_class').show(600);
                     $ownerAddressFormPlaceholder.show(1500);
                     $ownerAddressFormPlaceholder.append($clearfix);
                     appendHibernateErrors(parse);
@@ -813,6 +821,7 @@ function showOwnersTable(result) {
             deleteOwner($(this).parent().attr('id'));
             $tr.remove();
             checkIfEmptyOwnerTable();
+            checkIfAddressIsPicked($(this).parent());
             $deletedOwnerVersionTwo.fadeIn(300).delay(3500).fadeOut(300);
         }
     })
@@ -1596,8 +1605,21 @@ function appendOwnerToTable(result, choosenOwnerId) {
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
             checkIfEmptyOwnerTable();
+            checkIfAddressIsPicked($(this).parent());
         }
     })
+}
+
+function checkIfAddressIsPicked(ownerTr){
+    let ownerAddressId = ownerTr.find('td.address_info').attr('data-owner-address-id');
+
+    if (ownerAddressId == $idAddressHiddenInput.attr('value')){
+        $idAddressHiddenInput.val(0);
+        $addressButtons.show(1500);
+        $concretePickedAddress.empty();
+        $fromOwnerAddress.addClass('display_none');
+    }
+
 }
 
 function buildOptions(success, $select) {
