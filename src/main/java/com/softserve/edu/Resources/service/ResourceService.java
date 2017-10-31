@@ -3,6 +3,7 @@ package com.softserve.edu.Resources.service;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
 import com.softserve.edu.Resources.dto.ResourceImplDTO;
+import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.GenericResource;
 import com.softserve.edu.Resources.entity.Resource;
 import com.softserve.edu.Resources.entity.ResourceType;
@@ -29,6 +30,6 @@ public interface ResourceService {
     List<GroupedResourceCount> findResourcesCountGroupedByResourceTypeForOwner(String ownerId);
     
     List<GenericResource> findResourcesByOwnerAndType(long ownerId, String resourceTypeName);
-    
 
+    ValidationErrorDTO validateResourceImpl(ResourceImplDTO resourceImplDTO);
 }

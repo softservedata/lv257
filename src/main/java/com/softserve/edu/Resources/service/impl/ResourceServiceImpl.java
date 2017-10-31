@@ -5,6 +5,7 @@ import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
 import com.softserve.edu.Resources.dto.ResourceImplDTO;
+import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.exception.ResourceNotFoundException;
 import com.softserve.edu.Resources.service.OwnerService;
@@ -153,12 +154,38 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Transactional
-//    @Override
+    @Override
     public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues) {
 
         String readyQuery = queryBuilder.insertResourceImpl(resource, resourceType, propertiesAndValues);
         resourceDao.addResourceImpl(readyQuery);
 
 //        resourceDao.addResource(resource);
+    }
+
+    @Override
+    public ValidationErrorDTO validateResourceImpl(ResourceImplDTO resourceImplDTO) {
+        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
+
+        Map<String, String> propertiesAndValues = resourceImplDTO.getPropertiesAndValues();
+        long resourceTypeId = resourceImplDTO.getResourceTypeId();
+        ResourceType resourceTypeWithProperties = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+
+        Set<ConstrainedProperty> properties = resourceTypeWithProperties.getProperties();
+
+        properties.forEach(constrainedProperty -> {
+            String columnName = constrainedProperty.getProperty().getColumnName();
+            String columnValue = propertiesAndValues.get(columnName);
+
+            if ((columnValue == null || columnValue.isEmpty()) && constrainedProperty.isRequired()){
+                validationErrorDTO.addFieldError(columnName, "This field is required");
+            } else if(!columnValue.matches(constrainedProperty.getProperty().getPattern())){
+                validationErrorDTO.addFieldError(columnName, "This field do not matches valid format");
+            }
+
+        });
+
+
+        return validationErrorDTO;
     }
 }
