@@ -1,35 +1,70 @@
 $(function () {
 
-        /*var $alert = $('.alert');
+    var $profileForm = $('#profileForm');
 
-        if ($alert.length) {
+    jQuery.validator.addMethod(
+        'fName',
+        function(value, element, regexp) {
+            alert(value+" \n "+element + "  \n " + regexp);
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your input. " +
+        "This field should starts from Capital Letter and contains only Letters of English alphabet or dash"
+    );
 
-            setTimeout(function () {
-                $alert.fadeOut('slow');
-            }, 5000)
-        }*/
+    jQuery.validator.addMethod(
+        'fPassportSeries',
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your input. " +
+        "Passport Series should contains two Capital Letters of English alphabet"
+    );
 
-        var $profileForm = $('#profileForm');
-
-        if ($profileForm.length) {
+    if ($profileForm.length) {
             $profileForm.validate({
+                // onfocusout: true,
+                // onkeyup: true,
+                // onclick: true,
+                // onsubmit: true,
 
                 rules: {
+/*                    firstName: {
+                        fName: "([A-Z -])\w+"
+                        // fName: '[A-Z]{1} [A-Za-z]{1}' //\w'//'^[A-Z]{1}[a-z]{1,14} [A-Z]{1}[a-z]{1,14}$'
+                        // rangelength: [2, 40],
+                        // fName: '^[A-Za-z]{1-40}'
+                        // fName: '/^[а-яё\-]{4,40}+$/iu'
+                    },
+                    secondName: {
+                        rangelength: [2, 2],
+                        fName: '[A-Z]{2}'
+                    },
+                    middleName: {
+                        rangelength: [2, 2],
+                        fName: '[A-Z]{2}'
+                    },*/
                     passportSeries: {
-                        minlength: 2
+                        rangelength: [2, 2],
+                        fPassportSeries: '[A-Z]{2}'
                     },
                     passportNumber: {
-                        minlength: 6
+                        rangelength: [6, 6],
+                        digits: true
                     }
                 },
-                messages: {
+                /*messages: {
                     error: {
-                        minlength: 'The passportSeries should not be less than 02 letters'
+                        rangelength: 'The passportSeries should not be less than 02 letters',
+                        PassportSeries: 'SAD'
                     },
                     error: {
-                        minlength: 'The passportNumber should not be less than 2 letters'
+                        rangelength: 'The passportNumber should not be less than 2 letters',
+                        digits: 'Only digits'
                     }
-                },
+                },*/
                 errorElement: 'em',
                 errorPlacement: function (error, element) {
                     //add the class of help-block

@@ -42,7 +42,7 @@
         </div>
     </div>
     <div class="col-md-4 float-left">
-        <%--@declare id="passportseries"--%><H3>Public profile</H3>
+        <%--@declare id="passportseries"--%><H3>Public profile </H3>
         <hr>
 
         <sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST">
@@ -51,7 +51,6 @@
             <div class="form-group">
                 <div class="font-bold">E-mail</div>
                 <input class="form-control" value="${pageContext.request.userPrincipal.name}" readonly/>
-                    <%--<input class="form-control" value="${userPrincipal.name}" readonly/>--%>
             </div>
 
             <div class="form-group">
@@ -59,84 +58,97 @@
                     <%--<sf:input path="user" cssClass="hidden"/>--%>
             </div>
 
+            <%--Field for First name--%>
             <div class="form-group">
+                    <%--
+                                    <div class="font-bold">First name</div>
+                                    <sf:input type="text" path="firstName" class="form-control" placeholder="First name"/>--%>
 
-                <div class="font-bold">First name</div>
-                <sf:input type="text" path="firstName" class="form-control" placeholder="First name"/>
-
-            </div>
-
-            <div class="form-group">
-                <div class="font-bold">Second name</div>
-                <sf:input type="text" path="secondName" class="form-control" placeholder="Second name"/>
-            </div>
-
-
-            <div class="form-group">
-                <div class="font-bold">Middle name</div>
-                <sf:input type="text" path="middleName" class="form-control" placeholder="Middle name"/>
-            </div>
-
-            <div class="form-group">
-                    <spring:bind path="passportSeries">
-                <label for="passportSeries" style="float: left;">Passport series</label>
-                    <%--<sf:input type="passportSeries"--%>
-                <input type="text"
-                       path="passportSeries"
-                       name="${status.expression}"
-                       value="${status.value}"
-                       class="form-control"
-                       placeholder="passportSeries"/>
-
+                <label for="firstName" style="float: left;">First name</label>
+                <sf:input type="text"
+                          path="firstName"
+                          name="${status.expression}"
+                          value="${status.value}"
+                          class="form-control"
+                          placeholder="firstName"/>
                 <c:if test="${status.error}">
                     <c:forEach items="${status.errorMessages}" var="error">
                         <span class="red"> ${error} </span>
                     </c:forEach>
                 </c:if>
 
-                    <%--<sf:errors path="passportSeries" cssClass="error" cssStyle="color: #ff0000;"/>--%>
-                    </spring:bind>
             </div>
 
-            <%--            <div class="form-group">
-                            <spring:bind path="passportSeries">
-                                <div class="font-bold">Passport series</div>
-                                <sf:input type="text" path="passportSeries" name="${status.expression}"
-                                          value="${status.value}" class="form-control"
-                                          placeholder="Passport series"/>
-                                <c:if test="${status.error}">
-                                    <c:forEach items="${status.errorMessages}" var="error">
-                                        <span class="red"> ${error} </span>
-                                    </c:forEach>
-                                </c:if>
-                            </spring:bind>
-                        </div>--%>
+            <%--Field for Second name--%>
+            <div class="form-group"><%--
+                <div class="font-bold">Second name</div>
+                <sf:input type="text" path="secondName" class="form-control" placeholder="Second name"/>--%>
 
+                <label for="secondName" style="float: left;">Second name</label>
+                <sf:input type="text"
+                          path="secondName"
+                          name="${status.expression}"
+                          value="${status.value}"
+                          class="form-control"
+                          placeholder="passportSeries"/>
+                <c:if test="${status.error}">
+                    <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                    </c:forEach>
+                </c:if>
+            </div>
+
+            <%--Field for Middle name--%>
+            <div class="form-group"><%--
+                <div class="font-bold">Middle name</div>
+                <sf:input type="text" path="middleName" class="form-control" placeholder="Middle name"/>--%>
+
+                <label for="middleName" style="float: left;">Passport series</label>
+                <sf:input type="text"
+                          path="middleName"
+                          name="${status.expression}"
+                          value="${status.value}"
+                          class="form-control"
+                          placeholder="Middle name"/>
+                <c:if test="${status.error}">
+                    <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                    </c:forEach>
+                </c:if>
+            </div>
+
+            <%--Field for Passport series--%>
+            <div class="form-group">
+                <label for="passportSeries" style="float: left;">Passport series</label>
+                <sf:input type="text"
+                          path="passportSeries"
+                          name="${status.expression}"
+                          value="${status.value}"
+                          class="form-control"
+                          placeholder="passportSeries"/>
+                <c:if test="${status.error}">
+                    <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                    </c:forEach>
+                </c:if>
+            </div>
+
+            <%--Field for Passport number--%>
             <div class="form-group">
                 <label for="passportNumber" style="float: left;">Passport number</label>
-                <sf:input type="passportSeries" class="form-control"
-                          placeholder="passportNumber" path="passportNumber"/>
-                <sf:errors path="passportNumber" cssClass="error" cssStyle="color: #ff0000;"/>
+                <sf:input type="text"
+                          path="passportNumber"
+                          name="${status.expression}"
+                          value="${status.value}"
+                          class="form-control"
+                          placeholder="passportNumber"/>
+                <c:if test="${status.error}">
+                    <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                    </c:forEach>
+                </c:if>
             </div>
 
-            <%--            <div class="form-group">
-                            <spring:bind path="passportNumber">
-                                <div class="font-bold">Passport number</div>
-                                <sf:input type="text" path="passportNumber" class="form-control" placeholder="Passport number"/>
-
-                                <c:if test="${status.error}">
-                                    <c:forEach items="${status.errorMessages}" var="error">
-                                        <span class="red"> ${error} </span>
-                                    </c:forEach>
-                                </c:if>
-                            </spring:bind>
-                        </div>--%>
-
-            <%--<div class="form-group">
-                <div class="font-bold">gender</div>
-                <sf:input type="text" path="gender" class="form-control" placeholder="gender"/>
-            </div>
---%>
             <div class="form-group">
                 <div class="font-bold">gender</div>
                 <td>Gender :</td>
@@ -161,10 +173,10 @@
 
             --%>
 
-            <div class="form-group">
-                <div class="font-bold">ID address</div>
-                <sf:input type="text" path="idAddress" class="form-control" placeholder="ID address"/>
-            </div>
+            <%--            <div class="form-group">
+                            <div class="font-bold">ID address</div>
+                            <sf:input type="text" path="idAddress" class="form-control" placeholder="ID address"/>
+                        </div>--%>
 
             <div class="form-group">
                 <div class="font-bold">Phone</div>
@@ -182,30 +194,30 @@
 
                     </c:if>--%>
 
-                <td><sf:select path="phoneCountry">
-                    <sf:option value="0" label="Select"/>
-                    <sf:option value="+38" label="Ukraine"/>
-                    <sf:option value="2" label="USA"/>
-                    <%--<sf:option selected = value="3" label="UK"/>--%>
+                    <%--<td><sf:select path="phoneCountry">
+                        <sf:option value="0" label="Select"/>
+                        <sf:option value="+38" label="Ukraine"/>
+                        <sf:option value="2" label="USA"/>
+                        &lt;%&ndash;<sf:option selected = value="3" label="UK"/>&ndash;%&gt;
 
-                </sf:select></td>
+                    </sf:select></td>
 
-                <c:set var="grades" value="1,2,3,A,B,C,D,E" scope="application"/>
-                <select class="grade" title="Grade Obtained">
-                    <c:forEach items="${fn:split(grades, ',')}" var="grade">
-                        <option value="${grade}" ${qd.grade == grade ? 'selected' : ''}>${grade}</option>
-                    </c:forEach>
-                </select>
+                    <c:set var="grades" value="1,2,3,A,B,C,D,E" scope="application"/>
+                    <select class="grade" title="Grade Obtained">
+                        <c:forEach items="${fn:split(grades, ',')}" var="grade">
+                            <option value="${grade}" ${qd.grade == grade ? 'selected' : ''}>${grade}</option>
+                        </c:forEach>
+                    </select>
 
-                <td>Operator :</td>
-                <td><sf:select path="phoneOperator">
-                    <sf:option value="0" label="Select" placeholder="Phone"/>
-                    <sf:option value="067" label="067 Kiyvstar"/>
-                    <sf:option value="067" label="097 Kiyvstar"/>
-                    <sf:option value="067" label="099 Life"/>
-                </sf:select></td>
+                    <td>Operator :</td>
+                    <td><sf:select path="phoneOperator">
+                        <sf:option value="0" label="Select" placeholder="Phone"/>
+                        <sf:option value="067" label="067 Kiyvstar"/>
+                        <sf:option value="067" label="097 Kiyvstar"/>
+                        <sf:option value="067" label="099 Life"/>
+                    </sf:select></td>--%>
 
-                <td>Number :</td>
+                <td>Phone number :</td>
                     <%--path="phoneNumber">--%>
                 <sf:input type="text" path="phone" class="form-control"/>
             </div>
@@ -223,46 +235,29 @@
         <br>
         <div class="row">
             <div class="pull-right">
-                <%--<img src="<c:url value="/resources/img/NoFoto.png"/> "--%>
                 <img src="${contextPath}/resources/img/NoFoto.png"
-                     alt="your advertisement could be here" width="200px" height="200"/>
+                     alt="your foto should be here" width="200px" height="200"/>
             </div>
-            <div><br></div>
-            <br>
-            <button class="btn btn-default pull-right">Upload foto</button>
 
-            <div class="container">
-                <c:if test="${not empty message}">
-
-                    <div class="alert alert-success alert-dismissible">
-
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-
-                            ${message}
-                    </div>
-                </c:if>
-            </div>
         </div>
-
-        Document
-
-        <div class="form-group">
+        <div><br></div>
+        тут має бути кнопка завантаження файлу. В коді закоментовано
+        <%--<div class="form-group">
             <label for="file">Upload document</label>
 
-            <%--            <spring:bind path="document.file">
+            <spring:bind path="document.file">
 
-                            <input type="file" path="document.file" name="${status.expression}" value="${status.value}"
-                                   id="file"/>
-                            <c:if test="${status.error}">
-                                <c:forEach items="${status.errorMessages}" var="error">
-                                    <span class="red"> ${error} </span>
-                                </c:forEach>
-                            </c:if>
+                <input type="file" path="document.file" name="${status.expression}" value="${status.value}"
+                       id="file"/>
+                <c:if test="${status.error}">
+                    <c:forEach items="${status.errorMessages}" var="error">
+                        <span class="red"> ${error} </span>
+                    </c:forEach>
+                </c:if>
 
-                        </spring:bind>--%>
-        </div>
-
-
+            </spring:bind>
+        </div>--%>
+        <br>
     </div>
 
 
