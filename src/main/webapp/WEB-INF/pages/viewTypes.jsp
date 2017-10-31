@@ -144,9 +144,8 @@
                             <th class="text-center">#</th>
                             <th class="text-center">Name</th>
                             <th class="text-center">Units</th>
-                            <th class="text-center">RegEx pattern</th>
+                            <th class="text-center">Validation RegEx pattern</th>
                             <th class="text-center">Value type</th>
-                            <th class="text-center">Multivalued</th>
                             <th class="text-center">Searchable</th>
                             <th class="text-center">Required</th>
                         </tr>

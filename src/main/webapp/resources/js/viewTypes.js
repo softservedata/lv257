@@ -1,18 +1,29 @@
 $(document).ready(function () {
 
+    //Fields for saving state of category, type and administrators selectlist-filters
     let categoriesFilterCash = findAllCategoriesNames();
     let typesFilterCash = 'all';
     let adminsFilterCash = 'all';
-    loadData();
 
-    function loadData() {
+    init();
+
+    /**
+     * Load data from server, build table of resource types
+     */
+    function init() {
         $.get(projectPathPrefix + "/api/getTypes", function (data) {
             buildTable(data);
             $('#all-categories a').click();
+            return data;
         }, "json");
     }
 
+    /**
+     * Build table of resource types
+     * @param dataSource - JSON with resource types
+     */
     function buildTable(dataSource) {
+        //Initialization of DataTables plugin
         let typesTable = $('#types-table').DataTable({
             "dom": 'rt<"bottom"lp><"clear">',
             "language": {
@@ -47,12 +58,14 @@ $(document).ready(function () {
             "order": [[2, 'asc']]
         });
 
+        //Automatic recalculation of numeration column on search and order events
         typesTable.on('order.dt search.dt', function () {
             typesTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
                 cell.innerHTML = i + 1;
             });
         }).draw();
 
+        //Implementation of custom table-filtering on change-events of categories selectlist-filter
         $('#categories').change(function (e) {
             $.fn.dataTable.ext.search.pop();
             let selectedCategoryName = $(e.target).data('selectedName');
@@ -72,6 +85,7 @@ $(document).ready(function () {
             categoriesFilterCash = categories;
         });
 
+        //Implementation of custom table-filtering on change-events of types selectlist-filter
         $('#types').change(function () {
             $.fn.dataTable.ext.search.pop();
             let selectedTypeName = $(this).val();
@@ -89,6 +103,7 @@ $(document).ready(function () {
             typesFilterCash = selectedTypeName;
         });
 
+        //Implementation of custom table-filtering on change-events of administrators selectlist-filter
         $('#admins').change(function () {
             $.fn.dataTable.ext.search.pop();
             let selectedAdminName = $(this).val();
@@ -106,6 +121,7 @@ $(document).ready(function () {
             adminsFilterCash = selectedAdminName;
         });
 
+        //Show confirmation modal window after clicking on button "Instantiate resource type"
         $.each($('.inst-button'), function (i, item) {
             $(item).click(function () {
                 if (!$(this).hasClass('disabled')) {
@@ -119,6 +135,7 @@ $(document).ready(function () {
             })
         });
 
+        //Show confirmation modal window after clicking on button "Remove resource type"
         $.each($('.remove-button'), function (i, item) {
             $(item).click(function () {
                 if (!$(this).hasClass('disabled')) {
@@ -132,6 +149,7 @@ $(document).ready(function () {
             })
         });
 
+        //Execution of instantiate or remove actions after clicking on confirmation-button
         $('#confirm-button').click(function () {
             let id = $('#confirm-dialog').data('id');
             if ($('#confirm-dialog').data('action') === 'instantiate') {
@@ -142,6 +160,7 @@ $(document).ready(function () {
             $('#confirm-dialog').modal('hide');
         });
 
+        //Event-listeners for buttons "Show resource type info"
         $.each($('.info-button'), function (i, item) {
             $(item).click(function () {
                 let typeId = $(item).attr('data-id');
@@ -150,6 +169,12 @@ $(document).ready(function () {
         });
     }
 
+    /**
+     * Build action buttons in table for operations with resource types
+     * @param rowData - part of JSON returned by DataTables plugin with information which places in current table row
+     * @param col - number of column, returned by DataTables plugin
+     * @returns {*} HTML-button which will be rendering in table
+     */
     function buildActionButtons(rowData, col) {
         let restrictAccess = rowData.administratorName !== currentAdmin ? 'disabled"' : '"';
         let cloneLink = projectPathPrefix + '/resources/cloneType?id=' + -rowData.typeId;
@@ -184,6 +209,11 @@ $(document).ready(function () {
         return button;
     }
 
+    /**
+     * Returns array with names of selected resource category and all its descendant categories
+     * @param categoryName - name of selected category
+     * @returns {Array.<string>} array of names of resource categories
+     */
     function findNestedCategoriesNames(categoryName) {
         let categoryItem = $("li[data-name='" + categoryName + "']");
         let nextCategoryItems = categoryItem.nextAll('.category-item');
@@ -198,6 +228,10 @@ $(document).ready(function () {
         return nestedCategories;
     }
 
+    /**
+     * Returns array with names of all resource categories
+     * @returns {Array.<string>} array of names of resource categories
+     */
     function findAllCategoriesNames() {
         let allCategories = $('.category-item');
         let allCategoriesList = [];
@@ -207,35 +241,61 @@ $(document).ready(function () {
         return allCategoriesList;
     }
 
+    /**
+     * Fill items of resource types selectlist-filter depending on chosen resource category
+     * @param categories - array with names of selected resource category and all its descendant categories
+     * @param dataSource - JSON with resource types
+     */
     function buildTypesSelect(categories, dataSource) {
-        let typesItems = $('<div></div>');
+        let typesItems = [];
         $('#types').html('');
         $.each(dataSource, function (i, item) {
             if (categories.some(function (c) {
                     return c === item['categoryName']
                 })) {
+                typesItems.push(item);
+            }
+        });
+        if (typesItems.length > 0) {
+            $('#types').html('<option value="all">All resource types</option>');
+            $.each(typesItems, function (i, item) {
                 $('<option/>', {
                     value: item['typeName'],
                     text: item['typeName'],
-                }).appendTo(typesItems);
-            }
-        });
-        if (typesItems.children().length > 0) {
-            $('#types').html('<option value="all">All resource types</option>');
-            $('#types').append(typesItems.children());
+                }).appendTo($('#types'));
+            });
         }
         $('#types').selectpicker('refresh');
+        //Set option "All resource types" when selecting any option in categories selectlist-filter
         typesFilterCash = 'all';
     }
 
+    /**
+     * Execute operation of resource type instantiating
+     * @param id - ID of the resource type
+     */
     function instantiateType(id) {
-        console.log('Instantiating...');
-        $('button[data-id=' + id + ']').remove();
-        $('a.edit-button').filter(function () {
-            return $(this).attr('data-id') === id;
-        }).remove();
+        $.ajax({
+            type: "PUT",
+            url: projectPathPrefix + "/api/instantiateType/" + id,
+            success: function (jqXHR) {
+                $('button[data-id=' + id + ']').remove();
+                $('a.edit-button').filter(function () {
+                    return $(this).attr('data-id') === id;
+                }).remove();
+            },
+            error: function (jqXHR) {
+                let error = JSON.parse(jqXHR.responseText);
+                alert('Error!\n' + error.message);
+            }
+        });
     }
 
+    /**
+     * Execute operation of resource type removing
+     * @param id - ID of the resource type
+     * @param table - object of existent DataTable of resource types
+     */
     function removeType(id, table) {
         $.ajax({
             type: "DELETE",
@@ -249,11 +309,15 @@ $(document).ready(function () {
             },
             error: function (jqXHR) {
                 let error = JSON.parse(jqXHR.responseText);
-                alert('Error!\n" + error.message');
+                alert('Error!\n' + error.message);
             }
         });
     }
 
+    /**
+     * Load data from server about particular resource type and show modal window with this information
+     * @param id - ID of the resource type
+     */
     function showTypeInfo(id) {
         $.get(projectPathPrefix + "/api/typeInfo/" + id, function (data) {
             data = JSON.parse(JSON.stringify(data)
@@ -288,7 +352,6 @@ $(document).ready(function () {
                         '<td>' + item.units + unitsShort + '</td>' +
                         '<td>' + item.pattern + '</td>' +
                         '<td>' + item.valueType + '</td>' +
-                        '<td>' + item.multivalued + '</td>' +
                         '<td>' + item.searchable + '</td>' +
                         '<td>' + item.required + '</td>' +
                         '</tr>');
