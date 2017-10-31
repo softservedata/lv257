@@ -102,6 +102,7 @@ public class OwnerServiceImpl implements OwnerService {
             ownerDTO[0] = new OwnerDTO();
             ownerDTO[0].setOwnerId(owner.getId())
                     .setOwnerType(owner.ownerType())
+                    .setOwnerAddressId(owner.getAddress().getId())
                     .setPhone(owner.getPhone())
                     .setAddressInfo(owner.addressInfo())
                     .setPersonalInfo(owner.customToString());

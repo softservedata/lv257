@@ -7,8 +7,8 @@
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
-			rel="stylesheet" >
+<!--     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
+			rel="stylesheet" > -->
 </head>
 <body>
 <jsp:include page="menu.jsp" />
@@ -33,11 +33,6 @@
 				</div>
                 <br />
 
-                <div>
-                    <script> var lookUpOwner = true </script>
-                    <%--<script> var findOwnersForResistrar = true </script>--%>
-                    <jsp:include page="components/searchOwner.jsp"/>
-                </div>
                 <c:set var="typeSelectLabel" value="Resource Type" scope="request"/>
                 <div class="row">
                     <div class="container-fluid col-md-4">
@@ -57,15 +52,23 @@
                 <form id="form-for-properties" class="form-horizontal">
                     <!-- here will be data inserted by ajax request -->
                 </form>
+                <div class="row">
+                	<div class="container-fluid col-md-8"> 
+		                <div class="form-group"  id="div-for-owners">
+		                    <script> var lookUpOwner = true </script>
+		                    <jsp:include page="components/searchOwner.jsp"/>
+		                </div>
+                	</div> 
+                </div>
+                
                 <div id="no-inputs-error">
                 </div>
                 <br />
 
-				<div id="lookup-result">
+				<div id="lookup-result-by-owner-grouped">
 				<p>Result</p>
-				
 				</div>
-				<div id="result-search">
+				<div class="container" id="result-search">
 
 				</div>
 				
@@ -95,6 +98,7 @@
 <script src="${contextPath}/resources/js/lookUpResource.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 <script>
   $('#myButton').on('click', function () {
     location.reload();

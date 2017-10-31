@@ -3,6 +3,7 @@ package com.softserve.edu.Resources.dto;
 public class OwnerDTO {
 
     private long ownerId;
+    private long ownerAddressId;
     private String ownerType;
     private String personalInfo;
     private String phone;
@@ -26,6 +27,15 @@ public class OwnerDTO {
 
     public OwnerDTO setOwnerType(String ownerType) {
         this.ownerType = ownerType;
+        return this;
+    }
+
+    public long getOwnerAddressId() {
+        return ownerAddressId;
+    }
+
+    public OwnerDTO setOwnerAddressId(long ownerAddressId) {
+        this.ownerAddressId = ownerAddressId;
         return this;
     }
 
