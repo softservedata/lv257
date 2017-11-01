@@ -1442,7 +1442,7 @@ function showResults(success, $resultDiv) {
         console.log("look up");
         let $fidnResourcesByOwnerBtn = $('<button/>', {
             id: '',
-            class: 'btn btn-success pull-right',
+            class: 'btn btn-success pull-left',
             text: 'Look Up Resources'
         });
 
@@ -1467,18 +1467,100 @@ function showResults(success, $resultDiv) {
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     success: function(result){
-                        var divRes = $('#lookup-result-by-owner-grouped');
-                        divRes.html(JSON.stringify(result));
+                        var divResult = $('#lookup-result-by-owner-grouped');
+                        let divEl = $('<div/>',{
+                        	class: 'list-group',
+                        	id: 'grouped-resources',
+                        }).appendTo(divResult);
+                        
                         for (var j = 0; j < result.length; j++){
-                            console.log(result[j].resourceTypeName + "--" + result[j].resourceRecordsCount);
-  
+                        	let aEl = $('<a/>', {
+                        		class: 'list-group-item',
+                        		'data-value' : choosenOwnerId,
+                        		'data-name' : result[j].resourceTypeName,
+                        		text: result[j].resourceTypeName
+                        	}).appendTo(divEl);
+                        	let spanEl = $('<span/>', {
+                        		class: 'badge',
+                        		text: result[j].resourceRecordsCount
+                        	}).appendTo(aEl);
+                        	
+                        	
                         }
-                       
-                        divRes.show();
+                        getResourcesByOwnerIdAndResourceTypeName('#grouped-resources');
+//                        let groupedResources = $('#grouped-resources').find('a');
+//                    	$.each(groupedResources, function(i, item) {
+//                			$(item).click(function(e) {
+//                				groupedResources.removeClass("active");
+//                				$(e.target).addClass('active');
+//                				let ownerId = $(e.target).data('value');
+//                				let resourceTypeName = $(e.target).data('name');
+//                				$.ajax({
+//                	                type: 'GET',
+//                	                url: projectPathPrefix +'/api/resources/lookup/owners/'+ownerId+'/resourcetypes/'+resourceTypeName+'/foundresources',
+//                	                contentType: 'application/json; charset=UTF-8',
+//                	                dataType: 'json',
+//                	                success: function(result){
+//                	                    console.log(result);
+//                	                    // populating table
+//                	                    let table = $('#result-search');
+//                	                    table.empty();
+//                	                    let tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
+//                	                    let header = $("<thead></thead>").appendTo(tableTag);
+//                	                    let rowHeader = $("<tr></tr>").appendTo(header);
+//                	                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
+//                	                    for(var j = 0; j < result[0].propertyValues.length; j++) {
+//                	                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
+//                	                    }
+//
+//                	                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
+//                	                    let tableBody = $("<tbody></tbody>").appendTo(tableTag);
+//
+//                	                    for(var i = 0; i < result.length; i++) {
+//                	                        let bodyRow =  $("<tr></tr>").appendTo(tableBody);
+//                	                        $(bodyRow).append("<td></td>")
+//                	                        for(var j = 0; j < result[i].propertyValues.length; j++) {
+//                	                        	
+//                	                            $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
+//                	                        }
+//                	                        $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeName+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
+//                	                    }
+//                	                    $("<br/>").appendTo(tableTag);
+//                	                    //DataTables plug-in
+//                	                    let modelTable = $('#dt').DataTable({
+//                	                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+//                	                    	"processing": true,
+//                	                    	"columnDefs": [ {
+//                	                                 "targets": 0,
+//                	                                 "searchable": false,
+//                	                                 "orderable": false,
+//                	                             } ],
+//                	                        stateSave: true
+//                	                    });
+//                	                    modelTable.on('order.dt search.dt', function () {
+//                	                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+//                	                            cell.innerHTML = i + 1;
+//                	                        });
+//                	                    }).draw();
+//
+//                	                    $('#result-search').show();
+//                	                    $('#new-search').show();
+//                	                },
+//                	                error: function (result) {
+//
+//                	                    $('#no-inputs-error').empty();
+//                	                    $('#no-inputs-error').show();
+//                	                    $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
+//
+//                	                }
+//                				});
+//                	                    
+//                	         })
+//                		})
+                        divResult.show();
+                        
                     },
                     error: function (result) {
-//    	                var responce = JSON.parse(result);
-                        console.log(result.responseJSON.message);
                         $('#no-inputs-error').empty();
                         $('#no-inputs-error').show();
                         $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
