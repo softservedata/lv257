@@ -311,7 +311,7 @@ function sortByProperty(data, key, way) {
             },
             error: function (jqXHR) {
                 var error = JSON.parse(jqXHR.responseText);
-                alert('Error!\n" + error.message');
+                alert('Error!\n' + error.message);
             }
         })
     }

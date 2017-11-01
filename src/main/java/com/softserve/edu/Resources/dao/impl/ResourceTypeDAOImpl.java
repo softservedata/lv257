@@ -37,7 +37,10 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
 
     @Override
     public void create(ResourceType resourceType) {
-
+        String queryCreateType = "update ResourceType rt set rt.instantiated = true where rt = :resourceType";
+        em.createQuery(queryCreateType)
+                .setParameter("resourceType", resourceType)
+                .executeUpdate();
     }
 
     @Override
@@ -51,7 +54,6 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
         String queryInstance = "select rp from ResourceType rp where rp.instantiated = true";
         return em.createQuery(queryInstance, ResourceType.class).getResultList();
     }
-
 
 
     @Override
@@ -84,7 +86,7 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
             return super.findById(id);
         // fetch with loadgraph hint
         Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.loadgraph",  em.getEntityGraph("TypesProperties"));
+        properties.put("javax.persistence.loadgraph", em.getEntityGraph("TypesProperties"));
         return Optional.ofNullable(em.find(ResourceType.class, id, properties));
     }
 }

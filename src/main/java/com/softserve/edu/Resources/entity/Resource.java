@@ -1,19 +1,10 @@
 package com.softserve.edu.Resources.entity;
 
+import com.softserve.edu.Resources.Constants;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import com.softserve.edu.Resources.Constants;
 
 @Entity
 @Table(name = "RESOURCES")
@@ -24,7 +15,7 @@ public class Resource {
     @Column(name = "Id")
     private Long id;
     
-    @OneToOne(cascade = {CascadeType.PERSIST})
+    @OneToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "ADDRESS_ID")
     private Address address;
     
@@ -56,6 +47,14 @@ public class Resource {
     public void removeResourceOwning(ResourceOwning resourceOwning){
         resourceOwning.setResource(null);
         this.resourceOwnings.remove(resourceOwning);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

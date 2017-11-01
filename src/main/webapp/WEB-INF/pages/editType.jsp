@@ -72,7 +72,7 @@
                                    pattern="[A-Z][a-zA-Z -]+"
                                    title="Alphabetical characters with dash or space as separator"
                             <%--pattern="${typeNamePattern}"--%>
-                                   placeholder="Enter the name of new resource type">
+                                   placeholder="Enter the name of resource type">
                             <%--placeholder="Enter the name of new resource type">--%>
                         </div>
                     </div>

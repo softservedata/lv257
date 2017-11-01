@@ -35,6 +35,33 @@ public class UserProfileDTO {
     private User user;
     private String gender;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
+
+    public String getDocumentsURL() {
+        return documentsURL;
+    }
+
+    public void setDocumentsURL(String documentsURL) {
+        this.documentsURL = documentsURL;
+    }
+
+    private String code;
+    private String fileExtension;
+    private String documentsURL;
     @DecimalMax("999")
     private String phoneCountry;
     private String phoneOperator;

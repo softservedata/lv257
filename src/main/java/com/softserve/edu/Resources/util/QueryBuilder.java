@@ -2,6 +2,8 @@ package com.softserve.edu.Resources.util;
 
 import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
+import com.softserve.edu.Resources.entity.Resource;
+import com.softserve.edu.Resources.entity.ResourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -119,6 +121,36 @@ public class QueryBuilder {
         logger.info("Query to send to the DAO layer: " + readyQuery);
 
         return readyQuery;
+    }
+
+    public String insertResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues){
+        String insertClause = "INSERT INTO " + resourceType.getTableName();
+        StringBuilder sb = new StringBuilder();
+        sb.append(insertClause);
+
+        Set<String> keys = propertiesAndValues.keySet();
+        String columnNames = keys.stream()
+                .sorted()
+                .collect(Collectors.joining(","));
+
+        Set<Map.Entry<String, String>> entries = propertiesAndValues.entrySet();
+
+        sb.append(" (id,").append(columnNames).append(")");
+
+        String columnValues = keys.stream()
+                .sorted()
+                .map(key -> {
+                    return "'" + propertiesAndValues.get(key) + "'";
+                })
+                .collect(Collectors.joining(","));
+
+        sb.append(" VALUES(").append(resource.getId()).append(",").append(columnValues).append(")");
+
+
+        String readyInsertString = sb.toString();
+        System.out.println(readyInsertString);
+
+        return readyInsertString;
     }
 
 }

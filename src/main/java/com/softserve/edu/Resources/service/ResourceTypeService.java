@@ -3,7 +3,7 @@ package com.softserve.edu.Resources.service;
 import com.softserve.edu.Resources.dto.ResourceTypeBrief;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
-import com.softserve.edu.Resources.exception.RemovingInstantiatedTypeException;
+import com.softserve.edu.Resources.exception.ResourceTypeInstantiationException;
 import com.softserve.edu.Resources.exception.ResourceTypeNotFoundException;
 
 import java.util.Collection;
@@ -20,13 +20,13 @@ public interface ResourceTypeService {
 
     void remove(ResourceType resourceType);
 
-    void removeById(Long id) throws ResourceTypeNotFoundException, RemovingInstantiatedTypeException;
+    void removeById(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException;
 
     Optional<ResourceType> get(String typeName);
 
-    void create(String typeName);
+    void create(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException;
 
-    void createBatch(List<String> typeNames);
+    void createBatch(List<Long> IDs);
 
     void create(ResourceType type);
 
