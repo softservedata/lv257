@@ -1480,6 +1480,7 @@ function showResults(success, $resultDiv) {
                     dataType: 'json',
                     success: function(result){
                         var divResult = $('#lookup-result-by-owner-grouped');
+                        divResult.empty();
                         let divEl = $('<div/>',{
                         	class: 'list-group',
                         	id: 'grouped-resources',

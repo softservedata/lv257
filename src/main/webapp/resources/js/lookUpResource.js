@@ -19,7 +19,9 @@ $(document).ready(function(){
 		
             $('#div-for-types').show();
             $('#div-for-owners').hide();
-
+            $('#lookup-result-by-owner-grouped').hide();
+            $('#result-search').hide();
+            $('#new-search').hide();
 		
         } else if (lookUpType == 'by-owner') {
 
