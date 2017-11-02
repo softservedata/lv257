@@ -22,6 +22,8 @@ $(document).ready(function(){
             $('#lookup-result-by-owner-grouped').hide();
             $('#result-search').hide();
             $('#new-search').hide();
+            $('#owner_search option:selected').prop('selected', false);
+            $('#owner_search option:first').prop('selected', 'selected').change();
 		
         } else if (lookUpType == 'by-owner') {
 
@@ -47,6 +49,8 @@ $(document).ready(function(){
             $('#result-search').empty();
             $('#no-inputs-error').empty();
             $('#no-inputs-error').hide();
+            $('#owner_search option:selected').prop('selected', false);
+            $('#owner_search option:first').prop('selected', 'selected').change();
         }
     });
 
@@ -222,6 +226,8 @@ function getResourcesByOwnerIdAndResourceTypeName(id){
 	let groupedResources = $(id).find('a');
 	$.each(groupedResources, function(i, item) {
 		$(item).click(function(e) {
+			groupedResources.removeClass('active');
+			$(item).addClass('active');
 			let ownerId = $(e.target).data('value');
 			let resourceTypeName = $(e.target).data('name');
 			$.ajax({
