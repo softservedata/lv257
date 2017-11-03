@@ -41,11 +41,12 @@
             </div>
         </div>
     </div>
+
     <div class="col-md-4 float-left">
         <%--@declare id="passportseries"--%><H3>Public profile </H3>
         <hr>
 
-        <sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST">
+        <sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST" enctype="multipart/form-data">
             <%--<sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST" enctype="multipart/form-data">--%>
             <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary">Save changes</button>
             <div class="form-group">
@@ -153,7 +154,9 @@
                 <div class="font-bold">gender</div>
                 <td>Gender :</td>
                 <td><sf:radiobutton path="gender" value="M" label="M"/>
-                    <sf:radiobutton path="gender" value="F" label="F"/></td>
+                    <%--<sf:radiobutton path="gender" value="F" label="F"/>--%>
+                    <%--<sf:radiobutton path="gender" value="Other" label="Other"/>--%>
+                </td>
             </div>
 
 
@@ -241,7 +244,35 @@
 
         </div>
         <div><br></div>
-        тут має бути кнопка завантаження файлу. В коді закоментовано
+        <div class="form-group">
+            <div class="font-bold">code</div>
+            тут має бути кнопка завантаження файлу. В коді закоментовано
+
+            <%--<label for="code" style="float: left;">code</label>--%>
+<%--            <sf:input type="text"
+                      path="file"
+                      name="${status.expression}"
+                      value="${status.value}"
+                      class="form-control"
+                      placeholder="code"/>
+            <c:if test="${status.error}">
+                <c:forEach items="${status.errorMessages}" var="error">
+                    <span class="red"> ${error} </span>
+                </c:forEach>
+            </c:if>--%>
+            <label for="file">Upload document</label>
+            <spring:bind path="document.file">
+            <input type="file" path="document.file" name="${status.expression}" value="${status.value}"
+                   id="file"/>
+            <c:if test="${status.error}">
+                <c:forEach items="${status.errorMessages}" var="error">
+                    <span class="red"> ${error} </span>
+                </c:forEach>
+            </c:if>
+            </spring:bind>
+            <%--<sf:input type="text" path="code" placeholder="code" class="form-control"/>--%>
+            <%--<sf:input type="text" path="code" placeholder="code" class="form-control"/>--%>
+        </div>
         <%--<div class="form-group">
             <label for="file">Upload document</label>
 

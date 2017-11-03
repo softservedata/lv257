@@ -61,7 +61,7 @@ public class UserController {
     public ModelAndView profileGET0(ModelAndView modelAndView, Principal principal)
 //    public ModelAndView profileGET0(Model model, Principal principal, @RequestParam(value = "operation", required = false) String operation) {
     {
-    System.out.println("UserController line 55");
+        System.out.println("UserController line 55");
 
         //OK
         if (principal == null) {
@@ -72,10 +72,13 @@ public class UserController {
         } else {
 //            UserDetails nRequest = new UserDetails();
             UserProfileDTO userProfileDTO = userProfileService.createUserProfileDTO(principal);
-            userProfileDTO.setGender("F");
-//            ModelAndView profile = new ModelAndView("profile");
-            modelAndView.addObject("details", userProfileDTO);
+            Document nDocument = new Document();
 
+            userProfileDTO.setGender("F");
+
+            modelAndView.addObject("details", userProfileDTO);
+            modelAndView.addObject("document", nDocument);
+            modelAndView.addObject("title", "Send Request");
             return modelAndView;
         }
     }
@@ -104,14 +107,13 @@ public class UserController {
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
 //    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
-    public String profilePOST0(@ModelAttribute(value="details") @Valid UserProfileDTO userProfileDTO,
-                                     BindingResult bindingResult, ModelAndView modelAndView
+    public String profilePOST0(@ModelAttribute(value = "details") @Valid UserProfileDTO userProfileDTO, BindingResult bindingResult,
+                               @ModelAttribute("document") Document document, BindingResult documentResults,
+                               ModelAndView modelAndView
 //            , UserProfileDTO userProfileDTO
     )
-//            throws Exception
-    {
+            throws Exception {
 
-//        modelAndView.addObject("FieldError0", "FieldError0");
         View view = modelAndView.getView();
 
         if (bindingResult.hasErrors()) {
@@ -132,32 +134,4 @@ public class UserController {
         modelAndView.addObject("message", "Please sign in");
         return modelAndView;
     }
-
-    @RequestMapping(value = "/profileValidation01", method = RequestMethod.GET)
-    public ModelAndView profileValidation01(Model model, Principal principal) {
-        ModelAndView modelAndView = new ModelAndView("profileValidation01");
-        modelAndView.addObject("message", "Please sign in");
-        modelAndView.addObject("grade", "A");
-        return modelAndView;
-    }
-
 }
-
-/*
-
-    @RequestMapping(value="/profile", method=RequestMethod.POST)
-    public String profilePOST(@Valid @ModelAttribute ("details") UserProfileDTO userProfileDTO,
-                                BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes)
-                                throws Exception {
-
-        model.addAttribute("FieldError0", "FieldError0");
-
-        if (bindingResult.hasErrors()){
-            model.addAttribute("FieldError01", "FieldError01");
-            return "profile";
-        }
-
-        userProfileService.saveUserProfile(userProfileDTO);
-        return "redirect:/profile";
-    }
-*/

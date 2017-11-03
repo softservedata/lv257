@@ -19,6 +19,10 @@ public class UserDetails {
 
     private Long id;
 
+    @OneToOne (cascade = CascadeType.MERGE)
+    @JoinColumn(name = "id_document")
+    private Avatar document;
+
     @Column(name = "first_name")
     @JsonProperty("first_name")
     private String firstName;
