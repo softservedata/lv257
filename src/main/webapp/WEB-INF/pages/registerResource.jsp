@@ -34,6 +34,22 @@
                 <%--<form role="form-horizontal" enctype="multipart/form-data">--%>
 
                 <%--<c:set var="typeSelectLabel" value="Resource Category" scope="request"/>--%>
+
+
+                <c:if test="${resourceRegistered}">
+                    <div class="registered_resource_message">
+                        <div class="alert alert-success alert-dismissible fade in">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                Resource instance was successfully registered.
+                        </div>
+                    </div>
+                </c:if>
+
+                <%-- Remove session attribyte, because I want this message to be shw only one time. After reloading page, there won't be message --%>
+                <% session.removeAttribute("resourceRegistered"); %>
+
+
+
                 <c:set var="typeSelectLabel" value="Resource Type" scope="request"/>
                 <div class="row">
                     <div id="types" class="col-sm-12 col-xs-8 form-group">
@@ -45,6 +61,13 @@
                 <div id="deleted_owner" class="my_error_class">
                     <h4> Owner was deleted. </h4>
                 </div>
+
+                <%--<div id="deleted_owner">--%>
+                    <%--<div class="alert alert-danger alert-dismissible fade in">--%>
+                        <%--<button type="button" class="close" data-dismiss="alert">&times;</button>--%>
+                        <%--Owner was deleted.--%>
+                    <%--</div>--%>
+                <%--</div>--%>
 
                 <div class="resource_owner_table display_none">
                     <hr class="my_hr">
@@ -333,14 +356,14 @@
 </footer>
 
 
-<script src="../../resources/js/ownerAndAddressManagement.js"></script>
-<script src="../../resources/js/jquery.validate.js"></script>
-<script src="../../resources/js/additional-methods.js"></script>
-<script src="../../resources/js/resourceTypeChars.js"></script>
-<script src="../../resources/js/categories.js"></script>
-<script src="../../resources/js/hierarchy-select.js"></script>
+<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
+<script src="${contextPath}/resources/js/jquery.validate.js"></script>
+<script src="${contextPath}/resources/js/additional-methods.js"></script>
+<script src="${contextPath}/resources/js/resourceTypeChars.js"></script>
+<script src="${contextPath}/resources/js/categories.js"></script>
+<script src="${contextPath}/resources/js/hierarchy-select.js"></script>
 <script>
-
+    projectPathPrefix = "<c:out value="${pageContext.request.contextPath}"/>"
 </script>
 
 </body>

@@ -1,6 +1,7 @@
 const propertiesForm = $('#form_for_properties');
 const resourcePropsLabel = $('#resource_prop_label');
 const registerRecourceBtn = $('#register_resource_btn');
+const $alert = $('.alert');
 
 
 let resourceTypeId;
@@ -8,6 +9,12 @@ $(document).ready(function () {
 
     propertiesForm.hide();
     resourcePropsLabel.hide();
+
+    if ($alert.length) {
+        setTimeout(function () {
+            $alert.fadeOut('slow');
+        }, 5000)
+    }
 
     $('#types').on('change', function (e) {
         resourceTypeId = $(e.target).data('selectedID');
