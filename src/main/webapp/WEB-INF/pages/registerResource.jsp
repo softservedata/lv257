@@ -333,10 +333,10 @@
 
                 </div>
 
-                <div class="form-group">
-                    <label for="files">Registration basis</label>
-                    <input type="file" id="files" multiple="true">
-                </div>
+                <%--<div class="form-group">--%>
+                    <%--<label for="files">Registration basis</label>--%>
+                    <%--<input type="file" id="files" multiple="true">--%>
+                <%--</div>--%>
                 <div class="padding_bottom_15">
                     <button id="register_resource_btn"
                             type="submit" class="btn btn-success width_13em">Register resource</button>
