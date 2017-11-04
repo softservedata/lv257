@@ -12,7 +12,7 @@ INSERT INTO `company` (`CEO`,`edrpo_number`,`full_name`,`organization_form`,`sho
 
 INSERT INTO `person` (`first_name`, `identifier_number`,`last_name`,`middle_name`,`passport_number`,`passport_series`,`owner_id`) VALUES ('Andriy','1234567890','Tsebak','Anatoliiovych','659832','HC',100000),('Anna','1234567899','Frank','Volodumurivna','145863','TC',100002),('Oleh','1234567897','Tsebak','Anatoliiovych','176895','KC',100101);
 
-INSERT INTO `DOCUMENT` (`id_document`,`code`,`URL`,`extension`) VALUES (100001,'fileE4953FCCD6','some text here','png');
+INSERT INTO `DOCUMENTS` (`id_document`,`code`,`URL`,`extension`) VALUES (100001,'fileE4953FCCD6','https://filee4953fccd6.s3.eu-central-1.amazonaws.com/fileE4953FCCD6.png','png');
 
 INSERT INTO `RESOURCE_CATEGORIES` (`Id`,`Category_Name`,`Id_Parent`) VALUES (134310,'Natural resources',NULL),(134311,'Land resources',134310),(134312,'Forest resources',134310),(134313,'Mineral resources',134310),(134314,'Water resources',134310),(134315,'Real estate',NULL),(134316,'Residental real estate',134315),(134317,'Non-residental real estate',134315),(134318,'Commercial non-residental real estate',134317),(134319,'Industrial non-residental real estate',134317),(134320,'Transport',NULL),(134321,'Water transport',134320),(134322,'Sea transport',134321),(134323,'River transport',134321),(134324,'Air transport',134320),(134325,'Reactive airtransport',134324),(134326,'Land transport',134320),(134327,'Autotransport',134326),(134329,'Propeller airtransport',134324),(134330,'Mototransport',134326),(134331,'Railway transport',134326);
 
@@ -20,7 +20,7 @@ INSERT INTO `RESOURCE_PROPERTIES` (`id`,`Column_Name`,`Hint`,`Multivalued`,`Rege
 
 INSERT INTO `user_account` (`id`,`enabled`,`password`,`secret`,`email`) VALUES (8, TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
 
-INSERT INTO `RESOURCE_REQUEST` (`id_request`,`description`,`resourceType`,`status`,`updated`,`id_document`,`id_requester`,`id_assigner`) VALUES (100100,'Street varshavska 12','House Private','DECLINED','2017-10-10 21:11:05',100001,9,8);
+INSERT INTO `RESOURCE_REQUESTS` (`id_request`,`description`,`resourceType`,`status`,`updated`,`id_document`,`id_requester`,`id_assigner`) VALUES (100100,'Street varshavska 12','House Private','DECLINED','2017-10-10 21:11:05',100001,9,8);
 
 INSERT INTO `RESOURCE_TYPES` (`Id`,`Instantiated`,`Table_Name`,`Type_Name`,`Id_Assigner`,`Id_Category`) VALUES (100300, TRUE,'cars','Car',8,134327),(100302,TRUE,'yachts','Yacht',8,134323),(100303,TRUE,'trains','Train',88,134331),(100304,'','vehicles','Vehicle',8,134327),(100305,'','trucks','Truck',88,134327),(100306,'','apartments','Apartment',88,134316),(100307,'','cottages','Cottage',8,134316);
 

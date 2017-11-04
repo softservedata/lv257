@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "RESOURCE_REQUEST")
+@Table(name = "RESOURCE_REQUESTS")
 public class ResourceRequest {
 
     @Id
