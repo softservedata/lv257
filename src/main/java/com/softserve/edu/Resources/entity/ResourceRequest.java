@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Entity
 @Table(name = "RESOURCE_REQUEST")
-
 public class ResourceRequest {
 
     @Id

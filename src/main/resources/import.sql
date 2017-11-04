@@ -12,7 +12,7 @@ INSERT INTO `company` (`CEO`,`edrpo_number`,`full_name`,`organization_form`,`sho
 
 INSERT INTO `person` (`first_name`, `identifier_number`,`last_name`,`middle_name`,`passport_number`,`passport_series`,`owner_id`) VALUES ('Andriy','1234567890','Tsebak','Anatoliiovych','659832','HC',100000),('Anna','1234567899','Frank','Volodumurivna','145863','TC',100002),('Oleh','1234567897','Tsebak','Anatoliiovych','176895','KC',100101);
 
-INSERT INTO `document` (`id_document`,`code`,`URL`,`extension`) VALUES (100001,'fileE4953FCCD6','some text here','png');
+INSERT INTO `DOCUMENT` (`id_document`,`code`,`URL`,`extension`) VALUES (100001,'fileE4953FCCD6','some text here','png');
 
 INSERT INTO `RESOURCE_CATEGORIES` (`Id`,`Category_Name`,`Id_Parent`) VALUES (134310,'Natural resources',NULL),(134311,'Land resources',134310),(134312,'Forest resources',134310),(134313,'Mineral resources',134310),(134314,'Water resources',134310),(134315,'Real estate',NULL),(134316,'Residental real estate',134315),(134317,'Non-residental real estate',134315),(134318,'Commercial non-residental real estate',134317),(134319,'Industrial non-residental real estate',134317),(134320,'Transport',NULL),(134321,'Water transport',134320),(134322,'Sea transport',134321),(134323,'River transport',134321),(134324,'Air transport',134320),(134325,'Reactive airtransport',134324),(134326,'Land transport',134320),(134327,'Autotransport',134326),(134329,'Propeller airtransport',134324),(134330,'Mototransport',134326),(134331,'Railway transport',134326);
 

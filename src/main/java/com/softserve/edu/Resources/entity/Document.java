@@ -12,6 +12,7 @@ import java.util.UUID;
  */
 
 @Entity
+@Table(name = "DOCUMENT")
 public class Document {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
