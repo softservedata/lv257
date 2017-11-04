@@ -20,7 +20,7 @@ INSERT INTO `RESOURCE_PROPERTIES` (`id`,`Column_Name`,`Hint`,`Multivalued`,`Rege
 
 INSERT INTO `user_account` (`id`,`enabled`,`password`,`secret`,`email`) VALUES (8, TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
 
-INSERT INTO `RESOURCE_REQUEST` (`id_request`,`description`,`resourceType`,`status`,`updated`,`id_document`,`id_requester`,`id_assigner`) VALUES (100100,'Street varshavska 12','House Private','DECLINED', '2017-10-10' ,100001,9,8);
+INSERT INTO `RESOURCE_REQUEST` (`id_request`,`description`,`resourceType`,`status`,`updated`,`id_document`,`id_requester`,`id_assigner`) VALUES (100100,'Street varshavska 12','House Private','DECLINED', ''‎2017-10-10 21:11:05'' ,100001,9,8);
 
 INSERT INTO `RESOURCE_TYPES` (`Id`,`Instantiated`,`Table_Name`,`Type_Name`,`Id_Assigner`,`Id_Category`) VALUES (100300, TRUE,'cars','Car',8,134327),(100302,TRUE,'yachts','Yacht',8,134323),(100303,TRUE,'trains','Train',88,134331),(100304,'','vehicles','Vehicle',8,134327),(100305,'','trucks','Truck',88,134327),(100306,'','apartments','Apartment',88,134316),(100307,'','cottages','Cottage',8,134316);
 
