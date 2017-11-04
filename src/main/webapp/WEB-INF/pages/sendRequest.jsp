@@ -6,7 +6,7 @@
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
 
-<spring:url var="js" value="${contextPath}/resources/js"/>
+<%--<spring:url var="js" value="${contextPath}/resources/js"/>--%>
 
 <html>
 <head>
@@ -122,9 +122,10 @@
        </div>
 
 
-       <script src="${js}/jquery.validate.js"></script>
+       <script src="${contextPath}/resources/js/jquery.validate.js"></script>
 
-       <script src="${js}/messageTimeOut.js"></script>
+       <script src="${contextPath}/resources/js/messageTimeOut.js"></script>
+       <%--<script src="${js}/messageTimeOut.js"></script>--%>
 
        <script>
            $('#submit').click(function() {
