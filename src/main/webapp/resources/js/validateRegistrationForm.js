@@ -4,10 +4,7 @@ $(document).ready(function(){
         rules:{
             email: {
                 required: true,
-                email: true,
-                remote: {
-                    
-                }
+                email: true
             },
             password: {
                 required: true,

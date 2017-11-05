@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
 import java.util.*;
@@ -45,26 +46,26 @@ public class RegisterResourceController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO) {
-        System.out.println(resourceImplDTO);
-
-        long addressId = resourceImplDTO.getAddressId();
-        Address addressById = addressService.getById(addressId);
-        Optional<ResourceType> resourceType = resourceTypeService.get(resourceImplDTO.getResourceTypeId());
-
-        Resource resource = new Resource();
-        resource.setAddress(addressById);
+    public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO, HttpSession session) {
 
         ValidationErrorDTO validationErrorDTO = resourceService.validateResourceImpl(resourceImplDTO);
 
         if (validationErrorDTO.getFieldErrors().isEmpty()) {
+            long addressId = resourceImplDTO.getAddressId();
+            Address resourceAddress = addressService.getById(addressId);
+            ResourceType resourceTypeWithProperties = resourceTypeService.findWithPropertiesByID(resourceImplDTO.getResourceTypeId());
+
+            Resource resource = new Resource();
+            resource.setAddress(resourceAddress);
+
             resourceService.addResource(resource);
             resourceService.addResourceOwnings(resource, resourceImplDTO);
-            resourceService.addResourceImpl(resource, resourceType.get(), resourceImplDTO.getPropertiesAndValues());
+            resourceService.addResourceImpl(resource, resourceTypeWithProperties, resourceImplDTO.getPropertiesAndValues());
 
             // use this dto just because I don't want to make another dto with same two String fields
             FieldErrorDTO redirectUrl = new FieldErrorDTO("redirect", "registration");
 
+            session.setAttribute("resourceRegistered", true);
             return new ResponseEntity<>(redirectUrl, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);

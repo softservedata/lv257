@@ -1,11 +1,11 @@
 package com.softserve.edu.Resources.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+
+import java.text.Collator;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,6 +28,7 @@ import com.softserve.edu.Resources.entity.PropertyValue;
 import com.softserve.edu.Resources.entity.Resource;
 import com.softserve.edu.Resources.entity.ResourceOwning;
 import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.entity.ResourceType;
 
 @Repository
 public class ResourceDaoImpl implements ResourceDao {
@@ -36,14 +37,17 @@ public class ResourceDaoImpl implements ResourceDao {
     private EntityManager entityManager;
 
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedJdbcTemplate;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+
     }
 
     private List<GenericResource> modelingGenericResourcesFromDb(List<Map<String, Object>> resultFromDB,
-            List<ConstrainedProperty> resourceProperties) {
+                                                                 List<ConstrainedProperty> resourceProperties) {
 
         List<GenericResource> resourcesList = new ArrayList<GenericResource>();
         for (Map<String, Object> mapRow : resultFromDB) {
@@ -69,7 +73,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByResourceType(String sqlQuery, Map<String, String> valuesToSearch,
-            List<ConstrainedProperty> resourceProperties) {
+                                                             List<ConstrainedProperty> resourceProperties) {
 
         List<Map<String, Object>> resultFromDB = new ArrayList<>();
 
@@ -107,7 +111,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByOwnerAndResourcesType(String sqlQuery,
-            List<ConstrainedProperty> resourceProperties, List<Long> resourcesIds) {
+                                                                      List<ConstrainedProperty> resourceProperties, List<Long> resourcesIds) {
 
         List<Map<String, Object>> resultFromDB = new ArrayList<>();
 
@@ -200,8 +204,25 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
     @Override
-    public void addResourceImpl(String query) {
-        entityManager.createNativeQuery(query).executeUpdate();
+    public void addResourceImpl(String query, ResourceType resourceType, long resourceImplId, Map<String, String> propertiesAndValues) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        Set<ConstrainedProperty> constrainedProperties = resourceType.getProperties();
+
+        // get plain properties, sort by column names (to correspond build jdbc template string order)
+        List<ResourceProperty> propertiesSortedByColumn = constrainedProperties.stream()
+                .map(ConstrainedProperty::getProperty)
+                .sorted(Comparator.comparing(ResourceProperty::getColumnName))
+                .collect(Collectors.toList());
+
+        mapSqlParameterSource.addValue("id", resourceImplId);
+
+        propertiesSortedByColumn.forEach(resourceProperty -> {
+            String columnValue = propertiesAndValues.get(resourceProperty.getColumnName());
+            mapSqlParameterSource.addValue(resourceProperty.getColumnName(), columnValue, resourceProperty.getValueType().sqlType);
+        });
+
+        namedJdbcTemplate.update(query, mapSqlParameterSource);
     }
 
 }

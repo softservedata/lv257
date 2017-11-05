@@ -1325,7 +1325,7 @@ function makeAjaxCall($findOwnerButton, ownerType, $resultDiv) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/owner/search",
+            url: projectPathPrefix + "/resources/owner/search",
             accept: "application/json",
             data: JSON.stringify(searchQuery),
             success: function (result) {
@@ -1639,6 +1639,7 @@ function appendOwnerToTable(result, choosenOwnerId) {
             console.log($(this).parent().attr('id'));
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
+            // $deletedOwner.show(500);
             checkIfEmptyOwnerTable();
             checkIfAddressIsPicked($(this).parent());
         }

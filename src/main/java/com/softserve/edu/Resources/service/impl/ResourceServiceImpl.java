@@ -182,11 +182,9 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     @Override
     public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues) {
-
-        String readyQuery = queryBuilder.insertResourceImpl(resource, resourceType, propertiesAndValues);
-        resourceDao.addResourceImpl(readyQuery);
-
-//        resourceDao.addResource(resource);
+        String readyQuery = queryBuilder.buildInsertResourceImplQuery(resourceType, propertiesAndValues);
+        System.out.println(readyQuery);
+        resourceDao.addResourceImpl(readyQuery, resourceType, resource.getId(),propertiesAndValues);
     }
 
     @Override
@@ -208,7 +206,6 @@ public class ResourceServiceImpl implements ResourceService {
             } else if(!columnValue.matches(constrainedProperty.getProperty().getPattern())){
                 validationErrorDTO.addFieldError(columnName, "This field do not matches valid format");
             }
-
         });
 
 
