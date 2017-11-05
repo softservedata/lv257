@@ -64,10 +64,12 @@
                 <div id="no-inputs-error">
                 </div>
                 <br />
-
-				<div id="lookup-result-by-owner-grouped">
-				<p>Result</p>
+				<div class="row">
+					<div class="container-fluid col-md-4" id="lookup-result-by-owner-grouped">
+				
+					</div>
 				</div>
+				
 				<div class="container" id="result-search">
 
 				</div>
@@ -94,8 +96,8 @@
 
 </div>
 
-<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <script src="${contextPath}/resources/js/lookUpResource.js"></script>
+<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>

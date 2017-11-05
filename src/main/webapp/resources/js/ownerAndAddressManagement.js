@@ -1325,7 +1325,7 @@ function makeAjaxCall($findOwnerButton, ownerType, $resultDiv) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/owner/search",
+            url: projectPathPrefix + "/resources/owner/search",
             accept: "application/json",
             data: JSON.stringify(searchQuery),
             success: function (result) {
@@ -1454,7 +1454,7 @@ function showResults(success, $resultDiv) {
         console.log("look up");
         let $fidnResourcesByOwnerBtn = $('<button/>', {
             id: '',
-            class: 'btn btn-success pull-right',
+            class: 'btn btn-success pull-left',
             text: 'Look Up Resources'
         });
 
@@ -1479,18 +1479,30 @@ function showResults(success, $resultDiv) {
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     success: function(result){
-                        var divRes = $('#lookup-result-by-owner-grouped');
-                        divRes.html(JSON.stringify(result));
+                        var divResult = $('#lookup-result-by-owner-grouped');
+                        divResult.empty();
+                        let divEl = $('<div/>',{
+                        	class: 'list-group',
+                        	id: 'grouped-resources',
+                        }).appendTo(divResult);
+                        
                         for (var j = 0; j < result.length; j++){
-                            console.log(result[j].resourceTypeName + "--" + result[j].resourceRecordsCount);
-
+                        	let aEl = $('<a/>', {
+                        		class: 'list-group-item',
+                        		'data-value' : choosenOwnerId,
+                        		'data-name' : result[j].resourceTypeName,
+                        		text: result[j].resourceTypeName
+                        	}).appendTo(divEl);
+                        	let spanEl = $('<span/>', {
+                        		class: 'badge',
+                        		text: result[j].resourceRecordsCount
+                        	}).appendTo(aEl);
                         }
 
-                        divRes.show();
+                        getResourcesByOwnerIdAndResourceTypeName('#grouped-resources');
+                        divResult.show();
                     },
                     error: function (result) {
-//    	                var responce = JSON.parse(result);
-                        console.log(result.responseJSON.message);
                         $('#no-inputs-error').empty();
                         $('#no-inputs-error').show();
                         $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
@@ -1604,6 +1616,7 @@ function appendOwnerToTable(result, choosenOwnerId) {
             console.log($(this).parent().attr('id'));
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
+            // $deletedOwner.show(500);
             checkIfEmptyOwnerTable();
             checkIfAddressIsPicked($(this).parent());
         }

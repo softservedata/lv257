@@ -23,7 +23,7 @@ public interface ResourceService {
 
     void addResourceOwnings(Resource resource, ResourceImplDTO resourceImplDTO);
 
-    public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues);
+    void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues);
 
     List<GenericResource> findResourcesByResourceType(GenericResourceDTO genericResourceDTO);
     
