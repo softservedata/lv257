@@ -1479,18 +1479,41 @@ function showResults(success, $resultDiv) {
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     success: function(result){
-                        var divResult = $('#lookup-result-by-owner-grouped');
+                        let divResult = $('#lookup-result-by-owner-grouped');
                         divResult.empty();
+                        
+                        let panelTag = $('<div/>',{
+                        	class: 'panel panel-info'
+                        }).appendTo(divResult);
+                        
+                        let panelHeadTag = $('<div/>',{
+                        	class: 'panel-heading',
+                        }).appendTo(panelTag);
+                        
+                        let panelHTag = $('<h3/>',{
+                        	class: 'panel-title',
+                        	text: 'Grouped Resources with quantities'
+                        }).appendTo(panelHeadTag);
+                        
+                        let panelBodyTag = $('<p/>',{
+                        	class: 'panel-body',
+                        }).appendTo(panelTag);
+                        
+                        let panelBodyPTag = $('<div/>',{
+                        	text: 'Click some group to get the list of resources of special resource type',
+                        }).appendTo(panelBodyTag);
+                      
                         let divEl = $('<div/>',{
                         	class: 'list-group',
                         	id: 'grouped-resources',
-                        }).appendTo(divResult);
+                        }).appendTo(panelTag);
                         
                         for (var j = 0; j < result.length; j++){
                         	let aEl = $('<a/>', {
                         		class: 'list-group-item',
                         		'data-value' : choosenOwnerId,
                         		'data-name' : result[j].resourceTypeName,
+                        		'data-id' : result[j].resourceTypeId,
                         		text: result[j].resourceTypeName
                         	}).appendTo(divEl);
                         	let spanEl = $('<span/>', {

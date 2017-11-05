@@ -50,20 +50,10 @@ public class MainController {
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
     public String lookupPage(@RequestParam Map<String, String> lookupby) {
-//        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
-//            return "lookupByType";
-//        else
-//            return "lookupByOwner";
+
         return "lookup";
     }
-    @RequestMapping(value = "/resource/type/{typeId}/id/{id}", method = RequestMethod.GET)
-    public String lookUpResult(@PathVariable long typeId, @PathVariable long id){
-        
-        
-        // if the list is empty, send a message that no info hasn't been found
-        return "resourceInfo";
-    }
-
+    
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     public String resourcesPage(Model model, HttpServletRequest request) {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {

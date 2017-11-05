@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.controller;
 
+
 import com.softserve.edu.Resources.dto.CarRestTest;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.MessageTestRest;
@@ -36,7 +37,7 @@ public class RestTestController {
     @RequestMapping(value = "/updateGenRes", method = RequestMethod.POST)
     public GenericResourceDTO updater(@RequestBody GenericResourceDTO genRes) {
         System.out.println(genRes.getId());
-        System.out.println(genRes.getResourcePropertyValue());
+        System.out.println(genRes.getResourcePropertyValues());
         if (genRes != null){
             genRes.setId(2);
         }

@@ -30,6 +30,8 @@ public interface ResourceService {
     List<GroupedResourceCount> findResourcesCountGroupedByResourceTypeForOwner(String ownerId);
     
     List<GenericResource> findResourcesByOwnerAndType(long ownerId, String resourceTypeName);
+    
+    GenericResourceDTO findResourceByTypeAndId(long resourceTypeId, long resourceId);
 
     ValidationErrorDTO validateResourceImpl(ResourceImplDTO resourceImplDTO);
 }

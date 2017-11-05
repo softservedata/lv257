@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" session="true" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,6 +15,8 @@
 				<div class="container">
 
 					<h2>Resource Info</h2>
+					
+					<c:set var="resource" value="${genericResource}"/>
 
 					<table class="table table-hover">
 						<thead>
@@ -27,26 +30,39 @@
 							</tr>
 							<td>Resource type</td>
 							<td>Automobile</td>
+							
+							<c:forEach items="${resource.resourcePropertyValues}" var="entryMap">
 							<tr>
-								<td>Name</td>
-								<td>Honda Civic LX 2016</td>
+								<td><c:out value="${entryMap.key}"/></td>
+								<td><c:out value="${entryMap.value}"/></td>
 							</tr>
+							</c:forEach>
+							
 							<tr>
-								<td>Production year</td>
-								<td>2016</td>
-							</tr>
-							<tr>
-								<td>Engine volume</td>
-								<td>2 liters</td>
-							</tr>
-							<tr>
-								<td>Color</td>
-								<td>Red</td>
+								<td>Country</td>
+								<td><c:out value="${resource.address.country}"/></td>
 							</tr>
 							<tr>
 								<td>City</td>
 								<td>Lviv</td>
 							</tr>
+							<tr>
+								<td>City</td>
+								<td>Lviv</td>
+							</tr>
+							<tr>
+								<td>City</td>
+								<td>Lviv</td>
+							</tr>
+							
+							<c:forEach items="${resource.owners}" var="owner">
+								<c:if test="${owner.ownerType() == 'Company' }">
+								<tr>
+									<td>Company Owner</td>
+									<td><c:out value="${owner.fullName}"/></td>
+								</tr>
+								</c:if>
+							</c:forEach>
 						</tbody>
 					</table>					
 
