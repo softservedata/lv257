@@ -42,8 +42,9 @@
 
             <div class="form-group" style="width: 250px;">
                 <label for="email" style="float: left;">Login/Email:</label>
-                <form:input class="form-control" placeholder="Enter login/email" path="email" />
+                <form:input id="email" class="form-control" placeholder="Enter login/email" path="email" />
                 <form:errors path="email" cssClass="error" cssStyle="color: #ff0000;"/>
+                <p id="email_error" hidden class="text-danger"></p>
             </div>
             <div class="form-group" style="width: 250px;">
                 <label for="password" style="float: left;">Password:</label>

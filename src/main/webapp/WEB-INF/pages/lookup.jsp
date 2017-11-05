@@ -1,14 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
-
-<c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
+<%-- <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/> --%>
+	
 <html>
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
-    <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
-			rel="stylesheet" >
+<!--     <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"
+			rel="stylesheet" > -->
 </head>
 <body>
 <jsp:include page="menu.jsp" />
@@ -22,7 +22,7 @@
 	            <div class="row">
 	              <div class="container-fluid col-md-4">
 	            	<div id=type-choose class="form-group">
-	            		<label for="lookup_type">Select type of Look Up:</label> <br> <c:out value="${contextPath}"/>
+	            		<label for="lookup_type">Select type of Look Up:</label> <br> <c:out value="${pageContext.request.contextPath}"/>
 	              		<select id="lookup_type" class="form-control">
 	                		<option value="absent">Choose type here</option>
 	                		<option value="by-type">Looking up by type of Resource</option>
@@ -33,11 +33,6 @@
 				</div>
                 <br />
 
-                <div>
-                    <script> var lookUpOwner = true </script>
-                    <%--<script> var findOwnersForResistrar = true </script>--%>
-                    <jsp:include page="components/searchOwner.jsp"/>
-                </div>
                 <c:set var="typeSelectLabel" value="Resource Type" scope="request"/>
                 <div class="row">
                     <div class="container-fluid col-md-4">
@@ -57,15 +52,25 @@
                 <form id="form-for-properties" class="form-horizontal">
                     <!-- here will be data inserted by ajax request -->
                 </form>
+                <div class="row">
+                	<div class="container-fluid col-md-8"> 
+		                <div class="form-group"  id="div-for-owners">
+		                    <script> var lookUpOwner = true </script>
+		                    <jsp:include page="components/searchOwner.jsp"/>
+		                </div>
+                	</div> 
+                </div>
+                
                 <div id="no-inputs-error">
                 </div>
                 <br />
-
-				<div id="lookup-result">
-				<p>Result</p>
+				<div class="row">
+					<div class="container-fluid col-md-4" id="lookup-result-by-owner-grouped">
 				
+					</div>
 				</div>
-				<div id="result-search">
+				
+				<div class="container" id="result-search">
 
 				</div>
 				
@@ -91,10 +96,11 @@
 
 </div>
 
-<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <script src="${contextPath}/resources/js/lookUpResource.js"></script>
+<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 <script>
   $('#myButton').on('click', function () {
     location.reload();

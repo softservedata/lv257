@@ -153,7 +153,7 @@ function buildRadios() {
     let $form = $('<form/>');
     $ownerRadios.append($form);
     for (let i = 0; i < trs.length; i++) {
-        let addressId = $(trs[i]).attr('id');
+        let addressId = $(trs[i]).find('.address_info').attr('data-owner-address-id');
         let addressText = $(trs[i]).find('.address_info').text();
 
         let $radioDiv = $('<div/>', {class: 'radio'});
@@ -261,6 +261,7 @@ function saveAddressAjax(json, url) {
             let parse = JSON.parse(result.responseText);
             console.log('errors in fields: ' + parse);
             $('.my_error_class').empty();
+            // $('.my_error_class').show(600);
 
             appendHibernateErrors(parse);
         }
@@ -340,7 +341,13 @@ function appendHibernateErrors(parse) {
         var $errorDiv = $('#' + str.substring(str.indexOf('.') + 1).split(/(?=[A-Z])/).join('_').toLowerCase()).next();
         var text = parse.fieldErrors[i].message;
         $errorDiv.text(text);
+
     }
+
+    $('.my_error_class').show(600);
+    setTimeout(function () {
+        $('.my_error_class').hide(500);
+    }, 10500);
 }
 
 // clears appended hibernate errors
@@ -729,6 +736,7 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                     console.log('errors in fields: ' + parse);
 
                     $('.my_error_class').empty();
+                    // $('.my_error_class').show(600);
                     $ownerAddressFormPlaceholder.show(1500);
                     $ownerAddressFormPlaceholder.append($clearfix);
                     appendHibernateErrors(parse);
@@ -787,12 +795,15 @@ function showOwnersTable(result) {
         if (result.hasOwnProperty(attributeValue) && attributeValue == 'addressInfo') {
             let $td = $('<td/>', {
                 text: result[attributeValue],
-                class: 'address_info'
+                class: 'address_info',
+                'data-owner-address-id': result['ownerAddressId']
             });
             $tr.append($td);
             continue;
         }
-        if (result.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
+        if (result.hasOwnProperty(attributeValue) &&
+            attributeValue != 'ownerId' &&
+            attributeValue != 'ownerAddressId') {
             console.log(result[attributeValue]);
             let $td = $('<td/>', {
                 text: result[attributeValue]
@@ -810,6 +821,7 @@ function showOwnersTable(result) {
             deleteOwner($(this).parent().attr('id'));
             $tr.remove();
             checkIfEmptyOwnerTable();
+            checkIfAddressIsPicked($(this).parent());
             $deletedOwnerVersionTwo.fadeIn(300).delay(3500).fadeOut(300);
         }
     })
@@ -1313,7 +1325,7 @@ function makeAjaxCall($findOwnerButton, ownerType, $resultDiv) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/owner/search",
+            url: projectPathPrefix + "/resources/owner/search",
             accept: "application/json",
             data: JSON.stringify(searchQuery),
             success: function (result) {
@@ -1442,11 +1454,68 @@ function showResults(success, $resultDiv) {
         console.log("look up");
         let $fidnResourcesByOwnerBtn = $('<button/>', {
             id: '',
-            class: 'btn btn-success pull-right',
-            text: ''
+            class: 'btn btn-success pull-left',
+            text: 'Look Up Resources'
         });
 
         // Yura TODO
+
+        $resultDiv.append($fidnResourcesByOwnerBtn);
+
+        let choosenOwnerId = 'none';
+
+        $select.on('change', function () {
+            choosenOwnerId = this.value;
+            console.log('choosen owner id: ' + choosenOwnerId);
+        });
+
+        $fidnResourcesByOwnerBtn.on('click', function (e) {
+            e.preventDefault();
+
+            if (choosenOwnerId != 'none') {
+                $.ajax({
+                    type: 'GET',
+                    url: projectPathPrefix +'/api/resources/lookup//owners/'+choosenOwnerId+'/groupedresources',
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    success: function(result){
+                        var divResult = $('#lookup-result-by-owner-grouped');
+                        divResult.empty();
+                        let divEl = $('<div/>',{
+                        	class: 'list-group',
+                        	id: 'grouped-resources',
+                        }).appendTo(divResult);
+                        
+                        for (var j = 0; j < result.length; j++){
+                        	let aEl = $('<a/>', {
+                        		class: 'list-group-item',
+                        		'data-value' : choosenOwnerId,
+                        		'data-name' : result[j].resourceTypeName,
+                        		text: result[j].resourceTypeName
+                        	}).appendTo(divEl);
+                        	let spanEl = $('<span/>', {
+                        		class: 'badge',
+                        		text: result[j].resourceRecordsCount
+                        	}).appendTo(aEl);
+                        }
+
+                        getResourcesByOwnerIdAndResourceTypeName('#grouped-resources');
+                        divResult.show();
+                    },
+                    error: function (result) {
+                        $('#no-inputs-error').empty();
+                        $('#no-inputs-error').show();
+                        $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
+
+                    }
+
+                });
+
+            } else {
+                alert("Owner hasn't been chosen")
+            }
+
+        });
 
     } else if (registrar){
         let $chooseOwnerBtn = $('<button/>', {
@@ -1522,12 +1591,15 @@ function appendOwnerToTable(result, choosenOwnerId) {
         if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue == 'addressInfo') {
             let $td = $('<td/>', {
                 text: concreteOwner[attributeValue],
-                class: 'address_info'
+                class: 'address_info',
+                'data-owner-address-id': concreteOwner['ownerAddressId']
             });
             $tr.append($td);
             continue;
         }
-        if (concreteOwner.hasOwnProperty(attributeValue) && attributeValue != 'ownerId') {
+        if (concreteOwner.hasOwnProperty(attributeValue) &&
+            attributeValue != 'ownerId' &&
+            attributeValue != 'ownerAddressId') {
             console.log(concreteOwner[attributeValue]);
             let $td = $('<td/>', {
                 text: concreteOwner[attributeValue]
@@ -1544,9 +1616,23 @@ function appendOwnerToTable(result, choosenOwnerId) {
             console.log($(this).parent().attr('id'));
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
+            // $deletedOwner.show(500);
             checkIfEmptyOwnerTable();
+            checkIfAddressIsPicked($(this).parent());
         }
     })
+}
+
+function checkIfAddressIsPicked(ownerTr){
+    let ownerAddressId = ownerTr.find('td.address_info').attr('data-owner-address-id');
+
+    if (ownerAddressId == $idAddressHiddenInput.attr('value')){
+        $idAddressHiddenInput.val(0);
+        $addressButtons.show(1500);
+        $concretePickedAddress.empty();
+        $fromOwnerAddress.addClass('display_none');
+    }
+
 }
 
 function buildOptions(success, $select) {
@@ -1618,5 +1704,4 @@ const searchByCompanyCharacteristicsMetadata = {
 const searchOwnerAddressMetadata = [
     [new FieldAndSize('Region', 6, 'Lvivskiy'), new FieldAndSize('District', 6, 'Drogobytskiy')],
     [new FieldAndSize('Locality', 6, 'Boryslav'), new FieldAndSize('Street', 6, 'Kovaliva')],
-    [new FieldAndSize('Postal index', 4, '83200'), new FieldAndSize('Building', 4, '37'), new FieldAndSize('Apartment', 4, '17')]
-];
+    [new FieldAndSize('Postal index', 4, '83200'), new FieldAndSize('Building', 4, '37'), new FieldAndSize('Apartment', 4, '17')]];

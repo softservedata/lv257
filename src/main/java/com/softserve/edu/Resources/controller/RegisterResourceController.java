@@ -1,14 +1,12 @@
 package com.softserve.edu.Resources.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.softserve.edu.Resources.dto.FieldErrorDTO;
-import com.softserve.edu.Resources.dto.OwnerDTO;
-import com.softserve.edu.Resources.dto.SearchDTO;
-import com.softserve.edu.Resources.dto.ValidationErrorDTO;
-import com.softserve.edu.Resources.entity.Address;
-import com.softserve.edu.Resources.entity.Owner;
+import com.softserve.edu.Resources.dto.*;
+import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.service.AddressService;
 import com.softserve.edu.Resources.service.OwnerService;
+import com.softserve.edu.Resources.service.ResourceService;
+import com.softserve.edu.Resources.service.ResourceTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/resources")
@@ -35,9 +33,45 @@ public class RegisterResourceController {
     @Autowired
     OwnerService ownerService;
 
+    @Autowired
+    ResourceTypeService resourceTypeService;
+
+    @Autowired
+    ResourceService resourceService;
+
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registerResource() {
+    public String registerResourceGetPage() {
         return "registerResource";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO, HttpSession session) {
+
+        ValidationErrorDTO validationErrorDTO = resourceService.validateResourceImpl(resourceImplDTO);
+
+        if (validationErrorDTO.getFieldErrors().isEmpty()) {
+            long addressId = resourceImplDTO.getAddressId();
+            Address resourceAddress = addressService.getById(addressId);
+            ResourceType resourceTypeWithProperties = resourceTypeService.findWithPropertiesByID(resourceImplDTO.getResourceTypeId());
+
+            Resource resource = new Resource();
+            resource.setAddress(resourceAddress);
+
+            resourceService.addResource(resource);
+            resourceService.addResourceOwnings(resource, resourceImplDTO);
+            resourceService.addResourceImpl(resource, resourceTypeWithProperties, resourceImplDTO.getPropertiesAndValues());
+
+            // use this dto just because I don't want to make another dto with same two String fields
+            FieldErrorDTO redirectUrl = new FieldErrorDTO("redirect", "registration");
+
+            session.setAttribute("resourceRegistered", true);
+            return new ResponseEntity<>(redirectUrl, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
+        }
+
+
     }
 
     @ResponseBody
@@ -135,5 +169,19 @@ public class RegisterResourceController {
 
         return new ResponseEntity<>(addresses, HttpStatus.OK);
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/api/{resourceTypeId}", method = RequestMethod.GET)
+    public List<ConstrainedProperty> searchProperties(@PathVariable String resourceTypeId){
+        System.out.println("resource type id to search properties: " + resourceTypeId);
+
+        ResourceType withPropertiesByID = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
+
+        Set<ConstrainedProperty> properties = withPropertiesByID.getProperties();
+
+        return new ArrayList<>(properties);
+    }
+
+
 
 }

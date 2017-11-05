@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
         verificationTokenDAO.makeTransient(verificationToken);
     }
 
-    private boolean emailExist(final String email) {
+    public boolean emailExist(final String email) {
 
         User user = userDAO.findByEmail(email);
 

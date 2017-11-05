@@ -93,7 +93,7 @@ public class MainTest {
         String tableName = "cars";
         System.out.println(" a)first parameter is tableName: " + tableName);
         System.out.println(" b)second parameter is a Map with the same key/value as previous Map");
-        String sql2Test = utilService.lookUpByResouceType(tableName, valuesToSearch, resourceProperties);
+        String sql2Test = utilService.queryForJdbcTemplate(tableName, valuesToSearch, resourceProperties);
         System.out.println();
         System.out.println("Result of 'lookUpByResourceType' method is: " + "\n" + sql2Test);
 

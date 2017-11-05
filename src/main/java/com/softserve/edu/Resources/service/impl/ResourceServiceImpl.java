@@ -4,22 +4,18 @@ import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
-import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.dto.ResourceImplDTO;
+import com.softserve.edu.Resources.dto.ValidationErrorDTO;
+import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.exception.ResourceNotFoundException;
+import com.softserve.edu.Resources.service.OwnerService;
 import com.softserve.edu.Resources.service.ResourceService;
 import com.softserve.edu.Resources.util.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -29,6 +25,9 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Autowired
     ResourceDao resourceDao;
+
+    @Autowired
+    OwnerService ownerService;
 
     @Autowired
     QueryBuilder queryBuilder;
@@ -93,7 +92,7 @@ public class ResourceServiceImpl implements ResourceService {
             }
         }
 
-        String queryForDao = queryBuilder.lookUpByResouceType(tableName, valuesToSearch, resourceProperties);
+        String queryForDao = queryBuilder.queryForJdbcTemplate(tableName, valuesToSearch, resourceProperties);
 
         return resourceDao.findResourcesByResourceType(queryForDao, valuesToSearch, resourceProperties);
     }
@@ -115,8 +114,9 @@ public class ResourceServiceImpl implements ResourceService {
 
         Optional<ResourceType> resourceType = resourceTypeDAO.findByTypeName(resourceTypeName);
 
+        String tableName;
         if (resourceType.isPresent()) {
-            String tableName = resourceType.get().getTableName();
+            tableName = resourceType.get().getTableName();
         } else {
             throw new ResourceNotFoundException("You've requested wrong data.");
         }
@@ -125,17 +125,64 @@ public class ResourceServiceImpl implements ResourceService {
         
         System.out.println(resourceProperties);
 
+        String sqlQuery = queryBuilder.namedQueryForLookingByResourcesIds(tableName, resourceProperties);
         
-        
-        return null;
+        return resourceDao.findResourcesByOwnerAndResourcesType(sqlQuery, resourceProperties, resourcesIds);
     }
 
-    // @Transactional
-    // @Override
-    // public List<Long> findResourcesIdsByOwner(long ownerId, String
-    // resourceTypeName){
-    //
-    // return resourceDao.findResourcesIdsByOwner(ownerId, resourceTypeName);
-    // }
+    @Transactional
+    @Override
+    public void addResource(Resource resource) {
+        resourceDao.addResource(resource);
+    }
 
+    @Transactional
+    @Override
+    public void addResourceOwnings(Resource resource, ResourceImplDTO resourceImplDTO) {
+        long[] ownerIds = resourceImplDTO.getOwnerIds();
+        Arrays.stream(ownerIds)
+                .forEach(ownerId -> {
+                    Owner ownerById = ownerService.getOwnerById(ownerId);
+                    Optional<ResourceType> resourceTypeById = resourceTypeDAO.findById(resourceImplDTO.getResourceTypeId());
+                    ResourceOwning resourceOwning = new ResourceOwning();
+                    resourceOwning.setOwner(ownerById);
+                    resourceOwning.setResourceType(resourceTypeById.get());
+                    resourceOwning.setResource(resource);
+
+                    resourceDao.addResourceOwning(resourceOwning);
+                });
+    }
+
+    @Transactional
+    @Override
+    public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues) {
+        String readyQuery = queryBuilder.buildInsertResourceImplQuery(resourceType, propertiesAndValues);
+        System.out.println(readyQuery);
+        resourceDao.addResourceImpl(readyQuery, resourceType, resource.getId(),propertiesAndValues);
+    }
+
+    @Override
+    public ValidationErrorDTO validateResourceImpl(ResourceImplDTO resourceImplDTO) {
+        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
+
+        Map<String, String> propertiesAndValues = resourceImplDTO.getPropertiesAndValues();
+        long resourceTypeId = resourceImplDTO.getResourceTypeId();
+        ResourceType resourceTypeWithProperties = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+
+        Set<ConstrainedProperty> properties = resourceTypeWithProperties.getProperties();
+
+        properties.forEach(constrainedProperty -> {
+            String columnName = constrainedProperty.getProperty().getColumnName();
+            String columnValue = propertiesAndValues.get(columnName);
+
+            if ((columnValue == null || columnValue.isEmpty()) && constrainedProperty.isRequired()){
+                validationErrorDTO.addFieldError(columnName, "This field is required");
+            } else if(!columnValue.matches(constrainedProperty.getProperty().getPattern())){
+                validationErrorDTO.addFieldError(columnName, "This field do not matches valid format");
+            }
+        });
+
+
+        return validationErrorDTO;
+    }
 }

@@ -34,9 +34,12 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public UserDetails getUserDetailsByDTO(UserProfileDTO userProfileDTO) {
         long id = userProfileDTO.getId();
-        UserDetails createdUserDetails = userDetailsDAO.findByUserId(id);
-        createdUserDetails.setFirstName(userProfileDTO.getFirstName());
-        return createdUserDetails;
+        Optional<UserDetails> optUD = userDetailsDAO.findByUserId(id);
+        if (!optUD.isPresent())
+            throw new IllegalArgumentException("Requested User Detail's ID is not found"); // should be not found exception
+        UserDetails userDetails = optUD.get();
+        userDetails.setFirstName(userProfileDTO.getFirstName());
+        return userDetails;
     }
 
     @Override
@@ -44,7 +47,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     public UserProfileDTO createUserProfileDTO(Principal principal){
         String userName = principal.getName();
         User user = userService.findByEmail(userName);
-        UserDetails details = userDetailsService.getUserDetailsByUserId(user.getId());
+        Optional<UserDetails> optDetails = userDetailsService.getUserDetailsByUserId(user.getId());
+        System.out.printf("id is %d", user.getId());
+        if (!optDetails.isPresent())
+            throw new IllegalArgumentException("Provided user detail's ID is illegal"); // not found exception should be
+        UserDetails details = optDetails.get();
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         userProfileDTO.setId(details.getId());
         userProfileDTO.setFirstName(details.getFirstName());
@@ -72,8 +79,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public UserProfileDTO getUserProfileByUserId(Long id){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
-//        userProfileDTO.setFirstName("String");
-//        userProfileDTO.getFirstName(user.getFirstName(id));
+
         return userProfileDTO;
     }
 

@@ -19,6 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
+@RequestMapping(value = "/api/resources/lookup", method = RequestMethod.GET)
 public class LookUpController {
 
     @Autowired
@@ -27,14 +28,14 @@ public class LookUpController {
     @Autowired
     ResourceService resourceService;
 
-    @RequestMapping(value = "/lookUp/resourceProperties/{resourceTypeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/resourcetypes/{resourceTypeId}", method = RequestMethod.GET)
 
     public List<ResourceProperty> loadSpecResourceProperty(@PathVariable String resourceTypeId) {
 
         ResourceType resourceType = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
 
         if (resourceType == null) {
-            throw new ResourceNotFoundException("No infromation was found by your request");
+            throw new ResourceNotFoundException("No resourece type was found by your request");
         }
 
         List<ConstrainedProperty> constraintProperties = resourceTypeService.getSearchableProperties(resourceType);
@@ -46,14 +47,14 @@ public class LookUpController {
         }
 
         if (resourceProperties.isEmpty()) {
-            throw new ResourceNotFoundException("No infromation was found by your request");
+            throw new ResourceNotFoundException("No resource properties were found by your request");
         }
         Collections.sort(resourceProperties);
         return resourceProperties;
 
     }
 
-    @RequestMapping(value = "/lookUp/inputValues", method = RequestMethod.POST)
+    @RequestMapping(value = "/inputedvalues/foundresources", method = RequestMethod.POST)
     public List<GenericResource> getValuesFromForm(@RequestBody GenericResourceDTO resourceDTO) {
 
         List<GenericResource> genResList = resourceService.findResourcesByResourceType(resourceDTO);
@@ -65,23 +66,27 @@ public class LookUpController {
         return genResList;
     }
 
-    @RequestMapping(value = "/lookUp/{ownerId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/owners/{ownerId}/groupedresources", method = RequestMethod.GET)
     public List<GroupedResourceCount> findAllOwnerResourcesGroupedByResourceType(@PathVariable String ownerId) {
 
-        List<GroupedResourceCount> groupedRescorces = resourceService
+        List<GroupedResourceCount> groupedResources = resourceService
                 .findResourcesCountGroupedByResourceTypeForOwner(ownerId);
 
-        if (groupedRescorces.isEmpty()) {
+        if (groupedResources.isEmpty()) {
             throw new ResourceNotFoundException("No infromation was found by your request");
         }
 
-        return groupedRescorces;
+        return groupedResources;
     }
 
-    @RequestMapping(value = "/lookUp/owner/{ownerId}/resourcetype/{resourceTypeName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/owners/{ownerId}/resourcetypes/{resourceTypeName}/foundresources", method = RequestMethod.GET)
     public List<GenericResource> lookUpByOwner(@PathVariable long ownerId, @PathVariable String resourceTypeName) {
 
-        List<GenericResource>  genericResources = resourceService.findResourcesByOwnerAndType(ownerId, resourceTypeName);
+        List<GenericResource> genericResources = resourceService.findResourcesByOwnerAndType(ownerId, resourceTypeName);
+
+        if (genericResources.isEmpty()) {
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
 
         return genericResources;
     }

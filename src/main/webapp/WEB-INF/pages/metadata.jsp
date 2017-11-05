@@ -12,7 +12,6 @@
 <link href="${contextPath}/resources/css/nestable.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css"
         rel="stylesheet" >
-<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" >
 <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap.min.css" rel="stylesheet" >
 <link rel="stylesheet" href="${contextPath}/resources/css/hierarchy-select.min.css">
 <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap-select.min.css">

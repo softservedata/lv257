@@ -15,10 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.Valid;
@@ -120,6 +117,12 @@ public class RegistrationUserController {
         user.setEnabled(true);
         userService.deleteVerificationToken(verificationToken);
         return "registrationConfirm";
+    }
+
+    @RequestMapping(value = "/checkemail", method = RequestMethod.POST)
+    public @ResponseBody boolean checkEmail(@RequestBody String email){
+
+        return userService.emailExist(email);
     }
 
     private User createUserAccount(UserDTO userDTO, BindingResult result) {

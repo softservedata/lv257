@@ -83,7 +83,7 @@
 
                                     <td>${request.resourceType}</td>
                                     <td>${request.resourcesAdmin.username}</td>
-                                    <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                     <td>${request.update.toString().split('\\.')[0]}</td>
                                     <td>
                                         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Responce</button>
@@ -169,7 +169,7 @@
                                     <tr>
                                         <td>${request.resourceType}</td>
                                         <td>${request.resourcesAdmin.username}</td>
-                                        <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                         <td>${request.update.toString().split('\\.')[0]}</td>
                                     </tr>
                                 </c:forEach>
@@ -229,7 +229,7 @@
                                     <tr>
                                         <td>${request.resourceType}</td>
                                         <td>${request.resourcesAdmin.username}</td>
-                                        <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                         <td>${request.update.toString().split('\\.')[0]}</td>
                                     </tr>
                                 </c:forEach>
@@ -286,7 +286,7 @@
                                     <tr>
                                         <td>${request.resourceType}</td>
                                         <td>${request.resourcesAdmin.username}</td>
-                                        <td><a href="/resources/info/${request.id}">Info about request</a></td>
+                                        <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                         <td>${request.update.toString().split('\\.')[0]}</td>
                                     </tr>
                                 </c:forEach>

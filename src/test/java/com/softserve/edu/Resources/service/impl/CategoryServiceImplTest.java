@@ -6,9 +6,7 @@ import com.softserve.edu.Resources.dto.ResourceTypeDTO;
 import com.softserve.edu.Resources.entity.ResourceCategory;
 import com.softserve.edu.Resources.entity.ResourceType;
 import com.softserve.edu.Resources.exception.CycleDependencyException;
-import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.RemovingCategoriesWithTypesException;
-import com.sun.org.apache.regexp.internal.RE;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +16,6 @@ import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -304,31 +301,5 @@ public class CategoryServiceImplTest {
         ResourceCategory expected2 = branchCategory2;
         ResourceCategory actual2 = categoryServiceSpy.mapFromDtoToResourceCategory(branchCategory2DTO);
         assertEquals(expected2, actual2);
-    }
-
-    @Test
-    public void getTypesByCategoryIdTest() {
-        doAnswer(invocation -> {
-            long id = invocation.getArgumentAt(0, long.class);
-            return allCategories.stream().filter(c -> c.getId().equals(id)).findFirst();
-        }).when(categoryServiceSpy).findCategoryById(anyLong());
-        List<ResourceType> expected1 = new ArrayList<>(Arrays.asList(type1, type2));
-        List<ResourceType> actual1 = categoryServiceSpy.getTypesByCategoryId(Optional.ofNullable(leafCategory_1_3.getId()));
-        assertTrue(actual1.containsAll(expected1));
-        assertTrue(expected1.containsAll(actual1));
-        assertTrue(actual1.size() == expected1.size());
-
-        when(categoryServiceSpy.findAllResourceCategories()).thenReturn(allCategories);
-        List<ResourceType> expected2 = new ArrayList<>(Arrays.asList(type1, type2, type3));
-        List<ResourceType> actual2 = categoryServiceSpy.getTypesByCategoryId(Optional.empty());
-        assertTrue(actual2.containsAll(expected2));
-        assertTrue(expected2.containsAll(actual2));
-        assertTrue(actual2.size() == expected2.size());
-    }
-
-    @Test(expected = InvalidResourceCategoryException.class)
-    public void getTypesByCategoryIdNullTest() {
-        doReturn(Optional.empty()).when(categoryServiceSpy).findCategoryById(anyLong());
-        categoryServiceSpy.getTypesByCategoryId(Optional.of(10L));
     }
 }

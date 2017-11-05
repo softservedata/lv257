@@ -1,10 +1,9 @@
 package com.softserve.edu.Resources.entity;
-import com.softserve.edu.Resources.Constants;
 
+import com.softserve.edu.Resources.Constants;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
-
 import java.util.UUID;
 
 /**
@@ -12,8 +11,7 @@ import java.util.UUID;
  */
 
 @Entity
-@Table(name = "DOCUMENTS")
-public class Document {
+public class Avatar {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private long id_document;
@@ -30,7 +28,7 @@ public class Document {
     @Transient
     private MultipartFile file;
 
-    public Document() {
+    public Avatar() {
         this.code = "file" + UUID.randomUUID().toString().substring(26).toUpperCase();
 
     }
@@ -71,9 +69,9 @@ public class Document {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Document)) return false;
+        if (!(o instanceof Avatar)) return false;
 
-        Document document = (Document) o;
+        Avatar document = (Avatar) o;
 
         if (id_document != document.id_document) return false;
         if (getCode() != null ? !getCode().equals(document.getCode()) : document.getCode() != null) return false;

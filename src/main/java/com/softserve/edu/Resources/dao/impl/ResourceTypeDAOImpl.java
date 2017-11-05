@@ -37,7 +37,10 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
 
     @Override
     public void create(ResourceType resourceType) {
-
+        String queryCreateType = "update ResourceType rt set rt.instantiated = true where rt = :resourceType";
+        em.createQuery(queryCreateType)
+                .setParameter("resourceType", resourceType)
+                .executeUpdate();
     }
 
     @Override
@@ -53,25 +56,24 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
     }
 
 
-
     @Override
     public ResourceType findWithPropertiesByID(Long resourceTypeID) {
-        
+
         ResourceType resourceType = null;
         try {
             resourceType = (ResourceType) em.createQuery("SELECT r FROM ResourceType r LEFT JOIN FETCH r.properties WHERE r.id =:id")
                     .setParameter("id", resourceTypeID).getSingleResult();
         } catch (NoResultException e) {
-            
+
             String warn = "No resourceType found with Id:" + resourceTypeID + "";
-            
+
             LOGGER.warn(warn, e);
-            
+
         }
-        
+
         return resourceType;
     }
-    
+
     @Override
     public Optional<ResourceType> findByTypeName(String typeName) {
         final String queryByTypeName = "select i from ResourceType i where i.typeName = :name";
@@ -84,9 +86,7 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
             return super.findById(id);
         // fetch with loadgraph hint
         Map<String, Object> properties = new HashMap<>();
-        properties.put("javax.persistence.loadgraph",  em.getEntityGraph("TypesProperties"));
+        properties.put("javax.persistence.loadgraph", em.getEntityGraph("TypesProperties"));
         return Optional.ofNullable(em.find(ResourceType.class, id, properties));
     }
-
-
 }

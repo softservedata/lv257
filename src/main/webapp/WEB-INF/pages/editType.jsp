@@ -6,12 +6,15 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="request"/>
-<c:set var="idVal" value="${id}"/>
+<c:set var="idVal" value="${param.id}"/>
+<c:if test="${idVal == null}"><c:set var="titlePlaceholder" value="Add"/><c:set var="idVal" value="0"/></c:if>
+<c:if test="${idVal > 0}"><c:set var="titlePlaceholder" value="Edit"/></c:if>
+<c:if test="${idVal < 0}"><c:set var="titlePlaceholder" value="Clone"/></c:if>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add Resource definition</title>
+    <title>${titlePlaceholder} Resource definition</title>
     <jsp:include page="metadata.jsp"/>
 </head>
 <body>
@@ -21,13 +24,9 @@
 
         <div class="container">
             <ul class="nav nav-tabs">
-                <li><a href="/resources/viewTypes">View</a></li>
-                <li class="active"><a href="#">
-                    <c:if test="${idVal == 0}"><c:out value="Add"/></c:if>
-                    <c:if test="${idVal > 0}"><c:out value="Edit"/></c:if>
-                    <c:if test="${idVal < 0}"><c:out value="Clone"/></c:if>
-                </a></li>
-                <li><a href="/resources/requests">Requests</a></li>
+                <li><a href="${contextPath}/resources/viewTypes">View</a></li>
+                <li class="active"><a href="#">${titlePlaceholder}</a></li>
+                <li><a href="${contextPath}/resources/requests">Requests</a></li>
             </ul>
         </div>
         <div class="container">
@@ -39,10 +38,12 @@
                     <br>
                     <div class="row">
                         <div>
-                            <a href="ResourcesView.html" class="btn btn-primary" type="button">Clone existing</a>
+                            <a href="${contextPath}/resources/viewTypes" class="btn btn-primary" type="button">Clone
+                                existing</a>
                             <button id="define-btn"
                                     class="btn btn-primary <c:if test="${idVal != 0}"><c:out value="hidden"/></c:if>"
-                                    type="button">Define new</button>
+                                    type="button">Define new
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -66,10 +67,12 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="type-name">Type Name</label>
-                            <input id="type-name" name="typeName" type="text" class="form-control" required minlength="3"
-                                   pattern="[A-Z][a-zA-Z -]+" title="Alphabetical characters with dash or space as separator"
+                            <input id="type-name" name="typeName" type="text" class="form-control" required
+                                   minlength="3"
+                                   pattern="[A-Z][a-zA-Z -]+"
+                                   title="Alphabetical characters with dash or space as separator"
                             <%--pattern="${typeNamePattern}"--%>
-                                   placeholder="Enter the name of new resource type">
+                                   placeholder="Enter the name of resource type">
                             <%--placeholder="Enter the name of new resource type">--%>
                         </div>
                     </div>
@@ -77,8 +80,10 @@
                     <div class="row">
                         <div class="col-sm-6 col-xs-8 form-group">
                             <label for="table-name">Type's Table Name</label>
-                            <input id="table-name" name="tableName" type="text" class="form-control" required minlength="3"
-                                   pattern="[A-Z][a-z]+(_[A-Z][a-z]+)*" title="Type in Camel case names separated with underscores"
+                            <input id="table-name" name="tableName" type="text" class="form-control" required
+                                   minlength="3"
+                                   pattern="[A-Z][a-z]+(_[A-Z][a-z]+)*"
+                                   title="Type in Camel case names separated with underscores"
                             <%--pattern="${tableNamePattern}"--%>
                                    placeholder="Enter the name of resource's table">
                         </div>
@@ -98,7 +103,9 @@
                     </div>
                     <div class="container col-md-8">
                         <style>
-                            .centered { text-align: center;}
+                            .centered {
+                                text-align: center;
+                            }
                         </style>
                         <table id="assigned-props" class="table table-hover hidden">
                             <thead>
@@ -130,8 +137,8 @@
                 <br>
 
                 <script title="Current ResourceType's variables declaration">
-									var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
-									var categoryID;
+                    var resourceTypeID = <c:out value="${idVal != 0 ? idVal : 0}"/>;
+                    var categoryID;
                 </script>
                 <jsp:include page="dialogs/properties.jsp"/>
                 <script src="${contextPath}/resources/js/resourceTypes.js"></script>

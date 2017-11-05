@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 public class GenericResource {
 
     private int id;
-    // private Set<Owner> owners;
-    private int id_address;
     private Set<PropertyValue> propertyValues;
     
 //    private ResourceType type;
@@ -39,10 +37,7 @@ public class GenericResource {
         return this;
     }
 
-    /*
-     * public GenericResource setOwners(Set<Owner> owners) { this.owners =
-     * owners; return this; }
-     */
+ 
 
 //    public GenericResource setType(ResourceType type) {
 //        this.type = type;
@@ -57,10 +52,7 @@ public class GenericResource {
 //        return type;
 //    }
 
-    /*
-     * @Override public Set<Owner> getOwners() { return
-     * Collections.unmodifiableSet(owners); }
-     */
+    
 
 //    public GenericResource setResourceValues(Map<ResourceProperty, PropertyValue> resourceValues) {
 //        this.resourceValues = resourceValues;
@@ -87,14 +79,6 @@ public class GenericResource {
 //        values.forEach(value -> resourceValues.put(value.getType(), value));
 //    }
 
-    public int getId_Address() {
-        return id_address;
-    }
-
-    public void setId_Address(int id_address) {
-        this.id_address = id_address;
-    }
-
     public Set<PropertyValue> getPropertyValues() {
         return propertyValues;
     }
@@ -105,7 +89,7 @@ public class GenericResource {
 
     @Override
     public String toString() {
-        return "GenericResource [id=" + id + ", id_address=" + id_address + ", propertyValues=" + propertyValues + "]";
+        return "GenericResource [id=" + id + ", propertyValues=" + propertyValues + "]";
     }
 
     @Override
@@ -113,7 +97,6 @@ public class GenericResource {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
-        result = prime * result + id_address;
         result = prime * result + ((propertyValues == null) ? 0 : propertyValues.hashCode());
         return result;
     }
@@ -128,8 +111,6 @@ public class GenericResource {
             return false;
         GenericResource other = (GenericResource) obj;
         if (id != other.id)
-            return false;
-        if (id_address != other.id_address)
             return false;
         if (propertyValues == null) {
             if (other.propertyValues != null)

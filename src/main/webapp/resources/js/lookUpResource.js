@@ -4,10 +4,11 @@ $(document).ready(function(){
 
     $('#div-for-types').hide();
     $('#form-for-properties').hide();
-    $('#lookup-result').hide();
+    $('#lookup-result-by-owner-grouped').hide();
     $('#result-search').hide();
     $('#new-search').hide();
     $('#no-inputs-error').hide();
+    $('#div-for-owners').hide();
     var table = $('#result-search');
 
     // populating select with resource types depends on look Up type chosen
@@ -15,47 +16,41 @@ $(document).ready(function(){
         var lookUpType = $('#lookup_type').val();
         if (lookUpType == 'by-type'){
 
-			/*  $.ajax({
-			 type: 'GET',
-			 url: '/lookup/resourceTypes',
-			 contentType: 'application/json; charset=UTF-8',
-			 dataType: 'json',
-			 success: function(result){
-			 var select = $('#sel1-resource-types');
-			 select.empty().append('<option>select type</option>');
-			 for (var j = 0; j < result.length; j++){
-			 console.log(result[j].tableName + "--" + result[j].id);
-			 select.append("<option value='" + result[j].id + "'>" +result[j].typeName+ "</option>");
-			 }*/
+		
             $('#div-for-types').show();
-
-			/*  },
-			 error: function (result) {
-
-			 console.log('error');
-
-			 }
-			 });   */
+            $('#div-for-owners').hide();
+            $('#lookup-result-by-owner-grouped').hide();
+            $('#result-search').hide();
+            $('#new-search').hide();
+            $('#owner_search option:selected').prop('selected', false);
+            $('#owner_search option:first').prop('selected', 'selected').change();
+		
         } else if (lookUpType == 'by-owner') {
 
+        	$('#div-for-owners').show();
+        	
             $('#div-for-types').hide();
             $('#form-for-properties').hide();
-            $('#lookup-result').hide();
+            $('#lookup-result-by-owner-grouped').hide();
             $('#new-search').hide();
             $('#result-search').empty();
             $('#no-inputs-error').empty();
             $('#no-inputs-error').hide();
+            
 
 
             // here will be implemented next steps for looking up by owner
         } else {
+        	$('#div-for-owners').hide();
             $('#div-for-types').hide();
             $('#form-for-properties').hide();
-            $('#lookup-result').hide();
+            $('#lookup-result-by-owner-grouped').hide();
             $('#new-search').hide();
             $('#result-search').empty();
             $('#no-inputs-error').empty();
             $('#no-inputs-error').hide();
+            $('#owner_search option:selected').prop('selected', false);
+            $('#owner_search option:first').prop('selected', 'selected').change();
         }
     });
 
@@ -69,7 +64,7 @@ $(document).ready(function(){
         if (typeof resourceTypeId != 'undefined')
             $.ajax({
                 type: 'GET',
-                url: '/lookUp/resourceProperties/'+ resourceTypeId,
+                url: projectPathPrefix +'/api/resources/lookup/resourcetypes/'+ resourceTypeId,
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 success: function(result){
@@ -81,9 +76,15 @@ $(document).ready(function(){
                         form.append("<div class=\"form-group row\">" +
                             "<label for='"+result[j].title+"' class=\"col-sm-2 control-label\">" + result[j].title+ "</label>" +
                             "<div class=\"col-sm-10\">" +
-                            "<input type=\"text\" name= '" +result[j].columnName+ "' pattern= '"+result[j].pattern+"' title= '"+result[j].hint+"' class=\"form-control\" id='" +result[j].title+ "' placeholder='" + result[j].title +"'>" +
+                            "<input type=\"text\" name= '" +result[j].columnName+ "' oninvalid=\"this.setCustomValidity('"+result[j].hint+"')\"" +
+                            		" oninput=\"this.setCustomValidity('')\"  pattern= '"+result[j].pattern+"' class=\"form-control\"" +
+                            				" id='" +result[j].title+ "' placeholder='" + result[j].title +"'>" +
                             "</div>"+
                             "</div>");
+                        
+//                        $("#"+result[j].title).on("invalid", function(event) {
+//                       	 event.target.setCustomValidity(result[j].hint);
+//                       });
                     }
                     form.append("<div class=\"form-group row\">" +
                         "<div class=\"col-sm-offset-2 col-sm-10\">" +
@@ -143,41 +144,51 @@ $(document).ready(function(){
             e.preventDefault();
             $.ajax({
                 type: 'POST',
-                url: '/lookUp/inputValues',
+                url: projectPathPrefix +'/api/resources/lookup/inputedvalues/foundresources',
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(GenericResourceDTO),
                 dataType: 'json',
                 success: function(result){
                     console.log(result);
-//			        	$('#lookup-result').html(JSON.stringify(result));
-//			        	var divResult = $('#lookup-result');
-//			        	divResult.append("<p> id= "+  result[0].id + "; columnName " + result[0].propertyValues[0].type.columnName +
-//			        		"; value " +result[0].propertyValues[0].value+	"</p>");
-
                     // populating table
                     table.empty();
-                    var tableTag = $("<table id=\"dt\"></table>").appendTo(table);
+                    var tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
                     var header = $("<thead></thead>").appendTo(tableTag);
                     var rowHeader = $("<tr></tr>").appendTo(header);
+                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
                     for(var j = 0; j < result[0].propertyValues.length; j++) {
-                        $("<th>'" + result[0].propertyValues[j].type.property.title +"'</th>").appendTo(rowHeader);
+                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
                     }
 
-                    $("<th>More Info</th>").appendTo(rowHeader);
+                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
                     var tableBody = $("<tbody></tbody>").appendTo(tableTag);
 
                     for(var i = 0; i < result.length; i++) {
                         var bodyRow =  $("<tr></tr>").appendTo(tableBody);
+                        $(bodyRow).append("<td></td>")
                         for(var j = 0; j < result[i].propertyValues.length; j++) {
+                        	
                             $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
                         }
                         $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
                     }
+                    $("<br/>").appendTo(tableTag);
                     //DataTables plug-in
-                    $('#dt').DataTable({
-                        "processing": true,
+                    var modelTable = $('#dt').DataTable({
+                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+                    	"processing": true,
+                    	"columnDefs": [ {
+                                 "targets": 0,
+                                 "searchable": false,
+                                 "orderable": false,
+                             } ],
                         stateSave: true
                     });
+                    modelTable.on('order.dt search.dt', function () {
+                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
 
                     $('#result-search').show();
                     $('#new-search').show();
@@ -198,7 +209,8 @@ $(document).ready(function(){
 
     });
 
-
+    
+    
 
 });
 function objectifyForm(formArray) {//serialize array to json
@@ -208,4 +220,76 @@ function objectifyForm(formArray) {//serialize array to json
         returnArray[formArray[i]['name']] = formArray[i]['value'];
     }
     return returnArray;
+}
+
+function getResourcesByOwnerIdAndResourceTypeName(id){
+	let groupedResources = $(id).find('a');
+	$.each(groupedResources, function(i, item) {
+		$(item).click(function(e) {
+			groupedResources.removeClass('active');
+			$(item).addClass('active');
+			let ownerId = $(e.target).data('value');
+			let resourceTypeName = $(e.target).data('name');
+			$.ajax({
+                type: 'GET',
+                url: projectPathPrefix +'/api/resources/lookup/owners/'+ownerId+'/resourcetypes/'+resourceTypeName+'/foundresources',
+                contentType: 'application/json; charset=UTF-8',
+                dataType: 'json',
+                success: function(result){
+                    console.log(result);
+                    // populating table
+                    let table  = $('#result-search');
+                    table.empty();
+                    let tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
+                    let header = $("<thead></thead>").appendTo(tableTag);
+                    let rowHeader = $("<tr></tr>").appendTo(header);
+                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
+                    for(var j = 0; j < result[0].propertyValues.length; j++) {
+                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
+                    }
+
+                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
+                    let tableBody = $("<tbody></tbody>").appendTo(tableTag);
+
+                    for(var i = 0; i < result.length; i++) {
+                        let bodyRow =  $("<tr></tr>").appendTo(tableBody);
+                        $(bodyRow).append("<td></td>")
+                        for(var j = 0; j < result[i].propertyValues.length; j++) {
+                        	
+                            $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
+                        }
+                        $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeName+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
+                    }
+                    $("<br/>").appendTo(tableTag);
+                    //DataTables plug-in
+                    let modelTable = $('#dt').DataTable({
+                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+                    	"processing": true,
+                    	"columnDefs": [ {
+                                 "targets": 0,
+                                 "searchable": false,
+                                 "orderable": false,
+                             } ],
+                        stateSave: true
+                    });
+                    modelTable.on('order.dt search.dt', function () {
+                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
+
+                    $('#result-search').show();
+                    $('#new-search').show();
+                },
+                error: function (result) {
+
+                    $('#no-inputs-error').empty();
+                    $('#no-inputs-error').show();
+                    $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
+
+                }
+			});
+                    
+         })
+	})
 }
