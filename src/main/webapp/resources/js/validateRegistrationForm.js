@@ -5,9 +5,9 @@ $(document).ready(function(){
             email: {
                 required: true,
                 email: true,
-                remote: {
+/*                remote: {
                     
-                }
+                }*/
             },
             password: {
                 required: true,

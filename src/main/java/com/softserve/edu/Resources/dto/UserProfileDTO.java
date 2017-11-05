@@ -1,6 +1,7 @@
 package com.softserve.edu.Resources.dto;
 
 import com.softserve.edu.Resources.Constants;
+import com.softserve.edu.Resources.entity.Avatar;
 import com.softserve.edu.Resources.entity.User;
 
 import javax.persistence.*;
@@ -66,6 +67,15 @@ public class UserProfileDTO {
     private String phoneCountry;
     private String phoneOperator;
     private String phoneNumber;
+    private Avatar document;
+
+    public Avatar getDocument() {
+        return document;
+    }
+
+    public void setDocument(Avatar document) {
+        this.document = document;
+    }
 
     public UserProfileDTO() {
     }

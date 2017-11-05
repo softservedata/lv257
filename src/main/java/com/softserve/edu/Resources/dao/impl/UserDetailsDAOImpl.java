@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.lang.invoke.MethodHandles;
 import java.util.Optional;
 
@@ -34,11 +33,14 @@ public class UserDetailsDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
         return querySingleResult(queryUserDetails, "username", email);
     }
 
-    public UserDetails findByUserId(long id) {
-        Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id")
-                .setParameter("id", id);
-        UserDetails userDetails = (UserDetails) query.getSingleResult();
-        return userDetails;
+    public Optional<UserDetails> findByUserId(long id) {
+//        Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id")
+//                .setParameter("id", id);
+//        UserDetails userDetails = (UserDetails) query.getSingleResult();
+        String queryUser = "select i from UserDetails i where i.user.id = :id";
+
+//        return userDetails;
+        return querySingleResult(queryUser, "id", id);
     }
 
     public void save(UserDetails userDetails) {

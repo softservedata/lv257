@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.validator;
 
+import com.softserve.edu.Resources.entity.Avatar;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.springframework.validation.Errors;

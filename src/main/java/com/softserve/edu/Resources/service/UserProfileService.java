@@ -5,7 +5,6 @@ import com.softserve.edu.Resources.entity.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
-import java.util.Optional;
 
 public interface UserProfileService {
 
