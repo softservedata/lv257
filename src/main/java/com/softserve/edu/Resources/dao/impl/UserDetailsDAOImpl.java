@@ -34,12 +34,8 @@ public class UserDetailsDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
     }
 
     public Optional<UserDetails> findByUserId(long id) {
-//        Query query = entityManager.createQuery("select i from UserDetails i where i.id = :id")
-//                .setParameter("id", id);
-//        UserDetails userDetails = (UserDetails) query.getSingleResult();
         String queryUser = "select i from UserDetails i where i.user.id = :id";
 
-//        return userDetails;
         return querySingleResult(queryUser, "id", id);
     }
 

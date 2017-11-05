@@ -35,31 +35,6 @@ public class UserProfileDTO {
     private String bankId;
     private User user;
     private String gender;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getFileExtension() {
-        return fileExtension;
-    }
-
-    public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
-    }
-
-    public String getDocumentsURL() {
-        return documentsURL;
-    }
-
-    public void setDocumentsURL(String documentsURL) {
-        this.documentsURL = documentsURL;
-    }
-
     private String code;
     private String fileExtension;
     private String documentsURL;
@@ -176,6 +151,63 @@ public class UserProfileDTO {
         this.user = user;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setPhoneCountry(String phoneCountry) {
+        this.phoneCountry = phoneCountry;
+    }
+
+    public String getPhoneCountry() {
+        return phoneCountry;
+    }
+
+    public void setPhoneOperator(String phoneOperator) {
+        this.phoneOperator = phoneOperator;
+    }
+
+    public String getPhoneOperator() {
+        return phoneOperator;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
+
+    public String getDocumentsURL() {
+        return documentsURL;
+    }
+
+    public void setDocumentsURL(String documentsURL) {
+        this.documentsURL = documentsURL;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -234,35 +266,4 @@ public class UserProfileDTO {
                 '}';
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setPhoneCountry(String phoneCountry) {
-        this.phoneCountry = phoneCountry;
-    }
-
-    public String getPhoneCountry() {
-        return phoneCountry;
-    }
-
-    public void setPhoneOperator(String phoneOperator) {
-        this.phoneOperator = phoneOperator;
-    }
-
-    public String getPhoneOperator() {
-        return phoneOperator;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
 }

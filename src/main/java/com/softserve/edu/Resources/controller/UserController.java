@@ -63,17 +63,10 @@ public class UserController {
     public String profileGET0(ModelMap mm, Principal principal)
 //    public ModelAndView profileGET0(Model model, Principal principal, @RequestParam(value = "operation", required = false) String operation) {
     {
-        System.out.println("UserController line 55");
-
-        //OK
-
         if (principal == null) {
-            mm.addAttribute("message",
-                    "Please log in to see this page");
-//            mm.setViewName("403");
+            mm.addAttribute("message", "Please log in to see this page");
             return "403";
         } else {
-//            UserDetails nRequest = new UserDetails();
             UserProfileDTO userProfileDTO = userProfileService.createUserProfileDTO(principal);
             Avatar nDocument = new Avatar();
 
@@ -82,65 +75,12 @@ public class UserController {
 //            UserDetails userDetailsetails = userDetailsService.getUserDetailsByUserId(user.getId());
 //            Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
 //            mm.addAttribute("details", details.isPresent() ? details.get() : new UserDetails());
-
-            userProfileDTO.setGender("F");
-
             mm.addAttribute("details", userProfileDTO);
             mm.addAttribute("document", nDocument);
             mm.addAttribute("title", "Profile");
             return "profile";
         }
     }
-
-/*    //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/
-//    http://www.spring-source.ru/articles.php?type=manual&theme=articles&docs=article_10
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView profileGET0(ModelAndView modelAndView, Principal principal)
-//    public ModelAndView profileGET0(Model model, Principal principal, @RequestParam(value = "operation", required = false) String operation) {
-    {
-        System.out.println("UserController line 55");
-
-        //OK
-        if (principal == null) {
-            modelAndView.addObject("message",
-                    "Please log in to see this page");
-            modelAndView.setViewName("403");
-            return modelAndView;
-        } else {
-//            UserDetails nRequest = new UserDetails();
-            UserProfileDTO userProfileDTO = userProfileService.createUserProfileDTO(principal);
-            Avatar nDocument = new Avatar();
-
-            userProfileDTO.setGender("F");
-
-            modelAndView.addObject("details", userProfileDTO);
-            modelAndView.addObject("document", nDocument);
-            modelAndView.addObject("title", "Profile");
-            return modelAndView;
-        }
-    }*/
-
-/*    @RequestMapping(value = "/profile", method = RequestMethod.POST)
-//    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
-    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserProfileDTO userProfileDTO,
-                                     BindingResult bindingResult, ModelAndView modelAndView
-//            , UserProfileDTO userProfileDTO
-    ) throws Exception {
-
-        modelAndView.addObject("FieldError0", "FieldError0");
-        View view = modelAndView.getView();
-
-        if (bindingResult.hasErrors()) {
-            modelAndView.addObject("title", "bindingResult.hasErrors");
-            modelAndView.addObject("details", userProfileDTO);
-            modelAndView.setViewName("403");
-        } else {
-            modelAndView.addObject("title", "profile");
-            modelAndView.addObject("details", userProfileDTO);
-            userProfileService.saveUserProfile(userProfileDTO);
-        }
-        return modelAndView;
-    }*/
 
        @RequestMapping(value = "/profile", method = RequestMethod.POST)
 //    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
@@ -255,6 +195,8 @@ public class UserController {
 
         private final Logger logger = LoggerFactory.getLogger(FileController.class);
 
+
+        //unused yet
         @RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
         @ResponseBody
         public String uploadFile(@RequestParam("file") MultipartFile file) {// имена параметров (тут - "file") - из формы JSP.

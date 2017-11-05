@@ -8,24 +8,16 @@ import java.security.Principal;
 
 public interface UserProfileService {
 
-//    @Transactional
-//    Optional<UserDetails> getUserDetailsByDTO(UserProfileDTO userProfileDTO);
-//    UserDetails createUserDetailsEntity(UserProfileDTO userProfileDTO);
-
     @Transactional
     UserProfileDTO createUserProfileDTO(Principal principal);
 
     @Transactional
     UserDetails getUserDetailsByDTO(UserProfileDTO userProfileDTO);
 
-//    public UserProfileDTO createUserProfileDTO(long id);
-
     @Transactional
     UserProfileDTO getUserProfileByEmail(String email);
 
     UserProfileDTO getUserProfileByUserId(Long id);
-
-//    void saveOrUpdate(UserProfileDTO userProfileDTO);
 
     @Transactional
     void saveUserProfile(UserProfileDTO userDetailsDTO);

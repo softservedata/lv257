@@ -33,12 +33,4 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
         return userDetails;
     }
-
-    //    @Override
-    public void saveOrUpdate(UserDetails userDetails) {
-//        userDetailsDAO.save(userDetails);
-/*
-        System.out.println("======UserDetailsServiceImpl=========");
-        System.out.println(userDetails);*/
-    }
 }

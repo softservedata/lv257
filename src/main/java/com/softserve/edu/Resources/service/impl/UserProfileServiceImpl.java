@@ -79,8 +79,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional
     public UserProfileDTO getUserProfileByUserId(Long id){
         UserProfileDTO userProfileDTO = new UserProfileDTO();
-//        userProfileDTO.setFirstName("String");
-//        userProfileDTO.getFirstName(user.getFirstName(id));
+
         return userProfileDTO;
     }
 

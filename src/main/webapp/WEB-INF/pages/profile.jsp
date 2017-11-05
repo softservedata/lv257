@@ -94,8 +94,6 @@
 
             <%--Field for Middle name--%>
             <div class="form-group">
-                    <%--@declare id="middlename"--%>
-                    <%--<div class="font-bold">Middle name</div>--%>
                 <label for="middleName" style="float: left;">Middle name</label>
                 <sf:input type="text"
                           path="secondName"
@@ -141,7 +139,8 @@
                     </c:forEach>
                 </c:if>
             </div>
-            <%--Field for --%>
+
+            <%--Field for Phone number--%>
             <div class="form-group">
                 <label for="phone" style="float: left;">Phone number</label>
                 <sf:input type="text"
@@ -156,13 +155,6 @@
                     </c:forEach>
                 </c:if>
             </div>
-<%--
-            <div class="form-group">
-                <div class="font-bold">Phone number</div>
-                <sf:input type="text" path="phone" class="form-control"/>
-            </div>--%>
-            <%--<br>--%>
-            <%--<button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary">Save changes</button>--%>
         </sf:form>
     </div>
 
@@ -194,22 +186,6 @@
                 </button>
             </sf:form>
         </div>
-        <%--<div class="form-group">
-            <label for="file">Upload document</label>
-
-            <spring:bind path="document.file">
-
-                <input type="file" path="document.file" name="${status.expression}" value="${status.value}"
-                       id="file"/>
-                <c:if test="${status.error}">
-                    <c:forEach items="${status.errorMessages}" var="error">
-                        <span class="red"> ${error} </span>
-                    </c:forEach>
-                </c:if>
-
-            </spring:bind>
-        </div>--%>
-        <%--<br>--%>
     </div>
 
     <script src="${js}/jquery.validate.js"></script>

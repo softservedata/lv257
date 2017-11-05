@@ -42,11 +42,6 @@ $(function () {
 
         if ($profileForm.length) {
             $profileForm.validate({
-                // onfocusout: true,
-                // onkeyup: true,
-                // onclick: true,
-                // onsubmit: true,
-
                 rules: {
                     firstName: {
                         pattern: '!/[0-9]*/'
