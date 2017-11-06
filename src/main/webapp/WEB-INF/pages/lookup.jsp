@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%-- <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/> --%>
-	
+
 <html>
 <head>
     <title>${title}</title>
@@ -53,14 +53,14 @@
                     <!-- here will be data inserted by ajax request -->
                 </form>
                 <div class="row">
-                	<div class="container-fluid col-md-8"> 
+                	<div class="container-fluid col-md-8">
 		                <div class="form-group"  id="div-for-owners">
 		                    <script> var lookUpOwner = true </script>
 		                    <jsp:include page="components/searchOwner.jsp"/>
 		                </div>
-                	</div> 
+                	</div>
                 </div>
-                
+
                 <div id="no-inputs-error">
                 </div>
                 <br />
@@ -71,14 +71,14 @@
 				<div class="container" id="result-search">
 
 				</div>
-				
-				
+
+
 				<div id="new-search">
 				<button type="button" id="myButton"  class="btn btn-primary">
 				  Make a new Look Up
 				</button>
 				</div>
-				
+
 
 
             </div>

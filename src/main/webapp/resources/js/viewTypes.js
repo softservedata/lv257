@@ -184,26 +184,26 @@ $(document).ready(function () {
             case 4:
                 button = rowData.instantiated ? '' : '<button class="btn btn-primary btn-xs inst-button '
                     + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
-                    + '>Instantiate</button>';
+                    + ' title="Instantiate resource type">Instantiate</button>';
                 break;
             case 5:
                 button = '<a style="padding-top: 2px" target="_blank" href="' + cloneLink
                     + '" class="btn btn-link" data-id=' + rowData.typeId
-                    + '><span class="glyphicon glyphicon-plus-sign"</span></a>';
+                    + ' title="Clone resource type"><span class="glyphicon glyphicon-duplicate"</span></a>';
                 break;
             case 6:
                 button = rowData.instantiated ? '' : '<a style="padding-top: 2px" target="_blank" href="'
                     + editLink + '" class="btn btn-link edit-button ' + restrictAccess + 'data-id='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-pencil"</span></a>';
+                    + rowData.typeId + ' title="Edit resource type"><span class="glyphicon glyphicon-pencil"</span></a>';
                 break;
             case 7:
                 button = rowData.instantiated ? '' : '<button style="padding-top: 2px" class="btn btn-link remove-button '
                     + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
-                    + '><span class="glyphicon glyphicon-remove"</span></button>';
+                    + ' title="Remove resource type"><span class="glyphicon glyphicon-remove"</span></button>';
                 break;
             case 8:
-                button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-info-sign"</span></button>';
+                button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id=' + rowData.typeId
+                    + ' title="View resource type"><span class="glyphicon glyphicon-info-sign"</span></button>';
                 break;
         }
         return button;
