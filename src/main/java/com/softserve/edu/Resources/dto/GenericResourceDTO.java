@@ -6,6 +6,7 @@ import java.util.Map;
 import com.softserve.edu.Resources.entity.Address;
 import com.softserve.edu.Resources.entity.Owner;
 
+    
 public class GenericResourceDTO {
 
     private long id;
@@ -18,7 +19,6 @@ public class GenericResourceDTO {
     }
 
     public GenericResourceDTO(long id, Map<String, String> resourcePropertyValues) {
-
         this.id = id;
         this.resourcePropertyValues = resourcePropertyValues;
     }
@@ -26,7 +26,7 @@ public class GenericResourceDTO {
     public long getId() {
         return id;
     }
-
+    
     public void setId(long id) {
         this.id = id;
     }
