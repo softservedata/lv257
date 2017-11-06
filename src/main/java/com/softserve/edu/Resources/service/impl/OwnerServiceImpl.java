@@ -7,7 +7,6 @@ import com.softserve.edu.Resources.dto.ValidationErrorDTO;
 import com.softserve.edu.Resources.entity.Owner;
 import com.softserve.edu.Resources.entity.Person;
 import com.softserve.edu.Resources.service.OwnerService;
-import com.softserve.edu.Resources.util.QueryBuilder;
 import com.softserve.edu.Resources.util.ValidationDTOUtility;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,9 +32,6 @@ public class OwnerServiceImpl implements OwnerService {
 
     @Autowired
     private ValidationDTOUtility validationUtility;
-
-    @Autowired
-    private QueryBuilder queryBuilder;
 
     @Override
     public Owner addOwner(Owner owner) {
@@ -109,27 +107,22 @@ public class OwnerServiceImpl implements OwnerService {
 
             ownerDTOS.add(ownerDTO[0]);
         });
-//        for (Owner owner: owners) {
-//            ownerDTO[0] = new OwnerDTO();
-//            ownerDTO[0].setOwnerId(owner.getId())
-//                    .setOwnerType(owner.ownerType())
-//                    .setPhone(owner.getPhone())
-//                    .setAddressInfo(owner.addressInfo())
-//                    .setPersonalInfo(owner.customToString());
-//
-//            ownerDTOS.add(ownerDTO[0]);
-//        }
         return ownerDTOS;
     }
 
     @Override
     public List<Owner> findOwners(SearchDTO searchDTO) {
-        String readyQuery = queryBuilder.buildQuery(searchDTO);
+        // check if all fields and values are empty
+        List<Map.Entry<String, String>> nonEmptyValues = searchDTO.getFieldsAndValues().entrySet().stream()
+                .filter(stringStringEntry -> !stringStringEntry.getValue().isEmpty())
+                .collect(Collectors.toList());
 
-        if (readyQuery.isEmpty()){
+        // if so, return empty list
+        if (nonEmptyValues.isEmpty()) {
             return new ArrayList<>();
         }
-        return ownerDAO.findOwners(readyQuery);
+
+        return ownerDAO.findOwners(searchDTO);
     }
 
     @Override
