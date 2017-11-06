@@ -10,9 +10,7 @@ import java.util.List;
 @Component
 public class ValidationDTOUtility {
 
-    private ValidationErrorDTO errorDTO;
-
-    public ValidationDTOUtility(){}
+    private ValidationDTOUtility(){}
 
     /**
      * Builds simple dto object, containing info about errors in entity fields.
@@ -21,11 +19,11 @@ public class ValidationDTOUtility {
      * @return - dto, with field name and error message.
      */
     public ValidationErrorDTO getErrorDTO(BindingResult bindingResult){
-        errorDTO = new ValidationErrorDTO();
+        ValidationErrorDTO errorDTO = new ValidationErrorDTO();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
-        fieldErrors.forEach(error -> this.errorDTO.addFieldError(error.getField(), error.getDefaultMessage()));
+        fieldErrors.forEach(error -> errorDTO.addFieldError(error.getField(), error.getDefaultMessage()));
 
-        return this.errorDTO;
+        return errorDTO;
     }
 }

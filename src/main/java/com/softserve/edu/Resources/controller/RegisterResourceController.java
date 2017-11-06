@@ -10,6 +10,7 @@ import com.softserve.edu.Resources.service.ResourceTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.lang.invoke.MethodHandles;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/resources")
@@ -79,7 +83,7 @@ public class RegisterResourceController {
     public ResponseEntity<?> saveResourceAddress(@RequestBody @Valid Address address, BindingResult result) {
         logger.info("Saving address: " + address);
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             logger.warn("Errors in address object!");
 
             return new ResponseEntity<>(addressService.validationDTO(result), HttpStatus.BAD_REQUEST);
@@ -103,14 +107,15 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/owner", method = RequestMethod.POST)
-    public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner, BindingResult result){
+    public ResponseEntity<?> saveResourceOwnerWithAddress(@RequestBody @Valid Owner owner, BindingResult result) {
         logger.info("Saving owner: " + owner);
         System.out.println("Saving owner: " + owner);
         System.out.println("Saving owner's address: " + owner.getAddress());
 
-        if (result.hasErrors()){
+        ValidationErrorDTO validationErrorDTO;
+        if (result.hasErrors()) {
             logger.warn("Errors in the owner object!");
-            ValidationErrorDTO validationErrorDTO = ownerService.validationDTO(result);
+            validationErrorDTO = ownerService.getValidationDTO(result);
             System.out.println(validationErrorDTO.getFieldErrors());
 
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
@@ -137,12 +142,12 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/owner/search", method = RequestMethod.POST)
-    public ResponseEntity<?> searchOwner(@RequestBody SearchDTO searchDTO){
+    public ResponseEntity<?> searchOwner(@RequestBody SearchDTO searchDTO) {
         logger.debug("Searching owner with values: " + searchDTO.getFieldsAndValues().values());
 
         List<Owner> owners = ownerService.findOwners(searchDTO);
 
-        if (owners.isEmpty()){
+        if (owners.isEmpty()) {
             logger.warn("Owner was not found!");
 
             return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found. Please, try again."), HttpStatus.BAD_REQUEST);
@@ -156,12 +161,12 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/address/search", method = RequestMethod.POST)
-    public ResponseEntity<?> searchAddress(@RequestBody SearchDTO searchDTO){
+    public ResponseEntity<?> searchAddress(@RequestBody SearchDTO searchDTO) {
         logger.debug("Searching address with values: " + searchDTO.getFieldsAndValues().values());
 
         List<Address> addresses = addressService.findAddresses(searchDTO);
 
-        if (addresses.isEmpty()){
+        if (addresses.isEmpty()) {
             logger.warn("Address was not found!");
 
             return new ResponseEntity<>(new FieldErrorDTO("errors", "Nothing was found. Please, try again."), HttpStatus.BAD_REQUEST);
@@ -172,7 +177,7 @@ public class RegisterResourceController {
 
     @ResponseBody
     @RequestMapping(value = "/api/{resourceTypeId}", method = RequestMethod.GET)
-    public List<ConstrainedProperty> searchProperties(@PathVariable String resourceTypeId){
+    public List<ConstrainedProperty> searchProperties(@PathVariable String resourceTypeId) {
         System.out.println("resource type id to search properties: " + resourceTypeId);
 
         ResourceType withPropertiesByID = resourceTypeService.findWithPropertiesByID(Long.parseLong(resourceTypeId));
@@ -182,6 +187,10 @@ public class RegisterResourceController {
         return new ArrayList<>(properties);
     }
 
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public void handleUniqueException(){
+        System.out.println("exception was caught.");
+    }
 
 }

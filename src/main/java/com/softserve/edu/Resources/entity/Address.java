@@ -12,6 +12,11 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "address",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"locality", "street", "building", "apartment"})
+        }
+)
 @Entity
 /**
  * Main purpose of Address entity is to bind every {@code User}, {@code Owner}

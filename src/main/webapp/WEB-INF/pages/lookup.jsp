@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%-- <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/> --%>
-	
+
 <c:set var="user" value="${currentUser}"/>
 
 <html>
@@ -15,7 +15,7 @@
 <body>
 <jsp:include page="menu.jsp" />
 
-	
+
 	<div class="container">
 		<div align="center">
 			<h2>Resources Search</h2>
@@ -79,10 +79,10 @@
                 <br />
 				<div class="row">
 					<div class="container-fluid col-md-6" id="lookup-result-by-owner-grouped">
-				
+
 					</div>
 				</div>
-				
+
 				<div class="container" id="result-search">
 
 				</div>

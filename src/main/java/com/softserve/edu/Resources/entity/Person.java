@@ -7,10 +7,15 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "person")
+@Table(name = "person",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"passport_series", "passport_number"})
+        }
+)
 /**
  * Represents Person entity as a resource owner
  */
@@ -41,9 +46,9 @@ public class Person extends Owner {
     @Length(max = 6, min = 6, message = "This is invalid passport number.")
     private String passportNumber;
 
-    @Column(name = "identifier_number")
+    @Column(name = "identifier_number", unique = true)
     @JsonProperty("identifier_number")
-    @Pattern(regexp="[\\d]{10}", message = "Should be 10 digits. E.g., 1087963214")
+    @Pattern(regexp = "[\\d]{10}", message = "Should be 10 digits. E.g., 1087963214")
     private String identifierNumber;
 
     public Person() {
@@ -149,7 +154,7 @@ public class Person extends Owner {
 
     @Override
     public String customToString() {
-        return  firstName + " " +
+        return firstName + " " +
                 lastName + " " +
                 middleName + ", " +
                 identifierNumber + ", " +

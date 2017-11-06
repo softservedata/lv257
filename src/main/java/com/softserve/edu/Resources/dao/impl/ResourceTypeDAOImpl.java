@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository("resourceTypeDAO")
 public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> implements ResourceTypeDAO {
@@ -36,11 +37,27 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
     }
 
     @Override
-    public void create(ResourceType resourceType) {
-        String queryCreateType = "update ResourceType rt set rt.instantiated = true where rt = :resourceType";
-        em.createQuery(queryCreateType)
-                .setParameter("resourceType", resourceType)
-                .executeUpdate();
+    public void createTable(ResourceType resourceType) {
+        String uniqueStatement = resourceType.getProperties().stream()
+                .map(cp -> cp.isUnique() ? "CONSTRAINT UC_" + cp.getProperty().getColumnName()
+                        + " UNIQUE (" + cp.getProperty().getColumnName() + ")" : "")
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.joining(","));
+        StringBuilder createTableStatement = new StringBuilder()
+                .append("CREATE TABLE ")
+                .append(resourceType.getTableName())
+                .append(" (id BIGINT(20) NOT NULL,")
+                .append(resourceType.getProperties().stream()
+                        .map(property -> property.getProperty().getColumnName()
+                                + " "
+                                + property.getProperty().getValueType().getSqlTypeName())
+                        .collect(Collectors.joining(",\n")))
+                .append(",")
+                .append(!uniqueStatement.isEmpty() ? uniqueStatement + "," : "")
+                .append("CONSTRAINT PK_")
+                .append(resourceType.getTypeName())
+                .append(" PRIMARY KEY (id));");
+        em.createNativeQuery(createTableStatement.toString()).executeUpdate();
     }
 
     @Override

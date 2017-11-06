@@ -177,33 +177,33 @@ $(document).ready(function () {
      */
     function buildActionButtons(rowData, col) {
         let restrictAccess = rowData.administratorName !== currentAdmin ? 'disabled"' : '"';
-        let cloneLink = projectPathPrefix + '/resources/cloneType?typeId=' + -rowData.typeId;
+        let cloneLink = projectPathPrefix + '/resources/cloneType?typeId=' + rowData.typeId;
         let editLink = projectPathPrefix + '/resources/editType?typeId=' + rowData.typeId;
         let button;
         switch (col) {
             case 4:
                 button = rowData.instantiated ? '' : '<button class="btn btn-primary btn-xs inst-button '
                     + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
-                    + '>Instantiate</button>';
+                    + ' title="Instantiate resource type">Instantiate</button>';
                 break;
             case 5:
                 button = '<a style="padding-top: 2px" target="_blank" href="' + cloneLink
                     + '" class="btn btn-link" data-id=' + rowData.typeId
-                    + '><span class="glyphicon glyphicon-plus-sign"</span></a>';
+                    + ' title="Clone resource type"><span class="glyphicon glyphicon-duplicate"</span></a>';
                 break;
             case 6:
                 button = rowData.instantiated ? '' : '<a style="padding-top: 2px" target="_blank" href="'
                     + editLink + '" class="btn btn-link edit-button ' + restrictAccess + 'data-id='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-pencil"</span></a>';
+                    + rowData.typeId + ' title="Edit resource type"><span class="glyphicon glyphicon-pencil"</span></a>';
                 break;
             case 7:
                 button = rowData.instantiated ? '' : '<button style="padding-top: 2px" class="btn btn-link remove-button '
                     + restrictAccess + 'data-id=' + rowData.typeId + ' data-type=' + rowData.typeName
-                    + '><span class="glyphicon glyphicon-remove"</span></button>';
+                    + ' title="Remove resource type"><span class="glyphicon glyphicon-remove"</span></button>';
                 break;
             case 8:
-                button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id='
-                    + rowData.typeId + '><span class="glyphicon glyphicon-info-sign"</span></button>';
+                button = '<button style="padding-top: 2px"' + ' class="btn btn-link info-button" data-id=' + rowData.typeId
+                    + ' title="View resource type"><span class="glyphicon glyphicon-info-sign"</span></button>';
                 break;
         }
         return button;
@@ -279,7 +279,9 @@ $(document).ready(function () {
             type: "PUT",
             url: projectPathPrefix + "/api/instantiateType/" + id,
             success: function (jqXHR) {
-                $('button[data-id=' + id + ']').remove();
+                $('button[data-id=' + id + ']').filter(function () {
+                    return $(this).hasClass('inst-button') || $(this).hasClass('remove-button');
+                }).remove();
                 $('a.edit-button').filter(function () {
                     return $(this).attr('data-id') === id;
                 }).remove();
@@ -354,6 +356,7 @@ $(document).ready(function () {
                         '<td>' + item.valueType + '</td>' +
                         '<td>' + item.searchable + '</td>' +
                         '<td>' + item.required + '</td>' +
+                        '<td>' + item.unique + '</td>' +
                         '</tr>');
                 });
             }

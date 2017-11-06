@@ -28,6 +28,6 @@ public interface OwnerService {
 
     List<Owner> findOwners(SearchDTO searchDTO);
 
-    ValidationErrorDTO validationDTO(BindingResult result);
+    ValidationErrorDTO getValidationDTO(BindingResult result);
 
 }

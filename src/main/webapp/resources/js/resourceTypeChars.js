@@ -1,7 +1,7 @@
 const propertiesForm = $('#form_for_properties');
 const resourcePropsLabel = $('#resource_prop_label');
 const registerRecourceBtn = $('#register_resource_btn');
-const $alert = $('.alert');
+const $alert = $('.cuslom_alert');
 
 
 let resourceTypeId;

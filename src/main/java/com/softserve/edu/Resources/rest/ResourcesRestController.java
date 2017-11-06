@@ -5,6 +5,7 @@ import com.softserve.edu.Resources.dto.ResourceTypeBrief;
 import com.softserve.edu.Resources.dto.TypeInfoDTO;
 import com.softserve.edu.Resources.dto.ViewTypesDTO;
 import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.exception.ResourceTypeInstantiationException;
 import com.softserve.edu.Resources.exception.ResourceTypeNotFoundException;
 import com.softserve.edu.Resources.service.ResourceCategoryService;
@@ -13,6 +14,8 @@ import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +50,9 @@ public class ResourcesRestController {
     @RequestMapping(value = "/resource/requestId/{requestId}", method = RequestMethod.POST)
     public ResourceTypeBrief saveResourceType(@RequestBody ResourceTypeBrief resourceTypeBrief,
                                               @PathVariable long requestId) {
-        ResourceType resourceType = resourceTypeService.save(resourceTypeBrief);
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        User resourceAdmin = userService.getUser(loggedInUser.getName());
+        ResourceType resourceType = resourceTypeService.save(resourceTypeBrief, resourceAdmin);
         // save fake request for the sake of request history
         /*if (requestId == 0) {
             org.springframework.security.core.userdetails.User principal =
@@ -98,7 +103,7 @@ public class ResourcesRestController {
 
     @RequestMapping(value = "/instantiateType/{id}", method = RequestMethod.PUT)
     public void instantiateResourceType(@PathVariable Long id) {
-        resourceTypeService.create(id);
+        resourceTypeService.instantiateType(id);
     }
 
     @ExceptionHandler(ResourceTypeInstantiationException.class)

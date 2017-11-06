@@ -1,4 +1,12 @@
 <div id="resource_address_form_placeholder">
+
+    <div class="address_uniqueness_exception display_none">
+        <div class="alert alert-danger alert-dismissible fade in">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Address's city, street and building and apartment number already exists.
+        </div>
+    </div>
+
     <form class="form" id="static_address_form">
         <input type="hidden" id="resource_address_id" name="addressId">
         <div class="row">
