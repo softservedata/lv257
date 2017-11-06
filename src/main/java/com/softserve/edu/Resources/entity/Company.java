@@ -6,10 +6,15 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "company")
+@Table(name = "company",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"organization_form", "full_name", "short_name"})
+        }
+)
 /**
  * Represents Company entity as a resource owner
  */
@@ -30,7 +35,7 @@ public class Company extends Owner {
     @NotEmpty
     private String organizationForm;
 
-    @Column(name = "edrpo_number")
+    @Column(name = "edrpo_number", unique = true)
     @JsonProperty("edrpo_number")
     @Pattern(regexp="[\\d]{8}", message = "Should be 8 digits. E.g., 87963214")
     private String edrpoNumber;
