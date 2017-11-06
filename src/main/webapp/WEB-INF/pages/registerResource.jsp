@@ -38,7 +38,7 @@
 
                 <c:if test="${resourceRegistered}">
                     <div class="registered_resource_message">
-                        <div class="alert alert-success alert-dismissible fade in">
+                        <div class="cuslom_alert alert alert-success alert-dismissible fade in">
                             <button type="button" class="close" data-dismiss="alert">&times;</button>
                                 Resource instance was successfully registered.
                         </div>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <div id="deleted_owner" class="my_error_class">
+                <div id="deleted_owner" class="my_error_class display_none">
                     <h4> Owner was deleted. </h4>
                 </div>
 
@@ -162,6 +162,12 @@
 
                                     <div id="owner_form">
 
+                                        <div class="owner_uniqueness_exception display_none">
+                                            <div class="alert alert-danger alert-dismissible fade in">
+                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                <%--Owner with such --%>
+                                            </div>
+                                        </div>
 
                                         <div id="resource_new_owner_form">
 
@@ -191,11 +197,11 @@
                 </div>
 
 
-                <div id="deleted_address" class="my_error_class">
+                <div id="deleted_address" class="my_error_class display_none">
                     <h4> Address was deleted. </h4>
                 </div>
 
-                <div id="updated_address" class="my_success_class">
+                <div id="updated_address" class="my_success_class display_none">
                     <h4> Address was updated. </h4>
                 </div>
 
@@ -356,12 +362,12 @@
 </footer>
 
 
-<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <script src="${contextPath}/resources/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/js/additional-methods.js"></script>
-<script src="${contextPath}/resources/js/resourceTypeChars.js"></script>
 <script src="${contextPath}/resources/js/categories.js"></script>
 <script src="${contextPath}/resources/js/hierarchy-select.js"></script>
+<script src="${contextPath}/resources/js/resourceTypeChars.js"></script>
+<script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <script>
     projectPathPrefix = "<c:out value="${pageContext.request.contextPath}"/>"
 </script>
