@@ -3,10 +3,7 @@ package com.softserve.edu.Resources.service.impl;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.ConstrainedPropertyBrief;
 import com.softserve.edu.Resources.dto.ResourceTypeBrief;
-import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.ResourceCategory;
-import com.softserve.edu.Resources.entity.ResourceProperty;
-import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.InvalidResourceTypeException;
 import com.softserve.edu.Resources.exception.ResourceTypeInstantiationException;
@@ -56,7 +53,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public ResourceType save(ResourceTypeBrief resourceTypeBrief) {
+    public ResourceType save(ResourceTypeBrief resourceTypeBrief, User resourceAdmin) {
         Long id = resourceTypeBrief.getId();
         ResourceType resourceType;
         if (id == null || id == 0) {
@@ -112,6 +109,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
                           .collect(Collectors.toSet());
 
         resourceType.setProperties(typeProperties);
+        resourceType.setAssigner(resourceAdmin);
         return resourceTypeDAO.makePersistent(resourceType);
     }
 

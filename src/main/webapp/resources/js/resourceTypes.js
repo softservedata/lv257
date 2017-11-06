@@ -177,10 +177,11 @@ $('#save-type-btn').click(function (e) {
 	if (resourceRequestID !== 0) {
 		requestReference += '/requestId/' + resourceRequestID;
 	}
+	const requestURL = projectPathPrefix + "/api/resource" + requestReference;
 	$.ajax({
 		type: "POST",
 		contentType: "application/json",
-		url: projectPathPrefix + "/api/resource" + requestReference,
+		url: requestURL,
 		accept: "application/json",
 		data: JSON.stringify(resourceType),
 		success: function (response, status, jqxhr) {

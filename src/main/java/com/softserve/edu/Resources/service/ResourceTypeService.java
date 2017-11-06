@@ -3,6 +3,7 @@ package com.softserve.edu.Resources.service;
 import com.softserve.edu.Resources.dto.ResourceTypeBrief;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
 import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.entity.User;
 import com.softserve.edu.Resources.exception.ResourceTypeInstantiationException;
 import com.softserve.edu.Resources.exception.ResourceTypeNotFoundException;
 
@@ -16,7 +17,7 @@ public interface ResourceTypeService {
 
     long getTypeCount();
 
-    ResourceType save(ResourceTypeBrief resourceType);
+    ResourceType save(ResourceTypeBrief resourceType, User resourceAdmin);
 
     void remove(ResourceType resourceType);
 
