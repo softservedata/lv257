@@ -6,9 +6,6 @@
 <head>
     <title>${title}</title>
     <jsp:include page="metadata.jsp"/>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/dataTables.foundation.min.js"></script>
 
 </head>
 
@@ -18,7 +15,7 @@
 
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${contextPath}/resources/view">View</a></li>
+        <li><a href="${contextPath}/resources/viewType">View</a></li>
 
         <li><a href="${contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>
@@ -29,19 +26,20 @@
 
     <div class="table-responsive">
         <h3>Processed requests for resource type</h3>
+    </br>
 
         <table class="table table-hover table-condensed text-center table-bordered" id="requests">
             <thead>
             <tr>
                 <th>
                     <div class="text-center ">
-                        RequestedCategory
+                        Resource name
                     </div>
 
                 </th>
                 <th>
                     <div
-                            class="text-center ">Who requested
+                            class="text-center ">Requester
                     </div>
                     <div class="fht-cell"></div>
 
@@ -54,7 +52,7 @@
                 </th>
                 <th>
                     <div
-                            class="text-center">Who is processing
+                            class="text-center">Assigner
                     </div>
                     <div class="fht-cell"></div>
                 </th>
@@ -90,7 +88,7 @@
                 </c:choose>
 
 
-                    <td>${request.resourceType}</td>
+                    <td>${request.resourceName}</td>
                     <td>${request.requesterName}</td>
                     <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
@@ -110,6 +108,9 @@
     </div>
 </div>
 </body>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/dataTables.foundation.min.js"></script>
 <script>
     $(document).ready(function () {
         var table = $('#requests').DataTable({

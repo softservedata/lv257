@@ -33,8 +33,8 @@ public class ResponceMail extends Mail {
         return message.getComment();
     }
 
-    public String getResourceType() {
-        return resourceRequest.getResourceType();
+    public String getResourceName() {
+        return resourceRequest.getResourceName();
     }
 
 }

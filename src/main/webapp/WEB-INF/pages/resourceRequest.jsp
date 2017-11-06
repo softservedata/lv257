@@ -33,7 +33,7 @@
             <thead>
             <tr>
                 <th>
-                    <div class="text-center ">Resource Type</div>
+                    <div class="text-center ">Resource Name</div>
                 </th>
                 <th>
                     <div class="text-center ">Requester</div>
@@ -47,7 +47,7 @@
                     <div class="fht-cell"></div>
                 </th>
                 <th name="resourceAdm">
-                    <div class="text-center">Who is processing</div>
+                    <div class="text-center">Assigner</div>
                     <div class="fht-cell"></div>
                 </th>
                 <th></th>
@@ -58,7 +58,7 @@
             <c:forEach items="${resourceRequest}" var="request">
 
                 <tr class="active">
-                    <td>${request.resourceType}</td>
+                    <td>${request.resourceName}</td>
                     <td>${request.requesterName}</td>
                     <td><a href="/resources/info/${request.id}">details</a></td>
                     <td>${request.update.toString().split('\\.')[0]}</td>
@@ -66,19 +66,30 @@
 
                     <c:choose>
                         <c:when test="${request.assignerName!=null}">
-                            <td data-order="1" data-id=${request.id}>
+
                                 <c:choose>
                                     <c:when test="${request.assignerName==resourceAdmin}">
-                                        <a href="${pageContext.request.contextPath}/resources/addType">
-                                            <button class="btn btn-primary">Process</button>
-                                        </a>
-                                        <button class="btn btn-primary responce" type="button"
-                                                data-toggle="modal"
-                                                data-target="#myModal">Responce
-                                        </button>
+                                        <c:choose>
+                                            <c:when test="${request.resourceType!=null}">
+                                                <td data-order="1" data-id=${request.id}>
+                                                <button class="btn btn-primary">Accept/Instantiate</button>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td data-order="2" data-id=${request.id}>
+                                                <a href="${pageContext.request.contextPath}/resources/addType">
+                                                    <button class="btn btn-primary">Process</button>
+                                                </a>
+                                                <button class="btn btn-primary responce" type="button"
+                                                        data-toggle="modal"
+                                                        data-target="#myModal">Responce
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
 
                                     </c:when>
+
                                     <c:otherwise>
+                                        <td data-order="2" data-id=${request.id}>
                                         <a href="/add">
                                             <button class="btn btn-primary" disabled>Process</button>
                                         </a>
@@ -102,7 +113,7 @@
             </tbody>
         </table>
 
-
+    </br>
     </div>
     <div align="right">
         <a href="/resources/history">
@@ -141,7 +152,6 @@
                     <h6 class="modal-title">Purpose:</h6>
                     <form id="Purpose">
                         <input type="radio" name="radioName" value="Refinement" checked/> Refinement<br/>
-                        <input type="radio" name="radioName" value="Accept"/> Accept <br/>
                         <input type="radio" name="radioName" value="Decline"/> Decline <br/>
                     </form>
                 </div>
@@ -193,8 +203,8 @@
                         table.cell(cell.closest('tr'), 3).data(responceRequest.update);
                         table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
 //
-                        cell.replaceWith(" <td data-order=\"1\" data-id=" + id + ">\n" +
-                            "                       <a href=\"/resources/addType\">\n" +
+                        cell.replaceWith(" <td data-order=\"2\" data-id=" + id + ">\n" +
+                            "                       <a href=\"/resources/addType"+id+"\">\n" +
                             "                           <button class=\"btn btn-primary\">Process</button>\n" +
                             "                       </a>\n" +
                             "                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +

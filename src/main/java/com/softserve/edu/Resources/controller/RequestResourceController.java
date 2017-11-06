@@ -95,7 +95,7 @@ public class RequestResourceController {
     public String infoResourcesRequests(@PathVariable int id, Model model) {
 
         ResourceRequest request = requestService.getRequestById(id);
-        model.addAttribute("theme", request.getResourceType());
+        model.addAttribute("theme", request.getResourceName());
         model.addAttribute("info", request.getDescription());
         model.addAttribute("extension", request.getDocument().getFileExtension());
         model.addAttribute("documentURL", request.getDocument().getDocumentsURL());

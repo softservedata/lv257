@@ -33,7 +33,7 @@ public class VelocityMailService {
 
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("register", mail.getReceiver());
-        velocityContext.put("resourceType", mail.getResourceType());
+        velocityContext.put("resourceType", mail.getResourceName());
         velocityContext.put("resourceAdmin", mail.getResourceAdmin());
         velocityContext.put("status", mail.getStatus());
         velocityContext.put("comment", mail.getComment());

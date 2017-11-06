@@ -17,7 +17,7 @@
 <div class="container" >
     <h2>Details</h2>
 
-    <h3>Requested resource type:<span> ${theme}</span></h3>
+    <h3>Requested resource name:<span> ${theme}</span></h3>
 
     <h3>Description:<span> ${info}</span> </h3>
     <h3>Uploaded Document:</h3>

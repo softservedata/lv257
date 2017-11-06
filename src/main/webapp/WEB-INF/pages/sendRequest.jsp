@@ -66,10 +66,10 @@
                          method="POST" enctype="multipart/form-data">
 
                     <div class="form-group" >
-                        <spring:bind path="mRequest.resourceType">
+                        <spring:bind path="mRequest.resourceName">
 
                            <label>Requested resource type</label>
-                           <input type="text" path="mRequest.resourceType"  name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
+                           <input type="text" path="mRequest.resourceName"  name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
                            <c:if test="${status.error}">
                                <c:forEach items="${status.errorMessages}" var="error">
 

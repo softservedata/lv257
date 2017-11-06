@@ -81,7 +81,7 @@
 
                                 <tr>
 
-                                    <td>${request.resourceType}</td>
+                                    <td>${request.resourceName}</td>
                                     <td>${request.resourcesAdmin.username}</td>
                                     <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                     <td>${request.update.toString().split('\\.')[0]}</td>
@@ -167,7 +167,7 @@
                                 <tbody>
                                 <c:forEach items="${acceptedRequest}" var="request">
                                     <tr>
-                                        <td>${request.resourceType}</td>
+                                        <td>${request.resourceName}</td>
                                         <td>${request.resourcesAdmin.username}</td>
                                         <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                         <td>${request.update.toString().split('\\.')[0]}</td>
@@ -227,7 +227,7 @@
 
                                 <c:forEach items="${declinedRequest}" var="request">
                                     <tr>
-                                        <td>${request.resourceType}</td>
+                                        <td>${request.resourceName}</td>
                                         <td>${request.resourcesAdmin.username}</td>
                                         <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                         <td>${request.update.toString().split('\\.')[0]}</td>
@@ -284,7 +284,7 @@
                                 <tbody>
                                 <c:forEach items="${newRequest}" var="request">
                                     <tr>
-                                        <td>${request.resourceType}</td>
+                                        <td>${request.resourceName}</td>
                                         <td>${request.resourcesAdmin.username}</td>
                                         <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                         <td>${request.update.toString().split('\\.')[0]}</td>

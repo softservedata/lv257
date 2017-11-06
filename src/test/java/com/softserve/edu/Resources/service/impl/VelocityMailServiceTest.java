@@ -53,7 +53,7 @@ public class VelocityMailServiceTest {
         resourceAdmin.setUsername("ResourceAdmin@gmail.com");
 
 
-        request = new ResourceRequest().setResourceType("TestType")
+        request = new ResourceRequest().setResourceName("TestType")
                 .setStatus(ResourceRequest.Status.ACCEPTED).setRegister(register).setResourcesAdmin(resourceAdmin);
     }
 
