@@ -38,18 +38,16 @@ function sortByProperty(data, key, way) {
         return resourceCategorySelect.lastSelectedId ? resourceCategorySelect.lastSelectedId : 0;
     };
 
-    resourceCategorySelect = {
-        selectItem: function (id) {
-            selectItemById(id);
-        },
-        getSelectedId: function () {
-            return getSelectedId();
-        },
-        lastSelectedId: 0,
-        setSelectedId: function (id) {
-            this.lastSelectedId = id;
-        }
-    };
+	resourceCategorySelect = {
+		lastSelectedId: 0,selectItem: function(id) {
+			selectItemById(id);
+		},
+		getSelectedId: function () {
+			return getSelectedId();
+		},
+
+		setSelectedId: function (id) {this.lastSelectedId = id;
+	}};
 
     //Enable categories selectlist
     loadCategories();
@@ -230,8 +228,8 @@ function sortByProperty(data, key, way) {
      * Activate Nestable and build categories tree
      */
     function buildCategoriesNestableTree() {
-        let jqxhr = $.getJSON("/api/resources/categories")
-            .success(function (data) {
+							let jqxhr = $.getJSON(projectPathPrefix + "/api/resources/categories")
+									.success(function (data) {
                 data = sortNestedComponents(data, 'categoryname', '', 'asc');
                 lastTemporaryId = findLastDatabaseId(data);
                 let json = JSON.stringify(data);

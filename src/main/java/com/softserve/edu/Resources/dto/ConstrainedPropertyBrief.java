@@ -6,6 +6,7 @@ public class ConstrainedPropertyBrief {
     private long id;
     private boolean searchable;
     private boolean required;
+    private boolean unique;
 
     public ConstrainedPropertyBrief() {
     }
@@ -14,6 +15,7 @@ public class ConstrainedPropertyBrief {
         id = constrainedProperty.getProperty().getId();
         searchable = constrainedProperty.isSearchable();
         required = constrainedProperty.isRequired();
+        unique = constrainedProperty.isUnique();
     }
 
     public long getId() {
@@ -40,6 +42,15 @@ public class ConstrainedPropertyBrief {
 
     public ConstrainedPropertyBrief setRequired(boolean required) {
         this.required = required;
+        return this;
+    }
+
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public ConstrainedPropertyBrief setUnique(boolean unique) {
+        this.unique = unique;
         return this;
     }
 }

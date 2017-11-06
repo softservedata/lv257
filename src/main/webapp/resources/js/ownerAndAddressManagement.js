@@ -1325,7 +1325,7 @@ function makeAjaxCall($findOwnerButton, ownerType, $resultDiv) {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "/resources/owner/search",
+            url: projectPathPrefix + "/resources/owner/search",
             accept: "application/json",
             data: JSON.stringify(searchQuery),
             success: function (result) {
@@ -1384,7 +1384,8 @@ function buildOwnerSearchForm($concreteOwnerSearchDiv, rows) {
         let $input = $('<input/>', {
             type: 'text',
             class: 'form-control',
-            name: rows[i].userFriendlyName.toLowerCase().replace(" ", "_"),
+            // name: rows[i].userFriendlyName.toLowerCase().replace(" ", ""),
+            name: camelize(rows[i].userFriendlyName),
             id: rows[i].userFriendlyName,
             placeholder: rows[i].placeholder
         });
@@ -1406,6 +1407,13 @@ function buildOwnerSearchForm($concreteOwnerSearchDiv, rows) {
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function camelize(str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+        if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+        return index == 0 ? match.toLowerCase() : match.toUpperCase();
+    });
 }
 
 function showErrorMessage(error, $resultDiv) {
@@ -1454,7 +1462,7 @@ function showResults(success, $resultDiv) {
         console.log("look up");
         let $fidnResourcesByOwnerBtn = $('<button/>', {
             id: '',
-            class: 'btn btn-success pull-right',
+            class: 'btn btn-success pull-left',
             text: 'Look Up Resources'
         });
 
@@ -1479,18 +1487,53 @@ function showResults(success, $resultDiv) {
                     contentType: 'application/json; charset=UTF-8',
                     dataType: 'json',
                     success: function(result){
-                        var divRes = $('#lookup-result-by-owner-grouped');
-                        divRes.html(JSON.stringify(result));
+                        let divResult = $('#lookup-result-by-owner-grouped');
+                        divResult.empty();
+                        
+                        let panelTag = $('<div/>',{
+                        	class: 'panel panel-info'
+                        }).appendTo(divResult);
+                        
+                        let panelHeadTag = $('<div/>',{
+                        	class: 'panel-heading',
+                        }).appendTo(panelTag);
+                        
+                        let panelHTag = $('<h3/>',{
+                        	class: 'panel-title',
+                        	text: 'Grouped Resources with quantities'
+                        }).appendTo(panelHeadTag);
+                        
+                        let panelBodyTag = $('<p/>',{
+                        	class: 'panel-body',
+                        }).appendTo(panelTag);
+                        
+                        let panelBodyPTag = $('<div/>',{
+                        	text: 'Click some group to get the list of resources of special resource type',
+                        }).appendTo(panelBodyTag);
+                      
+                        let divEl = $('<div/>',{
+                        	class: 'list-group',
+                        	id: 'grouped-resources',
+                        }).appendTo(panelTag);
+                        
                         for (var j = 0; j < result.length; j++){
-                            console.log(result[j].resourceTypeName + "--" + result[j].resourceRecordsCount);
-
+                        	let aEl = $('<a/>', {
+                        		class: 'list-group-item',
+                        		'data-value' : choosenOwnerId,
+                        		'data-name' : result[j].resourceTypeName,
+                        		'data-id' : result[j].resourceTypeId,
+                        		text: result[j].resourceTypeName
+                        	}).appendTo(divEl);
+                        	let spanEl = $('<span/>', {
+                        		class: 'badge',
+                        		text: result[j].resourceRecordsCount
+                        	}).appendTo(aEl);
                         }
 
-                        divRes.show();
+                        getResourcesByOwnerIdAndResourceTypeName('#grouped-resources');
+                        divResult.show();
                     },
                     error: function (result) {
-//    	                var responce = JSON.parse(result);
-                        console.log(result.responseJSON.message);
                         $('#no-inputs-error').empty();
                         $('#no-inputs-error').show();
                         $('#no-inputs-error').html(result.responseJSON.message).css( "color", "red" );
@@ -1583,6 +1626,7 @@ function appendOwnerToTable(result, choosenOwnerId) {
                 'data-owner-address-id': concreteOwner['ownerAddressId']
             });
             $tr.append($td);
+            $tr.append($td);
             continue;
         }
         if (concreteOwner.hasOwnProperty(attributeValue) &&
@@ -1604,6 +1648,7 @@ function appendOwnerToTable(result, choosenOwnerId) {
             console.log($(this).parent().attr('id'));
             $tr.remove();
             $deletedOwner.fadeIn(300).delay(3500).fadeOut(300);
+            // $deletedOwner.show(500);
             checkIfEmptyOwnerTable();
             checkIfAddressIsPicked($(this).parent());
         }

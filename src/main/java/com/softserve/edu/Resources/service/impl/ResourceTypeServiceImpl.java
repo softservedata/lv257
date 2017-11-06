@@ -83,8 +83,8 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
                 .setCategory(category.get());
 
         Set<Long> updatedPropertyIDs = resourceTypeBrief.getProperties().stream()
-                .map(ConstrainedPropertyBrief::getId)
-                .collect(Collectors.toSet());
+                                               .map(ConstrainedPropertyBrief::getId)
+                                               .collect(Collectors.toSet());
 
         Set<Long> availablePropertyIDs = propertyService.getPropertyIDs();
         Set<Long> validIDs = new HashSet<>(updatedPropertyIDs);
@@ -97,18 +97,19 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         }
 
         Set<ResourceProperty> updatedTypeProperties = validIDs.stream()
-                .map(propertyService::getPropertyById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+                                                              .map(propertyService::getPropertyById)
+                                                              .filter(Optional::isPresent)
+                                                              .map(Optional::get)
+                                                              .collect(Collectors.toSet());
 
         Set<ConstrainedProperty> typeProperties
                 = resourceTypeBrief.getProperties().stream()
-                .map(cpb -> new ConstrainedProperty()
-                        .setProperty(propertyService.getPropertyById(cpb.getId()).get())
-                        .setRequired(cpb.isRequired())
-                        .setSearchable(cpb.isSearchable()))
-                .collect(Collectors.toSet());
+                          .map(cpb -> new ConstrainedProperty()
+                                              .setProperty(propertyService.getPropertyById(cpb.getId()).get())
+                                              .setRequired(cpb.isRequired())
+                                              .setSearchable(cpb.isSearchable())
+                                              .setUnique(cpb.isUnique()))
+                          .collect(Collectors.toSet());
 
         resourceType.setProperties(typeProperties);
         return resourceTypeDAO.makePersistent(resourceType);
@@ -177,8 +178,8 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     @Override
     public List<ConstrainedProperty> getSearchableProperties(ResourceType resourceType) {
         return resourceType.getProperties().stream()
-                .filter(ConstrainedProperty::isSearchable)
-                .collect(Collectors.toList());
+                       .filter(ConstrainedProperty::isSearchable)
+                       .collect(Collectors.toList());
     }
 
     @Override

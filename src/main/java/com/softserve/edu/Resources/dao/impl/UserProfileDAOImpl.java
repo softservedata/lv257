@@ -1,9 +1,5 @@
 package com.softserve.edu.Resources.dao.impl;
 
-//import edu.softserve.dao.UserDAO;
-//import edu.softserve.entity.User;
-
-//import com.softserve.edu.Resources.dao.UserDetailsDAO;
 import com.softserve.edu.Resources.dao.UserProfileDAO;
 import com.softserve.edu.Resources.entity.UserDetails;
 import org.slf4j.Logger;
@@ -38,27 +34,7 @@ public class UserProfileDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
         return querySingleResult(queryUserDetails, "username", email);
     }
 
-
-
-/*    public Optional<UserDetails> modifyUserDetails(UserDetails userDetails) {
-        String queryUserDetails = "select i from User i where i.username = :username";
-        return querySingleResult(queryUserDetails, "username", email);
-    }*/
-
-//    @Override
-//    public void save(UserProfileDTO userProfileDTO) {
     public void saveProfile(UserDetails userDetails) {
         final UserDetails userDetailsToEntity = makePersistent(userDetails);
-        System.out.println("===================save(UserProfileDTO userProfileDTO)========================");
-        System.out.println(userDetails);
-//        final UserProfileDTO userDetailsToEntity2 = makePersistent(userProfileDTO);
-    }
-
-
-/*    @Override
-    public User addUser(User user) {
-        entityManager.persist(user);
-        return user;
-    }*/
-
+        }
 }

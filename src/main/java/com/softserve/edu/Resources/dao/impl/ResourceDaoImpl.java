@@ -1,26 +1,34 @@
 package com.softserve.edu.Resources.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+
+import java.text.Collator;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
-import com.softserve.edu.Resources.entity.*;
-import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import com.softserve.edu.Resources.dao.ResourceDao;
+import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
+import com.softserve.edu.Resources.entity.Address;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
+import com.softserve.edu.Resources.entity.GenericResource;
+import com.softserve.edu.Resources.entity.Owner;
+import com.softserve.edu.Resources.entity.PropertyValue;
+import com.softserve.edu.Resources.entity.Resource;
+import com.softserve.edu.Resources.entity.ResourceOwning;
+import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.entity.ResourceType;
 
 @Repository
 public class ResourceDaoImpl implements ResourceDao {
@@ -29,14 +37,17 @@ public class ResourceDaoImpl implements ResourceDao {
     private EntityManager entityManager;
 
     private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedJdbcTemplate;
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+
     }
 
     private List<GenericResource> modelingGenericResourcesFromDb(List<Map<String, Object>> resultFromDB,
-            List<ConstrainedProperty> resourceProperties) {
+                                                                 List<ConstrainedProperty> resourceProperties) {
 
         List<GenericResource> resourcesList = new ArrayList<GenericResource>();
         for (Map<String, Object> mapRow : resultFromDB) {
@@ -62,7 +73,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByResourceType(String sqlQuery, Map<String, String> valuesToSearch,
-            List<ConstrainedProperty> resourceProperties) {
+                                                             List<ConstrainedProperty> resourceProperties) {
 
         List<Map<String, Object>> resultFromDB = new ArrayList<>();
 
@@ -92,7 +103,6 @@ public class ResourceDaoImpl implements ResourceDao {
             resultFromDB = jdbcTemplate.queryForList(sqlQuery);
         }
 
-        // it also possible to make with named parameters jdbcTemplate
         List<GenericResource> resourcesList = modelingGenericResourcesFromDb(resultFromDB, resourceProperties);
 
         return resourcesList;
@@ -101,7 +111,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     @Override
     public List<GenericResource> findResourcesByOwnerAndResourcesType(String sqlQuery,
-            List<ConstrainedProperty> resourceProperties, List<Long> resourcesIds) {
+                                                                      List<ConstrainedProperty> resourceProperties, List<Long> resourcesIds) {
 
         List<Map<String, Object>> resultFromDB = new ArrayList<>();
 
@@ -121,7 +131,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
         return (List<GroupedResourceCount>) entityManager
                 .createQuery("SELECT new com.softserve.edu.Resources.dto.GroupedResourceCount( "
-                        + "ro.resourceType.typeName, COUNT(ro) ) FROM ResourceOwning ro WHERE ro.owner.id = :id "
+                        + "ro.resourceType.typeName, ro.resourceType.id, COUNT(ro) ) FROM ResourceOwning ro WHERE ro.owner.id = :id "
                         + "GROUP BY ro.resourceType.typeName")
                 .setParameter("id", ownerId).getResultList();
     }
@@ -139,6 +149,49 @@ public class ResourceDaoImpl implements ResourceDao {
 
     }
 
+    @Override
+    public GenericResourceDTO findById(long resourceId, String sqlQuery, List<ConstrainedProperty> resourceProperties) {
+
+        NamedParameterJdbcTemplate npjdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
+        MapSqlParameterSource paramaters = new MapSqlParameterSource();
+        paramaters.addValue("id", resourceId);
+        Map<String, Object> resultFromDB = npjdbcTemplate.queryForMap(sqlQuery, paramaters);
+
+        GenericResourceDTO genResource = new GenericResourceDTO();
+
+        genResource.setId(Integer.parseInt(String.valueOf(resultFromDB.get("id"))));
+
+        Map<String, String> propertyValues = new TreeMap<>();
+
+        for (ConstrainedProperty constrainedProperty : resourceProperties) {
+            String key = constrainedProperty.getProperty().getTitle();
+            String value = String.valueOf(resultFromDB.get(constrainedProperty.getProperty().getColumnName()));
+            propertyValues.put(key, value);
+        }
+
+        genResource.setResourcePropertyValues(propertyValues);
+
+        return genResource;
+    }
+
+    public List<Owner> getOwnersForGenericResourceByResourceTypeAndResource(long resourceTypeId, long resourceId) {
+
+        @SuppressWarnings("unchecked")
+        List<Owner> owners = (List<Owner>) entityManager
+                .createQuery(
+                        "SELECT ro.owner FROM ResourceOwning ro "
+                                + "WHERE ro.resourceType.id = :resourceTypeId AND ro.resource.id = :resourceId",
+                        Owner.class)
+                .setParameter("resourceTypeId", resourceTypeId).setParameter("resourceId", resourceId).getResultList();
+
+        return owners;
+    }
+
+    public Address findAddressForGenericResourceByResourceId(long resourceId) {
+        return (Address) entityManager
+                .createQuery("SELECT r.address FROM Resource r WHERE r.id = :resourceId", Address.class)
+                .setParameter("resourceId", resourceId).getSingleResult();
+    }
 
     @Override
     public void addResource(Resource resource) {
@@ -151,7 +204,25 @@ public class ResourceDaoImpl implements ResourceDao {
     }
 
     @Override
-    public void addResourceImpl(String query) {
-        entityManager.createNativeQuery(query).executeUpdate();
+    public void addResourceImpl(String query, ResourceType resourceType, long resourceImplId, Map<String, String> propertiesAndValues) {
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
+
+        Set<ConstrainedProperty> constrainedProperties = resourceType.getProperties();
+
+        // get plain properties, sort by column names (to correspond build jdbc template string order)
+        List<ResourceProperty> propertiesSortedByColumn = constrainedProperties.stream()
+                .map(ConstrainedProperty::getProperty)
+                .sorted(Comparator.comparing(ResourceProperty::getColumnName))
+                .collect(Collectors.toList());
+
+        mapSqlParameterSource.addValue("id", resourceImplId);
+
+        propertiesSortedByColumn.forEach(resourceProperty -> {
+            String columnValue = propertiesAndValues.get(resourceProperty.getColumnName());
+            mapSqlParameterSource.addValue(resourceProperty.getColumnName(), columnValue, resourceProperty.getValueType().sqlType);
+        });
+
+        namedJdbcTemplate.update(query, mapSqlParameterSource);
     }
+
 }

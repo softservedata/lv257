@@ -1,13 +1,19 @@
 package com.softserve.edu.Resources.dao;
 
+
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
-import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.Resource;
-import com.softserve.edu.Resources.entity.ResourceOwning;
+import com.softserve.edu.Resources.entity.*;
 
 import java.util.List;
 import java.util.Map;
+
+import com.softserve.edu.Resources.dto.GenericResourceDTO;
+import com.softserve.edu.Resources.entity.Address;
+import com.softserve.edu.Resources.entity.ConstrainedProperty;
+import com.softserve.edu.Resources.entity.GenericResource;
+import com.softserve.edu.Resources.entity.Owner;
+import com.softserve.edu.Resources.entity.Resource;
+import com.softserve.edu.Resources.entity.ResourceOwning;
 
 public interface ResourceDao {
 
@@ -15,7 +21,7 @@ public interface ResourceDao {
 
     void addResourceOwning(ResourceOwning resourceOwning);
 
-    public void addResourceImpl(String query);
+    void addResourceImpl(String query, ResourceType resourceType, long resourceImplId, Map<String, String> propertiesAndValues);
 
     List<GenericResource> findResourcesByResourceType(String sqlQuery, Map<String, String> valuesToSearh,
             List<ConstrainedProperty> resourceProperties);
@@ -26,5 +32,11 @@ public interface ResourceDao {
 
     List<GenericResource> findResourcesByOwnerAndResourcesType(String sqlQuery,
             List<ConstrainedProperty> resourcesProperties, List<Long> resourcesIds);
+    
+    GenericResourceDTO findById(long resourceId, String sqlQuery, List<ConstrainedProperty> resourceProperties);
+    
+    List<Owner> getOwnersForGenericResourceByResourceTypeAndResource(long resourceTypeId, long resourceId);
+    
+    Address findAddressForGenericResourceByResourceId(long resourceId);
 
 }

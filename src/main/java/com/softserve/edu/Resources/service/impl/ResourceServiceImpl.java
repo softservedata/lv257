@@ -49,7 +49,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
 
-        Map<String, String> valuesToSearch = resourceDTO.getResourcePropertyValue();
+        Map<String, String> valuesToSearch = resourceDTO.getResourcePropertyValues();
 
         
 
@@ -129,6 +129,32 @@ public class ResourceServiceImpl implements ResourceService {
         
         return resourceDao.findResourcesByOwnerAndResourcesType(sqlQuery, resourceProperties, resourcesIds);
     }
+    
+    @Transactional
+    public GenericResourceDTO findResourceByTypeAndId(long resourceTypeId, long resourceId){
+        
+        ResourceType resourceType = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+
+        if (resourceType == null) {
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
+
+        String tableName = resourceType.getTableName();
+
+        List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
+        
+        String sqlQuery = queryBuilder.namedQueryForLookingByResourceId(tableName, resourceProperties);
+        
+        GenericResourceDTO genericResource = resourceDao.findById(resourceId, sqlQuery, resourceProperties);
+        
+        genericResource.setOwners(
+                resourceDao.getOwnersForGenericResourceByResourceTypeAndResource(resourceTypeId, resourceId));
+        
+        genericResource.setAddress(resourceDao.findAddressForGenericResourceByResourceId(resourceId));
+        
+        return genericResource;
+    }
+    
 
     @Transactional
     @Override
@@ -156,11 +182,9 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     @Override
     public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues) {
-
-        String readyQuery = queryBuilder.insertResourceImpl(resource, resourceType, propertiesAndValues);
-        resourceDao.addResourceImpl(readyQuery);
-
-//        resourceDao.addResource(resource);
+        String readyQuery = queryBuilder.buildInsertResourceImplQuery(resourceType, propertiesAndValues);
+        System.out.println(readyQuery);
+        resourceDao.addResourceImpl(readyQuery, resourceType, resource.getId(),propertiesAndValues);
     }
 
     @Override
@@ -182,10 +206,11 @@ public class ResourceServiceImpl implements ResourceService {
             } else if(!columnValue.matches(constrainedProperty.getProperty().getPattern())){
                 validationErrorDTO.addFieldError(columnName, "This field do not matches valid format");
             }
-
         });
 
 
         return validationErrorDTO;
     }
+    
+    
 }

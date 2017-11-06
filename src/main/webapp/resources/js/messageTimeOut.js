@@ -16,10 +16,10 @@ $(function () {
 
                 rules: {
                     resourceType: {
-                        minlength: 4
+                        minlength: 4, required: true
                     },
                     description: {
-                        minlength: 4
+                        minlength: 4, required: true
                     }
                 },
                 messages: {
@@ -34,7 +34,6 @@ $(function () {
                 errorPlacement: function (error, element) {
                     //add the class of help-block
                     error.addClass('red');
-
 
                     //add the error element after the input element
                     error.insertAfter(element);

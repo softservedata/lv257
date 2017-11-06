@@ -2,7 +2,6 @@ package com.softserve.edu.Resources.util;
 
 import com.softserve.edu.Resources.dto.SearchDTO;
 import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.Resource;
 import com.softserve.edu.Resources.entity.ResourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +75,16 @@ public class QueryBuilder {
 
         return createQuery.toString();
     }
+    
+    public String namedQueryForLookingByResourceId(String tableName, List<ConstrainedProperty> resourceProperties){
+        
+        StringBuilder createQuery = new StringBuilder();
+        createQuery.append(formSelectAndFromPart(resourceProperties, tableName));
+        
+        createQuery.append(" WHERE gr.id=:id");
+        
+        return createQuery.toString();
+    }
 
     /**
      * Retrieves all data from dto objects and builds jpql query.
@@ -123,28 +132,26 @@ public class QueryBuilder {
         return readyQuery;
     }
 
-    public String insertResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues){
+    public String buildInsertResourceImplQuery(ResourceType resourceType, Map<String, String> propertiesAndValues){
         String insertClause = "INSERT INTO " + resourceType.getTableName();
         StringBuilder sb = new StringBuilder();
         sb.append(insertClause);
 
+        // build columns to insert to
         Set<String> keys = propertiesAndValues.keySet();
         String columnNames = keys.stream()
                 .sorted()
                 .collect(Collectors.joining(","));
 
-        Set<Map.Entry<String, String>> entries = propertiesAndValues.entrySet();
-
         sb.append(" (id,").append(columnNames).append(")");
 
-        String columnValues = keys.stream()
+        // build named parameters for the jdbc template
+        String columnNamesAsParameters = keys.stream()
                 .sorted()
-                .map(key -> {
-                    return "'" + propertiesAndValues.get(key) + "'";
-                })
+                .map(key -> ":" + key)
                 .collect(Collectors.joining(","));
 
-        sb.append(" VALUES(").append(resource.getId()).append(",").append(columnValues).append(")");
+        sb.append(" VALUES(").append(":").append("id").append(",").append(columnNamesAsParameters).append(")");
 
 
         String readyInsertString = sb.toString();

@@ -4,10 +4,11 @@ import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -49,27 +50,25 @@ public class MainController {
     }
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
-    public String lookupPage(@RequestParam Map<String, String> lookupby) {
-//        if (lookupby.get("lookupBy") == null || lookupby.get("lookupBy").equals("byType"))
-//            return "lookupByType";
-//        else
-//            return "lookupByOwner";
+    public String lookupPage(Model model) {
+        
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        model.addAttribute("currentUser", username);
+        
+        
         return "lookup";
     }
-    @RequestMapping(value = "/resource/type/{typeId}/id/{id}", method = RequestMethod.GET)
-    public String lookUpResult(@PathVariable long typeId, @PathVariable long id){
-        
-        
-        // if the list is empty, send a message that no info hasn't been found
-        return "resourceInfo";
-    }
-
+    
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     public String resourcesPage(Model model, HttpServletRequest request) {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {
             return "redirect:/resources/viewTypes";
         }
-        return "redirect:/resources/registration";
+        if (request.isUserInRole("ROLE_REGISTRATOR")) {
+            return "redirect:/resources/registration";
+        }
+        return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

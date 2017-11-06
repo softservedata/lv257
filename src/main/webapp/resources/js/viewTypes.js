@@ -177,8 +177,8 @@ $(document).ready(function () {
      */
     function buildActionButtons(rowData, col) {
         let restrictAccess = rowData.administratorName !== currentAdmin ? 'disabled"' : '"';
-        let cloneLink = projectPathPrefix + '/resources/cloneType?id=' + -rowData.typeId;
-        let editLink = projectPathPrefix + '/resources/editType?id=' + rowData.typeId;
+        let cloneLink = projectPathPrefix + '/resources/cloneType?typeId=' + -rowData.typeId;
+        let editLink = projectPathPrefix + '/resources/editType?typeId=' + rowData.typeId;
         let button;
         switch (col) {
             case 4:
