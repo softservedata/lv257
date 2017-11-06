@@ -32,7 +32,7 @@ CREATE TABLE `trains` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NUL
 
 INSERT INTO `trains` (`id`,`model`,`year`,`weight`,`load_capacity`) VALUES (1,'Hobbylinc',2012,3000.00,5000),(2,'Hyundai',2009,4000.00,10000),(3,'Kato',2009,2500.00,6000),(4,'Kato',2010,2000.00,4000),(5,'Apper',2005,5000.00,5000),(6,'Apper',2004,6000.00,4000);
 
-INSERT INTO `Type_Properties` (`Type_Id`,`Id_Property`,`Required`,`Searchable`) VALUES (100300,100200,'',TRUE),(100302,100200,'',TRUE),(100303,100200,'',TRUE),(100304,100200,'',TRUE),(100300,100203,'',TRUE),(100302,100203,'',TRUE),(100303,100203,'',TRUE),(100304,100203,'',TRUE),(100302,100204,'',TRUE),(100303,100204,'',TRUE),(100303,100205,'',TRUE),(100304,100205,'',TRUE),(100300,100206,'',TRUE);
+INSERT INTO `Type_Properties` (`Type_Id`,`Id_Property`,`Required`,`Searchable`,`Uniq`) VALUES (100300,100200,'',TRUE,FALSE),(100302,100200,'',TRUE,FALSE),(100303,100200,'',TRUE,FALSE),(100304,100200,'',TRUE,FALSE),(100300,100203,'',TRUE,FALSE),(100302,100203,'',TRUE,FALSE),(100303,100203,'',TRUE,FALSE),(100304,100203,'',TRUE,FALSE),(100302,100204,'',TRUE,FALSE),(100303,100204,'',TRUE,FALSE),(100303,100205,'',TRUE,FALSE),(100304,100205,'',TRUE,FALSE),(100300,100206,'',TRUE,FALSE);
 
 INSERT INTO `demotest`.`user_details` (`id`, `bank_id`, `date_of_issue`, `first_name`, `id_address`, `issued_by`, `middle_name`, `passport_number`, `passport_series`, `phone`, `second_name`, `id_user`) VALUES ('9', '9', '2012-12-12', 'FirstName', '9', '9', 'MiddleName', '123456', 'AB', '+12(345)-678-90-12', 'SecondName', '9');
 

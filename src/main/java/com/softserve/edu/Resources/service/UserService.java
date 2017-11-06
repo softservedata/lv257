@@ -33,4 +33,6 @@ public interface UserService {
     List<User> getUsersWithRoles(String... roleNames);
 
     boolean emailExist(final String email);
+
+    User getUser(String username);
 }

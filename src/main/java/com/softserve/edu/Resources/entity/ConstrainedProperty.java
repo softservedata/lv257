@@ -21,6 +21,10 @@ public class ConstrainedProperty {
     @Column(name = "Required", nullable = false)
     private boolean required;
 
+    @NotNull
+    @Column(name = "Uniq", nullable = false)
+    private boolean unique;
+
     public ConstrainedProperty() {
     }
 
@@ -55,4 +59,12 @@ public class ConstrainedProperty {
         return this;
     }
 
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public ConstrainedProperty setUnique(boolean unique) {
+        this.unique = unique;
+        return this;
+    }
 }
