@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -59,7 +58,10 @@ public class MainController {
         if (request.isUserInRole("ROLE_RESOURCE_ADMIN")) {
             return "redirect:/resources/viewTypes";
         }
-        return "redirect:/resources/registration";
+        if (request.isUserInRole("ROLE_REGISTRATOR")) {
+            return "redirect:/resources/registration";
+        }
+        return "login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
