@@ -1384,7 +1384,8 @@ function buildOwnerSearchForm($concreteOwnerSearchDiv, rows) {
         let $input = $('<input/>', {
             type: 'text',
             class: 'form-control',
-            name: rows[i].userFriendlyName.toLowerCase().replace(" ", "_"),
+            // name: rows[i].userFriendlyName.toLowerCase().replace(" ", ""),
+            name: camelize(rows[i].userFriendlyName),
             id: rows[i].userFriendlyName,
             placeholder: rows[i].placeholder
         });
@@ -1406,6 +1407,13 @@ function buildOwnerSearchForm($concreteOwnerSearchDiv, rows) {
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function camelize(str) {
+    return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
+        if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+        return index == 0 ? match.toLowerCase() : match.toUpperCase();
+    });
 }
 
 function showErrorMessage(error, $resultDiv) {
@@ -1617,6 +1625,7 @@ function appendOwnerToTable(result, choosenOwnerId) {
                 class: 'address_info',
                 'data-owner-address-id': concreteOwner['ownerAddressId']
             });
+            $tr.append($td);
             $tr.append($td);
             continue;
         }
