@@ -4,6 +4,8 @@ import com.softserve.edu.Resources.service.PrivilegeService;
 import com.softserve.edu.Resources.service.UserService;
 import com.softserve.edu.Resources.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -49,8 +51,13 @@ public class MainController {
     }
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
-    public String lookupPage(@RequestParam Map<String, String> lookupby) {
-
+    public String lookupPage(Model model) {
+        
+        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = loggedInUser.getName();
+        model.addAttribute("currentUser", username);
+        
+        
         return "lookup";
     }
     

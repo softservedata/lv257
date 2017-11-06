@@ -3,6 +3,8 @@
 <%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%-- <c:set var="contextPath" value="${pageContext.request.contextPath}" scope="page"/> --%>
 	
+<c:set var="user" value="${currentUser}"/>
+
 <html>
 <head>
     <title>${title}</title>
@@ -35,7 +37,9 @@
 	              		<select id="lookup_type" class="form-control">
 	                		<option value="absent">Choose type here</option>
 	                		<option value="by-type">Search by type of Resource</option>
+	                		<c:if test="${ user != 'anonymousUser' }">
 	                		<option value="by-owner">Search by Owner</option>
+                			</c:if>
 	              		</select>
 	            	</div>
 	               </div>
@@ -114,6 +118,11 @@
   $('#myButton').on('click', function () {
     location.reload();
   })
+
+  /* var navbarMenuAcnhorItems = $('#navbar').find('ul:first li:first');
+  navbarMenuListItems.removeClass('active');
+  navbarMenuAcnhorItems.addClass('active'); */
+
 </script>
 
 </body>
