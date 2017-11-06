@@ -38,20 +38,25 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
 
     @Override
     public void createTable(ResourceType resourceType) {
+        String uniqueStatement = resourceType.getProperties().stream()
+                .map(cp -> cp.isUnique() ? "CONSTRAINT UC_" + cp.getProperty().getColumnName()
+                        + " UNIQUE (" + cp.getProperty().getColumnName() + ")" : "")
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.joining(","));
         StringBuilder createTableStatement = new StringBuilder()
                 .append("CREATE TABLE ")
                 .append(resourceType.getTableName())
                 .append(" (id BIGINT(20) NOT NULL,")
                 .append(resourceType.getProperties().stream()
-                        .map(props -> props.getProperty().getColumnName()
+                        .map(property -> property.getProperty().getColumnName()
                                 + " "
-                                + props.getProperty().getValueType().getSqlTypeName())
-                        .collect(Collectors.joining(",")))
-                .append(",CONSTRAINT PK_")
+                                + property.getProperty().getValueType().getSqlTypeName())
+                        .collect(Collectors.joining(",\n")))
+                .append(",")
+                .append(!uniqueStatement.isEmpty() ? uniqueStatement + "," : "")
+                .append("CONSTRAINT PK_")
                 .append(resourceType.getTypeName())
                 .append(" PRIMARY KEY (id));");
-        System.out.println("CREATE TABLE !!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println(createTableStatement);
         em.createNativeQuery(createTableStatement.toString()).executeUpdate();
     }
 

@@ -177,7 +177,7 @@ $(document).ready(function () {
      */
     function buildActionButtons(rowData, col) {
         let restrictAccess = rowData.administratorName !== currentAdmin ? 'disabled"' : '"';
-        let cloneLink = projectPathPrefix + '/resources/cloneType?typeId=' + -rowData.typeId;
+        let cloneLink = projectPathPrefix + '/resources/cloneType?typeId=' + rowData.typeId;
         let editLink = projectPathPrefix + '/resources/editType?typeId=' + rowData.typeId;
         let button;
         switch (col) {
@@ -279,7 +279,9 @@ $(document).ready(function () {
             type: "PUT",
             url: projectPathPrefix + "/api/instantiateType/" + id,
             success: function (jqXHR) {
-                $('button[data-id=' + id + ']').remove();
+                $('button[data-id=' + id + ']').filter(function () {
+                    return $(this).hasClass('inst-button') || $(this).hasClass('remove-button');
+                }).remove();
                 $('a.edit-button').filter(function () {
                     return $(this).attr('data-id') === id;
                 }).remove();
@@ -354,6 +356,7 @@ $(document).ready(function () {
                         '<td>' + item.valueType + '</td>' +
                         '<td>' + item.searchable + '</td>' +
                         '<td>' + item.required + '</td>' +
+                        '<td>' + item.unique + '</td>' +
                         '</tr>');
                 });
             }

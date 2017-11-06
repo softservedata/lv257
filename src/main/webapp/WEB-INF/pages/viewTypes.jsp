@@ -148,6 +148,7 @@
                             <th class="text-center">Value type</th>
                             <th class="text-center">Searchable</th>
                             <th class="text-center">Required</th>
+                            <th class="text-center">Unique</th>
                         </tr>
                         </thead>
                         <tbody id="props-tbody"></tbody>

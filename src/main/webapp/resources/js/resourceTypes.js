@@ -49,6 +49,7 @@ function updateResourceType(actualType, isCloned) {
 			required: constrainedPropertyBrief.required,
 			searchable: constrainedPropertyBrief.searchable,
 			unique: constrainedPropertyBrief.unique
+			unique: constrainedPropertyBrief.unique
 		};
 	});
 	$.each(existentProperties, function (i, property) {
