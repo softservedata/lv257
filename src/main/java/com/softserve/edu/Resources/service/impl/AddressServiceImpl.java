@@ -17,6 +17,8 @@ import org.springframework.validation.BindingResult;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -70,12 +72,17 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<Address> findAddresses(SearchDTO searchDTO) {
-        String readyQuery = queryBuilder.buildQuery(searchDTO);
+        // check if all fields and values are empty
+        List<Map.Entry<String, String>> nonEmptyValues = searchDTO.getFieldsAndValues().entrySet().stream()
+                .filter(stringStringEntry -> !stringStringEntry.getValue().isEmpty())
+                .collect(Collectors.toList());
 
-        if (readyQuery.isEmpty()){
+        // if so, return empty list
+        if (nonEmptyValues.isEmpty()) {
             return new ArrayList<>();
         }
-        return addressDAO.findAddresses(readyQuery);
+
+        return addressDAO.findAddresses(searchDTO);
     }
 
     @Override

@@ -67,6 +67,29 @@
     </div>
 </nav>
 <br/>
+<!-- <script src="https://code.jquery.com/jquery.min.js"></script> -->
 <script>
-    projectPathPrefix = "<c:out value="${pageContext.request.contextPath}"/>"
+	projectPathPrefix = "<c:out value="${pageContext.request.contextPath}"/>"
 </script>
+<script>
+ var navbarMenuListItems = $('#navbar').find('ul:first li');
+navbarMenuListItems.removeClass('active');
+if(window.location.href.includes('lookup')){  
+	
+	  $('#navbar').find('ul:first-child li:first-child').addClass("active");
+}
+if(window.location.href.includes('resources')){
+	  $('#navbar').find('ul:first-child li:nth-child(2)').addClass("active");
+} 
+if(window.location.href.includes('about')){
+	  $('#navbar').find('ul:first-child a[href~=\"about\"]').closest('li').addClass("active");
+} 
+if(window.location.href.includes('users')){
+	  $('#navbar').find('ul:first-child a[href~=\"/users\"]').closest('li').addClass("active");
+} 
+if(window.location.href.includes('endPoints')){
+	  $('#navbar').find('ul:first-child a[href~=\"/endPoints\"]').closest('li').addClass("active");
+}  
+
+</script>
+

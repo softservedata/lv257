@@ -65,7 +65,7 @@ public class ResourceServiceImplTest {
         @SuppressWarnings("unchecked")
         Map<String, String> mapMock = mock(Map.class);
 
-        when(genResDTOMock.getResourcePropertyValue()).thenReturn(mapMock);
+        when(genResDTOMock.getResourcePropertyValues()).thenReturn(mapMock);
 
         String queryForDao = "Select";
 

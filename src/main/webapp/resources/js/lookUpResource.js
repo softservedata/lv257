@@ -138,7 +138,7 @@ $(document).ready(function(){
             console.log(JSON.stringify(mapToJson));
             var GenericResourceDTO = {
                 id: $('#categories-select').data('selectedID'),
-                resourcePropertyValue: mapToJson
+                resourcePropertyValues: mapToJson
             };
             console.log(JSON.stringify(GenericResourceDTO));
             e.preventDefault();
@@ -151,44 +151,46 @@ $(document).ready(function(){
                 success: function(result){
                     console.log(result);
                     // populating table
-                    table.empty();
-                    var tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
-                    var header = $("<thead></thead>").appendTo(tableTag);
-                    var rowHeader = $("<tr></tr>").appendTo(header);
-                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
-                    for(var j = 0; j < result[0].propertyValues.length; j++) {
-                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
-                    }
-
-                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
-                    var tableBody = $("<tbody></tbody>").appendTo(tableTag);
-
-                    for(var i = 0; i < result.length; i++) {
-                        var bodyRow =  $("<tr></tr>").appendTo(tableBody);
-                        $(bodyRow).append("<td></td>")
-                        for(var j = 0; j < result[i].propertyValues.length; j++) {
-                        	
-                            $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
-                        }
-                        $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
-                    }
-                    $("<br/>").appendTo(tableTag);
-                    //DataTables plug-in
-                    var modelTable = $('#dt').DataTable({
-                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
-                    	"processing": true,
-                    	"columnDefs": [ {
-                                 "targets": 0,
-                                 "searchable": false,
-                                 "orderable": false,
-                             } ],
-                        stateSave: true
-                    });
-                    modelTable.on('order.dt search.dt', function () {
-                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                    }).draw();
+                    populatingTableResourcesFromGenericResourceLists(resourceTypeId, result);
+                    
+//                    table.empty();
+//                    var tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
+//                    var header = $("<thead></thead>").appendTo(tableTag);
+//                    var rowHeader = $("<tr></tr>").appendTo(header);
+//                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
+//                    for(var j = 0; j < result[0].propertyValues.length; j++) {
+//                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
+//                    }
+//
+//                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
+//                    var tableBody = $("<tbody></tbody>").appendTo(tableTag);
+//
+//                    for(var i = 0; i < result.length; i++) {
+//                        var bodyRow =  $("<tr></tr>").appendTo(tableBody);
+//                        $(bodyRow).append("<td></td>")
+//                        for(var j = 0; j < result[i].propertyValues.length; j++) {
+//                        	
+//                            $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
+//                        }
+//                        $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
+//                    }
+//                    $("<br/>").appendTo(tableTag);
+//                    //DataTables plug-in
+//                    var modelTable = $('#dt').DataTable({
+//                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+//                    	"processing": true,
+//                    	"columnDefs": [ {
+//                                 "targets": 0,
+//                                 "searchable": false,
+//                                 "orderable": false,
+//                             } ],
+//                        stateSave: true
+//                    });
+//                    modelTable.on('order.dt search.dt', function () {
+//                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+//                            cell.innerHTML = i + 1;
+//                        });
+//                    }).draw();
 
                     $('#result-search').show();
                     $('#new-search').show();
@@ -230,53 +232,55 @@ function getResourcesByOwnerIdAndResourceTypeName(id){
 			$(item).addClass('active');
 			let ownerId = $(e.target).data('value');
 			let resourceTypeName = $(e.target).data('name');
+			let resourceTypeId = $(e.target).data('id');
 			$.ajax({
                 type: 'GET',
                 url: projectPathPrefix +'/api/resources/lookup/owners/'+ownerId+'/resourcetypes/'+resourceTypeName+'/foundresources',
                 contentType: 'application/json; charset=UTF-8',
                 dataType: 'json',
                 success: function(result){
-                    console.log(result);
+                	
                     // populating table
-                    let table  = $('#result-search');
-                    table.empty();
-                    let tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
-                    let header = $("<thead></thead>").appendTo(tableTag);
-                    let rowHeader = $("<tr></tr>").appendTo(header);
-                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
-                    for(var j = 0; j < result[0].propertyValues.length; j++) {
-                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
-                    }
-
-                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
-                    let tableBody = $("<tbody></tbody>").appendTo(tableTag);
-
-                    for(var i = 0; i < result.length; i++) {
-                        let bodyRow =  $("<tr></tr>").appendTo(tableBody);
-                        $(bodyRow).append("<td></td>")
-                        for(var j = 0; j < result[i].propertyValues.length; j++) {
-                        	
-                            $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
-                        }
-                        $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeName+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
-                    }
-                    $("<br/>").appendTo(tableTag);
-                    //DataTables plug-in
-                    let modelTable = $('#dt').DataTable({
-                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
-                    	"processing": true,
-                    	"columnDefs": [ {
-                                 "targets": 0,
-                                 "searchable": false,
-                                 "orderable": false,
-                             } ],
-                        stateSave: true
-                    });
-                    modelTable.on('order.dt search.dt', function () {
-                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
-                            cell.innerHTML = i + 1;
-                        });
-                    }).draw();
+                	populatingTableResourcesFromGenericResourceLists(resourceTypeId, result);
+//                    let table  = $('#result-search');
+//                    table.empty();
+//                    let tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
+//                    let header = $("<thead></thead>").appendTo(tableTag);
+//                    let rowHeader = $("<tr></tr>").appendTo(header);
+//                    $("<th class='text-center'>#</th>").appendTo(rowHeader);
+//                    for(var j = 0; j < result[0].propertyValues.length; j++) {
+//                        $("<th class='text-center'>" + result[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
+//                    }
+//
+//                    $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
+//                    let tableBody = $("<tbody></tbody>").appendTo(tableTag);
+//
+//                    for(var i = 0; i < result.length; i++) {
+//                        let bodyRow =  $("<tr></tr>").appendTo(tableBody);
+//                        $(bodyRow).append("<td></td>")
+//                        for(var j = 0; j < result[i].propertyValues.length; j++) {
+//                        	
+//                            $(bodyRow).append("<td>"+ result[i].propertyValues[j].value +"</td>");
+//                        }
+//                        $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+result[i].id+"\" target=\"_blank\">Details</a></td>");
+//                    }
+//                    $("<br/>").appendTo(tableTag);
+//                    //DataTables plug-in
+//                    let modelTable = $('#dt').DataTable({
+//                    	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+//                    	"processing": true,
+//                    	"columnDefs": [ {
+//                                 "targets": 0,
+//                                 "searchable": false,
+//                                 "orderable": false,
+//                             } ],
+//                        stateSave: true
+//                    });
+//                    modelTable.on('order.dt search.dt', function () {
+//                    	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+//                            cell.innerHTML = i + 1;
+//                        });
+//                    }).draw();
 
                     $('#result-search').show();
                     $('#new-search').show();
@@ -292,4 +296,48 @@ function getResourcesByOwnerIdAndResourceTypeName(id){
                     
          })
 	})
+}
+
+function populatingTableResourcesFromGenericResourceLists(resourceTypeId, ajaxResult){
+	
+	   let table  = $('#result-search');
+       table.empty();
+       let tableTag = $("<table id=\"dt\" class=\"table table-striped table-condensed text-center display\" width=\"100%\" ></table>").appendTo(table);
+       let header = $("<thead></thead>").appendTo(tableTag);
+       let rowHeader = $("<tr></tr>").appendTo(header);
+       $("<th class='text-center'>#</th>").appendTo(rowHeader);
+       for(var j = 0; j < ajaxResult[0].propertyValues.length; j++) {
+           $("<th class='text-center'>" + ajaxResult[0].propertyValues[j].type.property.title +"</th>").appendTo(rowHeader);
+       }
+
+       $("<th class='text-center'>More Info</th>").appendTo(rowHeader);
+       let tableBody = $("<tbody></tbody>").appendTo(tableTag);
+
+       for(var i = 0; i < ajaxResult.length; i++) {
+           let bodyRow =  $("<tr></tr>").appendTo(tableBody);
+           $(bodyRow).append("<td></td>")
+           for(var j = 0; j < ajaxResult[i].propertyValues.length; j++) {
+           	
+               $(bodyRow).append("<td>"+ ajaxResult[i].propertyValues[j].value +"</td>");
+           }
+           $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+ajaxResult[i].id+"\" target=\"_blank\">Details</a></td>");
+       }
+       $("<br/>").appendTo(tableTag);
+       //DataTables plug-in
+       let modelTable = $('#dt').DataTable({
+       	"dom": '<"up"f>rt<"bottom"lp><"clear">',
+       	"processing": true,
+       	"columnDefs": [ {
+                    "targets": 0,
+                    "searchable": false,
+                    "orderable": false,
+                } ],
+           stateSave: true
+       });
+       modelTable.on('order.dt search.dt', function () {
+       	modelTable.column(0, {search: 'applied', order: 'applied'}).nodes().each(function (cell, i) {
+               cell.innerHTML = i + 1;
+           });
+       }).draw();
+	
 }

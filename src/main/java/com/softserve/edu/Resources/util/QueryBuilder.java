@@ -75,6 +75,16 @@ public class QueryBuilder {
 
         return createQuery.toString();
     }
+    
+    public String namedQueryForLookingByResourceId(String tableName, List<ConstrainedProperty> resourceProperties){
+        
+        StringBuilder createQuery = new StringBuilder();
+        createQuery.append(formSelectAndFromPart(resourceProperties, tableName));
+        
+        createQuery.append(" WHERE gr.id=:id");
+        
+        return createQuery.toString();
+    }
 
     /**
      * Retrieves all data from dto objects and builds jpql query.

@@ -49,7 +49,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
 
-        Map<String, String> valuesToSearch = resourceDTO.getResourcePropertyValue();
+        Map<String, String> valuesToSearch = resourceDTO.getResourcePropertyValues();
 
         
 
@@ -129,6 +129,32 @@ public class ResourceServiceImpl implements ResourceService {
         
         return resourceDao.findResourcesByOwnerAndResourcesType(sqlQuery, resourceProperties, resourcesIds);
     }
+    
+    @Transactional
+    public GenericResourceDTO findResourceByTypeAndId(long resourceTypeId, long resourceId){
+        
+        ResourceType resourceType = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+
+        if (resourceType == null) {
+            throw new ResourceNotFoundException("No infromation was found by your request");
+        }
+
+        String tableName = resourceType.getTableName();
+
+        List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
+        
+        String sqlQuery = queryBuilder.namedQueryForLookingByResourceId(tableName, resourceProperties);
+        
+        GenericResourceDTO genericResource = resourceDao.findById(resourceId, sqlQuery, resourceProperties);
+        
+        genericResource.setOwners(
+                resourceDao.getOwnersForGenericResourceByResourceTypeAndResource(resourceTypeId, resourceId));
+        
+        genericResource.setAddress(resourceDao.findAddressForGenericResourceByResourceId(resourceId));
+        
+        return genericResource;
+    }
+    
 
     @Transactional
     @Override
@@ -185,4 +211,6 @@ public class ResourceServiceImpl implements ResourceService {
 
         return validationErrorDTO;
     }
+    
+    
 }

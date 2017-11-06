@@ -1,36 +1,58 @@
 package com.softserve.edu.Resources.dto;
 
+import java.util.List;
 import java.util.Map;
 
+import com.softserve.edu.Resources.entity.Address;
+import com.softserve.edu.Resources.entity.Owner;
+
+    
 public class GenericResourceDTO {
 
     private long id;
-    private Map<String, String> resourcePropertyValue;
+    private Map<String, String> resourcePropertyValues;
+    private List<Owner> owners;
+    private Address address;
 
     public GenericResourceDTO() {
         // TODO Auto-generated constructor stub
     }
 
-    public GenericResourceDTO(long id, Map<String, String> resourcePropertyValue) {
-
+    public GenericResourceDTO(long id, Map<String, String> resourcePropertyValues) {
         this.id = id;
-        this.resourcePropertyValue = resourcePropertyValue;
+        this.resourcePropertyValues = resourcePropertyValues;
     }
 
     public long getId() {
         return id;
     }
-
+    
     public void setId(long id) {
         this.id = id;
     }
 
-    public Map<String, String> getResourcePropertyValue() {
-        return resourcePropertyValue;
+    public Map<String, String> getResourcePropertyValues() {
+        return resourcePropertyValues;
     }
 
-    public void setResourcePropertyValue(Map<String, String> resourcePropertyValue) {
-        this.resourcePropertyValue = resourcePropertyValue;
+    public void setResourcePropertyValues(Map<String, String> resourcePropertyValues) {
+        this.resourcePropertyValues = resourcePropertyValues;
+    }
+
+    public List<Owner> getOwners() {
+        return owners;
+    }
+
+    public void setOwners(List<Owner> owners) {
+        this.owners = owners;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }
