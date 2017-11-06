@@ -17,7 +17,7 @@ public interface ResourceTypeDAO extends GenericDAO<ResourceType, Long> {
 
     List<ResourceType> getInstances();
 
-    void create(ResourceType resourceType);
+    void createTable(ResourceType resourceType);
 
     ResourceType findWithPropertiesByID(Long resourceTypeID);
 

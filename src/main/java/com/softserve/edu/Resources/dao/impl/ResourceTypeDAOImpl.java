@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository("resourceTypeDAO")
 public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> implements ResourceTypeDAO {
@@ -36,11 +37,22 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
     }
 
     @Override
-    public void create(ResourceType resourceType) {
-        String queryCreateType = "update ResourceType rt set rt.instantiated = true where rt = :resourceType";
-        em.createQuery(queryCreateType)
-                .setParameter("resourceType", resourceType)
-                .executeUpdate();
+    public void createTable(ResourceType resourceType) {
+        StringBuilder createTableStatement = new StringBuilder()
+                .append("CREATE TABLE ")
+                .append(resourceType.getTableName())
+                .append(" (id BIGINT(20) NOT NULL,")
+                .append(resourceType.getProperties().stream()
+                        .map(props -> props.getProperty().getColumnName()
+                                + " "
+                                + props.getProperty().getValueType().getSqlTypeName())
+                        .collect(Collectors.joining(",")))
+                .append(",CONSTRAINT PK_")
+                .append(resourceType.getTypeName())
+                .append(" PRIMARY KEY (id));");
+        System.out.println("CREATE TABLE !!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println(createTableStatement);
+        em.createNativeQuery(createTableStatement.toString()).executeUpdate();
     }
 
     @Override

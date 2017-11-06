@@ -63,7 +63,7 @@ public class ResourcesRestController {
 
     @RequestMapping(value = "/instantiateType/{id}", method = RequestMethod.PUT)
     public void instantiateResourceType(@PathVariable Long id) {
-        resourceTypeService.create(id);
+        resourceTypeService.instantiateType(id);
     }
 
     @ExceptionHandler(ResourceTypeInstantiationException.class)

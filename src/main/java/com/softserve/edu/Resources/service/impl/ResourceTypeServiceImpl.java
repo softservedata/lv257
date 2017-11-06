@@ -136,7 +136,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public void create(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException {
+    public void instantiateType(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException {
         final Optional<ResourceType> resourceType = resourceTypeDAO.findById(id);
         if (!resourceType.isPresent())
             throw new ResourceTypeNotFoundException("Requested Resource Type not found.");
@@ -145,18 +145,14 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         if (resourceType.get().getProperties().size() < 1)
             throw new ResourceTypeInstantiationException("Resource Type should have at least " +
                     "one Resource Property before instantiating");
+        resourceTypeDAO.createTable(resourceType.get());
         resourceType.get().setInstantiated(true);
         resourceTypeDAO.makePersistent(resourceType.get());
     }
 
     @Override
     public void createBatch(List<Long> IDs) {
-        IDs.forEach(this::create);
-    }
-
-    @Override
-    public void create(ResourceType type) {
-        resourceTypeDAO.create(type);
+        IDs.forEach(this::instantiateType);
     }
 
     @Override

@@ -9,24 +9,26 @@ import java.util.Optional;
 
 public enum ValueType {
 
-    INTEGER("Integer", Integer.class, Types.INTEGER, "\\d+"),
-    DOUBLE("Double", Double.class, Types.DECIMAL, "\\d+\\.\\d{1,3}"),
-    STRING("String", String.class, Types.VARCHAR, "\\p{L}+"),
-    BOOLEAN("Boolean", Boolean.class, Types.BIT, "(yes)|(no)"),
-    DATE("Date", Date.class, Types.TIMESTAMP, "\\d{4}-\\d}2-\\d{2}"),
-    TIMESTAMP("Timestamp", Timestamp.class, Types.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} (.\\d{1,8})?");
+    INTEGER("Integer", Integer.class, Types.INTEGER, "\\d+", "BIGINT(20)"),
+    DOUBLE("Double", Double.class, Types.DECIMAL, "\\d+\\.\\d{1,3}", "DECIMAL(20,10)"),
+    STRING("String", String.class, Types.VARCHAR, "\\p{L}+", "VARCHAR(255)"),
+    BOOLEAN("Boolean", Boolean.class, Types.BIT, "(yes)|(no)", "BIT"),
+    DATE("Date", Date.class, Types.TIMESTAMP, "\\d{4}-\\d}2-\\d{2}", "TIMESTAMP"),
+    TIMESTAMP("Timestamp", Timestamp.class, Types.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} (.\\d{1,8})?", "TIMESTAMP");
 //    RESOURCE_PROPERTY("Resource property", ResourceProperty.class, Types.VARCHAR, "\\{.{2,}\\}"); // JSON representation, i.e. {"typeID": "12"}
 
     public final Class<?> clazz;
     public final String typeName;
     public final int sqlType;
     public final String defaultPattern;
+    public final String sqlTypeName;
 
-    ValueType(String typeName, Class<?> clazz, int sqlType, String defaultPattern) {
+    ValueType(String typeName, Class<?> clazz, int sqlType, String defaultPattern, String sqlTypeName) {
         this.typeName = typeName;
         this.clazz = clazz;
         this.sqlType = sqlType;
         this.defaultPattern = defaultPattern;
+        this.sqlTypeName = sqlTypeName;
     }
 
     public static Optional<ValueType> forName(String typeName) {
@@ -51,14 +53,24 @@ public enum ValueType {
         return defaultPattern;
     }
 
+    public String getSqlTypeName() {
+        return sqlTypeName;
+    }
+
     public static int compare(ValueType valueType, String value1, String value2) {
         switch (valueType) {
-            case INTEGER    : return compare(value1, value2, Integer.class);
-            case DOUBLE     : return compare(value1, value2, Double.class);
-            case DATE       : return compare(value1, value2, java.util.Date.class);
-            case TIMESTAMP  : return compare(value1, value2, java.util.Date.class);
-            case STRING     : return compare(value1, value2, String.class);
-            case BOOLEAN    : return compare(value1, value2, Boolean.class);
+            case INTEGER:
+                return compare(value1, value2, Integer.class);
+            case DOUBLE:
+                return compare(value1, value2, Double.class);
+            case DATE:
+                return compare(value1, value2, java.util.Date.class);
+            case TIMESTAMP:
+                return compare(value1, value2, java.util.Date.class);
+            case STRING:
+                return compare(value1, value2, String.class);
+            case BOOLEAN:
+                return compare(value1, value2, Boolean.class);
         }
         return value1.compareTo(value2);
     }

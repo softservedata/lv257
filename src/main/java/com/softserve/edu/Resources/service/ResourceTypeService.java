@@ -24,11 +24,9 @@ public interface ResourceTypeService {
 
     Optional<ResourceType> get(String typeName);
 
-    void create(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException;
+    void instantiateType(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException;
 
     void createBatch(List<Long> IDs);
-
-    void create(ResourceType type);
 
     List<ResourceType> getInstances();
 
