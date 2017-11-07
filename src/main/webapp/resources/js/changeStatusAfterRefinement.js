@@ -30,7 +30,7 @@ $(function () {
         $.ajax(
             {
                 type: "POST",
-                url: projectPathPrefix + "/changeStatus",
+                url: projectPathPrefix + "/" + "changeStatus",
                 accept: "application/json",
                 data: {id: id},
                 success: function (responceRequest) {
@@ -38,7 +38,7 @@ $(function () {
                     var Info_about_request = $('selector').attr('href');
                     $('selector').attr('href','${pageContext.request.contextPath}/resources/info/${responceRequest.id}');
 
-                    table.cell(cell.closest('tr'), 0).data(responceRequest.resourceType);
+                    table.cell(cell.closest('tr'), 0).data(responceRequest.resourceName);
                     table.cell(cell.closest('tr'), 1).data(responceRequest.assignerName);
                     table.cell(cell.closest('tr'), 2).data(Info_about_request);
                     table.cell(cell.closest('tr'), 3).data(responceRequest.update);
