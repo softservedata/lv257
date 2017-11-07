@@ -79,7 +79,7 @@ function saveResourceAjaxCall() {
 
     $.ajax({
         type: 'POST',
-        url: '/resources/registration',
+        url: projectPathPrefix + '/resources/registration',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(resourceJson),
         success: function (result) {
@@ -131,9 +131,7 @@ function prepareResourceJson(){
 function ajaxCallToShowProperties(resourceTypeId) {
     $.ajax({
         type: 'GET',
-        url: '/resources/api/' + resourceTypeId,
-        // contentType: 'application/json; charset=UTF-8',
-        // dataType: 'json',
+        url: projectPathPrefix + '/resources/api/' + resourceTypeId,
         success: function (constrainedProperties) {
             propertiesForm.empty();
             console.log(constrainedProperties);
