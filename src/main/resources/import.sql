@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS `cars`;
 CREATE TABLE `cars` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `vin` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`), UNIQUE (`vin`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `cars` (`id`,`model`,`year`,`vin`) VALUES (1,'Mazda',2000,'JB423S'),(2,'Mazda',2005,'J2423S'),(3,'Volvo',2005,'JBAA23S'),(4,'Mazda',2006,'KOLS223'),(5,'Volvo',2000,'OKLS223');
+INSERT INTO `cars` (`id`,`model`,`year`,`vin`) VALUES (1,'Mazda',2000,'JB423S'),(2,'Mazda',2005,'J2423S');
 
 INSERT INTO `address`(`id`,`apartment`,`block`,`building`,`country`,`district`,`locality`,`postal_index`,`region`,`street`) VALUES (100000,17,'',37,'Ukraine','Drogobutskiy district','Boryslav','83200','Lviv region','Kovaliva'),(100001,68,'A',130,'Ukraine','Drogobutskiy district','Boryslav','83200','Lviv region','Volodymyra Velykoho'),(100002,25,'',50,'Ukraine','Drogobutskiy district','Boryslav','83200','Lviv region','Dovzhenka'),(100100,6,'',65,'Ukraine','No district','Lviv City','79068','Lviv region','Mazepu'),(100101,1,'',56,'Ukraine','Mukachivskuy','Mukacheve','89611','Uzhgorod','Zelena');
 
@@ -30,7 +30,7 @@ DROP TABLE IF EXISTS `trains`;
 
 CREATE TABLE `trains` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `weight` decimal(10,2) DEFAULT NULL,  `load_capacity` int(11) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `trains` (`id`,`model`,`year`,`weight`,`load_capacity`) VALUES (1,'Hobbylinc',2012,3000.00,5000),(2,'Hyundai',2009,4000.00,10000),(3,'Kato',2009,2500.00,6000),(4,'Kato',2010,2000.00,4000),(5,'Apper',2005,5000.00,5000),(6,'Apper',2004,6000.00,4000);
+INSERT INTO `trains` (`id`,`model`,`year`,`weight`,`load_capacity`) VALUES (4,'Kato',2010,2000.00,4000);
 
 INSERT INTO `Type_Properties` (`Type_Id`,`Id_Property`,`Required`,`Searchable`,`Uniq`) VALUES (100300,100200,'',TRUE,FALSE),(100302,100200,'',TRUE,FALSE),(100303,100200,'',TRUE,FALSE),(100304,100200,'',TRUE,FALSE),(100300,100203,'',TRUE,FALSE),(100302,100203,'',TRUE,FALSE),(100303,100203,'',TRUE,FALSE),(100304,100203,'',TRUE,FALSE),(100302,100204,'',TRUE,FALSE),(100303,100204,'',TRUE,FALSE),(100303,100205,'',TRUE,FALSE),(100304,100205,'',TRUE,FALSE),(100300,100206,'',TRUE,TRUE);
 
@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS `yachts`;
 
 CREATE TABLE `yachts` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `weight` decimal(10,2) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `yachts` (`id`,`model`,`year`,`weight`) VALUES (1,'Sailing',2010,2000.00),(2,'Vintage',2012,3000.00),(3,'Woodle',2010,2500.00),(4,'Mario',2012,2300.00),(5,'Grand',2013,2200.00);
+INSERT INTO `yachts` (`id`,`model`,`year`,`weight`) VALUES (3,'Woodle',2010,2500.00);
 
 INSERT INTO `RESOURCES` (`Id`,`ADDRESS_ID`) VALUES (1,100000),(2,100001),(3,100002),(4,100100);
 
