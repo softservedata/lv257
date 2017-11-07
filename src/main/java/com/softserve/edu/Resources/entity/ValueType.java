@@ -10,7 +10,7 @@ import java.util.Optional;
 public enum ValueType {
 
     INTEGER("Integer", Integer.class, Types.INTEGER, "\\d+", "BIGINT(20)"),
-    DOUBLE("Double", Double.class, Types.DECIMAL, "\\d+\\.\\d{1,3}", "DECIMAL(20,10)"),
+    DOUBLE("Double", Double.class, Types.DECIMAL, "\\d+\\.\\d{1,3}", "DOUBLE(20,3)"),
     STRING("String", String.class, Types.VARCHAR, "\\p{L}+", "VARCHAR(255)"),
     BOOLEAN("Boolean", Boolean.class, Types.BIT, "(yes)|(no)", "BIT"),
     DATE("Date", Date.class, Types.TIMESTAMP, "\\d{4}-\\d}2-\\d{2}", "TIMESTAMP"),

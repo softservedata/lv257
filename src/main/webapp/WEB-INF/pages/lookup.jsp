@@ -21,7 +21,7 @@
 			<h2>Resources Search</h2>
 		</div>
 		<div align="center">
-			<img width="20%" height="auto" src="${contextPath}/resources/img/lookUpLogo.jpeg">
+			<img width="20%" height="auto" src="${pageContext.request.contextPath}/resources/img/lookUpLogo.jpeg">
 		</div>
 	</div>
 
@@ -33,7 +33,7 @@
 	            <div class="row text-center">
 	              <div class="container-fluid col-md-4">
 	            	<div id=type-choose class="form-group">
-	            		<label for="lookup_type">Select type of Search:</label> <br> <c:out value="${pageContext.request.contextPath}"/>
+	            		<label for="lookup_type">Select type of Search:</label>
 	              		<select id="lookup_type" class="form-control">
 	                		<option value="absent">Choose type here</option>
 	                		<option value="by-type">Search by type of Resource</option>

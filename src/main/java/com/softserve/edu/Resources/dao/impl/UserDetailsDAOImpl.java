@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,6 +26,16 @@ public class UserDetailsDAOImpl extends GenericDAOImpl<UserDetails, Long> implem
 
     protected UserDetailsDAOImpl() {
         super(UserDetails.class, LOGGER);
+    }
+
+    public List<UserDetails> getAllUserDetails() {
+        List<?> list = entityManager.createQuery("SELECT p FROM UserDetails p").getResultList();
+        return (List<UserDetails>) list;
+    }
+
+    public UserDetailsDAOImpl(EntityManager entityManager) {
+        super(UserDetails.class, LOGGER);
+        this.entityManager = entityManager;
     }
 
     @Override

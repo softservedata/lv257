@@ -59,9 +59,7 @@ $(function () {
                         digits: true
                     },
                     phone: {
-                        // required: true,
-                        minlength: 4,
-                        maxlength: 20,
+                        rangelength: [18, 18],
                         // rangelength: [4, 20],
                         pattern: '[0-9]+'
                         // pattern: '(/+)?[0-9]+$'
@@ -72,16 +70,15 @@ $(function () {
                         pattern: 'Only letters'
                     },
                     passportSeries: {
-                        rangelength: 'The passportSeries should not be less than 02 letters',
+                        rangelength: 'The passportSeries should be 2 letters',
                         fPassportSeries: 'SAD'
                     },
                     passportNumber: {
-                        rangelength: 'The passportNumber should not be less than 2 letters',
+                        rangelength: 'The passportNumber should be 6 digit',
                         digits: 'Only digits'
                     },
                     phone: {
-                        minlength: "Length of phone number should be more 4 digits",
-                        maxlength: "Length of phone number should be less 20 digits",
+                        rangelength: 'The passportNumber should be 18 symbols according +12(345)-678-90-12',
                         pattern: "Input phone number as template"
                     }
                 },
