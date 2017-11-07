@@ -92,8 +92,8 @@ function saveResourceAjaxCall() {
         },
         error: function (result) {
             console.log(result);
-            let parse = JSON.parse(result.responseText);
             if (result.status == 400) {
+                let parse = JSON.parse(result.responseText);
                 console.log('errors in fields: ' + parse);
                 $('.my_error_class').empty();
 

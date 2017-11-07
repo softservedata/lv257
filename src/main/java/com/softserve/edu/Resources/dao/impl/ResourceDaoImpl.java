@@ -211,7 +211,8 @@ public class ResourceDaoImpl implements ResourceDao {
 
         propertiesSortedByColumn.forEach(resourceProperty -> {
             String columnValue = propertiesAndValues.get(resourceProperty.getColumnName());
-            mapSqlParameterSource.addValue(resourceProperty.getColumnName(), columnValue, resourceProperty.getValueType().sqlType);
+//            mapSqlParameterSource.addValue(resourceProperty.getColumnName(), columnValue, resourceProperty.getValueType().sqlType);
+            mapSqlParameterSource.addValue(resourceProperty.getColumnName(), ValueType.parseToType(resourceProperty.getValueType(), columnValue));
         });
 
         namedJdbcTemplate.update(query, mapSqlParameterSource);
