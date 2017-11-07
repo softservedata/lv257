@@ -1417,8 +1417,7 @@ function buildOwnerSearchForm($concreteOwnerSearchDiv, rows) {
         let $input = $('<input/>', {
             type: 'text',
             class: 'form-control',
-            // name: rows[i].userFriendlyName.toLowerCase().replace(" ", ""),
-            name: camelize(rows[i].userFriendlyName),
+            name:  camelize(rows[i].userFriendlyName.toLowerCase()),
             id: rows[i].userFriendlyName,
             placeholder: rows[i].placeholder
         });
