@@ -1,8 +1,10 @@
 package com.softserve.edu.Resources.controller;
 
+import com.softserve.edu.Resources.dto.ExceptionJSONInfo;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.ResourceRequest;
+import com.softserve.edu.Resources.exception.ResourceTypeInstantiationException;
 import com.softserve.edu.Resources.service.ResourceTypeService;
 import com.softserve.edu.Resources.service.impl.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,12 +78,24 @@ public class ResourceRequestAdmController {
         return "resourceRequestHistory";
     }
 
-
     @RequestMapping(value = "/acceptRequest/{requestId}/{typeId}", method = RequestMethod.PUT)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void acceptRequest(@PathVariable("requestId") long requestId,
-                              @PathVariable("typeId") long typeId) {
-      //  resourceTypeService.instantiateType(typeId);
+    @ResponseBody
+    public String acceptRequest(@PathVariable("requestId") long requestId, @PathVariable("typeId") long typeId) {
+        System.out.println("IN METHOD!!!!!!!!!!");
+        resourceTypeService.instantiateType(typeId);
         requestService.acceptRequest(requestId);
+        return "success";
+    }
+
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ExceptionJSONInfo handleResourceTypeInstantiationException(HttpServletRequest request, Exception ex) {
+        System.out.println("IN HANDLER!!!!!!!!!!");
+        ExceptionJSONInfo response = new ExceptionJSONInfo();
+        response.setUrl(request.getRequestURL().toString());
+        System.out.println(request.getRequestURL().toString());
+        response.setMessage(ex.getMessage());
+        return response;
     }
 }
