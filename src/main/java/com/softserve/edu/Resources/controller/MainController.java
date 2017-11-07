@@ -77,21 +77,16 @@ public class MainController {
         return "login";
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+/*    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ModelAndView users() {
         ModelAndView usersModel = new ModelAndView("administration/users");
         usersModel.addObject("users", userService.getAllUsers());
         return usersModel;
-    }
+    }*/
 
-    @RequestMapping(value = "/roles", method = RequestMethod.GET)
-    public ModelAndView roles() {
-        ModelAndView rolesModel = new ModelAndView("administration/roles");
-        rolesModel.addObject("list", roleService.getAllRoles());
-        return rolesModel;
-    }
 
-    //rn - roleName
+
+/*    //rn - roleName
     //TODO its not safe to show our role names in the URL so we need to ...
     @RequestMapping(value = "/roleInfo", params = {"rn"}, method = RequestMethod.GET)
     public ModelAndView roleInfo(@RequestParam Map<String, String> queryUser) {
@@ -100,9 +95,9 @@ public class MainController {
         model.addObject("list", roleService.getRolePrivileges(roleName));
         model.addObject("roleName", roleName);
         return model;
-    }
+    }*/
 
-    @RequestMapping(value = "/userEdit", params = {"uid"}, method = RequestMethod.GET)
+    /*@RequestMapping(value = "/userEdit", params = {"uid"}, method = RequestMethod.GET)
     public ModelAndView userEdit(@RequestParam Map<String, String> queryUser) {
         Long userId = Long.parseLong(queryUser.get("uid"));
         System.out.println("useerID is " + userId);
@@ -110,7 +105,7 @@ public class MainController {
         model.addObject("user", userService.getUserById(userId));
         model.addObject("uid", userId);
         return model;
-    }
+    }*/
 
     @RequestMapping(value = "/addRole", method = RequestMethod.GET)
     public ModelAndView addRole(){
@@ -137,11 +132,7 @@ public class MainController {
         return "logoutSuccessful";
     }
 
-    @RequestMapping(value = {"/account"}, method = RequestMethod.GET)
-    public String accountPage(Model model) {
-        model.addAttribute("title", "Account");
-        return "account";
-    }
+
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public String accessDenied(Model model, Principal principal) {

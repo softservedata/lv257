@@ -31,6 +31,7 @@ public class UserProfileDTO {
     @Past
     private Date dateOfIssue;
     private String idAddress;
+    @Size(min = 18, max = 18, message = "This is invalid phone.UserProfileDTO")
     private String phone;
     private String bankId;
     private User user;

@@ -32,12 +32,20 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Personal settings</div>
                 <div class="panel-body selected">Profile</div>
+<%--                <div class="panel-body"><a class="menu-link"
+                                           href="${contextPath}/users1">All Users 1 (+button "Add new user")</a></div>--%>
                 <div class="panel-body"><a class="menu-link"
-                                           href="${contextPath}/account">Account</a></div>
-                <div class="panel-body"><a class="menu-link" href="${contextPath}/pendingRequests">Pending
-                    requests</a></div>
-                <div class="panel-body"><a class="menu-link" href="${contextPath}/profileAvatar">profileAvatar</a>
-                </div>
+                                           href="${contextPath}/users">All Users<%-- 2 (new View - Spring Table)--%></a></div>
+                <div class="panel-body"><a class="menu-link"
+                                           href="${contextPath}/changePassword">Change password</a></div>
+                <div class="panel-body"><a class="menu-link"
+                                           href="${contextPath}/roles">Roles</a></div>
+<%--                <div class="panel-body"><a class="menu-link"
+                                           href="${contextPath}/changeRole">Change role</a></div>--%>
+<%--                <div class="panel-body"><a class="menu-link" href="${contextPath}/pendingRequests">Pending
+                    requests</a></div>--%>
+<%--                <div class="panel-body"><a class="menu-link" href="${contextPath}/profileAvatar">profileAvatar</a>
+                </div>--%>
             </div>
         </div>
     </div>
@@ -45,20 +53,20 @@
     <div class="col-md-4 float-left">
         <H3>Public profile</H3>
         <hr>
+
         <sf:form id="profileForm" modelAttribute="details" action="${contextPath}/profile" method="POST"
                  enctype="multipart/form-data">
 
             <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary">Save changes</button>
-            <br><br>
-            <div class="form-group">
-                <div class="font-bold">E-mail</div>
-                <input class="form-control" value="${pageContext.request.userPrincipal.name}" readonly/>
-            </div>
+            <br>
 
             <div class="form-group">
                 <sf:input path="id" cssClass="hidden"/>
             </div>
-
+            <div class="form-group">
+                <input type="text" name="role" value="${role}" class="hidden"/>
+                <input type="text" name="photo" value="${photo}" class="hidden"/>
+            </div>
             <%--Field for First name--%>
             <div class="form-group">
                 <label for="firstName" style="float: left;">First name</label>
@@ -84,7 +92,7 @@
                           name="${status.expression}"
                           value="${status.value}"
                           class="form-control"
-                          placeholder="passportSeries"/>
+                          placeholder="secondName"/>
                 <c:if test="${status.error}">
                     <c:forEach items="${status.errorMessages}" var="error">
                         <span class="red"> ${error} </span>
@@ -96,11 +104,11 @@
             <div class="form-group">
                 <label for="middleName" style="float: left;">Middle name</label>
                 <sf:input type="text"
-                          path="secondName"
+                          path="middleName"
                           name="${status.expression}"
                           value="${status.value}"
                           class="form-control"
-                          placeholder="passportSeries"/>
+                          placeholder="middleName"/>
                 <c:if test="${status.error}">
                     <c:forEach items="${status.errorMessages}" var="error">
                         <span class="red"> ${error} </span>
@@ -162,18 +170,28 @@
         <br>
         <div class="row">
             <div class="pull-right">
-                <img src="${contextPath}/resources/img/NoFoto.png"
-                     alt="your foto should be here" width="200px" height="200"/>
+                <img src=${photo}
+                     alt="Your advertisement could be here" width="200px" height="200"/>
+                <br><br>
+                <div class="form-group">
+                <div class="font-bold">E-mail</div>
+                <input class="form-control" value="${pageContext.request.userPrincipal.name}" readonly/>
             </div>
 
+                <div class="form-group">
+                    <div class="font-bold">Role</div>
+                    <input class="form-control" value="${role}" readonly/>
+                </div>
+
+            </div>
         </div>
         <div><br></div>
         <div class="form-group">
-            <sf:form id="profileFormFile" modelAttribute="details" action="${contextPath}/profileFile" method="POST"
+<%--            <sf:form id="profileFormFile" modelAttribute="details" action="${contextPath}/profile" method="POST"
                      enctype="multipart/form-data">
                 <label for="file">Upload document</label>
                 <spring:bind path="document.file">
-                    <input type="file" path="document.file" name="${status.expression}" value="${status.value}"
+                    <input type="file" path="document.file" name="file" value="${status.value}"
                            id="file"/>
                     <c:if test="${status.error}">
                         <c:forEach items="${status.errorMessages}" var="error">
@@ -184,7 +202,7 @@
                 <br>
                 <button name="submit" type="submit" id="submit" value="Submit" class="btn btn-primary">Save File
                 </button>
-            </sf:form>
+            </sf:form>--%>
         </div>
     </div>
 
