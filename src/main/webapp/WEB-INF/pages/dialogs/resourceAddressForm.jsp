@@ -2,8 +2,8 @@
 
     <div class="address_uniqueness_exception display_none">
         <div class="alert alert-danger alert-dismissible fade in">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Address's city, street and building and apartment number already exists.
+            Address's city, street, building and apartment number combination already exists.
+            Please, search for it and pick it in the search results.
         </div>
     </div>
 

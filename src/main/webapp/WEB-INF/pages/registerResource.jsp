@@ -164,7 +164,7 @@
 
                                         <div class="owner_uniqueness_exception display_none">
                                             <div class="alert alert-danger alert-dismissible fade in">
-                                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                <%--<button type="button" class="close" data-dismiss="alert">&times;</button>--%>
                                                 <%--Owner with such --%>
                                             </div>
                                         </div>
@@ -329,6 +329,15 @@
 
                 <hr class="my_hr">
                 <label id="resource_prop_label">Resource Properties</label>
+
+
+                <div class="resource_uniqueness_exception display_none">
+                    <div class="alert alert-danger alert-dismissible fade in">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+                    </div>
+                </div>
+
                 <div class="rP_chars">
 
                     <%--CONCRETE RESOURCE TYPE CHARACTERISTICS--%>
@@ -339,10 +348,7 @@
 
                 </div>
 
-                <%--<div class="form-group">--%>
-                    <%--<label for="files">Registration basis</label>--%>
-                    <%--<input type="file" id="files" multiple="true">--%>
-                <%--</div>--%>
+
                 <div class="padding_bottom_15">
                     <button id="register_resource_btn"
                             type="submit" class="btn btn-success width_13em">Register resource</button>
@@ -364,8 +370,6 @@
 
 <script src="${contextPath}/resources/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/js/additional-methods.js"></script>
-<script src="${contextPath}/resources/js/categories.js"></script>
-<script src="${contextPath}/resources/js/hierarchy-select.js"></script>
 <script src="${contextPath}/resources/js/resourceTypeChars.js"></script>
 <script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <script>

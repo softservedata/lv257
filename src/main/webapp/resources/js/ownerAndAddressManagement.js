@@ -613,12 +613,11 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
         e.preventDefault();
 
         $uniqueOwnerFieldsErrorDiv.find('.alert').text(
-            (ownerType == 'company' ?
+        (ownerType == 'company' ?
                 'EDRPO number or company\'s combination of organization form, full name and short name is already registered.' :
                 'Person\'s identifier number or pessport data is already registered.') +
-            ('Or owner\'s address already exists.')
+            ('Probably, Owner\'s address locality, street, building and apartment number combination is already registered. Please, search for it and pick it from the search.')
         );
-
 
         $cancelBtn.show(500);
         $registerOwnerBtn.prop('disabled', true);

@@ -109,6 +109,7 @@
 
 </div>
 
+<script src="${contextPath}/resources/js/jquery.validate.js"></script>
 <script src="${contextPath}/resources/js/lookUpResource.js"></script>
 <script src="${contextPath}/resources/js/ownerAndAddressManagement.js"></script>
 <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
