@@ -26,7 +26,7 @@
 
         <div class="container">
             <ul class="nav nav-tabs">
-                <li><a href="/resources/viewTypes">View</a></li>
+                <li><a href="${contextPath}/resources/viewTypes">View</a></li>
                 <li class="active"><a href="#">
                     <c:out value="${tabLabel}"/>
                 </a></li>
