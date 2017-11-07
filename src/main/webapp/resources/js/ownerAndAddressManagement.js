@@ -5,6 +5,11 @@ jQuery.validator.addMethod("passportSeries", function (value, element) {
 $(document).ready(function () {
 
     $ownerSearchSelect.on('change', function () {
+    	$('#lookup-result-by-owner-grouped').empty();
+        $('#new-search').hide();
+        $('#result-search').empty();
+        $('#no-inputs-error').empty();
+    	
         const ownerType = this.value;
 
         if (ownerType == 'company') {
@@ -1505,13 +1510,18 @@ function showResults(success, $resultDiv) {
         let choosenOwnerId = 'none';
 
         $select.on('change', function () {
+        	 $('#lookup-result-by-owner-grouped').empty();
+             $('#result-search').empty();
+             $('#new-search').hide();
             choosenOwnerId = this.value;
             console.log('choosen owner id: ' + choosenOwnerId);
         });
 
         $fidnResourcesByOwnerBtn.on('click', function (e) {
             e.preventDefault();
-
+            $('#lookup-result-by-owner-grouped').empty();
+            $('#result-search').empty();
+            $('#new-search').hide();
             if (choosenOwnerId != 'none') {
                 $.ajax({
                     type: 'GET',
@@ -1564,6 +1574,7 @@ function showResults(success, $resultDiv) {
 
                         getResourcesByOwnerIdAndResourceTypeName('#grouped-resources');
                         divResult.show();
+                        
                     },
                     error: function (result) {
                         $('#no-inputs-error').empty();
