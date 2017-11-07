@@ -34,4 +34,6 @@ public interface ResourceService {
     GenericResourceDTO findResourceByTypeAndId(long resourceTypeId, long resourceId);
 
     ValidationErrorDTO validateResourceImpl(ResourceImplDTO resourceImplDTO);
+
+    ValidationErrorDTO validateResourceImplUniqueFields(ResourceImplDTO resourceImplDTO);
 }
