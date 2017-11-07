@@ -60,6 +60,7 @@ public class ResourceRequestAdmController {
                         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         System.out.println(userSpring.getUsername());
         model.addAttribute("resourceAdmin", userSpring.getUsername());
+        model.addAttribute("title", "Requests for Resource Type");
         List<RequestDTO> requestsDTO = requestService.getNewResourcesRequest()
                 .stream().map(request -> new RequestDTO(request)).collect(Collectors.toList());
         model.addAttribute("resourceRequest", requestsDTO);
