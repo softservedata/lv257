@@ -112,8 +112,7 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
     public void makeTransient(ResourceType resourceType) {
         resourceType.getRequest()
                 .setResourceType(null)
-                .setStatus(ResourceRequest.Status.NEW)
-                .setResourcesAdmin(null);
+                .setStatus(ResourceRequest.Status.DECLINED);
         super.makeTransient(resourceType);
     }
 }
