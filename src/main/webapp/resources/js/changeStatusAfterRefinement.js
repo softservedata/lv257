@@ -30,7 +30,7 @@ $(function () {
         $.ajax(
             {
                 type: "POST",
-                url: projectPathPrefix + "changeStatus",
+                url: projectPathPrefix + "/changeStatus",
                 accept: "application/json",
                 data: {id: id},
                 success: function (responceRequest) {
