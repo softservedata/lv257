@@ -13,6 +13,7 @@ $(document).ready(function () {
     function init() {
         $.get(projectPathPrefix + "/api/getTypes", function (data) {
             buildTable(data);
+            $('#types-table').show();
             $('#all-categories a').click();
             return data;
         }, "json");

@@ -35,7 +35,7 @@
                     resource type</a>
             </div>
             <br>
-            <table class="table table-striped table-condensed text-center display" width="100%" id="types-table">
+            <table class="table table-striped table-condensed text-center display" width="100%" id="types-table" hidden>
                 <thead>
                 <tr>
                     <th class="text-center">#</th>

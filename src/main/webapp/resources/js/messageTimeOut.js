@@ -15,7 +15,7 @@ $(function () {
             $requestForm.validate({
 
                 rules: {
-                    resourceType: {
+                    resourceName: {
                         minlength: 4
                     },
                     description: {

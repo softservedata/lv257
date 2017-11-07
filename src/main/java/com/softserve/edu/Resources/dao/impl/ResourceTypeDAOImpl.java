@@ -2,6 +2,7 @@ package com.softserve.edu.Resources.dao.impl;
 
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.entity.ResourceProperty;
+import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.ResourceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,5 +106,13 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
         Map<String, Object> properties = new HashMap<>();
         properties.put("javax.persistence.loadgraph", em.getEntityGraph("TypesProperties"));
         return Optional.ofNullable(em.find(ResourceType.class, id, properties));
+    }
+
+    @Override
+    public void makeTransient(ResourceType resourceType) {
+        resourceType.getRequest()
+                .setResourceType(null)
+                .setStatus(ResourceRequest.Status.DECLINED);
+        super.makeTransient(resourceType);
     }
 }

@@ -51,24 +51,26 @@ public class RegisterResourceController {
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO, HttpSession session) {
-
         ValidationErrorDTO validationErrorDTO = resourceService.validateResourceImpl(resourceImplDTO);
 
         if (validationErrorDTO.getFieldErrors().isEmpty()) {
-            long addressId = resourceImplDTO.getAddressId();
-            Address resourceAddress = addressService.getById(addressId);
-            ResourceType resourceTypeWithProperties = resourceTypeService.findWithPropertiesByID(resourceImplDTO.getResourceTypeId());
-
-            Resource resource = new Resource();
-            resource.setAddress(resourceAddress);
 
             ValidationErrorDTO validationErrorDTOTwo = resourceService.validateResourceImplUniqueFields(resourceImplDTO);
+            System.out.println(validationErrorDTO);
+
             if (!validationErrorDTOTwo.getFieldErrors().isEmpty()){
                 return new ResponseEntity<>(validationErrorDTOTwo, HttpStatus.BAD_REQUEST);
             } else {
-                resourceService.addResource(resource);
-                resourceService.addResourceImpl(resource, resourceTypeWithProperties, resourceImplDTO.getPropertiesAndValues());
-                resourceService.addResourceOwnings(resource, resourceImplDTO);
+
+                long addressId = resourceImplDTO.getAddressId();
+                Address resourceAddress = addressService.getById(addressId);
+                ResourceType resourceTypeWithProperties = resourceTypeService.findWithPropertiesByID(resourceImplDTO.getResourceTypeId());
+
+                Resource resource = new Resource();
+                resource.setAddress(resourceAddress);
+
+                // insert Resource, ResourceOwnings records and concrete resource impl table
+                resourceService.addResource(resource, resourceImplDTO);
 
                 // use this dto just because I don't want to make another dto with same two String fields
                 FieldErrorDTO redirectUrl = new FieldErrorDTO("redirect", "registration");
@@ -79,7 +81,6 @@ public class RegisterResourceController {
         } else {
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
         }
-
 
     }
 

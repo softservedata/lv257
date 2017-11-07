@@ -50,6 +50,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         Optional<UserDetails> optDetails = userDetailsService.getUserDetailsByUserId(user.getId());
         System.out.printf("id is %d", user.getId());
         if (!optDetails.isPresent())
+            /** todo LA not found exception should be*/
             throw new IllegalArgumentException("Provided user detail's ID is illegal"); // not found exception should be
         UserDetails details = optDetails.get();
         UserProfileDTO userProfileDTO = new UserProfileDTO();

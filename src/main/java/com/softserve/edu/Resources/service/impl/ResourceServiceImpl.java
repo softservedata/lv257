@@ -159,15 +159,17 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
 
-    @Transactional
+    // if any Exception, remove already persisted records from db
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public void addResource(Resource resource) {
+    public void addResource(Resource resource, ResourceImplDTO resourceImplDTO) {
+        // insert in resources to get unique resource id
         resourceDao.addResource(resource);
-    }
 
-    @Transactional
-    @Override
-    public void addResourceOwnings(Resource resource, ResourceImplDTO resourceImplDTO) {
+        long resourceTypeId = resourceImplDTO.getResourceTypeId();
+        ResourceType resourceType = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+        Map<String, String> propertiesAndValues = resourceImplDTO.getPropertiesAndValues();
+
         long[] ownerIds = resourceImplDTO.getOwnerIds();
         Arrays.stream(ownerIds)
                 .forEach(ownerId -> {
@@ -178,16 +180,14 @@ public class ResourceServiceImpl implements ResourceService {
                     resourceOwning.setResourceType(resourceTypeById.get());
                     resourceOwning.setResource(resource);
 
+                    // insert to resource ownings (every owner is new record to this table)
                     resourceDao.addResourceOwning(resourceOwning);
                 });
-    }
 
-    @Transactional
-    @Override
-    public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues) {
         String readyQuery = queryBuilder.buildInsertResourceImplQuery(resourceType, propertiesAndValues);
         System.out.println(readyQuery);
 
+        // insert into concrete resource table (e.g., Cars, Trucks etc.)
         resourceDao.addResourceImpl(readyQuery, resourceType, resource.getId(), propertiesAndValues);
     }
 
@@ -257,4 +257,5 @@ public class ResourceServiceImpl implements ResourceService {
 
         return validationErrorDTO;
     }
+
 }

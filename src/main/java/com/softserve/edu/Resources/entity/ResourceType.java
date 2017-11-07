@@ -57,7 +57,6 @@ public class ResourceType {
     private ResourceRequest request;
 
 
-
     public void setProperties(Set<ConstrainedProperty> properties) {
         this.properties = properties;
     }
@@ -160,6 +159,15 @@ public class ResourceType {
 
     public ResourceType setAssigner(User assigner) {
         this.assigner = assigner;
+        return this;
+    }
+
+    public ResourceRequest getRequest() {
+        return request;
+    }
+
+    public ResourceType setRequest(ResourceRequest request) {
+        this.request = request;
         return this;
     }
 
