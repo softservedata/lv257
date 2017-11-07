@@ -8,6 +8,7 @@ import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.util.AcceptRequestMail;
 import com.softserve.edu.Resources.util.ResponceMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +92,24 @@ public class RequestService {
             velocityMailService.sendResponceMail(mail);
         } else {
             logger.warn("ResourseRequest instance with id:" + message.getId_request() + " is undefined.");
+        }
+    }
+
+    public void acceptRequest(long id) {
+        Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(id);
+
+        ResourceRequest request;
+        if (requestOptional.isPresent()) {
+            request = requestOptional.get();
+            request.setUpdate(new Date());
+            request.setStatus(ResourceRequest.Status.ACCEPTED);
+            resourceRequestDAO.makePersistent(request);
+            if (request.getResourcesAdmin().getUsername() != request.getRegister().getUsername()) {
+                AcceptRequestMail mail = new AcceptRequestMail(request);
+                velocityMailService.sendCreateResourceTypeNotification(mail);
+            }
+        } else {
+            logger.warn("ResourseRequest instance with id:" + id + " is undefined.");
         }
     }
 

@@ -35,8 +35,8 @@ public class ResourceTypeManagementController {
     private Environment env;
 
     @RequestMapping(value = "/addType", method = RequestMethod.GET)
-    public String addResourceType(Model model) {
-        return editResourceType(0, 0, model);
+    public String addResourceType(@RequestParam(value = "requestId", defaultValue = "0") long requestId,Model model) {
+        return editResourceType(0, requestId, model);
     }
 
     @RequestMapping(value = "/editType", method = RequestMethod.GET)

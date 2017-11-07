@@ -20,17 +20,6 @@ public class Message {
                 return "Your request was declined.\n";
             }
         },
-        Accept {
-            @Override
-            public ResourceRequest.Status getNeededStatus() {
-                return ResourceRequest.Status.ACCEPTED;
-            }
-
-            @Override
-            public String getMessageContent() {
-                return "Your request was successfully accepted.\n";
-            }
-        },
         Refinement {
             @Override
             public ResourceRequest.Status getNeededStatus() {

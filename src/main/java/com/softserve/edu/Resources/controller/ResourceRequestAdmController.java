@@ -3,6 +3,7 @@ package com.softserve.edu.Resources.controller;
 import com.softserve.edu.Resources.dto.Message;
 import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.ResourceRequest;
+import com.softserve.edu.Resources.service.ResourceTypeService;
 import com.softserve.edu.Resources.service.impl.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class ResourceRequestAdmController {
 
     @Autowired
     RequestService requestService;
+
+    @Autowired
+    ResourceTypeService resourceTypeService;
 
     @RequestMapping(value = {"/assignRequest"}, method = RequestMethod.POST)
     public @ResponseBody
@@ -70,4 +74,12 @@ public class ResourceRequestAdmController {
         return "resourceRequestHistory";
     }
 
+
+    @RequestMapping(value = "/acceptRequest/{requestId}/{typeId}", method = RequestMethod.PUT)
+    @ResponseStatus(value = HttpStatus.OK)
+    public void acceptRequest(@PathVariable("requestId") long requestId,
+                              @PathVariable("typeId") long typeId) {
+      //  resourceTypeService.instantiateType(typeId);
+        requestService.acceptRequest(requestId);
+    }
 }

@@ -71,12 +71,15 @@
                                     <c:when test="${request.assignerName==resourceAdmin}">
                                         <c:choose>
                                             <c:when test="${request.resourceType!=null}">
-                                                <td data-order="1" data-id=${request.id}>
-                                                <button class="btn btn-primary">Accept/Instantiate</button>
+                                                <td data-order="1" data-typeId=${request.resourceTypeId} data-id=${request.id} >
+                                                <a href="${pageContext.request.contextPath}/resources/editType?typeId=${request.resourceTypeId}&requestId=${request.id}">
+                                                    <button class="btn btn-primary">Process</button>
+                                                </a>
+                                                <button class="btn btn-primary accept">Accept</button>
                                             </c:when>
                                             <c:otherwise>
                                                 <td data-order="2" data-id=${request.id}>
-                                                <a href="${pageContext.request.contextPath}/resources/addType">
+                                                <a href="${pageContext.request.contextPath}/resources/addType?requestId=${request.id}">
                                                     <button class="btn btn-primary">Process</button>
                                                 </a>
                                                 <button class="btn btn-primary responce" type="button"
@@ -90,9 +93,9 @@
 
                                     <c:otherwise>
                                         <td data-order="2" data-id=${request.id}>
-                                        <a href="/add">
+
                                             <button class="btn btn-primary" disabled>Process</button>
-                                        </a>
+
                                         <button class="btn btn-primary" disabled> Responce</button>
 
                                     </c:otherwise>
@@ -202,9 +205,10 @@
                     success: function (responceRequest) {
                         table.cell(cell.closest('tr'), 3).data(responceRequest.update);
                         table.cell(cell.closest('tr'), 4).data(responceRequest.assignerName);
-//
+
+
                         cell.replaceWith(" <td data-order=\"2\" data-id=" + id + ">\n" +
-                            "                       <a href=\"/resources/addType"+id+"\">\n" +
+                            "                       <a href=\"/resources/addType?requestId="+id+"\">\n" +
                             "                           <button class=\"btn btn-primary\">Process</button>\n" +
                             "                       </a>\n" +
                             "                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +
@@ -252,6 +256,24 @@
                         currentRow.remove().draw();
                     }
                 })
+        })
+
+        $('.accept').click(function () {
+            var cell = $(this).parents('td');
+            currentRow = table.row($(this).parents('tr'));
+
+            var id_request=cell.attr('data-id');
+            var id_type=cell.attr('data-typeId');
+            alert(id_type)
+            $.ajax({
+                    type: "PUT",
+                    url: projectPathPrefix + "/resources/acceptRequest/"+id_request+"/"+id_type,
+                    success: function (result) {
+                        alert("Your mail has already sent.")
+                        currentRow.remove().draw();
+                    }
+                })
+
         })
     });
 </script>

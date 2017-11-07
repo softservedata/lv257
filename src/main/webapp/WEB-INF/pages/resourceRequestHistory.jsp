@@ -63,6 +63,13 @@
                     </div>
                     <div class="fht-cell"></div>
                 </th>
+
+                <th>
+                    <div
+                            class="text-center">Resource Type
+                    </div>
+                    <div class="fht-cell"></div>
+                </th>
             </tr>
             <tr>
 
@@ -71,6 +78,7 @@
                 <td><input type="text" class="form-control" id="searchDate" placeholder="Date"></td>
                 <td><input type="text" class="form-control" id="searchResAdm" placeholder="Resource Admin"></td>
                 <td><input type="text" class="form-control" id="searchStatus" placeholder="Status"></td>
+                <td><input type="text" class="form-control" id="searchResType" placeholder="Resource Type"></td>
 
             </tr>
             </thead>
@@ -93,6 +101,14 @@
                     <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
                     <td>${request.status}</td>
+                <c:choose>
+                    <c:when test="${request.resourceType==null}">
+                        <td>---</td>
+                    </c:when>
+                    <c:otherwise>
+                        <td>${request.resourceType}</td>
+                    </c:otherwise>
+                </c:choose>
 
                 </tr>
             </c:forEach>
@@ -144,6 +160,13 @@
         $("#searchStatus").on('keyup change', function () {
             table
                 .columns(4)
+                .search(this.value)
+                .draw();
+        });
+
+        $("#searchResType").on('keyup change', function () {
+            table
+                .columns(5)
                 .search(this.value)
                 .draw();
         });

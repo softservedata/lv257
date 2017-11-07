@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.service.impl;
 
+import com.softserve.edu.Resources.util.AcceptRequestMail;
 import com.softserve.edu.Resources.util.RegistrationConfirmMail;
 import com.softserve.edu.Resources.util.ResponceMail;
 import org.apache.velocity.Template;
@@ -33,10 +34,33 @@ public class VelocityMailService {
 
         VelocityContext velocityContext = new VelocityContext();
         velocityContext.put("register", mail.getReceiver());
-        velocityContext.put("resourceType", mail.getResourceName());
+        velocityContext.put("resourceName", mail.getResourceName());
         velocityContext.put("resourceAdmin", mail.getResourceAdmin());
         velocityContext.put("status", mail.getStatus());
         velocityContext.put("comment", mail.getComment());
+
+        StringWriter stringWriter = new StringWriter();
+
+        template.merge(velocityContext, stringWriter);
+
+        message.setText(stringWriter.toString());
+
+        mailSender.send(message);
+    }
+
+    public void sendCreateResourceTypeNotification(AcceptRequestMail mail) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        message.setTo(mail.getReceiver());
+        message.setSubject(mail.getSubject());
+
+        Template template = velocityEngine.getTemplate("./templates/" + mail.getTemplateName());
+
+        VelocityContext velocityContext = new VelocityContext();
+
+        velocityContext.put("resourceType", mail.getResourceType());
+        velocityContext.put("resourceName", mail.getResourceName());
 
         StringWriter stringWriter = new StringWriter();
 

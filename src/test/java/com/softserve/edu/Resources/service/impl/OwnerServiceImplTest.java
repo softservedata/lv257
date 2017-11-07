@@ -210,7 +210,7 @@ public class OwnerServiceImplTest {
         when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
         when(utility.getErrorDTO(bindingResult)).thenReturn(validationErrorDTO);
 
-        ValidationErrorDTO resultValidationErrorDTO = ownerService.validationDTO(bindingResult);
+        ValidationErrorDTO resultValidationErrorDTO = ownerService.getValidationDTO(bindingResult);
 
         assertEquals(resultValidationErrorDTO, validationErrorDTO);
         verify(utility, times(1)).getErrorDTO(bindingResult);

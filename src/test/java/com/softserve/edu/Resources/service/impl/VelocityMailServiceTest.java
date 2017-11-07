@@ -46,7 +46,7 @@ public class VelocityMailServiceTest {
 
     @BeforeClass
     public static void SetUp() {
-        messageDto = new Message(0, Message.Purpose.Accept, "Test comment");
+        messageDto = new Message(0, Message.Purpose.Decline, "Test comment");
         resourceAdmin = new User();
         register = new User();
         register.setUsername("Register@gmail.com");
