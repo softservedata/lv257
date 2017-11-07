@@ -170,7 +170,9 @@
         <br>
         <div class="row">
             <div class="pull-right">
-                <img src=${photo}
+                <%--<img src="${contextPath}/resources/img/${role}.png">--%>
+                <%--<img src=${photo}--%>
+                <img src="${contextPath}/resources/img/${role}.png"
                      alt="Your advertisement could be here" width="200px" height="200"/>
                 <br><br>
                 <div class="form-group">
