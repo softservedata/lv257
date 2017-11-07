@@ -62,15 +62,20 @@ public class RegisterResourceController {
             Resource resource = new Resource();
             resource.setAddress(resourceAddress);
 
-            resourceService.addResource(resource);
-            resourceService.addResourceOwnings(resource, resourceImplDTO);
-            resourceService.addResourceImpl(resource, resourceTypeWithProperties, resourceImplDTO.getPropertiesAndValues());
+            ValidationErrorDTO validationErrorDTOTwo = resourceService.validateResourceImplUniqueFields(resourceImplDTO);
+            if (!validationErrorDTOTwo.getFieldErrors().isEmpty()){
+                return new ResponseEntity<>(validationErrorDTOTwo, HttpStatus.BAD_REQUEST);
+            } else {
+                resourceService.addResource(resource);
+                resourceService.addResourceImpl(resource, resourceTypeWithProperties, resourceImplDTO.getPropertiesAndValues());
+                resourceService.addResourceOwnings(resource, resourceImplDTO);
 
-            // use this dto just because I don't want to make another dto with same two String fields
-            FieldErrorDTO redirectUrl = new FieldErrorDTO("redirect", "registration");
+                // use this dto just because I don't want to make another dto with same two String fields
+                FieldErrorDTO redirectUrl = new FieldErrorDTO("redirect", "registration");
 
-            session.setAttribute("resourceRegistered", true);
-            return new ResponseEntity<>(redirectUrl, HttpStatus.OK);
+                session.setAttribute("resourceRegistered", true);
+                return new ResponseEntity<>(redirectUrl, HttpStatus.OK);
+            }
         } else {
             return new ResponseEntity<>(validationErrorDTO, HttpStatus.BAD_REQUEST);
         }
@@ -189,8 +194,9 @@ public class RegisterResourceController {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public void handleUniqueException(){
+    public void handleUniqueException(DataIntegrityViolationException e){
         System.out.println("exception was caught.");
+        System.out.println(e.getMessage());
     }
 
 }
