@@ -1,5 +1,7 @@
 package com.softserve.edu.Resources.controller;
 
+
+import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.service.impl.DocumentService;
@@ -10,6 +12,9 @@ import com.softserve.edu.Resources.validator.UploadFileValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -25,9 +30,9 @@ import static com.softserve.edu.Resources.entity.ResourceRequest.Status.*;
 @Controller
 @RequestMapping("/resources")
 public class RequestResourceController {
-
     @Autowired
     RequestService requestService;
+
     @Autowired
     DocumentService documentService;
 
@@ -111,4 +116,19 @@ public class RequestResourceController {
         return "Spinner Time Out";
 
     }
+
+    @RequestMapping(value = {"/changeStatus"}, method = RequestMethod.POST)
+    public @ResponseBody
+    ResponseEntity<?> changeStatus(@RequestParam("id") String id) {
+
+        try {
+            RequestDTO requestDTO = requestService.responceAfterRefinement(Long.parseLong(id));
+
+
+            return new ResponseEntity<>(requestDTO, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

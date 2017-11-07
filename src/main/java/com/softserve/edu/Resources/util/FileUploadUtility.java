@@ -6,8 +6,11 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
+import com.softserve.edu.Resources.service.impl.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
@@ -15,15 +18,19 @@ import java.io.InputStream;
 
 public class FileUploadUtility extends FileUpload{
 
-
-    public String uploadFile( MultipartFile file, String code) {
+    public String uploadFile( MultipartFile file, String code, String username) {
 
        BasicAWSCredentials credentials = new BasicAWSCredentials("AKIAIRSMVLMUF2W4ZSAA", "guZpt9C/VXOHpi1UwAOMHR0kKeDybkWEzPbELVc9");
        AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1)
                                                 .withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 
-        String bucketName = code.toLowerCase();
-        s3Client.createBucket(bucketName);
+        String bucketName = username;
+
+        if(!s3Client.doesBucketExist(bucketName)){
+
+            s3Client.createBucket(bucketName);
+
+        }
 
         String url = "";
 

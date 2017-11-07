@@ -10,7 +10,7 @@ public class FileUploadLocalUtility extends FileUpload{
         // private static final String ABS_PATH_2 = System.getenv( "PICTURES_PATH");
     private final String ABS_PATH = "file:///C:/UploadedFiles/";
 
-    public String uploadFile( MultipartFile file, String code) {
+    public String uploadFile( MultipartFile file, String code, String username) {
 
         // to make sure all the directory exists.
         if (!new File(ABS_PATH).exists()) {

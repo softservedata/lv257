@@ -85,8 +85,8 @@
                                     <td>${request.resourcesAdmin.username}</td>
                                     <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">Info about request</a></td>
                                     <td>${request.update.toString().split('\\.')[0]}</td>
-                                    <td>
-                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#myModal">Responce</button>
+                                    <td data-id=${request.id}>
+                                        <button class="btn btn-primary delete" type="button" data-toggle="modal" data-target="#myModal">Responce</button>
                                         <%--<div id="myModal" class="modal fade">--%>
                                             <%--<div class="modal-dialog">--%>
                                                 <%--<div class="modal-content">--%>
@@ -308,25 +308,7 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap.min.js"></script>
 
-<script>
-
-    $( ".fixed-table-container" ).remove();
-    $( ".fixed-table-body" ).remove();
-
-    $(document).ready(function() {
-        $('#newRequest').DataTable();
-    } );
-    $(document).ready(function() {
-        $('#declinedRequest').DataTable();
-    } );
-    $(document).ready(function() {
-        $('#acceptedRequest').DataTable();
-    } );
-    $(document).ready(function() {
-        $('#refinementRequest').DataTable();
-    } );
-
-</script>
+<script src="${contextPath}/resources/js/changeStatusAfterRefinement.js"></script>
 
 </body>
 </html>
