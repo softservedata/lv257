@@ -10,12 +10,14 @@ import com.softserve.edu.Resources.service.impl.RequestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.io.InputStream;
-
+@PropertySource("classpath:fileupload.properties")
 public class FileUploadUtility extends FileUpload{
 
     public String uploadFile( MultipartFile file, String code, String username) {

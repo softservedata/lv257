@@ -10,7 +10,7 @@ import java.util.Optional;
 public enum ValueType {
 
     INTEGER("Integer", Integer.class, Types.INTEGER, "\\d+", "BIGINT(20)"),
-    DOUBLE("Double", Double.class, Types.DECIMAL, "\\d+\\.\\d{1,3}", "DOUBLE(20,3)"),
+    DOUBLE("Double", Double.class, Types.DOUBLE, "\\d+\\.\\d{1,3}", "DOUBLE(20,3)"),
     STRING("String", String.class, Types.VARCHAR, "\\p{L}+", "VARCHAR(255)"),
     BOOLEAN("Boolean", Boolean.class, Types.BIT, "(yes)|(no)", "BIT"),
     DATE("Date", Date.class, Types.TIMESTAMP, "\\d{4}-\\d}2-\\d{2}", "TIMESTAMP"),
@@ -89,5 +89,23 @@ public enum ValueType {
     private static <T extends Comparable<T>> T getValueOf(String value1, Class<T> clazz)
             throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         return (T) clazz.getMethod("valueOf", String.class).invoke(null, value1);
+    }
+
+    public static Object parseToType(ValueType valueType, String value) {
+        switch (valueType) {
+            case INTEGER:
+                return Integer.parseInt(value);
+            case DOUBLE:
+                return Double.parseDouble(value);
+            case DATE:
+                return Date.valueOf(value);
+            case TIMESTAMP:
+                return Timestamp.valueOf(value);
+            case STRING:
+                return value;
+            case BOOLEAN:
+                return Boolean.parseBoolean(value);
+        }
+        return "";
     }
 }

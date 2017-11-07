@@ -81,20 +81,17 @@ public class ResourceRequestAdmController {
     @RequestMapping(value = "/acceptRequest/{requestId}/{typeId}", method = RequestMethod.PUT)
     @ResponseBody
     public String acceptRequest(@PathVariable("requestId") long requestId, @PathVariable("typeId") long typeId) {
-        System.out.println("IN METHOD!!!!!!!!!!");
         resourceTypeService.instantiateType(typeId);
         requestService.acceptRequest(requestId);
         return "success";
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(ResourceTypeInstantiationException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ResponseBody
     public ExceptionJSONInfo handleResourceTypeInstantiationException(HttpServletRequest request, Exception ex) {
-        System.out.println("IN HANDLER!!!!!!!!!!");
         ExceptionJSONInfo response = new ExceptionJSONInfo();
         response.setUrl(request.getRequestURL().toString());
-        System.out.println(request.getRequestURL().toString());
         response.setMessage(ex.getMessage());
         return response;
     }

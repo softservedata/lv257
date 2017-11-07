@@ -268,12 +268,10 @@
                     type: "PUT",
                     url: projectPathPrefix + "/resources/acceptRequest/"+id_request+"/"+id_type,
                     success: function (result) {
-                        console.log(result);
                         currentRow.remove().draw();
                     },
                 error: function (result) {
                    let error = JSON.parse(result.responseText);
-                    console.log(result.responseText);
                     alert('Error!\n' + error.message);
                 }
                 })

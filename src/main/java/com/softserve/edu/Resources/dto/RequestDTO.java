@@ -15,7 +15,7 @@ public class RequestDTO {
     private String resourceType;
     private String resourceTypeId;
     @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+3")
+            (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+2")
     private Date update;
     private ResourceRequest.Status status;
 
