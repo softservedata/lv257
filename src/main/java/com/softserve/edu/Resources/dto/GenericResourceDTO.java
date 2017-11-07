@@ -10,6 +10,7 @@ import com.softserve.edu.Resources.entity.Owner;
 public class GenericResourceDTO {
 
     private long id;
+    private String resourceTypeName;
     private Map<String, String> resourcePropertyValues;
     private List<Owner> owners;
     private Address address;
@@ -54,5 +55,15 @@ public class GenericResourceDTO {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public String getResourceTypeName() {
+        return resourceTypeName;
+    }
+
+    public void setResourceTypeName(String resourceTypeName) {
+        this.resourceTypeName = resourceTypeName;
+    }
+    
+    
 
 }

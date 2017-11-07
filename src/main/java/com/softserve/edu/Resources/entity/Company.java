@@ -133,8 +133,8 @@ public class Company extends Owner {
     public String customToString() {
         return organizationForm + " " +
                 fullName + " " +
-                shortName + ", " +
-                edrpoNumber + ", " +
+                shortName + ", " + "EDRPOU number: " +
+                edrpoNumber + ", " + "CEO: " +
                 ceo + ".";
     }
 }

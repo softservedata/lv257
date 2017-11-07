@@ -55,6 +55,7 @@ public class MainController {
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
         String username = loggedInUser.getName();
         model.addAttribute("currentUser", username);
+        model.addAttribute("title", "Look up resources");
         
         
         return "lookup";

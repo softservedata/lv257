@@ -140,12 +140,16 @@ public class ResourceServiceImpl implements ResourceService {
         }
 
         String tableName = resourceType.getTableName();
+        
+        
 
         List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
         
         String sqlQuery = queryBuilder.namedQueryForLookingByResourceId(tableName, resourceProperties);
         
         GenericResourceDTO genericResource = resourceDao.findById(resourceId, sqlQuery, resourceProperties);
+        
+        genericResource.setResourceTypeName(resourceType.getTypeName());
         
         genericResource.setOwners(
                 resourceDao.getOwnersForGenericResourceByResourceTypeAndResource(resourceTypeId, resourceId));

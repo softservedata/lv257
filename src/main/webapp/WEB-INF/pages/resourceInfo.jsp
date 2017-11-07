@@ -14,22 +14,21 @@
 			<div class="col-sm-12 col-md-12">
 				<div class="container">
 
-					<h2>Resource Info</h2>
+					<h2>Resource Details</h2>
 					
-					<c:set var="resource" value="${genericResource}"/>
-
+					<c:set var="resource" value="${genericResource}"  scope="page"/>
+					<c:set var="count" value="0"  scope="page"/>
+				<div class="row">
+				<div class="container-fluid col-md-8"> 
+				<h3>Characteristics</h3>
 					<table class="table table-hover">
 						<thead>
-							<tr>
-								<th>Property</th>
-								<th>Info</th>
-							</tr>
 						</thead>
 						<tbody>
 							<tr>
 							</tr>
 							<td>Resource type</td>
-							<td>Automobile</td>
+							<td>${resource.resourceTypeName}</td>
 							
 							<c:forEach items="${resource.resourcePropertyValues}" var="entryMap">
 							<tr>
@@ -37,58 +36,82 @@
 								<td><c:out value="${entryMap.value}"/></td>
 							</tr>
 							</c:forEach>
-							
 							<tr>
-								<td>Country</td>
-								<td><c:out value="${resource.address.country}"/></td>
+								<td>Registration Address</td>
+								<td><c:out value="${resource.address.customToString()}"/></td>
 							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+						
+			    <div class="row">
+				<div class="container-fluid col-md-8">
+					<h3>Owners</h3>
+					<table class="table table-hover">
+						<thead>
 							<tr>
-								<td>City</td>
-								<td>Lviv</td>
+								<!-- <th>Property</th>
+								<th>Data</th> -->
 							</tr>
+						</thead>
+						<tbody>
 							<tr>
-								<td>City</td>
-								<td>Lviv</td>
-							</tr>
-							<tr>
-								<td>City</td>
-								<td>Lviv</td>
 							</tr>
 							
 							<c:forEach items="${resource.owners}" var="owner">
 								<c:if test="${owner.ownerType() == 'Company' }">
-								<tr>
-									<td>Company Owner</td>
-									<td><c:out value="${owner.fullName}"/></td>
-								</tr>
+									<tr>
+										<c:set var="count" value="${count + 1}" scope="page"/>
+										<td>Company <c:out value="${count}" /></td>
+										<td><c:out value="${owner.customToString()}"/></td>
+									</tr>
+								</c:if>
+								
+								<c:if test="${owner.ownerType() == 'Person' }">
+									<tr>
+										<c:set var="count" value="${count + 1}" scope="page"/>
+										<td>Person <c:out value="${count}" /></td>
+										<td><c:out value="${owner.customToString()}"/></td>
+									</tr>
 								</c:if>
 							</c:forEach>
 						</tbody>
-					</table>					
+					</table>
+					</div>	
+				</div>
+								
+				<br>
+					<div class="row">
+					<div class="container-fluid">
+						
+						<span>Save document as PDF or print:</span>
 
-					<div class="">
-						<span>You can:</span>
-
-						<button type="submit" class="btn btn-default">
-							Save
-							<i class="glyphicon glyphicon-floppy-save" aria-hidden="true"></i>
-						</button>
-						<button type="submit" class="btn btn-default">
-							Print
+						
+						
+						<button id="printData" type="submit" class="btn btn-default">
+							Save/Print
 							<i class="glyphicon glyphicon-print" aria-hidden="true"></i>
 						</button>
-						<button type="submit" class="btn btn-default">
+						
+						<!-- TODO:implement in next spring -->
+						<!-- <button id="printData" type="submit" class="btn btn-default">
 							Edit
 							<i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
-						</button>
+						</button> -->
 						
-
+					</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+<script> 
+$('#printData').on('click', function () {
+	window.print();
+})
+</script>
 
 </body>
 </html>
+

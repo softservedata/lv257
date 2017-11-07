@@ -151,8 +151,8 @@ public class Person extends Owner {
     public String customToString() {
         return  firstName + " " +
                 lastName + " " +
-                middleName + ", " +
-                identifierNumber + ", " +
+                middleName + ", " + "IPN: " +
+                identifierNumber + ", " + "Passport: " +
                 passportSeries + " " +
                 passportNumber + ".";
     }

@@ -22,8 +22,11 @@ $(document).ready(function(){
             $('#lookup-result-by-owner-grouped').hide();
             $('#result-search').hide();
             $('#new-search').hide();
+            $('#no-inputs-error').empty();
+            $('#no-inputs-error').hide();
             $('#owner_search option:selected').prop('selected', false);
             $('#owner_search option:first').prop('selected', 'selected').change();
+          
 		
         } else if (lookUpType == 'by-owner') {
 
