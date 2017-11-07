@@ -28,6 +28,7 @@ function refreshAssignedPropsTable() {
 		$unitsCell.attr('title', constrainedProperty.property.units);
 		$newPropertyRow.find('input.searchable').prop('checked', constrainedProperty.searchable);
 		$newPropertyRow.find('input.required').prop('checked', constrainedProperty.required);
+		$newPropertyRow.find('input.unique').prop('checked', constrainedProperty.unique);
 		// let $removeButton = $newPropertyRow.find('.glyphicon-remove');
 		$newPropertyRow.removeClass('hidden');
 		$('tbody', '#assigned-props').append($newPropertyRow);
@@ -92,7 +93,8 @@ function addAssignedProperties($properties) {
 		return {
 			'property': property,
 			searchable:false,
-			required:true
+			required:true,
+			unique: false
 		}
 	});
 
@@ -119,7 +121,7 @@ function loadExistentProperties() {
 
 /**
  * returns event handler for particular constraint click event
- * @param constraint string representing target constraint (generally 'required' or 'searchable')
+ * @param constraint string representing target constraint (generally 'required', 'searchable' or 'unique')
  * @returns {Function} input event handler function for specified constraint
  */
 function constraintClickHandler(constraint) {
@@ -237,6 +239,9 @@ function saveProperty(property, doAssign) {
 	// set Searchable template handler
 	$propertyRow.find('.searchable').click(constraintClickHandler('searchable'));
 
+	// set Unique template handler
+	$propertyRow.find('.unique').click(constraintClickHandler('unique'));
+
 	let $addBtn = $('#add-props-btn');
 
 	// handle Add button click
@@ -305,9 +310,7 @@ function saveProperty(property, doAssign) {
 
 })();
 
-const $property = $('#property-form');
-
-$property.validate({
+$('#property-form').validate({
 	errorClass: "my_error_class",
 	rules: {
 		title: {

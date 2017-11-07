@@ -3,10 +3,7 @@ package com.softserve.edu.Resources.service.impl;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
 import com.softserve.edu.Resources.dto.ConstrainedPropertyBrief;
 import com.softserve.edu.Resources.dto.ResourceTypeBrief;
-import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.ResourceCategory;
-import com.softserve.edu.Resources.entity.ResourceProperty;
-import com.softserve.edu.Resources.entity.ResourceType;
+import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.exception.InvalidResourceCategoryException;
 import com.softserve.edu.Resources.exception.InvalidResourceTypeException;
 import com.softserve.edu.Resources.exception.ResourceTypeInstantiationException;
@@ -56,7 +53,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public ResourceType save(ResourceTypeBrief resourceTypeBrief) {
+    public ResourceType save(ResourceTypeBrief resourceTypeBrief, User resourceAdmin) {
         Long id = resourceTypeBrief.getId();
         ResourceType resourceType;
         if (id == null || id == 0) {
@@ -83,8 +80,8 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
                 .setCategory(category.get());
 
         Set<Long> updatedPropertyIDs = resourceTypeBrief.getProperties().stream()
-                .map(ConstrainedPropertyBrief::getId)
-                .collect(Collectors.toSet());
+                                               .map(ConstrainedPropertyBrief::getId)
+                                               .collect(Collectors.toSet());
 
         Set<Long> availablePropertyIDs = propertyService.getPropertyIDs();
         Set<Long> validIDs = new HashSet<>(updatedPropertyIDs);
@@ -97,20 +94,22 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         }
 
         Set<ResourceProperty> updatedTypeProperties = validIDs.stream()
-                .map(propertyService::getPropertyById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+                                                              .map(propertyService::getPropertyById)
+                                                              .filter(Optional::isPresent)
+                                                              .map(Optional::get)
+                                                              .collect(Collectors.toSet());
 
         Set<ConstrainedProperty> typeProperties
                 = resourceTypeBrief.getProperties().stream()
-                .map(cpb -> new ConstrainedProperty()
-                        .setProperty(propertyService.getPropertyById(cpb.getId()).get())
-                        .setRequired(cpb.isRequired())
-                        .setSearchable(cpb.isSearchable()))
-                .collect(Collectors.toSet());
+                          .map(cpb -> new ConstrainedProperty()
+                                              .setProperty(propertyService.getPropertyById(cpb.getId()).get())
+                                              .setRequired(cpb.isRequired())
+                                              .setSearchable(cpb.isSearchable())
+                                              .setUnique(cpb.isUnique()))
+                          .collect(Collectors.toSet());
 
         resourceType.setProperties(typeProperties);
+        resourceType.setAssigner(resourceAdmin);
         return resourceTypeDAO.makePersistent(resourceType);
     }
 
@@ -136,7 +135,7 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     }
 
     @Override
-    public void create(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException {
+    public void instantiateType(Long id) throws ResourceTypeNotFoundException, ResourceTypeInstantiationException {
         final Optional<ResourceType> resourceType = resourceTypeDAO.findById(id);
         if (!resourceType.isPresent())
             throw new ResourceTypeNotFoundException("Requested Resource Type not found.");
@@ -145,18 +144,14 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
         if (resourceType.get().getProperties().size() < 1)
             throw new ResourceTypeInstantiationException("Resource Type should have at least " +
                     "one Resource Property before instantiating");
+        resourceTypeDAO.createTable(resourceType.get());
         resourceType.get().setInstantiated(true);
         resourceTypeDAO.makePersistent(resourceType.get());
     }
 
     @Override
     public void createBatch(List<Long> IDs) {
-        IDs.forEach(this::create);
-    }
-
-    @Override
-    public void create(ResourceType type) {
-        resourceTypeDAO.create(type);
+        IDs.forEach(this::instantiateType);
     }
 
     @Override
@@ -181,8 +176,8 @@ public class ResourceTypeServiceImpl implements ResourceTypeService {
     @Override
     public List<ConstrainedProperty> getSearchableProperties(ResourceType resourceType) {
         return resourceType.getProperties().stream()
-                .filter(ConstrainedProperty::isSearchable)
-                .collect(Collectors.toList());
+                       .filter(ConstrainedProperty::isSearchable)
+                       .collect(Collectors.toList());
     }
 
     @Override

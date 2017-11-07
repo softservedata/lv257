@@ -35,20 +35,22 @@ public class ResourceTypeManagementController {
     private Environment env;
 
     @RequestMapping(value = "/addType", method = RequestMethod.GET)
-    public String addResourceType(Model model) {
-        return editResourceType(0, model);
+    public String addResourceType(@RequestParam(value = "requestId", defaultValue = "0") long requestId,Model model) {
+        return editResourceType(0, requestId, model);
     }
 
     @RequestMapping(value = "/editType", method = RequestMethod.GET)
-    public String editResourceType(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
-//        model.addAttribute("env", env);
-        model.addAttribute("id", id);
+    public String editResourceType(@RequestParam(value = "typeId", defaultValue = "0") long typeId,
+                                   @RequestParam(value = "requestId", defaultValue = "0") long requestId,
+                                   Model model) {
+        model.addAttribute("typeId", typeId);
+        model.addAttribute("requestId", requestId);
         return "editType";
     }
 
     @RequestMapping(value = "/cloneType", method = RequestMethod.GET)
-    public String cloneResourceType(@RequestParam(value = "id", defaultValue = "0") long id, Model model) {
-        return editResourceType(-id, model);
+    public String cloneResourceType(@RequestParam(value = "typeId", defaultValue = "0") long typeId, Model model) {
+        return editResourceType(-typeId, 0, model);
     }
 
     @RequestMapping(value = "/viewTypes", method = RequestMethod.GET)

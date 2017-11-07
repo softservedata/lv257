@@ -176,28 +176,6 @@ public class OwnerServiceImplTest {
     }
 
     @Test
-    public void findOwnersCustomQuery(){
-        when(queryBuilder.buildQuery(searchDTO)).thenReturn(expectedQuery);
-        when(ownerDAO.findOwners(expectedQuery)).thenReturn(Arrays.asList(persistentOwner));
-
-        List<Owner> owners = ownerService.findOwners(searchDTO);
-
-        assertEquals(owners.get(0), persistentOwner);
-        verify(ownerDAO, times(1)).findOwners(expectedQuery);
-    }
-
-    @Test
-    public void findNonExistingOwnersCustomQuery(){
-        when(queryBuilder.buildQuery(searchNonExistingOwnerDTO)).thenReturn(expectedQueryWithEmptyValues);
-        when(ownerDAO.findOwners(expectedQueryWithEmptyValues)).thenReturn(mock(List.class));
-
-        List<Owner> emptyList = ownerService.findOwners(searchNonExistingOwnerDTO);
-
-        assertEquals(emptyList.size(), 0);
-        verify(ownerDAO, times(1)).findOwners(expectedQueryWithEmptyValues);
-    }
-
-    @Test
     public void fromOwnerToDTOTest(){
         List<OwnerDTO> ownerDTOS = ownerService.fromOwnerToOwnerDto(allOwners);
 
@@ -210,10 +188,10 @@ public class OwnerServiceImplTest {
         when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
         when(utility.getErrorDTO(bindingResult)).thenReturn(validationErrorDTO);
 
-        ValidationErrorDTO resultValidationErrorDTO = ownerService.validationDTO(bindingResult);
+        ValidationErrorDTO resultValidationErrorDTO = ownerService.getValidationDTO(bindingResult);
 
         assertEquals(resultValidationErrorDTO, validationErrorDTO);
         verify(utility, times(1)).getErrorDTO(bindingResult);
     }
-
 }
+

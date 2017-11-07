@@ -14,7 +14,6 @@ public class ResourceRequest {
 
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-
     @Column(name = "id_request")
     private long id;
 
@@ -22,9 +21,9 @@ public class ResourceRequest {
     @JoinColumn(name = "id_document")
     private Document document;
 
-    @Column(name = "resourceType")
+    @Column(name = "resource_name")
     @NotBlank(message = "Please, enter new type of resource!")
-    private String resourceType;
+    private String resourceName;
 
     @Column(name = "description")
     @NotBlank(message = "Please, enter description to your request!")
@@ -45,6 +44,10 @@ public class ResourceRequest {
     @Column(name = "updated")
     private Date update;
 
+    @OneToOne
+    @JoinColumn(name = "id_resource_type")
+    private ResourceType resourceType;
+
     public enum Status {
         NEW, ACCEPTED, DECLINED, TO_REFINEMENT;
     }
@@ -53,16 +56,15 @@ public class ResourceRequest {
 
     }
 
-    public ResourceRequest(String resourceType, String description, User register, User resourcesAdmin,
-                           Status status, Date update, Document document) {
-        this.resourceType = resourceType;
+    public ResourceRequest(Document document, String resourceName, String description, User register, User resourcesAdmin, Status status, Date update, ResourceType resourceType) {
+        this.document = document;
+        this.resourceName = resourceName;
         this.description = description;
         this.register = register;
-        this.update = update;
-        this.status = status;
         this.resourcesAdmin = resourcesAdmin;
-        this.document = document;
-
+        this.status = status;
+        this.update = update;
+        this.resourceType = resourceType;
     }
 
     public long getId() {
@@ -83,11 +85,21 @@ public class ResourceRequest {
         return this;
     }
 
-    public String getResourceType() {
+
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public ResourceRequest setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+        return this;
+    }
+
+    public ResourceType getResourceType() {
         return resourceType;
     }
 
-    public ResourceRequest setResourceType(String resourceType) {
+    public ResourceRequest setResourceType(ResourceType resourceType) {
         this.resourceType = resourceType;
         return this;
     }

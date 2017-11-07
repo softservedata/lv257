@@ -6,8 +6,6 @@ import com.softserve.edu.Resources.entity.ResourceRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class ResponceMail extends Mail {
-    @Autowired
-    private ResourceRequestDAOImpl requestDAO;
 
     private Message message;
     private ResourceRequest resourceRequest;
@@ -33,8 +31,8 @@ public class ResponceMail extends Mail {
         return message.getComment();
     }
 
-    public String getResourceType() {
-        return resourceRequest.getResourceType();
+    public String getResourceName() {
+        return resourceRequest.getResourceName();
     }
 
 }

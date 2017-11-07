@@ -53,6 +53,10 @@ public class ResourceType {
     @JoinColumn(name = "Id_Assigner", nullable = false)
     private User assigner;
 
+    @OneToOne(mappedBy = "resourceType")
+    private ResourceRequest request;
+
+
 
     public void setProperties(Set<ConstrainedProperty> properties) {
         this.properties = properties;

@@ -1,0 +1,3 @@
+Notification:
+Request for a new resource type ${resourceName} is accepted.
+Actual resource type is ${resourceType}.

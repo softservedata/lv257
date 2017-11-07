@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class OwnerServiceImpl implements OwnerService {
 
-    static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
+    private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass().getName());
 
     @Autowired
     private OwnerDAO ownerDAO;
@@ -126,9 +126,10 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public ValidationErrorDTO validationDTO(BindingResult result) {
+    public ValidationErrorDTO getValidationDTO(BindingResult result) {
         logger.trace("Validating owner with errors in fields:" + result.getFieldErrors());
 
         return validationUtility.getErrorDTO(result);
     }
+
 }

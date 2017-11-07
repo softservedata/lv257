@@ -7,11 +7,13 @@ import org.omg.CORBA.Request;
 import java.util.Date;
 
 public class RequestDTO {
-    private long id;
+    private Long id;
     private String requesterName;
     private String assignerName;
-    private String resourceType;
+    private String resourceName;
     private String description;
+    private String resourceType;
+    private String resourceTypeId;
     @JsonFormat
             (shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+3")
     private Date update;
@@ -73,6 +75,21 @@ public class RequestDTO {
         this.status = status;
     }
 
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
+
+    public String  getResourceTypeId() {
+        return resourceTypeId;
+    }
+
+    public void setResourceTypeId(String resourceTypeId) {
+        this.resourceTypeId = resourceTypeId;
+    }
 
     public RequestDTO() {
 
@@ -90,7 +107,14 @@ public class RequestDTO {
         } else {
             this.assignerName = null;
         }
-        this.resourceType = request.getResourceType();
+        if (request.getResourceType() != null) {
+            this.resourceType = request.getResourceType().getTypeName();
+            this.resourceTypeId=request.getResourceType().getId().toString();
+        } else {
+            this.resourceType = null;
+            this.resourceTypeId=null;
+        }
+        this.resourceName=request.getResourceName();
         this.description = request.getDescription();
         this.update = request.getUpdate();
         this.status = request.getStatus();

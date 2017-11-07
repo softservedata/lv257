@@ -7,7 +7,7 @@ import java.util.Date;
 public class ResourceRequestDTO {
 
     private String assignerName;
-    private String resourceType;
+    private String resourceName;
     private Date update;
 
     public String getAssignerName() {
@@ -18,12 +18,12 @@ public class ResourceRequestDTO {
         this.assignerName = assignerName;
     }
 
-    public String getResourceType() {
-        return resourceType;
+    public String getResourceName() {
+        return resourceName;
     }
 
-    public void setResourceType(String resourceType) {
-        this.resourceType = resourceType;
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
     }
 
     public Date getUpdate() {
@@ -45,7 +45,7 @@ public class ResourceRequestDTO {
         } else {
             this.assignerName = null;
         }
-        this.resourceType = resourceRequest.getResourceType();
+        this.resourceName = resourceRequest.getResourceName();
         this.update = resourceRequest.getUpdate();
 
     }

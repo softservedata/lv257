@@ -5,6 +5,7 @@ import com.softserve.edu.Resources.dao.impl.DocumentDAOImpl;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.util.FileUploadUtility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,12 @@ public class DocumentService {
         if(!document.getFile().getOriginalFilename().equals("")){
             FileUploadUtility fileUploadUtility = new FileUploadUtility();
 
-            document.setDocumentsURL(fileUploadUtility.uploadFile( document.getFile(),document.getCode()));
+            org.springframework.security.core.userdetails.User userSpring =
+                    (org.springframework.security.core.userdetails.User)
+                            SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            document.setDocumentsURL(fileUploadUtility.uploadFile( document.getFile(),document.getCode(),
+                    userSpring.getUsername().toLowerCase().replace("@","").replace(".","")));
         }
 
         String [] string = document.getFile().getContentType().split("/");

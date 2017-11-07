@@ -15,6 +15,16 @@ function updateView() {
 		$definitionForm.removeClass('hidden');
 }
 
+// prevent saving of ResourceType definition without changes
+function resetWatchdog() {
+	if (changeWatchdog) clearTimeout(changeWatchdog);
+	changeWatchdog = setInterval(
+			function () {
+				let $btnBlock = $('#buttons-block');
+				$btnBlock[isTypeDefinitionChanged() ? 'addClass' : 'removeClass']('hidden')
+			}, 500);
+}
+
 function updateResourceType(actualType, isCloned) {
 	resourceType = actualType;
 	// eliminate id in cloned Resource Type (or it should be set to 0 just as for a newly created definition)
@@ -37,7 +47,8 @@ function updateResourceType(actualType, isCloned) {
 	$.each(resourceType.properties, function (i, constrainedPropertyBrief) {
 		constrainedPropertiesBrief[constrainedPropertyBrief.id] = {
 			required: constrainedPropertyBrief.required,
-			searchable: constrainedPropertyBrief.searchable
+			searchable: constrainedPropertyBrief.searchable,
+			unique: constrainedPropertyBrief.unique
 		};
 	});
 	$.each(existentProperties, function (i, property) {
@@ -54,13 +65,7 @@ function updateResourceType(actualType, isCloned) {
 
 	updateView();
 
-	// prevent saving of ResourceType definition without changes
-	if (changeWatchdog) clearTimeout(changeWatchdog);
-	changeWatchdog = setInterval(
-			function () {
-				let $btnBlock = $('#buttons-block');
-				$btnBlock[isTypeDefinitionChanged() ? 'addClass' : 'removeClass']('hidden')
-			}, 500);
+	resetWatchdog();
 }
 
 function getResourceType(isCloned) {
@@ -93,15 +98,15 @@ function showErrorMessage(message) {
 }
 
 function composeResourceType(checkValidity) {
-	if (resourceCategorySelect.getSelectedId() === 0)
-		throw	new Error();
+	// if (resourceCategorySelect.getSelectedId() === 0)
+	// 	return undefined;
 	let $inputs = $('input, select', '#resource-type');
 	$inputs.each(function (i, input) {
 		if (checkValidity && !input.checkValidity()) {
 			input.blur();
 			// let label = $(input).prev('label');
 			// showErrorMessage(label.text() + ' value is invalid');
-			throw	new Error();
+			return initialType;
 		}
 	});
 
@@ -109,7 +114,8 @@ function composeResourceType(checkValidity) {
 		let propBrief = {
 			id: constrainedProperty.property.id,
 			searchable: constrainedProperty.searchable,
-			required: constrainedProperty.required
+			required: constrainedProperty.required,
+			unique: constrainedProperty.unique
 		};
 		return propBrief;
 	});
@@ -137,6 +143,7 @@ $('#categories-select').load(function () {
 	} else {
 		//else we're creating new ResourceType
 		initialType = composeResourceType();
+		resetWatchdog();
 	}
 
 });
@@ -164,16 +171,22 @@ function isTypeDefinitionChanged() {
 // set Save button handler
 $('#save-type-btn').click(function (e) {
 	const resourceType = composeResourceType(true);
-	if (resourceType === initialType) return;
+	if (!resourceType || resourceType === initialType) return;
+	let requestReference = '';
+	if (resourceRequestID !== 0) {
+		requestReference += '/requestId/' + resourceRequestID;
+	}
+	const requestURL = projectPathPrefix + "/api/resource" + requestReference;
 	$.ajax({
 		type: "POST",
 		contentType: "application/json",
-		url: projectPathPrefix + "/api/resource",
+		url: requestURL,
 		accept: "application/json",
 		data: JSON.stringify(resourceType),
 		success: function (response, status, jqxhr) {
 			updateResourceType(response);
 			showSuccessMessage();
+
 		},
 		error: function (jqxhr, status, exception) {
 			// provide error message
@@ -193,4 +206,42 @@ $('input[type="text"]').blur(function(e) {
 	let trimmedValue = $.trim($(input).val());
 	$(input).val(trimmedValue);
 	input.checkValidity();
+});
+
+$.validator.addMethod('categoryPresent', function () {
+	return resourceCategorySelect.getSelectedId() !== 0;
+}, "Please, select a category, the Resource Type belongs to");
+
+$('#resource-type').validate({
+	errorClass: "my_error_class",
+	rules: {
+		typeName: {
+			required: true,
+			minlength: 3
+		},
+		tableName: {
+			required: true,
+			minlength: 3
+		}
+	},
+	messages: {
+		title: {
+			required: "Please, provide a name for a property",
+			minlength: "Name of a property should be at least 3 characters"
+		},
+		columnName: {
+			required: "Please, provide a name for a property's column name",
+			minlength: "Name of a column name should be at least 3 characters"
+		},
+		units: {
+			required: false,
+			minlength: "Units name should be at least 2 characters"
+		},
+		unitsShort: {
+			required: false,
+			minlength: "Units name's contraction should be at least 1 character"
+		},
+		valueType: "Please, select type of a propoerty's value",
+		pattern: "Please, provide a pattern regex for property's value validation"
+	}
 });

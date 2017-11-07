@@ -15,12 +15,13 @@
 
     <style>
         #img {
-            width: 150px;
-            height: 150px;
-            top: 200px;
-            left: 600px;
-            position: fixed;
-            display: block;
+            position:fixed;
+            top: 40%;
+            left: 50%;
+            width:12em;
+            height:12em;
+            margin-top: -6em; /*set to a negative number 1/2 of your height*/
+            margin-left: -6em; /*set to a negative number 1/2 of your width*/
             z-index: 99
         }
     </style>
@@ -66,10 +67,10 @@
                          method="POST" enctype="multipart/form-data">
 
                     <div class="form-group" >
-                        <spring:bind path="mRequest.resourceType">
+                        <spring:bind path="mRequest.resourceName">
 
                            <label>Requested resource type</label>
-                           <input type="text" path="mRequest.resourceType"  name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
+                           <input type="text" path="mRequest.resourceName"  name="${status.expression}" value="${status.value}" class="form-control" placeholder="Enter new kind of resource"/>
                            <c:if test="${status.error}">
                                <c:forEach items="${status.errorMessages}" var="error">
 

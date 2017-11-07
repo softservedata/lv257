@@ -1,9 +1,8 @@
+jQuery.validator.addMethod("passportSeries", function (value, element) {
+    return this.optional(element) || (value.match("^(.*?[A-Z]){2,}"));
+}, "This is incorrect passport series number");
+
 $(document).ready(function () {
-
-    $deletedAddress.hide();
-    $updatedAddress.hide();
-
-    $deletedOwner.hide();
 
     $ownerSearchSelect.on('change', function () {
         const ownerType = this.value;
@@ -23,7 +22,7 @@ $(document).ready(function () {
         if (ownerType == 'absent') {
             $searchOwnerFormPlaceholder.empty();
         }
-    })
+    });
 
     /* Generate owner form depending on owner type */
     $('#owner_type').on('change', function () {
@@ -218,8 +217,6 @@ function validateResourceAddressFormAndSaveResult() {
                 url = '/resources/address/update';
             }
             saveAddressAjax(json, url);
-        } else {
-            alert("Some fields in the form are empty or invalid. Please, check errors and correct your input.");
         }
     });
 }
@@ -258,12 +255,19 @@ function saveAddressAjax(json, url) {
         },
         // on errors, show messages with explanations
         error: function (result) {
-            let parse = JSON.parse(result.responseText);
-            console.log('errors in fields: ' + parse);
-            $('.my_error_class').empty();
-            // $('.my_error_class').show(600);
+            if (result.status == 400) {
+                let parse = JSON.parse(result.responseText);
+                console.log('errors in fields: ' + parse);
+                $('.my_error_class').empty();
+                // $('.my_error_class').show(600);
 
-            appendHibernateErrors(parse);
+                appendHibernateErrors(parse);
+            }
+            if (result.status == 403){
+                $uniqueAddressFieldsErrorDiv.show(500);
+                $uniqueAddressFieldsErrorDiv.delay(10000).hide(500);
+            }
+
         }
     });
 }
@@ -485,6 +489,9 @@ function buildChooseSearchedAddressBtn($resultDiv) {
 
 // ----------------------------------- Add new resource owner -----------------------------------
 
+const $uniqueOwnerFieldsErrorDiv = $('.owner_uniqueness_exception');
+const $uniqueAddressFieldsErrorDiv = $('.address_uniqueness_exception');
+// address_uniqueness_exception
 
 /**
  * Builds owner form with the possibility to add owner's address.
@@ -605,6 +612,13 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
     $addOwnerAddressBtn.on('click', function (e) {
         e.preventDefault();
 
+        $uniqueOwnerFieldsErrorDiv.find('.alert').text(
+        (ownerType == 'company' ?
+                'EDRPO number or company\'s combination of organization form, full name and short name is already registered.' :
+                'Person\'s identifier number or pessport data is already registered.') +
+            ('Probably, Owner\'s address locality, street, building and apartment number combination is already registered. Please, search for it and pick it from the search.')
+        );
+
         $cancelBtn.show(500);
         $registerOwnerBtn.prop('disabled', true);
         $(this).hide(500);
@@ -617,6 +631,13 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
 
     $searchOwnerAddressBtn.on('click', function (e) {
         e.preventDefault();
+
+        $uniqueOwnerFieldsErrorDiv.find('.alert').text(
+            (ownerType == 'company' ?
+                'EDRPO number or company\'s combination of organization form, full name and short name is already registered.' :
+                'Person\'s identifier number or pessport data is already registered.')
+        );
+
 
         $cancelBtn.show(500);
         $registerOwnerBtn.prop('disabled', true);
@@ -732,14 +753,21 @@ function addOwnerFormAndSaveResult(rows, ownerType) {
                 },
                 // on errors, show messages with explanations
                 error: function (result) {
-                    var parse = JSON.parse(result.responseText);
-                    console.log('errors in fields: ' + parse);
+                    console.log(result);
+                    if(result.status == 400) {
+                        var parse = JSON.parse(result.responseText);
+                        console.log('errors in fields: ' + parse);
 
-                    $('.my_error_class').empty();
-                    // $('.my_error_class').show(600);
+                        $('.my_error_class').empty();
+
+                        appendHibernateErrors(parse);
+                    }
+                    if (result.status = 403){
+                        $uniqueOwnerFieldsErrorDiv.show(500);
+                        $uniqueOwnerFieldsErrorDiv.delay(10000).hide(500);
+                    }
                     $ownerAddressFormPlaceholder.show(1500);
                     $ownerAddressFormPlaceholder.append($clearfix);
-                    appendHibernateErrors(parse);
                 }
             })
         } else {
@@ -976,6 +1004,7 @@ function closePopUp($placeholder, text, $modal) {
     $closePopUp.on('click', function () {
         $placeholder.empty();
         $modal.modal('hide');
+        $('#owner_type').find('option:first').attr('selected', true);
     });
 }
 
@@ -1127,6 +1156,10 @@ function validatePerson($form) {
                 digits: true,
                 maxlength: 10,
                 minlength: 10
+            },
+            passport_series: {
+                required: true,
+                passportSeries: true
             },
             passport_number: {
                 required: true,
@@ -1384,8 +1417,7 @@ function buildOwnerSearchForm($concreteOwnerSearchDiv, rows) {
         let $input = $('<input/>', {
             type: 'text',
             class: 'form-control',
-            // name: rows[i].userFriendlyName.toLowerCase().replace(" ", ""),
-            name: camelize(rows[i].userFriendlyName),
+            name:  camelize(rows[i].userFriendlyName.toLowerCase()),
             id: rows[i].userFriendlyName,
             placeholder: rows[i].placeholder
         });

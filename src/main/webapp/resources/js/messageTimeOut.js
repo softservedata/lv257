@@ -16,10 +16,10 @@ $(function () {
 
                 rules: {
                     resourceType: {
-                        minlength: 4, required: true
+                        minlength: 4
                     },
                     description: {
-                        minlength: 4, required: true
+                        minlength: 4
                     }
                 },
                 messages: {

@@ -5,9 +5,11 @@ import com.softserve.edu.Resources.dao.UserDAO;
 import com.softserve.edu.Resources.dao.impl.DocumentDAOImpl;
 import com.softserve.edu.Resources.dao.impl.ResourceRequestDAOImpl;
 import com.softserve.edu.Resources.dto.Message;
+import com.softserve.edu.Resources.dto.RequestDTO;
 import com.softserve.edu.Resources.entity.Document;
 import com.softserve.edu.Resources.entity.ResourceRequest;
 import com.softserve.edu.Resources.entity.User;
+import com.softserve.edu.Resources.util.AcceptRequestMail;
 import com.softserve.edu.Resources.util.ResponceMail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +96,24 @@ public class RequestService {
         }
     }
 
+    public void acceptRequest(long id) {
+        Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(id);
+
+        ResourceRequest request;
+        if (requestOptional.isPresent()) {
+            request = requestOptional.get();
+            request.setUpdate(new Date());
+            request.setStatus(ResourceRequest.Status.ACCEPTED);
+            resourceRequestDAO.makePersistent(request);
+            if (request.getResourcesAdmin().getUsername() != request.getRegister().getUsername()) {
+                AcceptRequestMail mail = new AcceptRequestMail(request);
+                velocityMailService.sendCreateResourceTypeNotification(mail);
+            }
+        } else {
+            logger.warn("ResourseRequest instance with id:" + id + " is undefined.");
+        }
+    }
+
 
     public ResourceRequest getRequestById(long id) {
         Optional<ResourceRequest> request = resourceRequestDAO.findById(id);
@@ -143,6 +163,29 @@ public class RequestService {
         return requests.stream()
                 .filter(request -> request.getStatus().equals(status))
                 .collect(Collectors.toList());
+    }
+
+    public RequestDTO responceAfterRefinement(long requestId){
+
+        RequestDTO requestDTO = new RequestDTO();
+        Optional<ResourceRequest> requestOptional = resourceRequestDAO.findById(requestId);
+        if (requestOptional.isPresent()) {
+
+                ResourceRequest request = requestOptional.get();
+                request.setUpdate(new Date());
+                request.setStatus(ResourceRequest.Status.NEW);
+                resourceRequestDAO.makePersistent(request);
+
+            requestDTO.setResourceType(request.getResourceName());
+            requestDTO.setAssignerName(request.getResourcesAdmin().getUsername());
+            requestDTO.setUpdate(request.getUpdate());
+            requestDTO.setId(request.getId());
+            return requestDTO;
+
+        } else {
+            logger.warn("ResourseRequest instance with id:" + requestId + " is undefined.");
+        }
+        return requestDTO;
     }
 
 }

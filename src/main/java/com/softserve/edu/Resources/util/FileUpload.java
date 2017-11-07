@@ -4,5 +4,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 public abstract class FileUpload {
-     abstract String uploadFile( MultipartFile file, String code);
+     abstract String uploadFile( MultipartFile file, String code, String username);
 }

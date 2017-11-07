@@ -1,9 +1,9 @@
 const propertiesForm = $('#form_for_properties');
 const resourcePropsLabel = $('#resource_prop_label');
 const registerRecourceBtn = $('#register_resource_btn');
-const $alert = $('.alert');
+const $alert = $('.cuslom_alert');
 
-
+const resourceUniquenessFieldsErrors = $('.resource_uniqueness_exception');
 let resourceTypeId;
 $(document).ready(function () {
 
@@ -40,7 +40,6 @@ $(document).ready(function () {
 
         console.log("properties form is: " + propertiesForm.valid());
         if (propertiesForm.valid() &&
-        // if (
             !emptyOwners() &&
             !emptyResourceType() &&
             !emptyAddress()) {
@@ -50,6 +49,7 @@ $(document).ready(function () {
 
 
 });
+
 
 function emptyOwners() {
     let find = $ownersTbody.find('tr');
@@ -91,13 +91,18 @@ function saveResourceAjaxCall() {
 
         },
         error: function (result) {
+            console.log(result);
             let parse = JSON.parse(result.responseText);
-            console.log('errors in fields: ' + parse);
-            $('.my_error_class').empty();
+            if (result.status == 400) {
+                console.log('errors in fields: ' + parse);
+                $('.my_error_class').empty();
 
-            appendHibernateErrors(parse);
-
-
+                appendHibernateErrors(parse);
+            }
+            if (result.status == 403) {
+                resourceUniquenessFieldsErrors.show(500);
+                resourceUniquenessFieldsErrors.delay(10000).hide(500);
+            }
         }
 
     });
@@ -187,7 +192,23 @@ function buildInputsAndValidate(constrainedProperties) {
     propertiesForm.show(500);
     resourcePropsLabel.show(500);
 
+    populateUniqueConstrainsErrorMessage(constrainedProperties);
+
     validateProperties(constrainedProperties);
+}
+
+
+function populateUniqueConstrainsErrorMessage(constrainedProperties){
+    let text = "";
+    for (let i = 0; i < constrainedProperties.length; i++) {
+        if (constrainedProperties[i].unique){
+            text += constrainedProperties[i].property.title + " ";
+        }
+    }
+
+    resourceUniquenessFieldsErrors.find('.alert').text(
+        'Some of the values in this fields already exists: ' + text
+    );
 }
 
 function validateProperties(constrainedProperties) {

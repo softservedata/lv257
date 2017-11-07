@@ -1,4 +1,12 @@
 <div id="resource_address_form_placeholder">
+
+    <div class="address_uniqueness_exception display_none">
+        <div class="alert alert-danger alert-dismissible fade in">
+            Address's city, street, building and apartment number combination already exists.
+            Please, search for it and pick it in the search results.
+        </div>
+    </div>
+
     <form class="form" id="static_address_form">
         <input type="hidden" id="resource_address_id" name="addressId">
         <div class="row">

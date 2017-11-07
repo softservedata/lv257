@@ -82,7 +82,7 @@ public class RequestServiceTest {
         date = new Date();
         document = new Document();
         document.setId(ID);
-        request = Optional.ofNullable(new ResourceRequest().setResourceType("TestType")
+        request = Optional.ofNullable(new ResourceRequest().setResourceName("TestType")
                 .setStatus(ResourceRequest.Status.NEW).setRegister(register).setResourcesAdmin(null)
                 .setDescription("description").setId(ID).setUpdate(new Date()).setDocument(document));
         mockStatic(LoggerFactory.class);

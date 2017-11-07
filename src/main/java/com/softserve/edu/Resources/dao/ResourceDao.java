@@ -1,19 +1,12 @@
 package com.softserve.edu.Resources.dao;
 
 
+import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
 import com.softserve.edu.Resources.entity.*;
 
 import java.util.List;
 import java.util.Map;
-
-import com.softserve.edu.Resources.dto.GenericResourceDTO;
-import com.softserve.edu.Resources.entity.Address;
-import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.Owner;
-import com.softserve.edu.Resources.entity.Resource;
-import com.softserve.edu.Resources.entity.ResourceOwning;
 
 public interface ResourceDao {
 
