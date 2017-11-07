@@ -58,6 +58,7 @@ public abstract class GenericDAOImpl<T, ID extends Serializable> implements Gene
         return em.createQuery(c).getResultList();
     }
 
+//        quantity of records
     public Long getCount() {
         CriteriaQuery<Long> c =
            em.getCriteriaBuilder().createQuery(Long.class);

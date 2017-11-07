@@ -1,6 +1,6 @@
 package com.softserve.edu.Resources.controller;
 
-import com.softserve.edu.Resources.dao.UserDAO;
+import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.dto.UserProfileDTO;
 import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.service.PrivilegeService;
@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.http.HttpStatus;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -22,18 +22,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.security.Principal;
-import java.util.Optional;
+import java.util.Collection;
+import java.util.Map;
 
 @Controller
 @Transactional
@@ -54,10 +51,54 @@ public class UserController {
     MainController mainController;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private Environment env;
     //OK
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/
+//    http://localhost:8080/userEdit?uid=4
+//    put at View #of user and send to Controller
+    @RequestMapping(value = "/userEdit", params = {"uid"}, method = RequestMethod.GET)
+    public ModelAndView userEdit(@RequestParam Map<String, String> queryUser) {
+        Long userId = Long.parseLong(queryUser.get("uid"));
+        System.out.println("useerID is " + userId);
+        ModelAndView model = new ModelAndView("/userEdit");
+        model.addObject("user", userService.getUserById(userId));
+        model.addObject("uid", userId);
+        return model;
+    }
+
+    @RequestMapping(value = {"/changePassword"}, method = RequestMethod.GET)
+    public String accountPage(Model model) {
+        model.addAttribute("title", "Change Password");
+        return "changePassword";
+    }
+
+    @RequestMapping(value = "/users1", method = RequestMethod.GET)
+    public ModelAndView users1() {
+        ModelAndView usersModel = new ModelAndView("users");
+        usersModel.addObject("users", userService.getAllUsers());
+        return usersModel;
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ModelAndView users() {
+        ModelAndView usersModel = new ModelAndView("users");
+        usersModel.addObject("users", userService.getAllUsers());
+        return usersModel;
+    }
+
+    @RequestMapping(value = "/userEdit1", params = {"uid"}, method = RequestMethod.GET)
+    public ModelAndView userEdit1(@RequestParam Map<String, String> queryUser) {
+        Long userId = Long.parseLong(queryUser.get("uid"));
+        System.out.println("useerID is " + userId);
+        ModelAndView model = new ModelAndView("userEdit");
+        model.addObject("user", userService.getUserById(userId));
+        model.addObject("uid", userId);
+        return model;
+    }
+
+   /* //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/
 //    http://www.spring-source.ru/articles.php?type=manual&theme=articles&docs=article_10
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profileGET0(ModelMap mm, Principal principal)
@@ -75,9 +116,24 @@ public class UserController {
 //            UserDetails userDetailsetails = userDetailsService.getUserDetailsByUserId(user.getId());
 //            Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
 //            mm.addAttribute("details", details.isPresent() ? details.get() : new UserDetails());
+            Collection<Role> roles = user.getRoles();
+            *//** todo improve code *//*
+            String rolesString = null;
+            for (Role role : roles) {
+                rolesString = role.getName();
+            }
+//            rolesString = rolesString.substring(1, rolesString.length() - 1);
+            System.out.println(rolesString);
+//            String role = rolesString;
+            mm.addAttribute("role", rolesString);
             mm.addAttribute("details", userProfileDTO);
             mm.addAttribute("document", nDocument);
             mm.addAttribute("title", "Profile");
+            *//** add path to photo*//*
+            mm.addAttribute("photoBAD", env.getProperty("host.appUrl").concat("/").concat(rolesString).concat(".png"));
+//            mm.addAttribute("photo", "/resources/img/NoFoto.png");
+            mm.addAttribute("photo", "/resources/img/".concat(rolesString).concat(".png"));
+//            mm.addAttribute("photo", "contextPath/resources/img/".concat(rolesString).concat(".png"));
             return "profile";
         }
     }
@@ -87,7 +143,7 @@ public class UserController {
     public String profilePOST0(@ModelAttribute(value = "details") @Valid UserProfileDTO userProfileDTO, BindingResult bindingResult,
                                @ModelAttribute("document") Avatar document, BindingResult documentResults,
                                Model model
-//            , UserProfileDTO userProfileDTO
+//             UserProfileDTO userProfileDTO
     )
             throws Exception {
 
@@ -98,39 +154,105 @@ public class UserController {
             model.addAttribute("details", userProfileDTO);
             model.addAttribute("403");
         } else {
+
             model.addAttribute("title", "Profile");
             model.addAttribute("details", userProfileDTO);
             userProfileService.saveUserProfile(userProfileDTO);
         }
         return "profile";
+    }*/
+    //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/
+//    http://www.spring-source.ru/articles.php?type=manual&theme=articles&docs=article_10
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String profileGET0(ModelMap model, Principal principal)
+//    public ModelAndView profileGET0(Model model, Principal principal, @RequestParam(value = "operation", required = false) String operation) {
+    {
+        if (principal == null) {
+            model.addAttribute("message", "Please log in to see this page");
+            return "403";
+        } else {
+            UserProfileDTO userProfileDTO = userProfileService.createUserProfileDTO(principal);
+            Avatar nDocument = new Avatar();
+
+            String userName = principal.getName();
+            User user = userService.findByEmail(userName);
+//            UserDetails userDetailsetails = userDetailsService.getUserDetailsByUserId(user.getId());
+//            Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
+//            model.addAttribute("details", details.isPresent() ? details.get() : new UserDetails());
+            Collection<Role> roles = user.getRoles();
+            /** todo improve code */
+            String rolesString = null;
+            for (Role role : roles) {
+                rolesString = role.getName();
+            }
+//            rolesString = rolesString.substring(1, rolesString.length() - 1);
+            System.out.println(rolesString);
+//            String role = rolesString;
+            model.addAttribute("role", rolesString);
+            model.addAttribute("details", userProfileDTO);
+            model.addAttribute("document", nDocument);
+            model.addAttribute("title", "Profile");
+            /** add path to photo*/
+            model.addAttribute("photoBAD", env.getProperty("host.appUrl").concat("/").concat(rolesString).concat(".png"));
+//            model.addAttribute("photo", "/resources/img/NoFoto.png");
+            model.addAttribute("photo", "/resources/img/".concat(rolesString).concat(".png"));
+//            model.addAttribute("photo", "contextPath/resources/img/".concat(rolesString).concat(".png"));
+            return "profile";
+        }
     }
 
-
-/*
-    @RequestMapping(value = "/profileFile", method = RequestMethod.POST)
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
 //    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
-    public String profilePOST0File(@ModelAttribute(value = "details") @Valid UserProfileDTO userProfileDTO, BindingResult bindingResult,
-                               @ModelAttribute("document") Avatar document, BindingResult documentResults,
-                               Model model
-//            , UserProfileDTO userProfileDTO
-    )
-            throws Exception {
+    public String profilePOST0(
+//            @RequestParam("role") String rolesString,
+//                               @RequestParam("photo") String photo,
+            @ModelAttribute(value = "details") @Valid UserProfileDTO userProfileDTO, BindingResult bindingResult,
+            @ModelAttribute("document") Avatar document, BindingResult documentResults,
+            @ModelAttribute("role") String rolesString, BindingResult roleResults,
+            @ModelAttribute("photo") String photo, BindingResult photoResults,
 
-//        View view = modelAndView.getView();
+            Model model)
+            throws Exception {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "bindingResult.hasErrors");
-            model.addAttribute("details", userProfileDTO);
             model.addAttribute("403");
         } else {
             model.addAttribute("title", "Profile");
-            model.addAttribute("details", userProfileDTO);
+
             userProfileService.saveUserProfile(userProfileDTO);
         }
+        model.addAttribute("details", userProfileDTO);
+//           model.addAttribute("role", rolesString);
+//           model.addAttribute("photo", photo);
+
         return "profile";
     }
-*/
+    //rn - roleName
+//    http://localhost:8080/roleInfo?rn=ROLE_ADMIN
+    //TODO its not safe to show our role names in the URL so we need to ...
+    @RequestMapping(value = "/roleInfo", params = {"rn"}, method = RequestMethod.GET)
+    public ModelAndView roleInfo(@RequestParam Map<String, String> queryUser) {
+        String roleName = queryUser.get("rn");
+        ModelAndView model = new ModelAndView("administration/roleInfo");
+        model.addObject("list", roleService.getRolePrivileges(roleName));
+        model.addObject("roleName", roleName);
+        return model;
+    }
 
+    @RequestMapping(value = "/roles", method = RequestMethod.GET)
+    public ModelAndView roles() {
+        ModelAndView rolesModel = new ModelAndView("roles");
+        rolesModel.addObject("list", roleService.getAllRoles());
+        return rolesModel;
+    }
+
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public ModelAndView addRole(@ModelAttribute("user") UserDTO user) {
+        // TODO implement
+        System.out.println(user);
+        return users1();
+    }
 
     @RequestMapping(value = "/profile4040", method = RequestMethod.GET)
     public ModelAndView profileGET4040(Model model, Principal principal) {
