@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS `cars`;
-CREATE TABLE `cars` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `vin` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `cars` (  `id` int(11) NOT NULL,  `model` varchar(45) DEFAULT NULL,  `year` int(11) DEFAULT NULL,  `vin` varchar(45) DEFAULT NULL,  PRIMARY KEY (`id`), UNIQUE (`vin`)) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 INSERT INTO `cars` (`id`,`model`,`year`,`vin`) VALUES (1,'Mazda',2000,'JB423S'),(2,'Mazda',2005,'J2423S'),(3,'Volvo',2005,'JBAA23S'),(4,'Mazda',2006,'KOLS223'),(5,'Volvo',2000,'OKLS223');

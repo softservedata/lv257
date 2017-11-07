@@ -2,10 +2,7 @@ package com.softserve.edu.Resources.service.impl;
 
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dao.ResourceTypeDAO;
-import com.softserve.edu.Resources.dto.GenericResourceDTO;
-import com.softserve.edu.Resources.dto.GroupedResourceCount;
-import com.softserve.edu.Resources.dto.ResourceImplDTO;
-import com.softserve.edu.Resources.dto.ValidationErrorDTO;
+import com.softserve.edu.Resources.dto.*;
 import com.softserve.edu.Resources.entity.*;
 import com.softserve.edu.Resources.exception.ResourceNotFoundException;
 import com.softserve.edu.Resources.service.OwnerService;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -120,19 +118,19 @@ public class ResourceServiceImpl implements ResourceService {
         } else {
             throw new ResourceNotFoundException("You've requested wrong data.");
         }
-        
+
         List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.get().getProperties());
-        
+
         System.out.println(resourceProperties);
 
         String sqlQuery = queryBuilder.namedQueryForLookingByResourcesIds(tableName, resourceProperties);
-        
+
         return resourceDao.findResourcesByOwnerAndResourcesType(sqlQuery, resourceProperties, resourcesIds);
     }
-    
+
     @Transactional
-    public GenericResourceDTO findResourceByTypeAndId(long resourceTypeId, long resourceId){
-        
+    public GenericResourceDTO findResourceByTypeAndId(long resourceTypeId, long resourceId) {
+
         ResourceType resourceType = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
 
         if (resourceType == null) {
@@ -142,19 +140,19 @@ public class ResourceServiceImpl implements ResourceService {
         String tableName = resourceType.getTableName();
 
         List<ConstrainedProperty> resourceProperties = new ArrayList<>(resourceType.getProperties());
-        
+
         String sqlQuery = queryBuilder.namedQueryForLookingByResourceId(tableName, resourceProperties);
-        
+
         GenericResourceDTO genericResource = resourceDao.findById(resourceId, sqlQuery, resourceProperties);
-        
+
         genericResource.setOwners(
                 resourceDao.getOwnersForGenericResourceByResourceTypeAndResource(resourceTypeId, resourceId));
-        
+
         genericResource.setAddress(resourceDao.findAddressForGenericResourceByResourceId(resourceId));
-        
+
         return genericResource;
     }
-    
+
 
     @Transactional
     @Override
@@ -184,7 +182,8 @@ public class ResourceServiceImpl implements ResourceService {
     public void addResourceImpl(Resource resource, ResourceType resourceType, Map<String, String> propertiesAndValues) {
         String readyQuery = queryBuilder.buildInsertResourceImplQuery(resourceType, propertiesAndValues);
         System.out.println(readyQuery);
-        resourceDao.addResourceImpl(readyQuery, resourceType, resource.getId(),propertiesAndValues);
+
+        resourceDao.addResourceImpl(readyQuery, resourceType, resource.getId(), propertiesAndValues);
     }
 
     @Override
@@ -201,9 +200,9 @@ public class ResourceServiceImpl implements ResourceService {
             String columnName = constrainedProperty.getProperty().getColumnName();
             String columnValue = propertiesAndValues.get(columnName);
 
-            if ((columnValue == null || columnValue.isEmpty()) && constrainedProperty.isRequired()){
+            if ((columnValue == null || columnValue.isEmpty()) && constrainedProperty.isRequired()) {
                 validationErrorDTO.addFieldError(columnName, "This field is required");
-            } else if(!columnValue.matches(constrainedProperty.getProperty().getPattern())){
+            } else if (!columnValue.matches(constrainedProperty.getProperty().getPattern())) {
                 validationErrorDTO.addFieldError(columnName, "This field do not matches valid format");
             }
         });
@@ -211,6 +210,46 @@ public class ResourceServiceImpl implements ResourceService {
 
         return validationErrorDTO;
     }
-    
-    
+
+    @Override
+    public ValidationErrorDTO validateResourceImplUniqueFields(ResourceImplDTO resourceImplDTO) {
+        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO();
+
+        long resourceTypeId = resourceImplDTO.getResourceTypeId();
+        ResourceType resourceType = resourceTypeDAO.findWithPropertiesByID(resourceTypeId);
+
+        List<ConstrainedProperty> uniqueProperties = resourceType.getProperties().stream()
+                .filter(ConstrainedProperty::isUnique)
+                .collect(Collectors.toList());
+
+        String tableName = resourceType.getTableName();
+        Map<String, String> valuesToSearch = new HashMap<>();
+        List<ConstrainedProperty> uniqueProperty = new ArrayList<>();
+
+        // check exactly one and every unique property
+        // if there is resource in the table with such unique value, populate errorDto
+        uniqueProperties
+                .forEach(constrainedProperty -> {
+                    String columnName = constrainedProperty.getProperty().getColumnName();
+                    String columnValue = resourceImplDTO.getPropertiesAndValues().get(columnName);
+
+                    valuesToSearch.put(columnName, columnValue);
+                    uniqueProperty.add(constrainedProperty);
+
+                    String queryForDao = queryBuilder.queryForJdbcTemplate(tableName, valuesToSearch, uniqueProperty);
+
+                    List<GenericResource> resourcesByResourceType = resourceDao.findResourcesByResourceType(queryForDao, valuesToSearch, uniqueProperty);
+                    System.out.println(resourcesByResourceType);
+
+                    if (!resourcesByResourceType.isEmpty()) {
+                        System.out.println("adding FieldErrorDto to column: " + columnName);
+                        validationErrorDTO.addFieldError(columnName, "This value already exists. Please, specify another value.");
+                    }
+
+                    valuesToSearch.clear();
+                    uniqueProperty.clear();
+                });
+
+        return validationErrorDTO;
+    }
 }
