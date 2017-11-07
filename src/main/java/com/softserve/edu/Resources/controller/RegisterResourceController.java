@@ -56,6 +56,8 @@ public class RegisterResourceController {
         if (validationErrorDTO.getFieldErrors().isEmpty()) {
 
             ValidationErrorDTO validationErrorDTOTwo = resourceService.validateResourceImplUniqueFields(resourceImplDTO);
+            System.out.println(validationErrorDTO);
+
             if (!validationErrorDTOTwo.getFieldErrors().isEmpty()){
                 return new ResponseEntity<>(validationErrorDTOTwo, HttpStatus.BAD_REQUEST);
             } else {

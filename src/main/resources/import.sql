@@ -18,7 +18,7 @@ INSERT INTO `RESOURCE_CATEGORIES` (`Id`,`Category_Name`,`Id_Parent`) VALUES (134
 
 INSERT INTO `RESOURCE_PROPERTIES` (`id`,`Column_Name`,`Hint`,`Multivalued`,`Regex`,`Title`,`Units`,`Units_short`,`Value_Type`) VALUES (100200,'model','letters,digits,e.g: Mazda6','','[A-Za-z0-9]{2,20}','Model','','','STRING'),(100203,'year','only digits, e.g: 2004','','[0-9]{4,20}','Year','digits','','STRING'),(100204,'weight','only double, e.g: 200.20(not more than 3 digits after dot)','','\\d+\\.\\d{1,3}','Weight','kilograms','kg','DOUBLE'),(100205,'load_capacity','only integers, e.g: 2000','','\\d+','Load-carrying capacity','kilograms','kg','INTEGER'),(100206,'vin','only letters with upper case and integers, e.g: V2WWW45KP','','[A-Z0-9]+','VIN',NULL,NULL,'STRING');
 
-INSERT INTO `user_account` (`id`,`enabled`,`password`,`secret`,`email`) VALUES (8, TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
+INSERT INTO `user_account` (`id`,`enabled`,`password`,`secret`,`email`) VALUES (4, TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser4@gmail.com'),(8, TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbfgb','dbuser8@gmail.com'),(9,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bbfgb','dbuser9@gmail.com'),(88,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','bgb','dbuser88@gmail.com'),(99,TRUE,'$2a$11$kGAnapbAjKje5p5vs.uHnOIgsFBvIgso9BKq9xGuzanFPX6YWP0T.','gbgfb','dbuser99@gmail.com');
 
 INSERT INTO `RESOURCE_TYPES` (`Id`,`Instantiated`,`Table_Name`,`Type_Name`,`Id_Assigner`,`Id_Category`) VALUES (100300, TRUE,'cars','Car',8,134327),(100302,TRUE,'yachts','Yacht',8,134323),(100303,TRUE,'trains','Train',88,134331),(100304,'','vehicles','Vehicle',8,134327),(100305,'','trucks','Truck',88,134327),(100306,'','apartments','Apartment',88,134316),(100307,'','cottages','Cottage',8,134316);
 
@@ -34,9 +34,9 @@ INSERT INTO `trains` (`id`,`model`,`year`,`weight`,`load_capacity`) VALUES (1,'H
 
 INSERT INTO `Type_Properties` (`Type_Id`,`Id_Property`,`Required`,`Searchable`,`Uniq`) VALUES (100300,100200,'',TRUE,FALSE),(100302,100200,'',TRUE,FALSE),(100303,100200,'',TRUE,FALSE),(100304,100200,'',TRUE,FALSE),(100300,100203,'',TRUE,FALSE),(100302,100203,'',TRUE,FALSE),(100303,100203,'',TRUE,FALSE),(100304,100203,'',TRUE,FALSE),(100302,100204,'',TRUE,FALSE),(100303,100204,'',TRUE,FALSE),(100303,100205,'',TRUE,FALSE),(100304,100205,'',TRUE,FALSE),(100300,100206,'',TRUE,TRUE);
 
-INSERT INTO `demotest`.`user_details` (`id`, `bank_id`, `date_of_issue`, `first_name`, `id_address`, `issued_by`, `middle_name`, `passport_number`, `passport_series`, `phone`, `second_name`, `id_user`) VALUES ('9', '9', '2012-12-12', 'FirstName', '9', '9', 'MiddleName', '123456', 'AB', '+12(345)-678-90-12', 'SecondName', '9');
+INSERT INTO `demotest`.`user_details` (`id`, `bank_id`, `date_of_issue`, `first_name`, `id_address`, `issued_by`, `middle_name`, `passport_number`, `passport_series`, `phone`, `second_name`, `id_user`) VALUES ('4', '4', '2012-12-12', 'FirstName', '4', '4', 'MiddleName', '123456', 'AB', '+12(345)-678-90-12', 'SecondName', '4'),('8', '8', '2012-12-12', 'FirstName', '8', '8', 'MiddleName', '123456', 'AB', '+12(345)-678-90-12', 'SecondName', '8'),('9', '9', '2012-12-12', 'FirstName', '9', '9', 'MiddleName', '123456', 'AB', '+12(345)-678-90-12', 'SecondName', '9');
 
-INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES (8,8),(88,8),(9,9),(99,9);
+INSERT INTO `users_roles` (`user_id`,`role_id`) VALUES (4,4),(8,8),(88,8),(9,9),(99,9);
 
 DROP TABLE IF EXISTS `yachts`;
 
