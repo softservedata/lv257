@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 
+import com.softserve.edu.Resources.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -20,15 +21,6 @@ import org.springframework.stereotype.Repository;
 import com.softserve.edu.Resources.dao.ResourceDao;
 import com.softserve.edu.Resources.dto.GenericResourceDTO;
 import com.softserve.edu.Resources.dto.GroupedResourceCount;
-import com.softserve.edu.Resources.entity.Address;
-import com.softserve.edu.Resources.entity.ConstrainedProperty;
-import com.softserve.edu.Resources.entity.GenericResource;
-import com.softserve.edu.Resources.entity.Owner;
-import com.softserve.edu.Resources.entity.PropertyValue;
-import com.softserve.edu.Resources.entity.Resource;
-import com.softserve.edu.Resources.entity.ResourceOwning;
-import com.softserve.edu.Resources.entity.ResourceProperty;
-import com.softserve.edu.Resources.entity.ResourceType;
 
 @Repository
 public class ResourceDaoImpl implements ResourceDao {
@@ -223,6 +215,8 @@ public class ResourceDaoImpl implements ResourceDao {
         });
 
         namedJdbcTemplate.update(query, mapSqlParameterSource);
+
+        System.out.println(propertiesAndValues);
     }
 
 }
