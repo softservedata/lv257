@@ -50,7 +50,7 @@ public class RegisterResourceController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO, HttpSession session) {
+    public ResponseEntity<?> registerResource(@RequestBody ResourceImplDTO resourceImplDTO, HttpSession session) throws Exception {
         ValidationErrorDTO validationErrorDTO = resourceService.validateResourceImpl(resourceImplDTO);
 
         if (validationErrorDTO.getFieldErrors().isEmpty()) {
@@ -193,10 +193,21 @@ public class RegisterResourceController {
         return new ArrayList<>(properties);
     }
 
+    // in case of unique constraint violation exception, show error message about possible unique fields errors
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public void handleUniqueException(DataIntegrityViolationException e){
-        System.out.println("exception was caught.");
+    public void handleDataIntegrityViolationExceptionException(DataIntegrityViolationException e){
+        logger.error("integrity violation", e);
+
+        System.out.println(e.getMessage());
+    }
+
+    // in case of general exception, show general error message
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public void handleGeneralException(DataIntegrityViolationException e){
+        logger.error("some exception", e);
+
         System.out.println(e.getMessage());
     }
 
