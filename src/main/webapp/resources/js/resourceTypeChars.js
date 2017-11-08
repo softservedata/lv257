@@ -4,6 +4,7 @@ const registerRecourceBtn = $('#register_resource_btn');
 const $alert = $('.cuslom_alert');
 
 const resourceUniquenessFieldsErrors = $('.resource_uniqueness_exception');
+const someException = $('.some_exception');
 let resourceTypeId;
 $(document).ready(function () {
 
@@ -79,7 +80,7 @@ function saveResourceAjaxCall() {
 
     $.ajax({
         type: 'POST',
-        url: '/resources/registration',
+        url: projectPathPrefix + '/resources/registration',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(resourceJson),
         success: function (result) {
@@ -92,8 +93,8 @@ function saveResourceAjaxCall() {
         },
         error: function (result) {
             console.log(result);
-            let parse = JSON.parse(result.responseText);
             if (result.status == 400) {
+                let parse = JSON.parse(result.responseText);
                 console.log('errors in fields: ' + parse);
                 $('.my_error_class').empty();
 
@@ -102,6 +103,10 @@ function saveResourceAjaxCall() {
             if (result.status == 403) {
                 resourceUniquenessFieldsErrors.show(500);
                 resourceUniquenessFieldsErrors.delay(10000).hide(500);
+            }
+            if (result.status == 500) {
+                someException.show(500);
+                someException.delay(10000).hide(500);
             }
         }
 
@@ -131,9 +136,7 @@ function prepareResourceJson(){
 function ajaxCallToShowProperties(resourceTypeId) {
     $.ajax({
         type: 'GET',
-        url: '/resources/api/' + resourceTypeId,
-        // contentType: 'application/json; charset=UTF-8',
-        // dataType: 'json',
+        url: projectPathPrefix + '/resources/api/' + resourceTypeId,
         success: function (constrainedProperties) {
             propertiesForm.empty();
             console.log(constrainedProperties);
@@ -202,12 +205,13 @@ function populateUniqueConstrainsErrorMessage(constrainedProperties){
     let text = "";
     for (let i = 0; i < constrainedProperties.length; i++) {
         if (constrainedProperties[i].unique){
-            text += constrainedProperties[i].property.title + " ";
+            text += constrainedProperties[i].property.title + " .. ";
         }
     }
 
     resourceUniquenessFieldsErrors.find('.alert').text(
-        'Some of the values in this fields already exists: ' + text
+        'Some of the values in this fields already exists: ' + text + ' ' +
+        'Please, try to specify different one\'s'
     );
 }
 

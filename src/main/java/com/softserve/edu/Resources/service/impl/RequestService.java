@@ -176,7 +176,7 @@ public class RequestService {
                 request.setStatus(ResourceRequest.Status.NEW);
                 resourceRequestDAO.makePersistent(request);
 
-            requestDTO.setResourceType(request.getResourceName());
+            requestDTO.setResourceName(request.getResourceName());
             requestDTO.setAssignerName(request.getResourcesAdmin().getUsername());
             requestDTO.setUpdate(request.getUpdate());
             requestDTO.setId(request.getId());

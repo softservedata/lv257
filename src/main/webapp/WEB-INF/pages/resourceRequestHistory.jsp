@@ -15,7 +15,7 @@
 
 <div class="container">
     <ul class="nav nav-tabs">
-        <li><a href="${contextPath}/resources/viewType">View</a></li>
+        <li><a href="${contextPath}/resources/viewTypes">View</a></li>
 
         <li><a href="${contextPath}/resources/addType">Add</a></li>
         <li class="active"><a href="#">Requests</a></li>

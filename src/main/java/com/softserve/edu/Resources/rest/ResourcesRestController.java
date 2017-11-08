@@ -54,7 +54,7 @@ public class ResourcesRestController {
         User resourceAdmin = userService.getUser(loggedInUser.getName());
         ResourceType resourceType = resourceTypeService.save(resourceTypeBrief, resourceAdmin);
         // save fake request for the sake of request history
-        /*if (requestId == 0) {
+       /* if (requestId == 0) {
             org.springframework.security.core.userdetails.User principal =
                     (org.springframework.security.core.userdetails.User)
                             SecurityContextHolder.getContext().getAuthentication().getPrincipal();

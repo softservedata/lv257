@@ -60,7 +60,7 @@
                 <tr class="active">
                     <td>${request.resourceName}</td>
                     <td>${request.requesterName}</td>
-                    <td><a href="/resources/info/${request.id}">details</a></td>
+                    <td><a href="${pageContext.request.contextPath}/resources/info/${request.id}">details</a></td>
                     <td>${request.update.toString().split('\\.')[0]}</td>
                     <td>${request.assignerName}</td>
 
@@ -119,7 +119,7 @@
     </br>
     </div>
     <div align="right">
-        <a href="/resources/history">
+        <a href="${pageContext.request.contextPath}/resources/history">
             <button class="btn btn-primary">See processed requests</button>
         </a>
     </div>
@@ -199,7 +199,7 @@
             $.ajax(
                 {
                     type: "POST",
-                    url: projectPathPrefix + "assignRequest",
+                    url: projectPathPrefix + "/resources/assignRequest",
                     accept: "application/json",
                     data: {id: id},
                     success: function (responceRequest) {
@@ -208,7 +208,7 @@
 
 
                         cell.replaceWith(" <td data-order=\"2\" data-id=" + id + ">\n" +
-                            "                       <a href=\"/resources/addType?requestId="+id+"\">\n" +
+                            "                       <a href=\"" + projectPathPrefix + "/resources/addType?requestId="+id+"\">\n" +
                             "                           <button class=\"btn btn-primary\">Process</button>\n" +
                             "                       </a>\n" +
                             "                       <button class=\"btn btn-primary responce\"  type=\"button\"\n" +
@@ -264,14 +264,16 @@
 
             var id_request=cell.attr('data-id');
             var id_type=cell.attr('data-typeId');
-            alert(id_type)
             $.ajax({
                     type: "PUT",
                     url: projectPathPrefix + "/resources/acceptRequest/"+id_request+"/"+id_type,
                     success: function (result) {
-                        alert("Your mail has already sent.")
                         currentRow.remove().draw();
-                    }
+                    },
+                error: function (result) {
+                   let error = JSON.parse(result.responseText);
+                    alert('Error!\n' + error.message);
+                }
                 })
 
         })

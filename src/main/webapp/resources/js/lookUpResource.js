@@ -323,7 +323,7 @@ function populatingTableResourcesFromGenericResourceLists(resourceTypeId, ajaxRe
            	
                $(bodyRow).append("<td>"+ ajaxResult[i].propertyValues[j].value +"</td>");
            }
-           $(bodyRow).append("<td><a href=\"/resource/type/"+resourceTypeId+"/id/"+ajaxResult[i].id+"\" target=\"_blank\">Details</a></td>");
+           $(bodyRow).append("<td><a href=\""+projectPathPrefix+"/resource/type/"+resourceTypeId+"/id/"+ajaxResult[i].id+"\" target=\"_blank\">Details</a></td>");
        }
        $("<br/>").appendTo(tableTag);
        //DataTables plug-in

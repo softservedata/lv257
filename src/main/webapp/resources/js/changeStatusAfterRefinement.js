@@ -30,9 +30,10 @@ $(function () {
         $.ajax(
             {
                 type: "POST",
-                url: projectPathPrefix + "/" + "changeStatus",
+                url: projectPathPrefix + "/resources" + "/changeStatus",
                 accept: "application/json",
                 data: {id: id},
+
                 success: function (responceRequest) {
 
                     var Info_about_request = $('selector').attr('href');
