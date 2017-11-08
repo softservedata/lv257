@@ -4,6 +4,7 @@ const registerRecourceBtn = $('#register_resource_btn');
 const $alert = $('.cuslom_alert');
 
 const resourceUniquenessFieldsErrors = $('.resource_uniqueness_exception');
+const someException = $('.some_exception');
 let resourceTypeId;
 $(document).ready(function () {
 
@@ -103,6 +104,10 @@ function saveResourceAjaxCall() {
                 resourceUniquenessFieldsErrors.show(500);
                 resourceUniquenessFieldsErrors.delay(10000).hide(500);
             }
+            if (result.status == 500) {
+                someException.show(500);
+                someException.delay(10000).hide(500);
+            }
         }
 
     });
@@ -200,12 +205,13 @@ function populateUniqueConstrainsErrorMessage(constrainedProperties){
     let text = "";
     for (let i = 0; i < constrainedProperties.length; i++) {
         if (constrainedProperties[i].unique){
-            text += constrainedProperties[i].property.title + " ";
+            text += constrainedProperties[i].property.title + " .. ";
         }
     }
 
     resourceUniquenessFieldsErrors.find('.alert').text(
-        'Some of the values in this fields already exists: ' + text
+        'Some of the values in this fields already exists: ' + text + ' ' +
+        'Please, try to specify different one\'s'
     );
 }
 

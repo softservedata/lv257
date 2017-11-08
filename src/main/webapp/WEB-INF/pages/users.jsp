@@ -47,11 +47,11 @@
                 <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Full name</th>
+                    <%--<th>Full name</th>--%>
                     <th>Email</th>
                     <th>Role</th>
                     <th>Enabled</th>
-                    <th>Last visit</th>
+                    <%--<th>Last visit</th>--%>
                     <th>Edit</th>
                     <th>Clone</th>
                 </tr>
@@ -60,7 +60,7 @@
                 <c:forEach var="listValue" items="${users}">
                     <tr>
                         <td>${listValue.id}</td>
-                        <td>Full name</td>
+                        <%--<td>Full name</td>--%>
                         <td>${listValue.username}</td>
                         <td><c:forEach var="role" items="${listValue.roles}">
                             ${role.name}
@@ -80,7 +80,7 @@
                                 </div>
                             </td>
                         </c:if>
-                        <td>${listValue.password}</td>
+                        <%--<td>${listValue.password}</td>--%>
                         <td ><a href="${pageContext.request.contextPath}/userEdit?uid=${listValue.id}">
                             <span class="glyphicon glyphicon-edit"></span>
                         </a></td>

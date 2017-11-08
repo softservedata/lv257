@@ -9,6 +9,9 @@ import java.security.Principal;
 public interface UserProfileService {
 
     @Transactional
+    UserProfileDTO createPasswordDTO(Principal principal);
+
+    @Transactional
     UserProfileDTO createUserProfileDTO(Principal principal);
 
     @Transactional
