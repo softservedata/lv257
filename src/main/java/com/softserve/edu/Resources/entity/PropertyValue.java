@@ -35,10 +35,11 @@ public class PropertyValue implements Comparable<PropertyValue> {
     if (!type.isRequired() && value == null) {
       throw new NullPointerException("NOT NULL constraint violation.");
 
-    } if (!validate(value)) {
-      throw new IllegalArgumentException(String.format("Invalid value format. Should match \"%s\"",
-                                                       type.getProperty().getPattern()));
     }
+//    if (!validate(value)) {
+//      throw new IllegalArgumentException(String.format("Invalid value format. Should match \"%s\"",
+//                                                       type.getProperty().getPattern()));
+//    }
     this.value = value;
     return this;
   }
