@@ -78,6 +78,14 @@ public class UserServiceImpl implements UserService {
         return userDAO.makePersistent(user);
     }
 
+    private boolean CheckPassword(String passwordOld) {
+        return true;
+    }
+    public String getPassword(User user){
+        String getUserPassword = user.getPassword();
+        return getUserPassword;
+    }
+
     @Override
     public void delete(User user) {
         userDAO.makeTransient(user);

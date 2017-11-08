@@ -44,6 +44,15 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     @Transactional
+    public UserProfileDTO createPasswordDTO(Principal principal) {
+        String userName = principal.getName();
+        User user = userService.findByEmail(userName);
+        UserProfileDTO userProfileDTO = new UserProfileDTO();
+        return userProfileDTO;
+    }
+
+    @Override
+    @Transactional
     public UserProfileDTO createUserProfileDTO(Principal principal){
         String userName = principal.getName();
         User user = userService.findByEmail(userName);
