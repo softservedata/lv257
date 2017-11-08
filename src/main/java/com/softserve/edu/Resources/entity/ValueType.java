@@ -11,10 +11,10 @@ public enum ValueType {
 
     INTEGER("Integer", Integer.class, Types.INTEGER, "\\d+", "BIGINT(20)"),
     DOUBLE("Double", Double.class, Types.DOUBLE, "\\d+\\.\\d{1,3}", "DOUBLE(20,3)"),
-    STRING("String", String.class, Types.VARCHAR, "\\p{L}+", "VARCHAR(255)"),
+    STRING("String", String.class, Types.VARCHAR, "(.){1,20}", "VARCHAR(255)"),
     BOOLEAN("Boolean", Boolean.class, Types.BIT, "(yes)|(no)", "BIT"),
-    DATE("Date", Date.class, Types.TIMESTAMP, "\\d{4}-\\d}2-\\d{2}", "TIMESTAMP"),
-    TIMESTAMP("Timestamp", Timestamp.class, Types.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2} (.\\d{1,8})?", "TIMESTAMP");
+    DATE("Date", Date.class, Types.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2}", "TIMESTAMP"),
+    TIMESTAMP("Timestamp", Timestamp.class, Types.TIMESTAMP, "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}(.\\d{1,8})?", "TIMESTAMP");
 //    RESOURCE_PROPERTY("Resource property", ResourceProperty.class, Types.VARCHAR, "\\{.{2,}\\}"); // JSON representation, i.e. {"typeID": "12"}
 
     public final Class<?> clazz;
@@ -104,7 +104,8 @@ public enum ValueType {
             case STRING:
                 return value;
             case BOOLEAN:
-                return Boolean.parseBoolean(value);
+                return (value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true"));
+//                return true;
         }
         return "";
     }
