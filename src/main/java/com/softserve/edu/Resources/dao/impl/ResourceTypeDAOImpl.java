@@ -110,9 +110,10 @@ public class ResourceTypeDAOImpl extends GenericDAOImpl<ResourceType, Long> impl
 
     @Override
     public void makeTransient(ResourceType resourceType) {
-        resourceType.getRequest()
-                .setResourceType(null)
-                .setStatus(ResourceRequest.Status.DECLINED);
+        ResourceRequest request = resourceType.getRequest();
+        if (request != null) {
+            request.setResourceType(null).setStatus(ResourceRequest.Status.DECLINED);
+        }
         super.makeTransient(resourceType);
     }
 }
