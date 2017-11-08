@@ -338,6 +338,13 @@
                     </div>
                 </div>
 
+                <div class="some_exception display_none">
+                    <div class="alert alert-danger alert-dismissible fade in">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        Error during saving resoure record to the database. Please, try again later.
+                    </div>
+                </div>
+
                 <div class="rP_chars">
 
                     <%--CONCRETE RESOURCE TYPE CHARACTERISTICS--%>
