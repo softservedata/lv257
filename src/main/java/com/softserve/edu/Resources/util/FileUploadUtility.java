@@ -22,7 +22,7 @@ public class FileUploadUtility extends FileUpload{
 
     public String uploadFile( MultipartFile file, String code, String username) {
 
-       BasicAWSCredentials credentials = new BasicAWSCredentials("AKIAIRSMVLMUF2W4ZSAA", "guZpt9C/VXOHpi1UwAOMHR0kKeDybkWEzPbELVc9");
+       BasicAWSCredentials credentials = new BasicAWSCredentials("HereMustBeAccessKeyForAmazonS3", "HereMustBeSecretKeyForAmazonS3");
        AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_CENTRAL_1)
                                                 .withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 
