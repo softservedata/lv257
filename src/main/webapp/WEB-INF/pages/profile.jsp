@@ -32,12 +32,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Personal settings</div>
                 <div class="panel-body selected">Profile</div>
+                <div class="panel-body"><a class="menu-link"
+                                           href="${contextPath}/changePassword">Change password</a></div>
 <%--                <div class="panel-body"><a class="menu-link"
                                            href="${contextPath}/users1">All Users 1 (+button "Add new user")</a></div>--%>
                 <div class="panel-body"><a class="menu-link"
                                            href="${contextPath}/users">All Users<%-- 2 (new View - Spring Table)--%></a></div>
                 <div class="panel-body"><a class="menu-link"
-                                           href="${contextPath}/changePassword">Change password</a></div>
+                                           href="${contextPath}/userDetails">All User Details<%-- 2 (new View - Spring Table)--%></a></div>
                 <div class="panel-body"><a class="menu-link"
                                            href="${contextPath}/roles">Roles</a></div>
 <%--                <div class="panel-body"><a class="menu-link"
@@ -229,9 +231,9 @@
 </div>
 
 <!-- BEGIN JIVOSITE CODE {literal} -->
-<%--<script type='text/javascript'>
+<script type='text/javascript'>
     (function(){ var widget_id = 'G7wVfVFYNc';var d=document;var w=window;function l(){
-        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>--%>
+        var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
 <!-- {/literal} END JIVOSITE CODE -->
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.softserve.edu.Resources.controller;
 
+import com.softserve.edu.Resources.dto.PasswordDTO;
 import com.softserve.edu.Resources.dto.UserDTO;
 import com.softserve.edu.Resources.dto.UserProfileDTO;
 import com.softserve.edu.Resources.entity.*;
@@ -30,11 +31,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.security.Principal;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 @Controller
 @Transactional
 public class UserController {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -70,14 +74,44 @@ public class UserController {
 
     @RequestMapping(value = {"/changePassword"}, method = RequestMethod.GET)
     public String accountPage(Model model) {
+        PasswordDTO passwordDTO = new PasswordDTO();
+        model.addAttribute("title", "Change Password");
+        model.addAttribute("passwordDTO", passwordDTO);
+        model.addAttribute("oldPassword", passwordDTO.getOldPassword());
+        model.addAttribute("newPassword1", passwordDTO.getNewPassword1());
+        model.addAttribute("newPassword1", passwordDTO.getNewPassword2());
+        return "changePassword";
+    }
+    @RequestMapping(value = {"/changePassword"}, method = RequestMethod.POST)
+    public String accountPagePOST(
+           @ModelAttribute("passwordOld") String passwordOld,
+ BindingResult passwordOldResults,
+            @ModelAttribute("newPassword1") String newPassword1,
+           BindingResult newPassword11Results,
+            @ModelAttribute("newPassword2") String newPassword2,
+           BindingResult newPassword12Results,
+            Model model)
+            throws Exception {
+        String userName = request.getUserPrincipal().getName();
+        User user = userService.findByEmail(userName);
+//        String passFromDB = user.getPassword();
+        String passEncoded1 = passwordEncoder.encode(newPassword1);
+        String passEncoded2 = passwordEncoder.encode(newPassword2);
+//        user.setPassword(passEncoded2);
+        model.addAttribute("newPassword1", passEncoded1);
+        model.addAttribute("newPassword2", passEncoded1);
         model.addAttribute("title", "Change Password");
         return "changePassword";
     }
 
-    @RequestMapping(value = "/users1", method = RequestMethod.GET)
-    public ModelAndView users1() {
-        ModelAndView usersModel = new ModelAndView("users");
-        usersModel.addObject("users", userService.getAllUsers());
+
+
+    @RequestMapping(value = "/userDetails", method = RequestMethod.GET)
+    public ModelAndView usersDetails() {
+        ModelAndView usersModel = new ModelAndView("userDetails");
+        usersModel.addObject("users", userDetailsService.getAllUsers());
+   /*     User u = new User();
+        u.getUsername();*/
         return usersModel;
     }
 
@@ -98,71 +132,6 @@ public class UserController {
         return model;
     }
 
-   /* //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/
-//    http://www.spring-source.ru/articles.php?type=manual&theme=articles&docs=article_10
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public String profileGET0(ModelMap mm, Principal principal)
-//    public ModelAndView profileGET0(Model model, Principal principal, @RequestParam(value = "operation", required = false) String operation) {
-    {
-        if (principal == null) {
-            mm.addAttribute("message", "Please log in to see this page");
-            return "403";
-        } else {
-            UserProfileDTO userProfileDTO = userProfileService.createUserProfileDTO(principal);
-            Avatar nDocument = new Avatar();
-
-            String userName = principal.getName();
-            User user = userService.findByEmail(userName);
-//            UserDetails userDetailsetails = userDetailsService.getUserDetailsByUserId(user.getId());
-//            Optional<UserDetails> details = userDetailsService.getUserDetailsByUserId(user.getId());
-//            mm.addAttribute("details", details.isPresent() ? details.get() : new UserDetails());
-            Collection<Role> roles = user.getRoles();
-            *//** todo improve code *//*
-            String rolesString = null;
-            for (Role role : roles) {
-                rolesString = role.getName();
-            }
-//            rolesString = rolesString.substring(1, rolesString.length() - 1);
-            System.out.println(rolesString);
-//            String role = rolesString;
-            mm.addAttribute("role", rolesString);
-            mm.addAttribute("details", userProfileDTO);
-            mm.addAttribute("document", nDocument);
-            mm.addAttribute("title", "Profile");
-            *//** add path to photo*//*
-            mm.addAttribute("photoBAD", env.getProperty("host.appUrl").concat("/").concat(rolesString).concat(".png"));
-//            mm.addAttribute("photo", "/resources/img/NoFoto.png");
-            mm.addAttribute("photo", "/resources/img/".concat(rolesString).concat(".png"));
-//            mm.addAttribute("photo", "contextPath/resources/img/".concat(rolesString).concat(".png"));
-            return "profile";
-        }
-    }
-
-       @RequestMapping(value = "/profile", method = RequestMethod.POST)
-//    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
-    public String profilePOST0(@ModelAttribute(value = "details") @Valid UserProfileDTO userProfileDTO, BindingResult bindingResult,
-                               @ModelAttribute("document") Avatar document, BindingResult documentResults,
-                               Model model
-//             UserProfileDTO userProfileDTO
-    )
-            throws Exception {
-
-//        View view = modelAndView.getView();
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("title", "bindingResult.hasErrors");
-            model.addAttribute("details", userProfileDTO);
-            model.addAttribute("403");
-        } else {
-
-            model.addAttribute("title", "Profile");
-            model.addAttribute("details", userProfileDTO);
-            userProfileService.saveUserProfile(userProfileDTO);
-        }
-        return "profile";
-    }*/
-    //code from http://javastudy.ru/spring-mvc/spring-mvc-pattern-prg-postredirectget/
-//    http://www.spring-source.ru/articles.php?type=manual&theme=articles&docs=article_10
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public String profileGET0(ModelMap model, Principal principal)
 //    public ModelAndView profileGET0(Model model, Principal principal, @RequestParam(value = "operation", required = false) String operation) {
@@ -181,19 +150,26 @@ public class UserController {
 //            model.addAttribute("details", details.isPresent() ? details.get() : new UserDetails());
             Collection<Role> roles = user.getRoles();
             /** todo improve code */
-            String rolesString = null;
+            /*String rolesString = null;
             for (Role role : roles) {
                 rolesString = role.getName();
             }
 //            rolesString = rolesString.substring(1, rolesString.length() - 1);
             System.out.println(rolesString);
-//            String role = rolesString;
+//            String role = rolesString;*/
+            String rolesString = null;
+            Iterator iterator = user.getRoles().iterator();
+            if (iterator.hasNext()) {
+                Role role = (Role) iterator.next();
+                rolesString = role.getName();
+            }
+
             model.addAttribute("role", rolesString);
             model.addAttribute("details", userProfileDTO);
             model.addAttribute("document", nDocument);
             model.addAttribute("title", "Profile");
             /** add path to photo*/
-            model.addAttribute("photoBAD", env.getProperty("host.appUrl").concat("/").concat(rolesString).concat(".png"));
+//            model.addAttribute("photoBAD", env.getProperty("host.appUrl").concat("/").concat(rolesString).concat(".png"));
 //            model.addAttribute("photo", "/resources/img/NoFoto.png");
             model.addAttribute("photo", "/resources/img/".concat(rolesString).concat(".png"));
 //            model.addAttribute("photo", "contextPath/resources/img/".concat(rolesString).concat(".png"));
@@ -202,15 +178,11 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
-//    public ModelAndView profilePOST0(@Valid @ModelAttribute("details") UserDetails userDetails,
     public String profilePOST0(
-//            @RequestParam("role") String rolesString,
-//                               @RequestParam("photo") String photo,
             @ModelAttribute(value = "details") @Valid UserProfileDTO userProfileDTO, BindingResult bindingResult,
             @ModelAttribute("document") Avatar document, BindingResult documentResults,
             @ModelAttribute("role") String rolesString, BindingResult roleResults,
             @ModelAttribute("photo") String photo, BindingResult photoResults,
-
             Model model)
             throws Exception {
 
@@ -250,8 +222,7 @@ public class UserController {
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     public ModelAndView addRole(@ModelAttribute("user") UserDTO user) {
         // TODO implement
-        System.out.println(user);
-        return users1();
+        return users();
     }
 
     @RequestMapping(value = "/profile4040", method = RequestMethod.GET)
